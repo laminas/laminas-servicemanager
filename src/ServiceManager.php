@@ -1,13 +1,12 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager;
+namespace Laminas\ServiceManager;
 
 use Interop\Container\ContainerInterface;
 
@@ -677,7 +676,7 @@ class ServiceManager implements ServiceLocatorInterface, ContainerInterface
      * @param  string|array $name
      * @param  bool         $checkAbstractFactories
      * @return bool
-     * @deprecated this method is being deprecated as of zendframework 2.3, and may be removed in future major versions
+     * @deprecated this method is being deprecated as of laminas 2.3, and may be removed in future major versions
      */
     public function canCreate($name, $checkAbstractFactories = true)
     {
@@ -1225,13 +1224,13 @@ class ServiceManager implements ServiceLocatorInterface, ContainerInterface
      * @see https://bugs.php.net/bug.php?id=53727
      * @see https://github.com/zendframework/zf2/pull/1807
      *
-     * @deprecated since zf 2.3 requires PHP >= 5.3.23
+     * @deprecated since laminas 2.3 requires PHP >= 5.3.23
      *
      * @param string $className
      * @param string $type
      * @return bool
      *
-     * @deprecated this method is being deprecated as of zendframework 2.2, and may be removed in future major versions
+     * @deprecated this method is being deprecated as of laminas 2.2, and may be removed in future major versions
      */
     protected static function isSubclassOf($className, $type)
     {
