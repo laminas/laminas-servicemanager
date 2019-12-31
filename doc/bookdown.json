@@ -1,5 +1,5 @@
 {
-  "title": "zend-servicemanager: service locator component",
+  "title": "laminas-servicemanager: service locator component",
   "content": [
     {"Intro": "../README.md"},
     {"Quick Start": "book/quick-start.md"},
