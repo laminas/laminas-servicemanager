@@ -1,27 +1,25 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager;
+namespace LaminasTest\ServiceManager;
 
+use Laminas\Di\Di;
+use Laminas\Mvc\Service\DiFactory;
+use Laminas\ServiceManager\Config;
+use Laminas\ServiceManager\Di\DiAbstractServiceFactory;
+use Laminas\ServiceManager\Exception;
+use Laminas\ServiceManager\ServiceManager;
+use LaminasTest\ServiceManager\TestAsset\FooCounterAbstractFactory;
+use LaminasTest\ServiceManager\TestAsset\MockSelfReturningDelegatorFactory;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\Di\Di;
-use Zend\Mvc\Service\DiFactory;
-use Zend\ServiceManager\Di\DiAbstractServiceFactory;
-use Zend\ServiceManager\Exception;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\Config;
-
-use ZendTest\ServiceManager\TestAsset\FooCounterAbstractFactory;
-use ZendTest\ServiceManager\TestAsset\MockSelfReturningDelegatorFactory;
 
 /**
- * @group Zend_ServiceManager
+ * @group Laminas_ServiceManager
  */
 class ServiceManagerTest extends TestCase
 {
@@ -37,7 +35,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::__construct
+     * @covers Laminas\ServiceManager\ServiceManager::__construct
      */
     public function testConstructorConfig()
     {
@@ -47,8 +45,8 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setAllowOverride
-     * @covers Zend\ServiceManager\ServiceManager::getAllowOverride
+     * @covers Laminas\ServiceManager\ServiceManager::setAllowOverride
+     * @covers Laminas\ServiceManager\ServiceManager::getAllowOverride
      */
     public function testAllowOverride()
     {
@@ -59,8 +57,8 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setThrowExceptionInCreate
-     * @covers Zend\ServiceManager\ServiceManager::getThrowExceptionInCreate
+     * @covers Laminas\ServiceManager\ServiceManager::setThrowExceptionInCreate
+     * @covers Laminas\ServiceManager\ServiceManager::getThrowExceptionInCreate
      */
     public function testThrowExceptionInCreate()
     {
@@ -71,7 +69,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setInvokableClass
+     * @covers Laminas\ServiceManager\ServiceManager::setInvokableClass
      */
     public function testSetInvokableClass()
     {
@@ -80,7 +78,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setFactory
+     * @covers Laminas\ServiceManager\ServiceManager::setFactory
      */
     public function testSetFactory()
     {
@@ -89,32 +87,32 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setFactory
+     * @covers Laminas\ServiceManager\ServiceManager::setFactory
      */
     public function testSetFactoryThrowsExceptionOnDuplicate()
     {
         $this->serviceManager->setFactory('foo', 'bar');
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceNameException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\InvalidServiceNameException');
         $this->serviceManager->setFactory('foo', 'bar');
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::addAbstractFactory
+     * @covers Laminas\ServiceManager\ServiceManager::addAbstractFactory
      */
     public function testAddAbstractFactory()
     {
-        $this->serviceManager->addAbstractFactory('ZendTest\ServiceManager\TestAsset\FooAbstractFactory');
+        $this->serviceManager->addAbstractFactory('LaminasTest\ServiceManager\TestAsset\FooAbstractFactory');
 
         $ret = $this->serviceManager->addAbstractFactory(new TestAsset\FooAbstractFactory());
         $this->assertSame($this->serviceManager, $ret);
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::addAbstractFactory
+     * @covers Laminas\ServiceManager\ServiceManager::addAbstractFactory
      */
     public function testAddAbstractFactoryThrowsExceptionOnInvalidFactory()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidArgumentException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\InvalidArgumentException');
         $this->serviceManager->addAbstractFactory(10);
     }
 
@@ -130,7 +128,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::addInitializer
+     * @covers Laminas\ServiceManager\ServiceManager::addInitializer
      */
     public function testAddInitializer()
     {
@@ -139,16 +137,16 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::addInitializer
+     * @covers Laminas\ServiceManager\ServiceManager::addInitializer
      */
     public function testAddInitializerThrowsExceptionOnInvalidInitializer()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidArgumentException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\InvalidArgumentException');
         $this->serviceManager->addInitializer(5);
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setService
+     * @covers Laminas\ServiceManager\ServiceManager::setService
      */
     public function testSetService()
     {
@@ -157,7 +155,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setShared
+     * @covers Laminas\ServiceManager\ServiceManager::setShared
      */
     public function testSetShared()
     {
@@ -167,26 +165,26 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setShared
+     * @covers Laminas\ServiceManager\ServiceManager::setShared
      */
     public function testSetSharedAbstractFactory()
     {
-        $this->serviceManager->addAbstractFactory('ZendTest\ServiceManager\TestAsset\FooAbstractFactory');
+        $this->serviceManager->addAbstractFactory('LaminasTest\ServiceManager\TestAsset\FooAbstractFactory');
         $ret = $this->serviceManager->setShared('foo', false);
         $this->assertSame($this->serviceManager, $ret);
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setShared
+     * @covers Laminas\ServiceManager\ServiceManager::setShared
      */
     public function testSetSharedThrowsExceptionOnUnregisteredService()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ServiceNotFoundException');
         $this->serviceManager->setShared('foo', true);
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::get
      */
     public function testGet()
     {
@@ -195,7 +193,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::get
      */
     public function testGetDoesNotThrowExceptionOnEmptyArray()
     {
@@ -204,33 +202,33 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::get
      */
     public function testGetThrowsExceptionOnUnknownService()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ServiceNotFoundException');
         $this->assertEquals('bar', $this->serviceManager->get('foo'));
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::get
      */
     public function testGetUsesIndivualSharedSettingWhenSetAndDeviatesFromShareByDefaultSetting()
     {
         $this->serviceManager->setAllowOverride(true);
         $this->serviceManager->setShareByDefault(false);
-        $this->serviceManager->setInvokableClass('foo', 'ZendTest\ServiceManager\TestAsset\Foo');
+        $this->serviceManager->setInvokableClass('foo', 'LaminasTest\ServiceManager\TestAsset\Foo');
         $this->serviceManager->setShared('foo', true);
         $this->assertSame($this->serviceManager->get('foo'), $this->serviceManager->get('foo'));
 
         $this->serviceManager->setShareByDefault(true);
-        $this->serviceManager->setInvokableClass('foo', 'ZendTest\ServiceManager\TestAsset\Foo');
+        $this->serviceManager->setInvokableClass('foo', 'LaminasTest\ServiceManager\TestAsset\Foo');
         $this->serviceManager->setShared('foo', false);
         $this->assertNotSame($this->serviceManager->get('foo'), $this->serviceManager->get('foo'));
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::get
      */
     public function testGetWithAlias()
     {
@@ -240,7 +238,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::get
      */
     public function testGetWithScopedContainer()
     {
@@ -283,50 +281,50 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::create
+     * @covers Laminas\ServiceManager\ServiceManager::create
      */
     public function testCreateWithInvokableClass()
     {
-        $this->serviceManager->setInvokableClass('foo', 'ZendTest\ServiceManager\TestAsset\Foo');
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Foo', $this->serviceManager->get('foo'));
+        $this->serviceManager->setInvokableClass('foo', 'LaminasTest\ServiceManager\TestAsset\Foo');
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Foo', $this->serviceManager->get('foo'));
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::create
+     * @covers Laminas\ServiceManager\ServiceManager::create
      */
     public function testCreateWithFactoryInstance()
     {
-        $this->serviceManager->setFactory('foo', 'ZendTest\ServiceManager\TestAsset\FooFactory');
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Foo', $this->serviceManager->get('foo'));
+        $this->serviceManager->setFactory('foo', 'LaminasTest\ServiceManager\TestAsset\FooFactory');
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Foo', $this->serviceManager->get('foo'));
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::create
+     * @covers Laminas\ServiceManager\ServiceManager::create
      */
     public function testCreateWithCallableFactory()
     {
         $this->serviceManager->setFactory('foo', function () { return new TestAsset\Foo; });
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Foo', $this->serviceManager->get('foo'));
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Foo', $this->serviceManager->get('foo'));
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::create
+     * @covers Laminas\ServiceManager\ServiceManager::create
      */
     public function testCreateWithAbstractFactory()
     {
-        $this->serviceManager->addAbstractFactory('ZendTest\ServiceManager\TestAsset\FooAbstractFactory');
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Foo', $this->serviceManager->get('foo'));
+        $this->serviceManager->addAbstractFactory('LaminasTest\ServiceManager\TestAsset\FooAbstractFactory');
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Foo', $this->serviceManager->get('foo'));
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::create
+     * @covers Laminas\ServiceManager\ServiceManager::create
      */
     public function testCreateWithMultipleAbstractFactories()
     {
-        $this->serviceManager->addAbstractFactory('ZendTest\ServiceManager\TestAsset\BarAbstractFactory');
-        $this->serviceManager->addAbstractFactory('ZendTest\ServiceManager\TestAsset\FooAbstractFactory');
+        $this->serviceManager->addAbstractFactory('LaminasTest\ServiceManager\TestAsset\BarAbstractFactory');
+        $this->serviceManager->addAbstractFactory('LaminasTest\ServiceManager\TestAsset\FooAbstractFactory');
 
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Bar', $this->serviceManager->get('bar'));
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Bar', $this->serviceManager->get('bar'));
     }
 
     public function testCreateWithInitializerObject()
@@ -340,7 +338,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::has
+     * @covers Laminas\ServiceManager\ServiceManager::has
      */
     public function testHas()
     {
@@ -350,7 +348,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setAlias
+     * @covers Laminas\ServiceManager\ServiceManager::setAlias
      */
     public function testSetAlias()
     {
@@ -360,37 +358,37 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setAlias
+     * @covers Laminas\ServiceManager\ServiceManager::setAlias
      */
     public function testSetAliasThrowsExceptionOnInvalidAliasName()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceNameException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\InvalidServiceNameException');
         $this->serviceManager->setAlias(5, 10);
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setAlias
+     * @covers Laminas\ServiceManager\ServiceManager::setAlias
      */
     public function testSetAliasThrowsExceptionOnEmptyAliasName()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceNameException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\InvalidServiceNameException');
         $this->serviceManager->setAlias('', 'foo');
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setAlias
+     * @covers Laminas\ServiceManager\ServiceManager::setAlias
      */
     public function testSetAliasThrowsExceptionOnDuplicateAlias()
     {
         $this->serviceManager->setService('foo', 'bar');
         $this->serviceManager->setAlias('baz', 'foo');
 
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidServiceNameException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\InvalidServiceNameException');
         $this->serviceManager->setAlias('baz', 'foo');
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setAlias
+     * @covers Laminas\ServiceManager\ServiceManager::setAlias
      */
     public function testSetAliasDoesNotThrowExceptionOnServiceNotFound()
     {
@@ -398,28 +396,28 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::get
      */
     public function testGetServiceThrowsExceptionOnAliasWithNoSetService()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ServiceNotFoundException');
         $this->serviceManager->setAlias('foo', 'bar');
         $this->serviceManager->get('foo');
     }
 
     /**
-     * @cover Zend\ServiceManager\ServiceManager::get
+     * @cover Laminas\ServiceManager\ServiceManager::get
      */
     public function testGetServiceThrowsExceptionOnMultipleAliasesWithNoSetService()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ServiceNotFoundException');
         $this->serviceManager->setAlias('foo', 'bar');
         $this->serviceManager->setAlias('baz', 'foo');
         $this->serviceManager->get('foo');
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::hasAlias
+     * @covers Laminas\ServiceManager\ServiceManager::hasAlias
      */
     public function testHasAlias()
     {
@@ -431,7 +429,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::createScopedServiceManager
+     * @covers Laminas\ServiceManager\ServiceManager::createScopedServiceManager
      */
     public function testCreateScopedServiceManager()
     {
@@ -451,66 +449,66 @@ class ServiceManagerTest extends TestCase
     {
         $config = new Config(array(
             'invokables' => array(
-                'foo' => 'ZendTest\ServiceManager\TestAsset\Foo',
+                'foo' => 'LaminasTest\ServiceManager\TestAsset\Foo',
             ),
         ));
         $serviceManager = new ServiceManager($config);
         $foo = $serviceManager->get('foo');
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Foo', $foo);
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Foo', $foo);
     }
 
     public function testPeeringService()
     {
         $di = new Di();
-        $di->instanceManager()->setParameters('ZendTest\ServiceManager\TestAsset\Bar', array('foo' => array('a')));
+        $di->instanceManager()->setParameters('LaminasTest\ServiceManager\TestAsset\Bar', array('foo' => array('a')));
         $this->serviceManager->addAbstractFactory(new DiAbstractServiceFactory($di));
         $sm = $this->serviceManager->createScopedServiceManager(ServiceManager::SCOPE_PARENT);
         $sm->setFactory('di', new DiFactory());
-        $bar = $sm->get('ZendTest\ServiceManager\TestAsset\Bar', true);
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Bar', $bar);
+        $bar = $sm->get('LaminasTest\ServiceManager\TestAsset\Bar', true);
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Bar', $bar);
     }
 
     public function testDiAbstractServiceFactory()
     {
-        $di = $this->getMock('Zend\Di\Di');
+        $di = $this->getMock('Laminas\Di\Di');
         $factory = new DiAbstractServiceFactory($di);
-        $factory->instanceManager()->setConfig('ZendTest\ServiceManager\TestAsset\Bar', array('parameters' => array('foo' => array('a'))));
+        $factory->instanceManager()->setConfig('LaminasTest\ServiceManager\TestAsset\Bar', array('parameters' => array('foo' => array('a'))));
         $this->serviceManager->addAbstractFactory($factory);
 
-        $this->assertTrue($this->serviceManager->has('ZendTest\ServiceManager\TestAsset\Bar', true));
+        $this->assertTrue($this->serviceManager->has('LaminasTest\ServiceManager\TestAsset\Bar', true));
 
-        $bar = $this->serviceManager->get('ZendTest\ServiceManager\TestAsset\Bar', true);
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Bar', $bar);
+        $bar = $this->serviceManager->get('LaminasTest\ServiceManager\TestAsset\Bar', true);
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Bar', $bar);
     }
 
     public function testExceptionThrowingFactory()
     {
-        $this->serviceManager->setFactory('foo', 'ZendTest\ServiceManager\TestAsset\ExceptionThrowingFactory');
+        $this->serviceManager->setFactory('foo', 'LaminasTest\ServiceManager\TestAsset\ExceptionThrowingFactory');
         try {
             $this->serviceManager->get('foo');
             $this->fail("No exception thrown");
         } catch (Exception\ServiceNotCreatedException $e) {
-            $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\FooException', $e->getPrevious());
+            $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\FooException', $e->getPrevious());
         }
     }
 
     /**
-     * @expectedException Zend\ServiceManager\Exception\ServiceNotFoundException
+     * @expectedException Laminas\ServiceManager\Exception\ServiceNotFoundException
      */
     public function testCannotUseUnknownServiceNameForAbstractFactory()
     {
         $config = new Config(array(
             'abstract_factories' => array(
-                'ZendTest\ServiceManager\TestAsset\FooAbstractFactory',
+                'LaminasTest\ServiceManager\TestAsset\FooAbstractFactory',
             ),
         ));
         $serviceManager = new ServiceManager($config);
-        $serviceManager->setFactory('foo', 'ZendTest\ServiceManager\TestAsset\FooFactory');
+        $serviceManager->setFactory('foo', 'LaminasTest\ServiceManager\TestAsset\FooFactory');
         $foo = $serviceManager->get('unknownObject');
     }
 
     /**
-     * @expectedException Zend\ServiceManager\Exception\ServiceNotCreatedException
+     * @expectedException Laminas\ServiceManager\Exception\ServiceNotCreatedException
      */
     public function testDoNotFallbackToAbstractFactory()
     {
@@ -518,19 +516,19 @@ class ServiceManagerTest extends TestCase
             return new TestAsset\Bar();
         };
         $serviceManager = new ServiceManager();
-        $serviceManager->setFactory('ZendTest\ServiceManager\TestAsset\Bar', $factory);
+        $serviceManager->setFactory('LaminasTest\ServiceManager\TestAsset\Bar', $factory);
         $di = new Di();
-        $di->instanceManager()->setParameters('ZendTest\ServiceManager\TestAsset\Bar', array('foo' => array('a')));
+        $di->instanceManager()->setParameters('LaminasTest\ServiceManager\TestAsset\Bar', array('foo' => array('a')));
         $serviceManager->addAbstractFactory(new DiAbstractServiceFactory($di));
-        $bar = $serviceManager->get('ZendTest\ServiceManager\TestAsset\Bar');
+        $bar = $serviceManager->get('LaminasTest\ServiceManager\TestAsset\Bar');
     }
 
     /**
-     * @expectedException Zend\ServiceManager\Exception\InvalidServiceNameException
+     * @expectedException Laminas\ServiceManager\Exception\InvalidServiceNameException
      */
     public function testAssignAliasWithExistingServiceName()
     {
-        $this->serviceManager->setFactory('foo', 'ZendTest\ServiceManager\TestAsset\FooFactory');
+        $this->serviceManager->setFactory('foo', 'LaminasTest\ServiceManager\TestAsset\FooFactory');
         $this->serviceManager->setFactory('bar', function ($sm) {
                 return new Bar(array('a'));
             });
@@ -540,8 +538,8 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::createFromAbstractFactory
-     * @covers Zend\ServiceManager\ServiceManager::has
+     * @covers Laminas\ServiceManager\ServiceManager::createFromAbstractFactory
+     * @covers Laminas\ServiceManager\ServiceManager::has
      */
     public function testWillNotCreateCircularReferences()
     {
@@ -572,13 +570,13 @@ class ServiceManagerTest extends TestCase
 
     public function testShouldAllowAddingInitializersAsClassNames()
     {
-        $result = $this->serviceManager->addInitializer('ZendTest\ServiceManager\TestAsset\FooInitializer');
+        $result = $this->serviceManager->addInitializer('LaminasTest\ServiceManager\TestAsset\FooInitializer');
         $this->assertSame($this->serviceManager, $result);
     }
 
     public function testShouldRaiseExceptionIfInitializerClassIsNotAnInitializerInterfaceImplementation()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\InvalidArgumentException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\InvalidArgumentException');
         $result = $this->serviceManager->addInitializer(get_class($this));
     }
 
@@ -586,12 +584,12 @@ class ServiceManagerTest extends TestCase
     {
         $config = new Config(array(
             'invokables' => array(
-                'foo' => 'ZendTest\ServiceManager\TestAsset\GlobIteratorService',
+                'foo' => 'LaminasTest\ServiceManager\TestAsset\GlobIteratorService',
             ),
         ));
         $serviceManager = new ServiceManager($config);
         $foo = $serviceManager->get('foo');
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\GlobIteratorService', $foo);
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\GlobIteratorService', $foo);
     }
 
     public function duplicateService()
@@ -640,7 +638,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::canonicalizeName
+     * @covers Laminas\ServiceManager\ServiceManager::canonicalizeName
      */
     public function testCanonicalizeName()
     {
@@ -653,7 +651,7 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::canCreateFromAbstractFactory
+     * @covers Laminas\ServiceManager\ServiceManager::canCreateFromAbstractFactory
      */
     public function testWanCreateFromAbstractFactoryWillNotInstantiateAbstractFactoryOnce()
     {
@@ -667,18 +665,18 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::canCreateFromAbstractFactory
-     * @covers Zend\ServiceManager\ServiceManager::create
+     * @covers Laminas\ServiceManager\ServiceManager::canCreateFromAbstractFactory
+     * @covers Laminas\ServiceManager\ServiceManager::create
      */
     public function testAbstractFactoryNotUsedIfNotAbleToCreate()
     {
         $service = new \stdClass;
 
-        $af1 = $this->getMock('Zend\ServiceManager\AbstractFactoryInterface');
+        $af1 = $this->getMock('Laminas\ServiceManager\AbstractFactoryInterface');
         $af1->expects($this->any())->method('canCreateServiceWithName')->will($this->returnValue(true));
         $af1->expects($this->any())->method('createServiceWithName')->will($this->returnValue($service));
 
-        $af2 = $this->getMock('Zend\ServiceManager\AbstractFactoryInterface');
+        $af2 = $this->getMock('Laminas\ServiceManager\AbstractFactoryInterface');
         $af2->expects($this->any())->method('canCreateServiceWithName')->will($this->returnValue(false));
         $af2->expects($this->never())->method('createServiceWithName');
 
@@ -689,9 +687,9 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setAlias
-     * @covers Zend\ServiceManager\ServiceManager::get
-     * @covers Zend\ServiceManager\ServiceManager::retrieveFromPeeringManager
+     * @covers Laminas\ServiceManager\ServiceManager::setAlias
+     * @covers Laminas\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::retrieveFromPeeringManager
      */
     public function testCanGetAliasedServicesFromPeeringServiceManagers()
     {
@@ -707,24 +705,24 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::get
      */
     public function testDuplicateNewInstanceMultipleAbstractFactories()
     {
         $this->serviceManager->setAllowOverride(true);
         $this->serviceManager->setShareByDefault(false);
-        $this->serviceManager->addAbstractFactory('ZendTest\ServiceManager\TestAsset\BarAbstractFactory');
-        $this->serviceManager->addAbstractFactory('ZendTest\ServiceManager\TestAsset\FooAbstractFactory');
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Bar', $this->serviceManager->get('bar'));
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\Bar', $this->serviceManager->get('bar'));
+        $this->serviceManager->addAbstractFactory('LaminasTest\ServiceManager\TestAsset\BarAbstractFactory');
+        $this->serviceManager->addAbstractFactory('LaminasTest\ServiceManager\TestAsset\FooAbstractFactory');
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Bar', $this->serviceManager->get('bar'));
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\Bar', $this->serviceManager->get('bar'));
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::setService
-     * @covers Zend\ServiceManager\ServiceManager::get
-     * @covers Zend\ServiceManager\ServiceManager::retrieveFromPeeringManagerFirst
-     * @covers Zend\ServiceManager\ServiceManager::setRetrieveFromPeeringManagerFirst
-     * @covers Zend\ServiceManager\ServiceManager::addPeeringServiceManager
+     * @covers Laminas\ServiceManager\ServiceManager::setService
+     * @covers Laminas\ServiceManager\ServiceManager::get
+     * @covers Laminas\ServiceManager\ServiceManager::retrieveFromPeeringManagerFirst
+     * @covers Laminas\ServiceManager\ServiceManager::setRetrieveFromPeeringManagerFirst
+     * @covers Laminas\ServiceManager\ServiceManager::addPeeringServiceManager
      */
     public function testRetrieveServiceFromPeeringServiceManagerIfretrieveFromPeeringManagerFirstSetToTrueAndServiceNamesAreSame()
     {
@@ -752,13 +750,13 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::create
-     * @covers Zend\ServiceManager\ServiceManager::createDelegatorCallback
-     * @covers Zend\ServiceManager\ServiceManager::addDelegator
+     * @covers Laminas\ServiceManager\ServiceManager::create
+     * @covers Laminas\ServiceManager\ServiceManager::createDelegatorCallback
+     * @covers Laminas\ServiceManager\ServiceManager::addDelegator
      */
     public function testUsesDelegatorWhenAvailable()
     {
-        $delegator = $this->getMock('Zend\\ServiceManager\\DelegatorFactoryInterface');
+        $delegator = $this->getMock('Laminas\\ServiceManager\\DelegatorFactoryInterface');
 
         $this->serviceManager->setService('foo-delegator', $delegator);
         $this->serviceManager->addDelegator('foo-service', 'foo-delegator');
@@ -789,9 +787,9 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\ServiceManager::create
-     * @covers Zend\ServiceManager\ServiceManager::createDelegatorCallback
-     * @covers Zend\ServiceManager\ServiceManager::addDelegator
+     * @covers Laminas\ServiceManager\ServiceManager::create
+     * @covers Laminas\ServiceManager\ServiceManager::createDelegatorCallback
+     * @covers Laminas\ServiceManager\ServiceManager::addDelegator
      */
     public function testUsesMultipleDelegates()
     {
