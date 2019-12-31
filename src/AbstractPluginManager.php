@@ -1,16 +1,15 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager;
+namespace Laminas\ServiceManager;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Exception\InvalidServiceException;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
 
 /**
  * Abstract plugin manager.
@@ -46,7 +45,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * Constructor.
      *
      * Sets the provided $parentLocator as the creation context for all
-     * factories; for $config, {@see \Zend\ServiceManager\ServiceManager::configure()}
+     * factories; for $config, {@see \Laminas\ServiceManager\ServiceManager::configure()}
      * for details on its accepted structure.
      *
      * @param null|ConfigInterface|ContainerInterface $configInstanceOrParentLocator

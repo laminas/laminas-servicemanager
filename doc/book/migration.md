@@ -1,6 +1,6 @@
 # Migration Guide
 
-The Service Manager was first introduced for Zend Framework 2.0.0. Its API
+The Service Manager was first introduced for Laminas.0.0. Its API
 remained the same throughout that version.
 
 Version 3 is the first new major release of the Service Manager, and contains a
@@ -94,22 +94,22 @@ the format listed above, for passing to either the constructor or the
 
 ### Config class
 
-`Zend\ServiceManager\Config` has been updated to follow the changes to the
+`Laminas\ServiceManager\Config` has been updated to follow the changes to the
 `ConfigInterface` and `ServiceManager`. This essentially means that it removes
 the various getter methods, and adds the `toArray()` method.
 
 ## Invokables
 
 *Invokables no longer exist,* at least, not identically to how they existed in
-ZF2.
+Laminas.
 
 Internally, `ServiceManager` now does the following for `invokables` entries:
 
 - If the name and value match, it creates a `factories` entry mapping the
-  service name to `Zend\ServiceManager\Factory\InvokableFactory`.
+  service name to `Laminas\ServiceManager\Factory\InvokableFactory`.
 - If the name and value *do not* match, it creates an `aliases` entry mapping the
   service name to the class name, *and* a `factories` entry mapping the class
-  name to `Zend\ServiceManager\Factory\InvokableFactory`.
+  name to `Laminas\ServiceManager\Factory\InvokableFactory`.
 
 This means that you can use your existing `invokables` configuration from
 version 2 in version 3. However, we recommend starting to update your
@@ -124,7 +124,7 @@ if needed).
 > `$invokableClasses` will need to become `$factories` entries, and you will
 > potentially need to add `$aliases` entries.
 >
-> As an example, consider the following, from zend-math v2.x:
+> As an example, consider the following, from laminas-math v2.x:
 >
 > ```php
 > class AdapterPluginManager extends AbstractPluginManager
@@ -140,7 +140,7 @@ if needed).
 > now becomes:
 >
 > ```php
-> use Zend\ServiceManager\Factory\InvokableFactory;
+> use Laminas\ServiceManager\Factory\InvokableFactory;
 >
 > class AdapterPluginManager extends AbstractPluginManager
 > {
@@ -170,7 +170,7 @@ steps:
 As an example:
 
 ```php
-use Zend\ServiceManager\Proxy\LazyServiceFactoryFactory;
+use Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory;
 
 $config = [
     'lazy_services' => [
@@ -215,8 +215,8 @@ lazy services, the following changes were made for v3:
 The above example becomes the following in v3:
 
 ```php
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\ServiceManager\Proxy\LazyServiceFactory;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 
 return [
     'factories' => [
@@ -266,7 +266,7 @@ service, and to allow using the provided `$options` when creating the instance.
 
 ## ServiceManager API Changes
 
-`Zend\ServiceManager\ServiceManager` remains the primary interface with which
+`Laminas\ServiceManager\ServiceManager` remains the primary interface with which
 developers will interact. It has the following changes in v3:
 
 - It adds a new method, `configure()`, which allows configuring all instance
@@ -275,7 +275,7 @@ developers will interact. It has the following changes in v3:
 - Peering capabilities were removed.
 - Exceptions are *always* thrown when service instance creation fails or
   produces an error; you can no longer disable this.
-- Configuration no longer requires a `Zend\ServiceManager\Config` instance.
+- Configuration no longer requires a `Laminas\ServiceManager\Config` instance.
   `Config` can be used, but is not needed.
 - It adds a new method, `build()`, for creating discrete service instances.
 
@@ -293,7 +293,7 @@ developers will interact. It has the following changes in v3:
 ### Constructor
 
 The constructor now accepts an array of service configuration, not a
-`Zend\ServiceManager\Config` instance.
+`Laminas\ServiceManager\Config` instance.
 
 ### Use `build()` for discrete instances
 
@@ -309,7 +309,7 @@ information on in order to create discrete plugin instances with specific state.
 As examples:
 
 ```php
-use Zend\Validator\Between;
+use Laminas\Validator\Between;
 
 $between = $container->build(Between::class, [
     'min'        => 5,
@@ -330,7 +330,7 @@ configuration.
 ## Factories
 
 Internally, the `ServiceManager` now only uses the new factory interfaces
-defined in the `Zend\ServiceManager\Factory` namespace. These *replace* the
+defined in the `Laminas\ServiceManager\Factory` namespace. These *replace* the
 interfaces defined in version 2, and define completely new signatures.
 
 For migration purposes, all original interfaces were retained, and now inherit
@@ -343,9 +343,9 @@ those defined in version 3.)
 
 | Version 2 Interface                                       | Version 3 Interface                                       |
 | :-------------------------------------------------------: | :-------------------------------------------------------: |
-| `Zend\ServiceManager\AbstractFactoryInterface`            | `Zend\ServiceManager\Factory\AbstractFactoryInterface`    |
-| `Zend\ServiceManager\DelegatorFactoryInterface`           | `Zend\ServiceManager\Factory\DelegatorFactoryInterface`   |
-| `Zend\ServiceManager\FactoryInterface`                    | `Zend\ServiceManager\Factory\FactoryInterface`            |
+| `Laminas\ServiceManager\AbstractFactoryInterface`            | `Laminas\ServiceManager\Factory\AbstractFactoryInterface`    |
+| `Laminas\ServiceManager\DelegatorFactoryInterface`           | `Laminas\ServiceManager\Factory\DelegatorFactoryInterface`   |
+| `Laminas\ServiceManager\FactoryInterface`                    | `Laminas\ServiceManager\Factory\FactoryInterface`            |
 
 The version 2 interfaces now extend those in version 3, but are marked
 **deprecated**. You can continue to use them, but will be required to update
@@ -414,8 +414,8 @@ To prepare your version 2 implementation to work upon upgrade to version 3:
 As an example, given the following implementation from version 2:
 
 ```php
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class LenientAbstractFactory implements AbstractFactoryInterface
 {
@@ -437,8 +437,8 @@ them, and update the existing methods to proxy to the new methods:
 
 ```php
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class LenientAbstractFactory implements AbstractFactoryInterface
 {
@@ -475,7 +475,7 @@ From our example above, we would update the class to read as follows:
 
 ```php
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface; // <-- note the change!
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface; // <-- note the change!
 
 class LenientAbstractFactory implements AbstractFactoryInterface
 {
@@ -544,8 +544,8 @@ steps:
 Consider the following delegator factory that works for version 2:
 
 ```php
-use Zend\ServiceManager\DelegatorFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\DelegatorFactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class ObserverAttachmentDelegator implements DelegatorFactoryInterface
 {
@@ -563,8 +563,8 @@ version 3, and modify `createDelegatorWithName()` to proxy to it:
 
 ```php
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\DelegatorFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\DelegatorFactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class ObserverAttachmentDelegator implements DelegatorFactoryInterface
 {
@@ -592,7 +592,7 @@ From our example above, we would update the class to read as follows:
 
 ```php
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\DelegatorFactoryInterface; // <-- note the change!
+use Laminas\ServiceManager\Factory\DelegatorFactoryInterface; // <-- note the change!
 
 class ObserverAttachmentDelegator implements DelegatorFactoryInterface
 {
@@ -658,8 +658,8 @@ To prepare your existing factories for version 3, take the following steps:
 Consider the following factory that works for version 2:
 
 ```php
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class FooFactory implements FactoryInterface
 {
@@ -675,8 +675,8 @@ version 3, and modify `createService()` to proxy to it:
 
 ```php
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class FooFactory implements FactoryInterface
 {
@@ -707,7 +707,7 @@ From our example above, we would update the class to read as follows:
 
 ```php
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface; // <-- note the change!
+use Laminas\ServiceManager\Factory\FactoryInterface; // <-- note the change!
 
 class FooFactory implements FactoryInterface
 {
@@ -721,7 +721,7 @@ class FooFactory implements FactoryInterface
 > #### Many factories already work with v3!
 >
 > Within the skeleton application, tutorial, and even in commonly shipped
-> modules such as those in Apigility, we have typically suggested building your
+> modules such as those in Laminas API Tools, we have typically suggested building your
 > factories as invokable classes. If you were doing this already, your factories
 > will already work with version 3!
 
@@ -735,7 +735,7 @@ class FooFactory implements FactoryInterface
 
 ### New InvokableFactory Class
 
-`Zend\ServiceManager\Factory\InvokableFactory` is a new `FactoryInterface`
+`Laminas\ServiceManager\Factory\InvokableFactory` is a new `FactoryInterface`
 implementation that provides the capabilities of the "invokable classes" present
 in version 2. It essentially instantiates and returns the requested class name;
 if `$options` is non-empty, it passes them directly to the constructor.
@@ -760,8 +760,8 @@ the one defined in version 3.)
 
 The following changes were made to initializers:
 
-- `Zend\ServiceManager\InitializerInterface` was renamed to
-  `Zend\ServiceManager\Initializer\InitializerInterface`.
+- `Laminas\ServiceManager\InitializerInterface` was renamed to
+  `Laminas\ServiceManager\Initializer\InitializerInterface`.
 - The interface itself has a new signature.
 
 The previous signature was:
@@ -788,8 +788,8 @@ To prepare your existing initializers for version 3, take the following steps:
 As an example, consider this initializer for version 2:
 
 ```php
-use Zend\ServiceManager\InitializerInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\InitializerInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class FooInitializer implements InitializerInterface
 {
@@ -809,8 +809,8 @@ version 3, and modify `initialize()` to proxy to it:
 
 ```php
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\InitializerInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\InitializerInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class FooInitializer implements InitializerInterface
 {
@@ -840,7 +840,7 @@ From our example above, we would update the class to read as follows:
 
 ```php
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Initializer\InitializerInterface; // <-- note the change!
+use Laminas\ServiceManager\Initializer\InitializerInterface; // <-- note the change!
 
 class FooInitializer implements InitializerInterface
 {
@@ -912,16 +912,16 @@ manager, if composed, in order to resolve application-level dependencies.
 
 In version 3, we define the following:
 
-- `Zend\ServiceManager\PluginManagerInterface`, which provides the public API
+- `Laminas\ServiceManager\PluginManagerInterface`, which provides the public API
   differences from the `ServiceLocatorInterface`.
-- `Zend\ServiceManager\AbstractPluginManager`, which gives the basic
+- `Laminas\ServiceManager\AbstractPluginManager`, which gives the basic
   capabilities for plugin managers. The class now has a (semi) *required*
   dependency on the application-level service manager instance, which is passed
   to all factories, abstract factories, etc. (More on this below.)
 
 ### PluginManagerInterface
 
-`Zend\ServiceManager\PluginInterface` is a new interface for version 3,
+`Laminas\ServiceManager\PluginInterface` is a new interface for version 3,
 extending `ServiceLocatorInterface` and adding one method:
 
 ```php
@@ -1127,7 +1127,7 @@ Let's consider the following plugin manager geared towards version 2:
 
 ```php
 use RuntimeException;
-use Zend\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\AbstractPluginManager;
 
 class ObserverPluginManager extends AbstractPluginManager
 {
@@ -1165,9 +1165,9 @@ Doing so, we get the following result:
 namespace MyNamespace;
 
 use RuntimeException;
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 class ObserverPluginManager extends AbstractPluginManager
 {
@@ -1235,7 +1235,7 @@ The above will now work in both version 2 and version 3.
 ### Migration testing
 
 To test your changes, create a new `MigrationTest` case that uses
-`Zend\ServiceManager\Test\CommonPluginManagerTrait`. Override
+`Laminas\ServiceManager\Test\CommonPluginManagerTrait`. Override
 `getPluginManager()` to return an instance of your plugin manager, and override
 `getV2InvalidPluginException()` to return the classname of the exception your
 `validatePlugin()` method throws:
@@ -1245,8 +1245,8 @@ use MyNamespace\ObserverInterface;
 use MyNamespace\ObserverPluginManager;
 use MyNamespace\Exception\RuntimeException;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\Test\CommonPluginManagerTrait;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Test\CommonPluginManagerTrait;
 
 class MigrationTest extends TestCase
 {
@@ -1291,8 +1291,8 @@ After you migrate to version 3, you can clean up your plugin manager:
 Performing these steps on the above, we get:
 
 ```php
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 class ObserverPluginManager extends AbstractPluginManager
 {
@@ -1314,10 +1314,10 @@ class ObserverPluginManager extends AbstractPluginManager
 
 ## DI Namespace
 
-**The `Zend\ServiceManager\Di` namespace has been removed.**
+**The `Laminas\ServiceManager\Di` namespace has been removed.**
 
-The `Zend\Di` component is not actively maintained, and has been largely
-deprecated during the ZF2 lifecycle in favor of the Service Manager. Its usage
+The `Laminas\Di` component is not actively maintained, and has been largely
+deprecated during the Laminas lifecycle in favor of the Service Manager. Its usage
 as an abstract factory is problematic and error prone when used in conjunction
 with the Service Manager; as such, we've removed it for the initial v3 release.
 
@@ -1327,16 +1327,16 @@ We may re-introduce it via a separate component in the future.
 
 The following interfaces, traits, and classes were *removed*:
 
-- `Zend\ServiceManager\MutableCreationOptionsInterface`; this was previously
+- `Laminas\ServiceManager\MutableCreationOptionsInterface`; this was previously
   used by the `AbstractPluginManager`, and is no longer required as we ship a
   separate `PluginManagerInterface`, and because the functionality is
   encompassed by the `build()` method.
-- `Zend\ServiceManager\MutableCreationOptionsTrait`
-- `Zend\ServiceManager\Proxy\LazyServiceFactoryFactory`; its capabilities were
+- `Laminas\ServiceManager\MutableCreationOptionsTrait`
+- `Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory`; its capabilities were
   moved directly into the `ServiceManager`.
-- `Zend\ServiceManager\ServiceLocatorAwareInterface`
-- `Zend\ServiceManager\ServiceLocatorAwareTrait`
-- `Zend\ServiceManager\ServiceManagerAwareInterface`
+- `Laminas\ServiceManager\ServiceLocatorAwareInterface`
+- `Laminas\ServiceManager\ServiceLocatorAwareTrait`
+- `Laminas\ServiceManager\ServiceManagerAwareInterface`
 
 The `ServiceLocatorAware` and `ServiceManagerAware` interfaces and traits were
 too often abused under v2, and represent the antithesis of the purpose of the
@@ -1345,11 +1345,11 @@ container should never be composed by objects.
 
 The following classes and interfaces have changes:
 
-- `Zend\ServiceManager\Proxy\LazyServiceFactory` is now marked `final`, and
-   implements `Zend\ServiceManager\Proxy\DelegatorFactoryInterface`. Its
+- `Laminas\ServiceManager\Proxy\LazyServiceFactory` is now marked `final`, and
+   implements `Laminas\ServiceManager\Proxy\DelegatorFactoryInterface`. Its
    dependencies and capabilities remain the same.
-- `Zend\ServiceManager\ConfigInterface` now is expected to *return* the modified
+- `Laminas\ServiceManager\ConfigInterface` now is expected to *return* the modified
   `ServiceManager` instance.
-- `Zend\ServiceManager\Config` was updated to follow the changes to
+- `Laminas\ServiceManager\Config` was updated to follow the changes to
   `ConfigInterface` and `ServiceManager`, and now returns the updated
   `ServiceManager` instance from `configureServiceManager()`.
