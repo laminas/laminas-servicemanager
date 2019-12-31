@@ -1,17 +1,15 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_ServiceManager
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager;
+namespace LaminasTest\ServiceManager;
 
+use \Laminas\ServiceManager\ServiceManager;
 use \PHPUnit_Framework_TestCase as TestCase;
-use \Zend\ServiceManager\ServiceManager;
 
 /**
  * @requires PHP 5.4
@@ -20,7 +18,7 @@ class ServiceLocatorAwareTraitTest extends TestCase
 {
     public function testSetServiceLocator()
     {
-        $object = $this->getObjectForTrait('\Zend\ServiceManager\ServiceLocatorAwareTrait');
+        $object = $this->getObjectForTrait('\Laminas\ServiceManager\ServiceLocatorAwareTrait');
 
         $this->assertAttributeEquals(null, 'serviceLocator', $object);
 
@@ -33,7 +31,7 @@ class ServiceLocatorAwareTraitTest extends TestCase
 
     public function testGetServiceLocator()
     {
-        $object = $this->getObjectForTrait('\Zend\ServiceManager\ServiceLocatorAwareTrait');
+        $object = $this->getObjectForTrait('\Laminas\ServiceManager\ServiceLocatorAwareTrait');
 
         $this->assertNull($object->getServiceLocator());
 
