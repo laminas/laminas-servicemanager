@@ -1,6 +1,6 @@
 docs_dir: doc/book
 site_dir: doc/html
-pages:
+nav:
     - index.md
     - 'Quick Start': quick-start.md
     - Reference:
@@ -15,7 +15,6 @@ pages:
     - Cookbook:
       - 'Factories vs Abstract Factories': cookbook/factories-vs-abstract-factories.md
     - 'Migration Guide': migration.md
-site_name: zend-servicemanager
-site_description: 'zend-servicemanager: factory-driven dependency injection container'
-repo_url: 'https://github.com/zendframework/zend-servicemanager'
-copyright: 'Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
+site_name: laminas-servicemanager
+site_description: 'laminas-servicemanager: factory-driven dependency injection container'
+repo_url: 'https://github.com/laminas/laminas-servicemanager'
