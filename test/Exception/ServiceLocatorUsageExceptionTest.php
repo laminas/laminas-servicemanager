@@ -1,31 +1,30 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\Exception;
+namespace LaminasTest\ServiceManager\Exception;
 
 use Exception;
+use Laminas\ServiceManager\Exception\ServiceLocatorUsageException;
 use PHPUnit_Framework_TestCase;
-use Zend\ServiceManager\Exception\ServiceLocatorUsageException;
 
 /**
- * Tests for {@see \Zend\ServiceManager\Exception\ServiceLocatorUsageException}
+ * Tests for {@see \Laminas\ServiceManager\Exception\ServiceLocatorUsageException}
  *
- * @covers \Zend\ServiceManager\Exception\ServiceLocatorUsageException
+ * @covers \Laminas\ServiceManager\Exception\ServiceLocatorUsageException
  */
 class ServiceLocatorUsageExceptionTest extends PHPUnit_Framework_TestCase
 {
     public function testFromInvalidPluginManagerRequestedServiceName()
     {
-        /* @var $pluginManager \Zend\ServiceManager\AbstractPluginManager */
-        $pluginManager     = $this->getMockForAbstractClass('Zend\ServiceManager\AbstractPluginManager');
-        /* @var $serviceLocator \Zend\ServiceManager\ServiceLocatorInterface */
-        $serviceLocator    = $this->getMockForAbstractClass('Zend\ServiceManager\ServiceLocatorInterface');
+        /* @var $pluginManager \Laminas\ServiceManager\AbstractPluginManager */
+        $pluginManager     = $this->getMockForAbstractClass('Laminas\ServiceManager\AbstractPluginManager');
+        /* @var $serviceLocator \Laminas\ServiceManager\ServiceLocatorInterface */
+        $serviceLocator    = $this->getMockForAbstractClass('Laminas\ServiceManager\ServiceLocatorInterface');
         $previousException = new Exception();
 
         $exception = ServiceLocatorUsageException::fromInvalidPluginManagerRequestedServiceName(
@@ -35,9 +34,9 @@ class ServiceLocatorUsageExceptionTest extends PHPUnit_Framework_TestCase
             $previousException
         );
 
-        $this->assertInstanceOf('Zend\ServiceManager\Exception\ServiceLocatorUsageException', $exception);
+        $this->assertInstanceOf('Laminas\ServiceManager\Exception\ServiceLocatorUsageException', $exception);
         $this->assertInstanceOf(
-            'Zend\ServiceManager\Exception\ServiceNotFoundException',
+            'Laminas\ServiceManager\Exception\ServiceNotFoundException',
             $exception,
             'Must be a ServiceNotFoundException for BC compatibility with older try-catch logic'
         );
