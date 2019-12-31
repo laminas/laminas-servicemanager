@@ -6,13 +6,13 @@ Writing a factory class for each and every service that has dependencies
 can be tedious, particularly in early development as you are still sorting
 out dependencies.
 
-zend-servicemanager ships with `Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory`,
+laminas-servicemanager ships with `Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory`,
 which provides a reflection-based approach to instantiation, resolving
 constructor dependencies to the relevant services. The factory may be used as
 either an abstract factory, or mapped to specific service names as a factory:
 
 ```php
-use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
 return [
     /* ... */
@@ -51,19 +51,19 @@ to do so.
 
 ## Handling well-known services
 
-Some services provided by Zend Framework components do not have
+Some services provided by Laminas components do not have
 entries based on their class name (for historical reasons). As examples:
 
-- `Zend\Console\Adapter\AdapterInterface` maps to the service name `ConsoleAdapter`,
-- `Zend\Filter\FilterPluginManager` maps to the service name `FilterManager`,
-- `Zend\Hydrator\HydratorPluginManager` maps to the service name `HydratorManager`,
-- `Zend\InputFilter\InputFilterPluginManager` maps to the service name `InputFilterManager`,
-- `Zend\Log\FilterPluginManager` maps to the service name `LogFilterManager`,
-- `Zend\Log\FormatterPluginManager` maps to the service name `LogFormatterManager`,
-- `Zend\Log\ProcessorPluginManager` maps to the service name `LogProcessorManager`,
-- `Zend\Log\WriterPluginManager` maps to the service name `LogWriterManager`,
-- `Zend\Serializer\AdapterPluginManager` maps to the service name `SerializerAdapterManager`,
-- `Zend\Validator\ValidatorPluginManager` maps to the service name `ValidatorManager`,
+- `Laminas\Console\Adapter\AdapterInterface` maps to the service name `ConsoleAdapter`,
+- `Laminas\Filter\FilterPluginManager` maps to the service name `FilterManager`,
+- `Laminas\Hydrator\HydratorPluginManager` maps to the service name `HydratorManager`,
+- `Laminas\InputFilter\InputFilterPluginManager` maps to the service name `InputFilterManager`,
+- `Laminas\Log\FilterPluginManager` maps to the service name `LogFilterManager`,
+- `Laminas\Log\FormatterPluginManager` maps to the service name `LogFormatterManager`,
+- `Laminas\Log\ProcessorPluginManager` maps to the service name `LogProcessorManager`,
+- `Laminas\Log\WriterPluginManager` maps to the service name `LogWriterManager`,
+- `Laminas\Serializer\AdapterPluginManager` maps to the service name `SerializerAdapterManager`,
+- `Laminas\Validator\ValidatorPluginManager` maps to the service name `ValidatorManager`,
 
 To allow the `ReflectionBasedAbstractFactory` to find these, you have two
 options.
@@ -72,16 +72,16 @@ The first is to pass an array of mappings via the constructor:
 
 ```php
 $reflectionFactory = new ReflectionBasedAbstractFactory([
-    \Zend\Console\Adapter\AdapterInterface::class     => 'ConsoleAdapter',
-    \Zend\Filter\FilterPluginManager::class           => 'FilterManager',
-    \Zend\Hydrator\HydratorPluginManager::class       => 'HydratorManager',
-    \Zend\InputFilter\InputFilterPluginManager::class => 'InputFilterManager',
-    \Zend\Log\FilterPluginManager::class              => 'LogFilterManager',
-    \Zend\Log\FormatterPluginManager::class           => 'LogFormatterManager',
-    \Zend\Log\ProcessorPluginManager::class           => 'LogProcessorManager',
-    \Zend\Log\WriterPluginManager::class              => 'LogWriterManager',
-    \Zend\Serializer\AdapterPluginManager::class      => 'SerializerAdapterManager',
-    \Zend\Validator\ValidatorPluginManager::class     => 'ValidatorManager',
+    \Laminas\Console\Adapter\AdapterInterface::class     => 'ConsoleAdapter',
+    \Laminas\Filter\FilterPluginManager::class           => 'FilterManager',
+    \Laminas\Hydrator\HydratorPluginManager::class       => 'HydratorManager',
+    \Laminas\InputFilter\InputFilterPluginManager::class => 'InputFilterManager',
+    \Laminas\Log\FilterPluginManager::class              => 'LogFilterManager',
+    \Laminas\Log\FormatterPluginManager::class           => 'LogFormatterManager',
+    \Laminas\Log\ProcessorPluginManager::class           => 'LogProcessorManager',
+    \Laminas\Log\WriterPluginManager::class              => 'LogWriterManager',
+    \Laminas\Serializer\AdapterPluginManager::class      => 'SerializerAdapterManager',
+    \Laminas\Validator\ValidatorPluginManager::class     => 'ValidatorManager',
 ]);
 ```
 
@@ -89,13 +89,13 @@ This can be done either in your configuration file (which could be problematic
 when considering serialization for caching), or during an early phase of
 application bootstrapping.
 
-For instance, with zend-mvc, this might be in your `Application` module's
+For instance, with laminas-mvc, this might be in your `Application` module's
 bootstrap listener:
 
 ```php
 namespace Application
 
-use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
 class Module
 {
@@ -111,7 +111,7 @@ class Module
 }
 ```
 
-For Expressive, it could be part of your `config/container.php` definition:
+For Mezzio, it could be part of your `config/container.php` definition:
 
 ```php
 $container = new ServiceManager();
@@ -128,21 +128,21 @@ The second approach is to extend the class, and define the map in the
 ```php
 namespace Application;
 
-use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
 class ReflectionAbstractFactory extends ReflectionBasedAbstractFactory
 {
     protected $aliases = [
-        \Zend\Console\Adapter\AdapterInterface::class     => 'ConsoleAdapter',
-        \Zend\Filter\FilterPluginManager::class           => 'FilterManager',
-        \Zend\Hydrator\HydratorPluginManager::class       => 'HydratorManager',
-        \Zend\InputFilter\InputFilterPluginManager::class => 'InputFilterManager',
-        \Zend\Log\FilterPluginManager::class              => 'LogFilterManager',
-        \Zend\Log\FormatterPluginManager::class           => 'LogFormatterManager',
-        \Zend\Log\ProcessorPluginManager::class           => 'LogProcessorManager',
-        \Zend\Log\WriterPluginManager::class              => 'LogWriterManager',
-        \Zend\Serializer\AdapterPluginManager::class      => 'SerializerAdapterManager',
-        \Zend\Validator\ValidatorPluginManager::class     => 'ValidatorManager',
+        \Laminas\Console\Adapter\AdapterInterface::class     => 'ConsoleAdapter',
+        \Laminas\Filter\FilterPluginManager::class           => 'FilterManager',
+        \Laminas\Hydrator\HydratorPluginManager::class       => 'HydratorManager',
+        \Laminas\InputFilter\InputFilterPluginManager::class => 'InputFilterManager',
+        \Laminas\Log\FilterPluginManager::class              => 'LogFilterManager',
+        \Laminas\Log\FormatterPluginManager::class           => 'LogFormatterManager',
+        \Laminas\Log\ProcessorPluginManager::class           => 'LogProcessorManager',
+        \Laminas\Log\WriterPluginManager::class              => 'LogWriterManager',
+        \Laminas\Serializer\AdapterPluginManager::class      => 'SerializerAdapterManager',
+        \Laminas\Validator\ValidatorPluginManager::class     => 'ValidatorManager',
     ];
 }
 ```
@@ -163,4 +163,4 @@ which gives slightly more flexibility in terms of mapping dependencies:
 
 ## References
 
-This feature was inspired by [a blog post by Alexandre Lemaire](http://circlical.com/blog/2016/3/9/preparing-for-zend-f).
+This feature was inspired by [a blog post by Alexandre Lemaire](http://circlical.com/blog/2016/3/9/preparing-for-laminas-f).
