@@ -1,5 +1,5 @@
 <?php
-namespace ZendBench\ServiceManager\BenchAsset;
+namespace LaminasBench\ServiceManager\BenchAsset;
 
 class Foo
 {
