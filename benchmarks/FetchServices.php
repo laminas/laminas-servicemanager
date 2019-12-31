@@ -1,10 +1,10 @@
 <?php
 
-namespace ZendBench\ServiceManager;
+namespace LaminasBench\ServiceManager;
 
 use Athletic\AthleticEvent;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\Config;
+use Laminas\ServiceManager\Config;
+use Laminas\ServiceManager\ServiceManager;
 
 class FetchServices extends AthleticEvent
 {
