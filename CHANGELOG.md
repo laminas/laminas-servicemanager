@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changes
 
-- [#158](https://github.com/zendframework/zend-servicemanager/pull/158) provides
+- [zendframework/zend-servicemanager#158](https://github.com/zendframework/zend-servicemanager/pull/158) provides
   a performance optimization within the `InvokableFactory`, ensuring it checks
   for a class matching the `$requestedName` prior to the `$canonicalName`; this
   also is more in line with version 3, which only has access to the requested
@@ -26,13 +26,13 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#164](https://github.com/zendframework/zend-servicemanager/pull/164) fixes
+- [zendframework/zend-servicemanager#164](https://github.com/zendframework/zend-servicemanager/pull/164) fixes
   how the `InvokableFactory` deals with creation options. Prior to this release,
   absence of options led to setting the creation options to an empty array,
   which, because it was non-null, led to breakage in plugins that treated an
   empty array differently than null. This patch ensures that the original
   behavior is restored.
-- [#168](https://github.com/zendframework/zend-servicemanager/pull/168) fixes
+- [zendframework/zend-servicemanager#168](https://github.com/zendframework/zend-servicemanager/pull/168) fixes
   how exception codes are provided to `ServiceNotCreatedException`. Previously,
   the code was provided as-is. However, some PHP internal exception classes,
   notably `PDOException`, can sometimes return other values (such as strings),
@@ -55,7 +55,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#127](https://github.com/zendframework/zend-servicemanager/pull/127) fixes
+- [zendframework/zend-servicemanager#127](https://github.com/zendframework/zend-servicemanager/pull/127) fixes
   how the `AbstractPluingManager` handles `$options` arrays passed when
   retrieving a plugin when that plugin resolves to the `InvokableFactory`,
   ensuring subsequent calls with different options are created correctly.
@@ -76,7 +76,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#116](https://github.com/zendframework/zend-servicemanager/pull/116) updates
+- [zendframework/zend-servicemanager#116](https://github.com/zendframework/zend-servicemanager/pull/116) updates
   `ServiceLocatorInterface` to extend container-interop's `ContainerInterface`,
   as the definitions are compatible. This change will mean that implementing
   `ServiceLocatorInterface` will provide a `ContainerInterface` implementation.
@@ -85,11 +85,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#81](https://github.com/zendframework/zend-servicemanager/pull/81) adds a
+- [zendframework/zend-servicemanager#81](https://github.com/zendframework/zend-servicemanager/pull/81) adds a
   test covering forwards-compatibility features for plugin manager
   implementations.
-- [#96](https://github.com/zendframework/zend-servicemanager/pull/96) adds
-  `Zend\ServiceManager\Test\CommonPluginManagerTrait`, which allows you to test
+- [zendframework/zend-servicemanager#96](https://github.com/zendframework/zend-servicemanager/pull/96) adds
+  `Laminas\ServiceManager\Test\CommonPluginManagerTrait`, which allows you to test
   that your plugin manager is forwards compatible with v3.
 
 ### Deprecated
@@ -102,7 +102,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#91](https://github.com/zendframework/zend-servicemanager/pull/91) updates
+- [zendframework/zend-servicemanager#91](https://github.com/zendframework/zend-servicemanager/pull/91) updates
   the `InvokableFactory` to add the `setCreationOptions()` method, allowing
   the `InvokableFactory` to accept `$options` when triggered.
 
@@ -122,7 +122,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#71](https://github.com/zendframework/zend-servicemanager/pull/71) fixes an edge case
+- [zendframework/zend-servicemanager#71](https://github.com/zendframework/zend-servicemanager/pull/71) fixes an edge case
   with alias usage, whereby an alias of an alias was not being resolved to the
   final service name.
 
@@ -142,7 +142,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#69](https://github.com/zendframework/zend-servicemanager/pull/69) fixes the
+- [zendframework/zend-servicemanager#69](https://github.com/zendframework/zend-servicemanager/pull/69) fixes the
   way aliases are resolved to ensure that the original alias target, without
   canonicalization is passed to factories and abstract factories, ensuring that
   features such as the `InvokableFactory` implementation can work.
@@ -151,7 +151,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#63](https://github.com/zendframework/zend-servicemanager/pull/63) adds a
+- [zendframework/zend-servicemanager#63](https://github.com/zendframework/zend-servicemanager/pull/63) adds a
   constructor to `InvokableFactory`. In v2, this allows plugin managers to pass
   construction options to the factory to use during instantiation of the
   requested service class, emulating the behavior of `build()` in v3.
@@ -172,8 +172,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#61](https://github.com/zendframework/zend-servicemanager/pull/61) adds
-  `Zend\ServiceManager\Exception\InvalidServiceException` for forwards
+- [zendframework/zend-servicemanager#61](https://github.com/zendframework/zend-servicemanager/pull/61) adds
+  `Laminas\ServiceManager\Exception\InvalidServiceException` for forwards
   compatibility with v3.
 
 ### Deprecated
@@ -186,17 +186,17 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#61](https://github.com/zendframework/zend-servicemanager/pull/61) updates
+- [zendframework/zend-servicemanager#61](https://github.com/zendframework/zend-servicemanager/pull/61) updates
   the `InvokableFactory` to throw `InvalidServiceException` instead of
   `InvalidServiceNameException`, for forwards compatibility with v3.
-- [#61](https://github.com/zendframework/zend-servicemanager/pull/61) fixes
+- [zendframework/zend-servicemanager#61](https://github.com/zendframework/zend-servicemanager/pull/61) fixes
   the behavior of `InvokableFactory` when invoked after resolving an alias.
 
 ## 2.7.0 - 2016-01-11
 
 ### Added
 
-- [#60](https://github.com/zendframework/zend-servicemanager/pull/60) adds
+- [zendframework/zend-servicemanager#60](https://github.com/zendframework/zend-servicemanager/pull/60) adds
   forward compatibility features for `AbstractPluingManager` and introduces
   `InvokableFactory` to help forward migration to version 3.
 
@@ -210,11 +210,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#46](https://github.com/zendframework/zend-servicemanager/pull/46) updates
+- [zendframework/zend-servicemanager#46](https://github.com/zendframework/zend-servicemanager/pull/46) updates
   the exception hierarchy to inherit from the container-interop exceptions.
   This ensures that all exceptions thrown by the component follow the
   recommendations of that project.
-- [#52](https://github.com/zendframework/zend-servicemanager/pull/52) fixes
+- [zendframework/zend-servicemanager#52](https://github.com/zendframework/zend-servicemanager/pull/52) fixes
   the exception message thrown by `ServiceManager::setFactory()` to remove
   references to abstract factories.
 
@@ -222,7 +222,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- [#4](https://github.com/zendframework/zend-servicemanager/pull/4) updates the
+- [zendframework/zend-servicemanager#4](https://github.com/zendframework/zend-servicemanager/pull/4) updates the
     `ServiceManager` to [implement the container-interop interface](https://github.com/container-interop/container-interop),
     allowing interoperability with applications that consume that interface.
 
@@ -236,7 +236,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#3](https://github.com/zendframework/zend-servicemanager/pull/3) properly updates the
+- [zendframework/zend-servicemanager#3](https://github.com/zendframework/zend-servicemanager/pull/3) properly updates the
   codebase to PHP 5.5, by taking advantage of the default closure binding
   (`$this` in a closure is the invoking object when created within a method). It
   also removes several `@requires PHP 5.4.0` annotations.
