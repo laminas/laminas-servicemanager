@@ -1,26 +1,24 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_ServiceManager
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager\Di;
+namespace Laminas\ServiceManager\Di;
 
-use Zend\Di\Di;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Di\Di;
+use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class DiAbstractServiceFactory extends DiServiceFactory implements AbstractFactoryInterface
 {
     /**
      * Constructor
      *
-     * @param \Zend\Di\Di $di
-     * @param null|string|\Zend\Di\InstanceManager $useServiceLocator
+     * @param \Laminas\Di\Di $di
+     * @param null|string|\Laminas\Di\InstanceManager $useServiceLocator
      */
     public function __construct(Di $di, $useServiceLocator = self::USE_SL_NONE)
     {
