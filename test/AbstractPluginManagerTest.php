@@ -1,21 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager;
+namespace LaminasTest\ServiceManager;
 
+use Laminas\ServiceManager\Config;
+use Laminas\ServiceManager\ServiceManager;
+use LaminasTest\ServiceManager\TestAsset\FooPluginManager;
+use LaminasTest\ServiceManager\TestAsset\MockSelfReturningDelegatorFactory;
 use ReflectionClass;
 use ReflectionObject;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\Config;
-
-use ZendTest\ServiceManager\TestAsset\FooPluginManager;
-use ZendTest\ServiceManager\TestAsset\MockSelfReturningDelegatorFactory;
 
 class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,7 +27,7 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
         $this->serviceManager = new ServiceManager;
         $this->pluginManager = new FooPluginManager(new Config(array(
             'factories' => array(
-                'Foo' => 'ZendTest\ServiceManager\TestAsset\FooFactory',
+                'Foo' => 'LaminasTest\ServiceManager\TestAsset\FooFactory',
             ),
             'shared' => array(
                 'Foo' => false,
@@ -41,7 +39,7 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
     {
         $pluginManager = new FooPluginManager(new Config(array(
             'factories' => array(
-                'Foo' => 'ZendTest\ServiceManager\TestAsset\FooFactory'
+                'Foo' => 'LaminasTest\ServiceManager\TestAsset\FooFactory'
             ),
             'shared' => array(
                 'Foo' => false
@@ -58,13 +56,13 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
         $pluginManager->get('Foo', array('key1' => 'value1'));
 
         $value = $reflProperty->getValue($pluginManager);
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\FooFactory', $value['foo']);
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\FooFactory', $value['foo']);
         $this->assertEquals(array('key1' => 'value1'), $value['foo']->getCreationOptions());
 
         $pluginManager->get('Foo', array('key2' => 'value2'));
 
         $value = $reflProperty->getValue($pluginManager);
-        $this->assertInstanceOf('ZendTest\ServiceManager\TestAsset\FooFactory', $value['foo']);
+        $this->assertInstanceOf('LaminasTest\ServiceManager\TestAsset\FooFactory', $value['foo']);
         $this->assertEquals(array('key2' => 'value2'), $value['foo']->getCreationOptions());
     }
 
@@ -73,7 +71,7 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFaultyRegisteredInvokableThrowsException()
     {
-        $this->setExpectedException('Zend\ServiceManager\Exception\ServiceNotFoundException');
+        $this->setExpectedException('Laminas\ServiceManager\Exception\ServiceNotFoundException');
 
         $pluginManager = new FooPluginManager();
         $pluginManager->setInvokableClass('helloWorld', 'IDoNotExist');
@@ -83,7 +81,7 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
     public function testAbstractFactoryWithMutableCreationOptions()
     {
         $creationOptions = array('key1' => 'value1');
-        $mock = 'ZendTest\ServiceManager\TestAsset\AbstractFactoryWithMutableCreationOptions';
+        $mock = 'LaminasTest\ServiceManager\TestAsset\AbstractFactoryWithMutableCreationOptions';
         $abstractFactory = $this->getMock($mock, array('setCreationOptions'));
         $abstractFactory->expects($this->once())
             ->method('setCreationOptions')
@@ -96,7 +94,7 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testMutableMethodNeverCalledWithoutCreationOptions()
     {
-        $mock = 'ZendTest\ServiceManager\TestAsset\CallableWithMutableCreationOptions';
+        $mock = 'LaminasTest\ServiceManager\TestAsset\CallableWithMutableCreationOptions';
         $callable = $this->getMock($mock, array('setCreationOptions'));
         $callable->expects($this->never())
             ->method('setCreationOptions');
@@ -111,7 +109,7 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
     public function testCallableObjectWithMutableCreationOptions()
     {
         $creationOptions = array('key1' => 'value1');
-        $mock = 'ZendTest\ServiceManager\TestAsset\CallableWithMutableCreationOptions';
+        $mock = 'LaminasTest\ServiceManager\TestAsset\CallableWithMutableCreationOptions';
         $callable = $this->getMock($mock, array('setCreationOptions'));
         $callable->expects($this->once())
             ->method('setCreationOptions')
@@ -130,8 +128,8 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testValidatePluginIsCalledWithDelegatorFactoryIfItsAService()
     {
-        $pluginManager = $this->getMockForAbstractClass('Zend\ServiceManager\AbstractPluginManager');
-        $delegatorFactory = $this->getMock('Zend\\ServiceManager\\DelegatorFactoryInterface');
+        $pluginManager = $this->getMockForAbstractClass('Laminas\ServiceManager\AbstractPluginManager');
+        $delegatorFactory = $this->getMock('Laminas\\ServiceManager\\DelegatorFactoryInterface');
 
         $pluginManager->setService('delegator-factory', $delegatorFactory);
         $pluginManager->addDelegator('foo-service', 'delegator-factory');
@@ -145,8 +143,8 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSingleDelegatorUsage()
     {
-        $delegatorFactory = $this->getMock('Zend\\ServiceManager\\DelegatorFactoryInterface');
-        $pluginManager = $this->getMockForAbstractClass('Zend\ServiceManager\AbstractPluginManager');
+        $delegatorFactory = $this->getMock('Laminas\\ServiceManager\\DelegatorFactoryInterface');
+        $pluginManager = $this->getMockForAbstractClass('Laminas\ServiceManager\AbstractPluginManager');
         $realService = $this->getMock('stdClass', array(), array(), 'RealService');
         $delegator = $this->getMock('stdClass', array(), array(), 'Delegator');
 
@@ -181,7 +179,7 @@ class AbstractPluginManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testMultipleDelegatorsUsage()
     {
-        $pluginManager = $this->getMockForAbstractClass('Zend\ServiceManager\AbstractPluginManager');
+        $pluginManager = $this->getMockForAbstractClass('Laminas\ServiceManager\AbstractPluginManager');
 
         $fooDelegator = new MockSelfReturningDelegatorFactory();
         $barDelegator = new MockSelfReturningDelegatorFactory();
