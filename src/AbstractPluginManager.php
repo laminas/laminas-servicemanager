@@ -1,15 +1,16 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-servicemanager for the canonical source repository
- * @copyright Copyright (c) 2005-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-servicemanager/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager;
+namespace Laminas\ServiceManager;
 
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
-use Zend\ServiceManager\Exception\InvalidServiceException;
 
 /**
  * Abstract plugin manager.
@@ -45,7 +46,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * Constructor.
      *
      * Sets the provided $parentLocator as the creation context for all
-     * factories; for $config, {@see \Zend\ServiceManager\ServiceManager::configure()}
+     * factories; for $config, {@see \Laminas\ServiceManager\ServiceManager::configure()}
      * for details on its accepted structure.
      *
      * @param null|ConfigInterface|ContainerInterface|PsrContainerInterface $configInstanceOrParentLocator
@@ -57,7 +58,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
             && ! $configInstanceOrParentLocator instanceof ContainerInterface
         ) {
             /**
-             * {@see \Zend\ServiceManager\Factory\FactoryInterface} typehints
+             * {@see \Laminas\ServiceManager\Factory\FactoryInterface} typehints
              * against interop container and as such cannot accept non-interop
              * psr container. Decorate it as interop.
              */

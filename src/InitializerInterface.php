@@ -1,16 +1,17 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-servicemanager for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager;
+namespace Laminas\ServiceManager;
 
 /**
  * Backwards-compatibility shim for InitializerInterface.
  *
- * Implementations should update to implement only Zend\ServiceManager\Initializer\InitializerInterface.
+ * Implementations should update to implement only Laminas\ServiceManager\Initializer\InitializerInterface.
  *
  * If upgrading from v2, take the following steps:
  *
@@ -22,10 +23,10 @@ namespace Zend\ServiceManager;
  *   proxy to `__invoke()`, passing the arguments in the new order.
  *
  * Once you have tested your code, you can then update your class to only implement
- * Zend\ServiceManager\Initializer\InitializerInterface, and remove the `initialize()`
+ * Laminas\ServiceManager\Initializer\InitializerInterface, and remove the `initialize()`
  * method.
  *
- * @deprecated Use Zend\ServiceManager\Initializer\InitializerInterface instead.
+ * @deprecated Use Laminas\ServiceManager\Initializer\InitializerInterface instead.
  */
 interface InitializerInterface extends Initializer\InitializerInterface
 {
