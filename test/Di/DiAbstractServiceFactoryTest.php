@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\Di;
+namespace LaminasTest\ServiceManager\Di;
 
-use Zend\ServiceManager\Di\DiAbstractServiceFactory;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Di\DiAbstractServiceFactory;
+use Laminas\ServiceManager\ServiceManager;
 
 /**
- * @group Zend_ServiceManager
+ * @group Laminas_ServiceManager
  */
 class DiAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,10 +33,10 @@ class DiAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $instanceManager = new \Zend\Di\InstanceManager();
+        $instanceManager = new \Laminas\Di\InstanceManager();
         $instanceManager->addSharedInstance($this->fooInstance = new \stdClass(), 'foo');
-        $this->mockDi = $this->getMock('Zend\Di\Di', array(), array(null, $instanceManager));
-        $this->mockServiceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        $this->mockDi = $this->getMock('Laminas\Di\Di', array(), array(null, $instanceManager));
+        $this->mockServiceLocator = $this->getMock('Laminas\ServiceManager\ServiceLocatorInterface');
         $this->diAbstractServiceFactory = new DiAbstractServiceFactory(
             $this->mockDi
         );
@@ -45,19 +44,19 @@ class DiAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
 
     /**
-     * @covers Zend\ServiceManager\Di\DiAbstractServiceFactory::__construct
+     * @covers Laminas\ServiceManager\Di\DiAbstractServiceFactory::__construct
      */
     public function testConstructor()
     {
         $instance = new DiAbstractServiceFactory(
-            $this->getMock('Zend\Di\Di')
+            $this->getMock('Laminas\Di\Di')
         );
-        $this->assertInstanceOf('Zend\ServiceManager\Di\DiAbstractServiceFactory', $instance);
+        $this->assertInstanceOf('Laminas\ServiceManager\Di\DiAbstractServiceFactory', $instance);
     }
 
     /**
-     * @covers Zend\ServiceManager\Di\DiAbstractServiceFactory::createServiceWithName
-     * @covers Zend\ServiceManager\Di\DiAbstractServiceFactory::get
+     * @covers Laminas\ServiceManager\Di\DiAbstractServiceFactory::createServiceWithName
+     * @covers Laminas\ServiceManager\Di\DiAbstractServiceFactory::get
      */
     public function testCreateServiceWithName()
     {
@@ -66,11 +65,11 @@ class DiAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\Di\DiAbstractServiceFactory::canCreateServiceWithName
+     * @covers Laminas\ServiceManager\Di\DiAbstractServiceFactory::canCreateServiceWithName
      */
     public function testCanCreateServiceWithName()
     {
-        $instance = new DiAbstractServiceFactory($this->getMock('Zend\Di\Di'));
+        $instance = new DiAbstractServiceFactory($this->getMock('Laminas\Di\Di'));
         $im = $instance->instanceManager();
 
         $locator = new ServiceManager();
@@ -98,7 +97,7 @@ class DiAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
         // will check definitions
         $def = $instance->definitions();
         $this->assertFalse($instance->canCreateServiceWithName($locator, __NAMESPACE__ . '\Other\Non\Existing', __NAMESPACE__ . '\Other\Non\Existing'));
-        $classDefinition = $this->getMock('Zend\Di\Definition\DefinitionInterface');
+        $classDefinition = $this->getMock('Laminas\Di\Definition\DefinitionInterface');
         $classDefinition
             ->expects($this->any())
             ->method('hasClass')
