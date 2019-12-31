@@ -1,28 +1,33 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\TestAsset;
+namespace LaminasTest\ServiceManager\TestAsset;
 
-use Zend\ServiceManager\AbstractPluginManager;
-use Zend\ServiceManager\Exception\InvalidServiceException;
-use Zend\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
+use Laminas\ServiceManager\Factory\InvokableFactory;
 
 class V2v3PluginManager extends AbstractPluginManager
 {
     protected $aliases = [
         'foo' => InvokableObject::class,
+
+        // Legacy Zend Framework aliases
+        \ZendTest\ServiceManager\TestAsset\InvokableObject::class => InvokableObject::class,
+
+        // v2 normalized FQCNs
+        'zendtestservicemanagertestassetinvokableobject' => InvokableObject::class,
     ];
 
     protected $factories = [
         InvokableObject::class                           => InvokableFactory::class,
         // Legacy (v2) due to alias resolution
-        'zendtestservicemanagertestassetinvokableobject' => InvokableFactory::class,
+        'laminastestservicemanagertestassetinvokableobject' => InvokableFactory::class,
     ];
 
     protected $instanceOf = InvokableObject::class;

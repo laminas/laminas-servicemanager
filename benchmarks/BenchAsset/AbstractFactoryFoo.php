@@ -1,8 +1,8 @@
 <?php
-namespace ZendBench\ServiceManager\BenchAsset;
+namespace LaminasBench\ServiceManager\BenchAsset;
 
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 class AbstractFactoryFoo implements AbstractFactoryInterface
 {

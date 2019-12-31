@@ -1,31 +1,30 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager;
+namespace LaminasTest\ServiceManager;
 
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\ConfigInterface;
+use Laminas\ServiceManager\Exception\InvalidArgumentException;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
+use LaminasTest\ServiceManager\TestAsset\InvokableObject;
+use LaminasTest\ServiceManager\TestAsset\SimplePluginManager;
+use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
 use PHPUnit_Framework_TestCase as TestCase;
 use stdClass;
-use Zend\ServiceManager\ConfigInterface;
-use Zend\ServiceManager\Exception\InvalidArgumentException;
-use Zend\ServiceManager\Exception\InvalidServiceException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\ServiceManager\ServiceManager;
-use ZendTest\ServiceManager\TestAsset\InvokableObject;
-use ZendTest\ServiceManager\TestAsset\SimplePluginManager;
-use ZendTest\ServiceManager\TestAsset\V2v3PluginManager;
 
 /**
- * @covers \Zend\ServiceManager\AbstractPluginManager
+ * @covers \Laminas\ServiceManager\AbstractPluginManager
  */
 class AbstractPluginManagerTest extends TestCase
 {
@@ -173,7 +172,7 @@ class AbstractPluginManagerTest extends TestCase
     /**
      * Overrides the method in the CommonServiceLocatorBehaviorsTrait, due to behavior differences.
      *
-     * @covers \Zend\ServiceManager\AbstractPluginManager::get
+     * @covers \Laminas\ServiceManager\AbstractPluginManager::get
      */
     public function testGetRaisesExceptionWhenNoFactoryIsResolved()
     {
