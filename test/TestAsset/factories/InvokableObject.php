@@ -1,10 +1,10 @@
 <?php
 
-namespace ZendTest\ServiceManager\TestAsset;
+namespace LaminasTest\ServiceManager\TestAsset;
 
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use Psr\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use ZendTest\ServiceManager\TestAsset\InvokableObject;
 
 class InvokableObjectFactory implements FactoryInterface
 {

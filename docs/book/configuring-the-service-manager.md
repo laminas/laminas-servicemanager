@@ -26,7 +26,7 @@ constructor. The following keys are:
 Here is an example of how you could configure a service manager:
 
 ```php
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 $serviceManager = new ServiceManager([
     'services'           => [],
@@ -45,14 +45,14 @@ $serviceManager = new ServiceManager([
 ## Factories
 
 A factory is any callable or any class that implements the interface
-`Zend\ServiceManager\Factory\FactoryInterface`.
+`Laminas\ServiceManager\Factory\FactoryInterface`.
 
 Service manager components provide a default factory that can be used to create
 objects that do not have any dependencies:
 
 ```php
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
 use stdClass;
 
 $serviceManager = new ServiceManager([
@@ -62,15 +62,15 @@ $serviceManager = new ServiceManager([
 ]);
 ```
 
-> For invokable classes we can use `Zend\ServiceManager\Factory\InvokableFactory`
+> For invokable classes we can use `Laminas\ServiceManager\Factory\InvokableFactory`
 > but for performance reasons using `invokables` configuration is recommended.
 
 As said before, a factory can also be a callable, to create more complex objects:
 
 ```php
 use Psr\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
 use stdClass;
 
 $serviceManager = new ServiceManager([
@@ -191,7 +191,7 @@ common creation pattern.
 
 An abstract factory must be registered inside the service manager, and is
 checked if no factory can create an object. Each abstract factory must
-implement `Zend\ServiceManager\Factory\AbstractFactoryInterface`:
+implement `Laminas\ServiceManager\Factory\AbstractFactoryInterface`:
 
 ```php
 // In MyAbstractFactory.php:
@@ -253,8 +253,8 @@ An alias can also be mapped to another alias (it will be resolved recursively).
 For instance:
 
 ```php
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
 use stdClass;
 
 $serviceManager = new ServiceManager([
@@ -286,7 +286,7 @@ refactoring, as most modern IDEs can refactor class names specified using the
 ## Initializers
 
 An initializer is any callable or any class that implements the interface
-`Zend\ServiceManager\Initializer\InitializerInterface`. Initializers are
+`Laminas\ServiceManager\Initializer\InitializerInterface`. Initializers are
 executed for each service the first time they are created, and can be used to
 inject additional dependencies.
 
@@ -297,7 +297,7 @@ For instance, if we'd want to automatically inject the dependency
 ```php
 use Psr\Container\ContainerInterface;
 use stdClass;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 $serviceManager = new ServiceManager([
     'initializers' => [
@@ -312,7 +312,7 @@ $serviceManager = new ServiceManager([
 ```
 
 Alternately, you can create a class that implements
-`Zend\ServiceManager\Initializer\InitializerInterface`, and pass it to the
+`Laminas\ServiceManager\Initializer\InitializerInterface`, and pass it to the
 `initializers` array:
 
 ```php
@@ -333,7 +333,7 @@ class MyInitializer implements InitializerInterface
 
 use Psr\Container\ContainerInterface;
 use stdClass;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 $serviceManager = new ServiceManager([
     'initializers' => [
@@ -526,7 +526,7 @@ following methods:
   `$class`; if the latter is not provided, `$name` is used for both sides of
   the map.
 - `addAbstractFactory($factory)`, where `$factory` can be either a
-  `Zend\ServiceManager\Factory\AbstractFactoryInterface` instance or the name
+  `Laminas\ServiceManager\Factory\AbstractFactoryInterface` instance or the name
   of a class implementing the interface.
 - `addDelegator($name, $factory)`, where `$factory` can be either a callable
   delegator factory, or the name of a delegator factory class to use.
@@ -539,7 +539,7 @@ following methods:
 As examples:
 
 ```php
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ServiceManager;
 
 $serviceManager = new ServiceManager([
     'factories' => [

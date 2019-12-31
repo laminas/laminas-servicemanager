@@ -1,66 +1,67 @@
 {
-    "name": "zendframework/zend-servicemanager",
+    "name": "laminas/laminas-servicemanager",
     "description": "Factory-Driven Dependency Injection Container",
     "license": "BSD-3-Clause",
     "keywords": [
+        "laminas",
         "di",
         "dic",
         "dependency-injection",
         "psr-11",
-        "zf",
-        "zendframework",
         "servicemanager",
         "service-manager"
     ],
+    "homepage": "https://laminas.dev",
     "support": {
-        "docs": "https://docs.zendframework.com/zend-servicemanager/",
-        "issues": "https://github.com/zendframework/zend-servicemanager/issues",
-        "source": "https://github.com/zendframework/zend-servicemanager",
-        "rss": "https://github.com/zendframework/zend-servicemanager/releases.atom",
-        "slack": "https://zendframework-slack.herokuapp.com",
-        "forum": "https://discourse.zendframework.com/c/questions/components"
-    },
-    "require": {
-        "php": "^7.1",
-        "psr/container": "^1.0",
-        "zendframework/zend-stdlib": "^3.2.1"
-    },
-    "require-dev": {
-        "mikey179/vfsStream": "^1.6.4",
-        "ocramius/proxy-manager": "^2.1.1",
-        "phpbench/phpbench": "^0.13.0",
-        "phpunit/phpunit": "^6.4.4",
-        "zendframework/zend-coding-standard": "~1.0.0",
-        "zendframework/zend-container-config-test": "^0.2.1"
-    },
-    "provide": {
-        "psr/container-implementation": "^1.0"
-    },
-    "suggest": {
-        "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services",
-        "zendframework/zend-stdlib": "zend-stdlib ^2.7.7 | ^3.1 if you wish to use the MergeReplaceKey or MergeRemoveKey features in Config instances"
-    },
-    "autoload": {
-        "psr-4": {
-            "Zend\\ServiceManager\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "ZendTest\\ServiceManager\\": "test/",
-            "ZendBench\\ServiceManager\\": "benchmarks/"
-        }
+        "docs": "https://docs.laminas.dev/laminas-servicemanager/",
+        "issues": "https://github.com/laminas/laminas-servicemanager/issues",
+        "source": "https://github.com/laminas/laminas-servicemanager",
+        "rss": "https://github.com/laminas/laminas-servicemanager/releases.atom",
+        "chat": "https://laminas.dev/chat",
+        "forum": "https://discourse.laminas.dev"
     },
     "config": {
         "sort-packages": true
-    },
-    "conflict": {
-        "container-interop/container-interop": "<1.2.0"
     },
     "extra": {
         "branch-alias": {
             "dev-master": "3.3-dev",
             "dev-develop": "4.0-dev"
+        }
+    },
+    "require": {
+        "php": "^7.1",
+        "laminas/laminas-stdlib": "^3.2.1",
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "psr/container": "^1.0"
+    },
+    "require-dev": {
+        "laminas/laminas-coding-standard": "~1.0.0",
+        "laminas/laminas-container-config-test": "^0.2.1",
+        "mikey179/vfsstream": "^1.6.4",
+        "ocramius/proxy-manager": "^2.1.1",
+        "phpbench/phpbench": "^0.13.0",
+        "phpunit/phpunit": "^6.4.4"
+    },
+    "provide": {
+        "psr/container-implementation": "^1.0"
+    },
+    "conflict": {
+        "container-interop/container-interop": "<1.2.0"
+    },
+    "suggest": {
+        "laminas/laminas-stdlib": "laminas-stdlib ^2.7.7 | ^3.1 if you wish to use the MergeReplaceKey or MergeRemoveKey features in Config instances",
+        "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laminas\\ServiceManager\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LaminasTest\\ServiceManager\\": "test/",
+            "LaminasBench\\ServiceManager\\": "benchmarks/"
         }
     },
     "bin": [
@@ -76,5 +77,8 @@
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+    },
+    "replace": {
+        "zendframework/zend-servicemanager": "self.version"
     }
 }

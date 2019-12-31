@@ -1,6 +1,6 @@
 # Migration Guide
 
-Migration guide for Zend Service version 4.0.0.
+Migration guide for Laminas Service version 4.0.0.
 
 ## PSR-11: Container Interface
 
@@ -17,10 +17,10 @@ is prohibited via Composer's `conflicts` configuration. Version `1.2.0` _does_
 extend the PSR-11 interfaces, and is thus still usable.
 
 If your project typehints any `Interop\ContainerInterop\*` interfaces where any
-`Zend\ServiceManager\*` classes are expected, you _**must**_ update your code to
-expect `Zend\ServiceManager\*` or `Psr\Container\*` classes or interfaces instead.
+`Laminas\ServiceManager\*` classes are expected, you _**must**_ update your code to
+expect `Laminas\ServiceManager\*` or `Psr\Container\*` classes or interfaces instead.
 The latter is preferred, unless your code utilizes any additional functionality
-provided by the `Zend\ServiceManager\*` classes that are not declared in the
+provided by the `Laminas\ServiceManager\*` classes that are not declared in the
 PSR-11 interfaces.
 
 To do this, use your favorite find-and-replace tool to update the following:

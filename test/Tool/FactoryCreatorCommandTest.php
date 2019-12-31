@@ -1,19 +1,20 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-servicemanager for the canonical source repository
- * @copyright Copyright (c) 2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\Tool;
+namespace LaminasTest\ServiceManager\Tool;
 
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Tool\FactoryCreatorCommand;
+use Laminas\Stdlib\ConsoleHelper;
+use LaminasTest\ServiceManager\TestAsset\ObjectWithScalarDependency;
+use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\Tool\FactoryCreatorCommand;
-use Zend\Stdlib\ConsoleHelper;
-use ZendTest\ServiceManager\TestAsset\ObjectWithScalarDependency;
-use ZendTest\ServiceManager\TestAsset\SimpleDependencyObject;
 
 use function file_get_contents;
 use function sprintf;
