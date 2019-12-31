@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="laminas-servicemanager: factory-driven dependency injection container">  
+    <link rel="canonical" href="https://docs.laminas.dev/migration/">
+    <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
+
+    <title>Migration Guide - laminas-servicemanager - Laminas Docs</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body id="page-top" class="components">
+
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        
+        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+        </a>
+        <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
+            Documentation
+        </a>
+
+        
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
+                </li>
+            </ul>
+
+            
+            
+                <div class="d-block d-sm-none">
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-servicemanager</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../delegators/" class="subnavigation__link">Delegators</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../lazy-services/" class="subnavigation__link">Lazy services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugin-managers/" class="subnavigation__link">Plugin managers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../config-abstract-factory/" class="subnavigation__link">Configuration-based Abstract Factory</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../reflection-abstract-factory/" class="subnavigation__link">Reflection-based Abstract Factory</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../console-tools/" class="subnavigation__link">Console Tools</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/factories-vs-abstract-factories/" class="subnavigation__link">Factories vs Abstract Factories</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Migration Guide</a>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                </div>
+            
+
+            
+            <div class="d-block d-sm-none">
+                <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    
+    <header class="header">
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="col-6 offset-md-2">
+                <h1 class="header__title">
+                    Components
+
+                    
+                        <small class="header__subtitle">laminas-servicemanager</small>
+                    
+                </h1>
+            </div>
+
+            
+            <div class="col-4 text-sm-right">
+                
+                    
+
+                    <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                    <a href="https://github.com/laminas/laminas-servicemanager/" class="header__link header__link--github" title="Go to repository of laminas-servicemanager">
+                        <i class="fa fa-github"></i> GitHub
+                    </a>
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2 col-sm-12">
+                
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#case-sensitivity-and-normalization" class="toc__link">Case Sensitivity and Normalization</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#configuration" class="toc__link">Configuration</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#invokables" class="toc__link">Invokables</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#lazy-services" class="toc__link">Lazy Services</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#servicelocatorinterface-changes" class="toc__link">ServiceLocatorInterface Changes</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#servicemanager-api-changes" class="toc__link">ServiceManager API Changes</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#factories" class="toc__link">Factories</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#initializers" class="toc__link">Initializers</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#plugin-managers" class="toc__link">Plugin Managers</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#di-namespace" class="toc__link">DI Namespace</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#miscellaneous-interfaces-traits-and-classes" class="toc__link">Miscellaneous Interfaces, Traits, and Classes</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+            </div>
+            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+                
+                    <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="">Overview</a></li>
+
+            
+                <li class="breadcrumb-item"><a href="..">laminas-servicemanager</a></li>
+
+                
+
+                <li class="breadcrumb-item active" aria-current="page">Migration Guide</li>
+            
+        
+    </ol>
+</nav>
+
+
+
+
+
+
+    
+    
+
+    <h1 id="migration-guide">Migration Guide</h1>
+<p>The Service Manager was first introduced for Laminas.0.0. Its API
+remained the same throughout that version.</p>
+<p>Version 3 is the first new major release of the Service Manager, and contains a
+number of backwards compatibility breaks. These were introduced to provide
+better performance and stability.</p>
+<h2 id="case-sensitivity-and-normalization">Case Sensitivity and Normalization</h2>
+<p>v2 normalized service names as follows:</p>
+<ul>
+<li>It stripped non alphanumeric characters.</li>
+<li>It lowercased the resulting string.</li>
+</ul>
+<p>This was done to help prevent typographical errors from creating configuration
+errors. However, it also presented a large performance hit, and led to some
+unexpected behaviors.</p>
+<p><strong>In v3, service names are case sensitive, and are not normalized in any way.</strong></p>
+<p>As such, you <em>must</em> refer to services using the same case in which they were
+registered.</p>
+<h2 id="configuration">Configuration</h2>
+<p>A number of changes have been made to configuration of service and plugin
+managers:</p>
+<ul>
+<li>Minor changes in configuration arrays may impact your usage.</li>
+<li><code>ConfigInterface</code> implementations and consumers will need updating.</li>
+</ul>
+<h3>Configuration arrays</h3>
+<p>Configuration for v2 consisted of the following:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>[</span>
+<span class=x>    &#39;services&#39; =&gt; [</span>
+<span class=x>        // service name =&gt; instance pairs</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;aliases&#39; =&gt; [</span>
+<span class=x>        // alias =&gt; service name pairs</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;invokables&#39; =&gt; [</span>
+<span class=x>        // service name =&gt; class name pairs</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;factories&#39; =&gt; [</span>
+<span class=x>        // service name =&gt; factory pairs</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;abstract_factories&#39; =&gt; [</span>
+<span class=x>        // abstract factories</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;initializers&#39; =&gt; [</span>
+<span class=x>        // initializers</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;delegators&#39; =&gt; [</span>
+<span class=x>        // service name =&gt; [ delegator factories ]</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;shared&#39; =&gt; [</span>
+<span class=x>        // service name =&gt; boolean</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;share_by_default&#39; =&gt; boolean,</span>
+<span class=x>]</span>
+</pre></div></p>
+<p>In v3, the configuration remains the same, with the following additions:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>[</span>
+<span class=x>    &#39;lazy_services&#39; =&gt; [</span>
+<span class=x>        // The class_map is required if using lazy services:</span>
+<span class=x>        &#39;class_map&#39; =&gt; [</span>
+<span class=x>            // service name =&gt; class name pairs</span>
+<span class=x>        ],</span>
+<span class=x>        // The following are optional:</span>
+<span class=x>        &#39;proxies_namespace&#39;  =&gt; &#39;Alternate namespace to use for generated proxy classes&#39;,</span>
+<span class=x>        &#39;proxies_target_dir&#39; =&gt; &#39;path in which to write generated proxy classes&#39;,</span>
+<span class=x>        &#39;write_proxy_files&#39;  =&gt; true, // boolean; false by default</span>
+<span class=x>    ],</span>
+<span class=x>]</span>
+</pre></div></p>
+<p>The main change is the addition of integrated lazy service configuration is now
+integrated.</p>
+<h3>ConfigInterface</h3>
+<p>The principal change to the <code>ConfigInterface</code> is the addition of the
+<code>toArray()</code> method. This method is intended to return a configuration array in
+the format listed above, for passing to either the constructor or the
+<code>configure()</code> method of the <code>ServiceManager</code>..</p>
+<h3>Config class</h3>
+<p><code>Laminas\ServiceManager\Config</code> has been updated to follow the changes to the
+<code>ConfigInterface</code> and <code>ServiceManager</code>. This essentially means that it removes
+the various getter methods, and adds the <code>toArray()</code> method.</p>
+<h2 id="invokables">Invokables</h2>
+<p><em>Invokables no longer exist,</em> at least, not identically to how they existed in
+Laminas.</p>
+<p>Internally, <code>ServiceManager</code> now does the following for <code>invokables</code> entries:</p>
+<ul>
+<li>If the name and value match, it creates a <code>factories</code> entry mapping the
+  service name to <code>Laminas\ServiceManager\Factory\InvokableFactory</code>.</li>
+<li>If the name and value <em>do not</em> match, it creates an <code>aliases</code> entry mapping the
+  service name to the class name, <em>and</em> a <code>factories</code> entry mapping the class
+  name to <code>Laminas\ServiceManager\Factory\InvokableFactory</code>.</li>
+</ul>
+<p>This means that you can use your existing <code>invokables</code> configuration from
+version 2 in version 3. However, we recommend starting to update your
+configuration to remove <code>invokables</code> entries in favor of factories (and aliases,
+if needed).</p>
+<blockquote>
+<h4>Invokables and plugin managers</h4>
+<p>If you are creating a plugin manager and in-lining invokables into the class
+definition, you will need to make some changes.</p>
+<p><code>$invokableClasses</code> will need to become <code>$factories</code> entries, and you will
+potentially need to add <code>$aliases</code> entries.</p>
+<p>As an example, consider the following, from laminas-math v2.x:</p>
+<pre class=codehilite><code class=language-php>
+class AdapterPluginManager extends AbstractPluginManager
+{
+    protected $invokableClasses = [
+        'bcmath' =&gt; Adapter\Bcmath::class,
+        'gmp'    =&gt; Adapter\Gmp::class,
+    ];
+}
+</code></pre>
+<p>Because we no longer define an <code>$invokableClasses</code> property, for v3.x, this
+now becomes:</p>
+<pre class=codehilite><code class=language-php>
+use Laminas\ServiceManager\Factory\InvokableFactory;
+
+class AdapterPluginManager extends AbstractPluginManager
+{
+    protected $aliases = [
+        'bcmath' =&gt; Adapter\Bcmath::class,
+        'gmp'    =&gt; Adapter\Gmp::class,
+    ];
+
+    protected $factories = [
+        Adapter\BcMath::class =&gt; InvokableFactory::class,
+        Adapter\Gmp::class    =&gt; InvokableFactory::class,
+    ];
+}
+</code></pre>
+</blockquote>
+<h2 id="lazy-services">Lazy Services</h2>
+<p>In v2, if you wanted to create a lazy service, you needed to take the following
+steps:</p>
+<ul>
+<li>Ensure you have a <code>config</code> service, with a <code>lazy_services</code> key that contained
+  the configuration necessary for the <code>LazyServiceFactory</code>.</li>
+<li>Assign the <code>LazyServiceFactoryFactory</code> as a factory for the
+  <code>LazyServiceFactory</code></li>
+<li>Assign the <code>LazyServiceFactory</code> as a delegator factory for your service.</li>
+</ul>
+<p>As an example:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory;</span>
+
+<span class=x>$config = [</span>
+<span class=x>    &#39;lazy_services&#39; =&gt; [</span>
+<span class=x>        &#39;class_map&#39; =&gt; [</span>
+<span class=x>            &#39;MyClass&#39; =&gt; &#39;MyClass&#39;,</span>
+<span class=x>        ],</span>
+<span class=x>        &#39;proxies_namespace&#39;  =&gt; &#39;TestAssetProxy&#39;,</span>
+<span class=x>        &#39;proxies_target_dir&#39; =&gt; &#39;data/proxies/&#39;,</span>
+<span class=x>        &#39;write_proxy_files&#39;  =&gt; true,</span>
+<span class=x>    ],</span>
+<span class=x>];</span>
+
+<span class=x>return [</span>
+<span class=x>    &#39;services&#39; =&gt; [</span>
+<span class=x>        &#39;config&#39; =&gt; $config,</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;invokables&#39; =&gt; [</span>
+<span class=x>        &#39;MyClass&#39; =&gt; &#39;MyClass&#39;,</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;factories&#39; =&gt; [</span>
+<span class=x>        &#39;LazyServiceFactory&#39; =&gt; LazyServiceFactoryFactory::class,</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;delegators&#39; =&gt; [</span>
+<span class=x>        &#39;MyClass&#39; =&gt; [</span>
+<span class=x>            &#39;LazyServiceFactory&#39;,</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>];</span>
+</pre></div></p>
+<p>This was done in part because lazy services were introduced later in the v2
+cycle, and not fully integrated in order to retain the API.</p>
+<p>In order to reduce the number of dependencies and steps necessary to configure
+lazy services, the following changes were made for v3:</p>
+<ul>
+<li>Lazy service configuration can now be passed directly to the service manager;
+  it is no longer dependent on a <code>config</code> service.</li>
+<li>The ServiceManager itself is now responsible for creating the
+  <code>LazyServiceFactory</code> delegator factory, based on the configuration present.</li>
+</ul>
+<p>The above example becomes the following in v3:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\Factory\InvokableFactory;</span>
+<span class=x>use Laminas\ServiceManager\Proxy\LazyServiceFactory;</span>
+
+<span class=x>return [</span>
+<span class=x>    &#39;factories&#39; =&gt; [</span>
+<span class=x>        &#39;MyClass&#39; =&gt; InvokableFactory::class,</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;delegators&#39; =&gt; [</span>
+<span class=x>        &#39;MyClass&#39; =&gt; [</span>
+<span class=x>            LazyServiceFactory::class,</span>
+<span class=x>        ],</span>
+<span class=x>    ],</span>
+<span class=x>    &#39;lazy_services&#39; =&gt; [</span>
+<span class=x>        &#39;class_map&#39; =&gt; [</span>
+<span class=x>            &#39;MyClass&#39; =&gt; &#39;MyClass&#39;,</span>
+<span class=x>        ],</span>
+<span class=x>        &#39;proxies_namespace&#39;  =&gt; &#39;TestAssetProxy&#39;,</span>
+<span class=x>        &#39;proxies_target_dir&#39; =&gt; &#39;data/proxies/&#39;,</span>
+<span class=x>        &#39;write_proxy_files&#39;  =&gt; true,</span>
+<span class=x>    ],</span>
+<span class=x>];</span>
+</pre></div></p>
+<p>Additionally, assuming you have configured lazy services initially with the
+proxy namespace, target directory, etc., you can map lazy services using the new
+method <code>mapLazyService($name, $class)</code>:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>$container-&gt;mapLazyService(&#39;MyClass&#39;, &#39;MyClass&#39;);</span>
+<span class=x>// or, more simply:</span>
+<span class=x>$container-&gt;mapLazyService(&#39;MyClass&#39;);</span>
+</pre></div></p>
+<h2 id="servicelocatorinterface-changes">ServiceLocatorInterface Changes</h2>
+<p>The <code>ServiceLocatorInterface</code> now extends the
+<a href="https://github.com/container-interop/container-interop">container-interop</a>
+interface <code>ContainerInterface</code>, which defines the same <code>get()</code> and <code>has()</code>
+methods as were previously defined.</p>
+<p>Additionally, it adds a new method:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>public function build($name, array $options = null)</span>
+</pre></div></p>
+<p>This method is defined to <em>always</em> return a <em>new</em> instance of the requested
+service, and to allow using the provided <code>$options</code> when creating the instance.</p>
+<h2 id="servicemanager-api-changes">ServiceManager API Changes</h2>
+<p><code>Laminas\ServiceManager\ServiceManager</code> remains the primary interface with which
+developers will interact. It has the following changes in v3:</p>
+<ul>
+<li>It adds a new method, <code>configure()</code>, which allows configuring all instance
+  generation capabilities (aliases, factories, abstract factories, etc.) at
+  once.</li>
+<li>Peering capabilities were removed.</li>
+<li>Exceptions are <em>always</em> thrown when service instance creation fails or
+  produces an error; you can no longer disable this.</li>
+<li>Configuration no longer requires a <code>Laminas\ServiceManager\Config</code> instance.
+  <code>Config</code> can be used, but is not needed.</li>
+<li>It adds a new method, <code>build()</code>, for creating discrete service instances.</li>
+</ul>
+<h3>Methods Removed</h3>
+<p><em>The following methods are removed</em> in v3:</p>
+<ul>
+<li><code>setShareByDefault()</code>/<code>shareByDefault()</code>; this can be passed during
+  instantiation or via <code>configure()</code>.</li>
+<li><code>setThrowExceptionInCreate()</code>/<code>getThrowExceptionInCreate()</code>; exceptions are
+  <em>always</em> thrown when errors are encountered during service instance creation.</li>
+<li><code>setRetrieveFromPeeringManagerFirst()</code>/<code>retrieveFromPeeringManagerFirst()</code>;
+  peering is no longer supported.</li>
+</ul>
+<h3>Constructor</h3>
+<p>The constructor now accepts an array of service configuration, not a
+<code>Laminas\ServiceManager\Config</code> instance.</p>
+<h3>Use <code>build()</code> for discrete instances</h3>
+<p>The new method <code>build()</code> acts as a factory method for configured services, and
+will <em>always</em> return a new instance, never a shared one.</p>
+<p>Additionally, it provides factory capabilities; you may pass an additional,
+optional argument, <code>$options</code>, which should be an array of additional options a
+factory may use to create a new instance. This is primarily of interest when
+creating plugin managers (more on plugin managers below), which may pass that
+information on in order to create discrete plugin instances with specific state.</p>
+<p>As examples:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\Validator\Between;</span>
+
+<span class=x>$between = $container-&gt;build(Between::class, [</span>
+<span class=x>    &#39;min&#39;        =&gt; 5,</span>
+<span class=x>    &#39;max&#39;        =&gt; 10,</span>
+<span class=x>    &#39;inclusive&#39; =&gt; true,</span>
+<span class=x>]);</span>
+
+<span class=x>$alsoBetween = $container-&gt;build(Between::class, [</span>
+<span class=x>    &#39;min&#39;       =&gt; 0,</span>
+<span class=x>    &#39;max&#39;       =&gt; 100,</span>
+<span class=x>    &#39;inclusive&#39; =&gt; false,</span>
+<span class=x>]);</span>
+</pre></div></p>
+<p>The above two validators would be different instances, with their own
+configuration.</p>
+<h2 id="factories">Factories</h2>
+<p>Internally, the <code>ServiceManager</code> now only uses the new factory interfaces
+defined in the <code>Laminas\ServiceManager\Factory</code> namespace. These <em>replace</em> the
+interfaces defined in version 2, and define completely new signatures.</p>
+<p>For migration purposes, all original interfaces were retained, and now inherit
+from the new interfaces. This provides a migration path; you can add the methods
+defined in the new interfaces to your existing factories targeting v2, and
+safely upgrade. (Typically, you will then have the version 2 methods proxy to
+those defined in version 3.)</p>
+<h3>Interfaces and relations to version 2</h3>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th align="center">Version 2 Interface</th>
+<th align="center">Version 3 Interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>Laminas\ServiceManager\AbstractFactoryInterface</code></td>
+<td align="center"><code>Laminas\ServiceManager\Factory\AbstractFactoryInterface</code></td>
+</tr>
+<tr>
+<td align="center"><code>Laminas\ServiceManager\DelegatorFactoryInterface</code></td>
+<td align="center"><code>Laminas\ServiceManager\Factory\DelegatorFactoryInterface</code></td>
+</tr>
+<tr>
+<td align="center"><code>Laminas\ServiceManager\FactoryInterface</code></td>
+<td align="center"><code>Laminas\ServiceManager\Factory\FactoryInterface</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>The version 2 interfaces now extend those in version 3, but are marked
+<strong>deprecated</strong>. You can continue to use them, but will be required to update
+your code to use the new interfaces in the future.</p>
+<h3>AbstractFactoryInterface</h3>
+<p>The previous signature of the <code>AbstractFactoryInterface</code> was:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>interface AbstractFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    /**</span>
+<span class=x>     * Determine if we can create a service with name</span>
+<span class=x>     *</span>
+<span class=x>     * @param ServiceLocatorInterface $serviceLocator</span>
+<span class=x>     * @param $name</span>
+<span class=x>     * @param $requestedName</span>
+<span class=x>     * @return bool</span>
+<span class=x>     */</span>
+<span class=x>    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName);</span>
+
+<span class=x>    /**</span>
+<span class=x>     * Create service with name</span>
+<span class=x>     *</span>
+<span class=x>     * @param ServiceLocatorInterface $serviceLocator</span>
+<span class=x>     * @param $name</span>
+<span class=x>     * @param $requestedName</span>
+<span class=x>     * @return mixed</span>
+<span class=x>     */</span>
+<span class=x>    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>The new signature is:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>interface AbstractFactoryInterface extends FactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    /**</span>
+<span class=x>     * Does the factory have a way to create an instance for the service?</span>
+<span class=x>     *</span>
+<span class=x>     * @param  ContainerInterface $container</span>
+<span class=x>     * @param  string $requestedName</span>
+<span class=x>     * @return bool</span>
+<span class=x>     */</span>
+<span class=x>    public function canCreate(ContainerInterface $container, $requestedName);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>Note that it now <em>extends</em> the <code>FactoryInterface</code> (detailed below), and thus the
+factory logic has the same signature.</p>
+<p>In v2, the abstract factory defined the method <code>canCreateServiceWithName()</code>; in
+v3, this is renamed to <code>canCreate()</code>, and the method also now receives only two
+arguments, the container and the requested service name.</p>
+<p>To prepare your version 2 implementation to work upon upgrade to version 3:</p>
+<ul>
+<li>Add the methods <code>canCreate()</code> and <code>__invoke()</code> as defined in version 3.</li>
+<li>Modify your existing <code>canCreateServiceWithName()</code> method to proxy to
+  <code>canCreate()</code></li>
+<li>Modify your existing <code>createServiceWithName()</code> method to proxy to
+  <code>__invoke()</code></li>
+</ul>
+<p>As an example, given the following implementation from version 2:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\AbstractFactoryInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+
+<span class=x>class LenientAbstractFactory implements AbstractFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function canCreateServiceWithName(ServiceLocatorInterface $services, $name, $requestedName)</span>
+<span class=x>    {</span>
+<span class=x>        return class_exists($requestedName);</span>
+<span class=x>    }</span>
+
+<span class=x>    public function createServiceWithName(ServiceLocatorInterface $services, $name, $requestedName)</span>
+<span class=x>    {</span>
+<span class=x>        return new $requestedName();</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>To update this for version 3 compatibility, you will add the methods
+<code>canCreate()</code> and <code>__invoke()</code>, move the code from the existing methods into
+them, and update the existing methods to proxy to the new methods:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
+<span class=x>use Laminas\ServiceManager\AbstractFactoryInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+
+<span class=x>class LenientAbstractFactory implements AbstractFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function canCreate(ContainerInterface $container, $requestedName)</span>
+<span class=x>    {</span>
+<span class=x>        return class_exists($requestedName);</span>
+<span class=x>    }</span>
+
+<span class=x>    public function canCreateServiceWithName(ServiceLocatorInterface $services, $name, $requestedName)</span>
+<span class=x>    {</span>
+<span class=x>        return $this-&gt;canCreate($services, $requestedName);</span>
+<span class=x>    }</span>
+
+<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)</span>
+<span class=x>    {</span>
+<span class=x>        return new $requestedName();</span>
+<span class=x>    }</span>
+
+<span class=x>    public function createServiceWithName(ServiceLocatorInterface $services, $name, $requestedName)</span>
+<span class=x>    {</span>
+<span class=x>        return $this($services, $requestedName);</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>After you have upgraded to version 3, you can take the following steps to remove
+the migration artifacts:</p>
+<ul>
+<li>Update your class to implement the new interface.</li>
+<li>Remove the <code>canCreateServiceWithName()</code> and <code>createServiceWithName()</code> methods
+  from your implementation.</li>
+</ul>
+<p>From our example above, we would update the class to read as follows:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
+<span class=x>use Laminas\ServiceManager\Factory\AbstractFactoryInterface; // &lt;-- note the change!</span>
+
+<span class=x>class LenientAbstractFactory implements AbstractFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function canCreate(ContainerInterface $container, $requestedName)</span>
+<span class=x>    {</span>
+<span class=x>        return class_exists($requestedName);</span>
+<span class=x>    }</span>
+
+<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)</span>
+<span class=x>    {</span>
+<span class=x>        return new $requestedName();</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<h3>DelegatorFactoryInterface</h3>
+<p>The previous signature of the <code>DelegatorFactoryInterface</code> was:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>interface DelegatorFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    /**</span>
+<span class=x>     * A factory that creates delegates of a given service</span>
+<span class=x>     *</span>
+<span class=x>     * @param ServiceLocatorInterface $serviceLocator the service locator which requested the service</span>
+<span class=x>     * @param string                  $name           the normalized service name</span>
+<span class=x>     * @param string                  $requestedName  the requested service name</span>
+<span class=x>     * @param callable                $callback       the callback that is responsible for creating the service</span>
+<span class=x>     *</span>
+<span class=x>     * @return mixed</span>
+<span class=x>     */</span>
+<span class=x>    public function createDelegatorWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName, $callback);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>The new signature is:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>interface DelegatorFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    /**</span>
+<span class=x>     * A factory that creates delegates of a given service</span>
+<span class=x>     *</span>
+<span class=x>     * @param  ContainerInterface $container</span>
+<span class=x>     * @param  string             $name</span>
+<span class=x>     * @param  callable           $callback</span>
+<span class=x>     * @param  null|array         $options</span>
+<span class=x>     * @return object</span>
+<span class=x>     */</span>
+<span class=x>    public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>Note that the <code>$name</code> and <code>$requestedName</code> arguments are now merged into a
+single <code>$name</code> argument, and that the factory now allows passing additional
+options to use (typically as passed via <code>build()</code>).</p>
+<p>To prepare your existing delegator factories for version 3, take the following
+steps:</p>
+<ul>
+<li>Implement the <code>__invoke()</code> method in your existing factory, copying the code
+  from your existing <code>createDelegatorWithName()</code> method into it.</li>
+<li>Modify the <code>createDelegatorWithName()</code> method to proxy to the new method.</li>
+</ul>
+<p>Consider the following delegator factory that works for version 2:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\DelegatorFactoryInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+
+<span class=x>class ObserverAttachmentDelegator implements DelegatorFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function createDelegatorWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName, $callback)</span>
+<span class=x>    {</span>
+<span class=x>        $subject = $callback();</span>
+<span class=x>        $subject-&gt;attach($serviceLocator-&gt;get(Observer::class);</span>
+<span class=x>        return $subject;</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>To prepare this for version 3, we'd implement the <code>__invoke()</code> signature from
+version 3, and modify <code>createDelegatorWithName()</code> to proxy to it:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
+<span class=x>use Laminas\ServiceManager\DelegatorFactoryInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+
+<span class=x>class ObserverAttachmentDelegator implements DelegatorFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, callable $callback, array $options = null)</span>
+<span class=x>    {</span>
+<span class=x>        $subject = $callback();</span>
+<span class=x>        $subject-&gt;attach($container-&gt;get(Observer::class);</span>
+<span class=x>        return $subject;</span>
+<span class=x>    }</span>
+
+<span class=x>    public function createDelegatorWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName, $callback)</span>
+<span class=x>    {</span>
+<span class=x>        return $this($serviceLocator, $requestedName, $callback);</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>After you have upgraded to version 3, you can take the following steps to remove
+the migration artifacts:</p>
+<ul>
+<li>Update your class to implement the new interface.</li>
+<li>Remove the <code>createDelegatorWithName()</code> method from your implementation.</li>
+</ul>
+<p>From our example above, we would update the class to read as follows:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
+<span class=x>use Laminas\ServiceManager\Factory\DelegatorFactoryInterface; // &lt;-- note the change!</span>
+
+<span class=x>class ObserverAttachmentDelegator implements DelegatorFactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, callable $callback, array $options = null)</span>
+<span class=x>    {</span>
+<span class=x>        $subject = $callback();</span>
+<span class=x>        $subject-&gt;attach($container-&gt;get(Observer::class);</span>
+<span class=x>        return $subject;</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<h3>FactoryInterface</h3>
+<p>The previous signature of the <code>FactoryInterface</code> was:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>interface FactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    /**</span>
+<span class=x>     * Create service</span>
+<span class=x>     *</span>
+<span class=x>     * @param ServiceLocatorInterface $serviceLocator</span>
+<span class=x>     * @return mixed</span>
+<span class=x>     */</span>
+<span class=x>    public function createService(ServiceLocatorInterface $serviceLocator);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>The new signature is:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>interface FactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    /**</span>
+<span class=x>     * Create an object</span>
+<span class=x>     *</span>
+<span class=x>     * @param  ContainerInterface $container</span>
+<span class=x>     * @param  string             $requestedName</span>
+<span class=x>     * @param  null|array         $options</span>
+<span class=x>     * @return object</span>
+<span class=x>     */</span>
+<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = null);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>Note that the factory now accepts an additional <em>required</em> argument,
+<code>$requestedName</code>; v2 already passed this argument, but it was not specified in
+the interface itself. Additionally, a third <em>optional</em> argument, <code>$options</code>,
+allows you to provide <code>$options</code> to the <code>ServiceManager::build()</code> method;
+factories can then take these into account when creating an instance.</p>
+<p>Because factories now can expect to receive the service name, they may be
+re-used for multiple services, largely replacing abstract factories in version
+3.</p>
+<p>To prepare your existing factories for version 3, take the following steps:</p>
+<ul>
+<li>Implement the <code>__invoke()</code> method in your existing factory, copying the code
+  from your existing <code>createService()</code> method into it.</li>
+<li>Modify the <code>createService()</code> method to proxy to the new method.</li>
+</ul>
+<p>Consider the following factory that works for version 2:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\FactoryInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+
+<span class=x>class FooFactory implements FactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function createService(ServiceLocatorInterface $services)</span>
+<span class=x>    {</span>
+<span class=x>        return new Foo($services-&gt;get(Bar::class));</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>To prepare this for version 3, we'd implement the <code>__invoke()</code> signature from
+version 3, and modify <code>createService()</code> to proxy to it:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
+<span class=x>use Laminas\ServiceManager\FactoryInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+
+<span class=x>class FooFactory implements FactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)</span>
+<span class=x>    {</span>
+<span class=x>        return new Foo($container-&gt;get(Bar::class));</span>
+<span class=x>    }</span>
+
+<span class=x>    public function createService(ServiceLocatorInterface $services)</span>
+<span class=x>    {</span>
+<span class=x>        return $this($services, Foo::class);</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>Note that the call to <code>$this()</code> adds a new argument; since your factory isn't
+using the <code>$requestedName</code>, this can be anything, but must be passed to prevent
+a fatal exception due to a missing argument. In this case, we chose to pass the
+name of the class the factory is creating.</p>
+<p>After you have upgraded to version 3, you can take the following steps to remove
+the migration artifacts:</p>
+<ul>
+<li>Update your class to implement the new interface.</li>
+<li>Remove the <code>createService()</code> method from your implementation.</li>
+</ul>
+<p>From our example above, we would update the class to read as follows:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
+<span class=x>use Laminas\ServiceManager\Factory\FactoryInterface; // &lt;-- note the change!</span>
+
+<span class=x>class FooFactory implements FactoryInterface</span>
+<span class=x>{</span>
+<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)</span>
+<span class=x>    {</span>
+<span class=x>        return new Foo($container-&gt;get(Bar::class));</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<blockquote>
+<h4>Many factories already work with v3!</h4>
+<p>Within the skeleton application, tutorial, and even in commonly shipped
+modules such as those in Laminas API Tools, we have typically suggested building your
+factories as invokable classes. If you were doing this already, your factories
+will already work with version 3!</p>
+<h4>Version 2 factories can accept the requested name already</h4>
+<p>Since 2.2, factories have been passed two additional parameters, the
+"canonical" name (a mis-nomer, as it is actually the normalized name), and the
+"requested" name (the actual string passed to <code>get()</code>). As such, you can
+already write factories that accept the requested name, and have them
+change behavior based on that information!</p>
+</blockquote>
+<h3>New InvokableFactory Class</h3>
+<p><code>Laminas\ServiceManager\Factory\InvokableFactory</code> is a new <code>FactoryInterface</code>
+implementation that provides the capabilities of the "invokable classes" present
+in version 2. It essentially instantiates and returns the requested class name;
+if <code>$options</code> is non-empty, it passes them directly to the constructor.</p>
+<p>This class was <a href="https://github.com/zendframework/zend-servicemanager/pull/60">added to the version 2 tree</a>
+to allow developers to start using it when preparing their code for version 3.
+This is particularly of interest when creating plugin managers, as you'll
+typically want the internal configuration to only include factories and aliases.</p>
+<h2 id="initializers">Initializers</h2>
+<p>Initializers are still present in the Service Manager component, but exist
+primarily for backwards compatibility; we recommend using delegator factories
+for setter and interface injection instead of initializers, as those will be run
+per-service, versus for all services.</p>
+<p>For migration purposes, the original interface was retained, and now inherits
+from the new interface. This provides a migration path; you can add the method
+defined in the new interface to your existing initializers targeting v2, and
+safely upgrade. (Typically, you will then have the version 2 method proxy to
+the one defined in version 3.)</p>
+<p>The following changes were made to initializers:</p>
+<ul>
+<li><code>Laminas\ServiceManager\InitializerInterface</code> was renamed to
+  <code>Laminas\ServiceManager\Initializer\InitializerInterface</code>.</li>
+<li>The interface itself has a new signature.</li>
+</ul>
+<p>The previous signature was:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>public function initialize($instance, ServiceLocatorInterface $serviceLocator)</span>
+</pre></div></p>
+<p>It is now:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>public function __invoke(ContainerInterface $container, $instance)</span>
+</pre></div></p>
+<p>The changes were made to ensure the signature is internally consistent with the
+various factories.</p>
+<p>To prepare your existing initializers for version 3, take the following steps:</p>
+<ul>
+<li>Implement the <code>__invoke()</code> method in your existing factory, copying the code
+  from your existing <code>initialize()</code> method into it.</li>
+<li>Modify the <code>initialize()</code> method to proxy to the new method.</li>
+</ul>
+<p>As an example, consider this initializer for version 2:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\InitializerInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+
+<span class=x>class FooInitializer implements InitializerInterface</span>
+<span class=x>{</span>
+<span class=x>    public function initializer($instance, ServiceLocatorInterface $services)</span>
+<span class=x>    {</span>
+<span class=x>        if (! $instance implements FooAwareInterface) {</span>
+<span class=x>            return $instance;</span>
+<span class=x>        }</span>
+<span class=x>        $instance-&gt;setFoo($services-&gt;get(FooInterface::class);</span>
+<span class=x>        return $instance;</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>To prepare this for version 3, we'd implement the <code>__invoke()</code> signature from
+version 3, and modify <code>initialize()</code> to proxy to it:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
+<span class=x>use Laminas\ServiceManager\InitializerInterface;</span>
+<span class=x>use Laminas\ServiceManager\ServiceLocatorInterface;</span>
+
+<span class=x>class FooInitializer implements InitializerInterface</span>
+<span class=x>{</span>
+<span class=x>    public function __invoke(ContainerInterface $container, $instance)</span>
+<span class=x>    {</span>
+<span class=x>        if (! $instance implements FooAwareInterface) {</span>
+<span class=x>            return $instance;</span>
+<span class=x>        }</span>
+<span class=x>        $container-&gt;setFoo($services-&gt;get(FooInterface::class);</span>
+<span class=x>        return $instance;</span>
+<span class=x>    }</span>
+
+<span class=x>    public function initializer($instance, ServiceLocatorInterface $services)</span>
+<span class=x>    {</span>
+<span class=x>        return $this($services, $instance);</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>After you have upgraded to version 3, you can take the following steps to remove
+the migration artifacts:</p>
+<ul>
+<li>Update your class to implement the new interface.</li>
+<li>Remove the <code>initialize()</code> method from your implementation.</li>
+</ul>
+<p>From our example above, we would update the class to read as follows:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
+<span class=x>use Laminas\ServiceManager\Initializer\InitializerInterface; // &lt;-- note the change!</span>
+
+<span class=x>class FooInitializer implements InitializerInterface</span>
+<span class=x>{</span>
+<span class=x>    public function __invoke(ContainerInterface $container, $instance)</span>
+<span class=x>    {</span>
+<span class=x>        if (! $instance implements FooAwareInterface) {</span>
+<span class=x>            return $instance;</span>
+<span class=x>        }</span>
+<span class=x>        $container-&gt;setFoo($services-&gt;get(FooInterface::class);</span>
+<span class=x>        return $instance;</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<blockquote>
+<h3>Update your callables!</h3>
+<p>Version 2 allows you to provide initializers as PHP callables. However, this
+means that the signature of those callables is incorrect for version 3!</p>
+<p>To make your code forwards compatible, you have two paths:</p>
+<p>The first is to simply provide an <code>InitializerInterface</code> implementation
+instead. This guarantees that the correct method is called based on the
+version of the <code>ServiceManager</code> in use.</p>
+<p>The second approach is to omit typehints on the arguments, and do typechecks
+internally. As an example, let's say you have the following:</p>
+<pre class=codehilite><code class=language-php>
+$container-&gt;addInitializer(function ($instance, ContainerInterface $container) {
+     if (! $instance implements FooAwareInterface) {
+         return $instance;
+     }
+     $container-&gt;setFoo($services-&gt;get(FooInterface::class);
+     return $instance;
+});
+</code></pre>
+<p>To make this future-proof, remove the typehints, and check the types within
+the callable:</p>
+<pre class=codehilite><code class=language-php>
+$container-&gt;addInitializer(function ($first, $second) {
+     if ($first instanceof ContainerInterface) {
+         $container = $first;
+         $instance = $second;
+     } else {
+         $container = $second;
+         $instance = $first;
+     }
+     if (! $instance implements FooAwareInterface) {
+         return;
+     }
+     $container-&gt;setFoo($services-&gt;get(FooInterface::class);
+});
+</code></pre>
+<p>This approach can also be done if you omitted typehints in the first place.
+Regardless, the important part to remember is that order of arguments is
+inverted between the two versions.</p>
+</blockquote>
+<h2 id="plugin-managers">Plugin Managers</h2>
+<p>In version 2, plugin managers were <code>ServiceManager</code> instances that implemented
+both the <code>MutableCreationOptionsInterface</code> and <code>ServiceLocatorAwareInterface</code>,
+and extended <code>AbstractPluginManager</code>.  Plugin managers passed themselves to
+factories, abstract factories, etc., requiring pulling the parent service
+manager, if composed, in order to resolve application-level dependencies.</p>
+<p>In version 3, we define the following:</p>
+<ul>
+<li><code>Laminas\ServiceManager\PluginManagerInterface</code>, which provides the public API
+  differences from the <code>ServiceLocatorInterface</code>.</li>
+<li><code>Laminas\ServiceManager\AbstractPluginManager</code>, which gives the basic
+  capabilities for plugin managers. The class now has a (semi) <em>required</em>
+  dependency on the application-level service manager instance, which is passed
+  to all factories, abstract factories, etc. (More on this below.)</li>
+</ul>
+<h3>PluginManagerInterface</h3>
+<p><code>Laminas\ServiceManager\PluginInterface</code> is a new interface for version 3,
+extending <code>ServiceLocatorInterface</code> and adding one method:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>/**</span>
+<span class=x> * Validate an instance</span>
+<span class=x> *</span>
+<span class=x> * @param  object $instance</span>
+<span class=x> * @return void</span>
+<span class=x> * @throws InvalidServiceException If created instance does not respect the</span>
+<span class=x> *     constraint on type imposed by the plugin manager</span>
+<span class=x> */</span>
+<span class=x>public function validate($instance);</span>
+</pre></div></p>
+<p>All plugin managers <em>must</em> implement this interface. For backwards-compatibility
+purposes, <code>AbstractPluginManager</code> will check for the <code>validatePlugin()</code> method
+(defined as abstract in v2), and, on discovery, trigger an <code>E_USER_DEPRECATED</code>
+notice, followed by invocation of that method.</p>
+<h3>AbstractPluginManager</h3>
+<p>As it did in version 2, <code>AbstractPluginManager</code> extends <code>ServiceManager</code>. <strong>That
+means that all changes made to the <code>ServiceManager</code> for v3 also apply to the
+<code>AbstractPluginManager</code>.</strong></p>
+<p>In addition, review the following changes.</p>
+<h4>Constructor</h4>
+<ul>
+<li>The constructor now accepts the following arguments, in the following order:</li>
+<li>The parent container instance; this is usually the application-level
+    <code>ServiceManager</code> instance.</li>
+<li>Optionally, an array of configuration for the plugin manager instance; this
+    should have the same format as for a <code>ServiceManager</code> instance.</li>
+<li><code>validatePlugin()</code> was renamed to <code>validate()</code> (now defined in
+  <code>PluginManagerInterface</code>). The <code>AbstractPluginManager</code> provides
+  a basic implementation (detailed below).</li>
+<li>The signature of <code>get()</code> changes (more below).</li>
+</ul>
+<p>For backwards compatibility purposes, the constructor <em>also</em> allows the
+following for the initial argument:</p>
+<ul>
+<li>A <code>null</code> value. In this case, the plugin manager will use itself as the
+  creation context, <em>but also raise a deprecation notice indicating a
+  container should be passed instead.</em> You can pass the parent container
+  to the <code>setServiceLocator()</code> method to reset the creation context, but,
+  again, this raises a deprecation notice.</li>
+<li>A <code>ConfigInterface</code> instance. In this case, the plugin manager will call
+  the config instance's <code>toArray()</code> method to cast it to an array, and use the
+  return value as the configuration to pass to the parent constructor. As with
+  the <code>null</code> value, the plugin manager will be set as its own creation context.</li>
+</ul>
+<h4>Validation</h4>
+<p>The <code>validate()</code> method is defined as follows:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>public function validate($instance)</span>
+<span class=x>{</span>
+<span class=x>    if (method_exists($this, &#39;validatePlugin&#39;)) {</span>
+<span class=x>        trigger_error(sprintf(</span>
+<span class=x>            &#39;%s::validatePlugin() has been deprecated as of 3.0; please define validate() instead&#39;,</span>
+<span class=x>            get_class($this)</span>
+<span class=x>        ), E_USER_DEPRECATED);</span>
+<span class=x>        $this-&gt;validatePlugin($instance);</span>
+<span class=x>        return;</span>
+<span class=x>    }</span>
+
+<span class=x>    if (empty($this-&gt;instanceOf) || $instance instanceof $this-&gt;instanceOf) {</span>
+<span class=x>        return;</span>
+<span class=x>    }</span>
+
+<span class=x>    throw new InvalidServiceException(sprintf(</span>
+<span class=x>        &#39;Plugin manager &quot;%s&quot; expected an instance of type &quot;%s&quot;, but &quot;%s&quot; was received&#39;,</span>
+<span class=x>        __CLASS__,</span>
+<span class=x>        $this-&gt;instanceOf,</span>
+<span class=x>        is_object($instance) ? get_class($instance) : gettype($instance)</span>
+<span class=x>    ));</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>The two takeaways from this are:</p>
+<ul>
+<li>If you are upgrading from v2, your code should continue to work, <em>but will
+  emit a deprecation notice</em>. The way to remove the deprecation notice is to
+  rename the <code>validatePlugin()</code> method to <code>validate()</code>, or to remove it and
+  define the <code>$instanceOf</code> property (if all you're doing is checking the
+  plugin against a single typehint).</li>
+<li>Most plugin manager instances can simply define the <code>$instanceOf</code> property to
+  indicate what plugin interface is considered valid for the plugin manager, and
+  make no further changes to the abstract plugin manager:</li>
+</ul>
+<p> <div class=codehilite><pre><span></span><span class=x>protected $instanceOf = ValidatorInterface::class;</span>
+</pre></div></p>
+<h4>get()</h4>
+<p>The <code>get()</code> signature changes from:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>public function get($name, $options = [], $usePeeringServiceManagers = true)</span>
+</pre></div></p>
+<p>to:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>public function get($name, array $options = null)</span>
+</pre></div></p>
+<p>Essentially: <code>$options</code> now <em>must</em> be an array if passed, and peering is no
+longer supported.</p>
+<h4>Deprecated methods</h4>
+<p>Finally, the following methods from v2's <code>ServiceLocatorAwareInterface</code> are
+retained (without implementing the interface), but marked as deprecated:</p>
+<ul>
+<li><code>setServiceLocator()</code>. This method exists as many tests and plugin manager
+  factories were using it to inject the parent locator (now called the creation
+  context). This method may still be used, and will now set the creation context
+  for the plugin manager, but also emit a deprecation warning.</li>
+<li><code>getServiceLocator()</code> is implemented in <code>ServiceManager</code> (from which
+  <code>AbstractPluginManager</code> inherits), but marked as deprecated.</li>
+</ul>
+<p>Regarding this latter point, <code>getServiceLocator()</code> exists to provide backwards
+compatibility <em>for existing plugin factories</em>. These factories typically pull
+dependencies from the parent/application container in order to initialize the
+plugin. In v2, this would look like:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>function ($plugins)</span>
+<span class=x>{</span>
+<span class=x>    $services = $plugins-&gt;getServiceLocator();</span>
+
+<span class=x>    // pull dependencies from $services:</span>
+<span class=x>    $foo = $services-&gt;get(&#39;Foo&#39;);</span>
+<span class=x>    $bar = $services-&gt;get(&#39;Bar&#39;);</span>
+
+<span class=x>    return new Plugin($foo, $bar);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>In v3, the initial argument to the factory is not the plugin manager instance,
+but the <em>creation context</em>, which is analogous to the parent locator in v2. In
+order to preserve existing behavior, we added the <code>getServiceLocator()</code> method
+to the <code>ServiceManager</code>. As such, the above will continue to work in v3.</p>
+<p>However, this method is marked as deprecated, and will emit an
+<code>E_USER_DEPRECATED</code> notice. To remove the notice, you will need to upgrade your
+code. The above example thus becomes:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>function ($services)</span>
+<span class=x>{</span>
+<span class=x>    // pull dependencies from $services:</span>
+<span class=x>    $foo = $services-&gt;get(&#39;Foo&#39;);</span>
+<span class=x>    $bar = $services-&gt;get(&#39;Bar&#39;);</span>
+
+<span class=x>    return new Plugin($foo, $bar);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>If you <em>were</em> using the passed plugin manager and pulling other plugins, you
+will need to update your code to retrieve the plugin manager from the passed
+container. As an example, given this:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>function ($plugins)</span>
+<span class=x>{</span>
+<span class=x>    $anotherPlugin = $plugins-&gt;get(&#39;AnotherPlugin&#39;);</span>
+<span class=x>    return new Plugin($anotherPlugin);</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>You will need to rewrite it to:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>function ($services)</span>
+<span class=x>{</span>
+<span class=x>    $plugins = $services-&gt;get(&#39;PluginManager&#39;);</span>
+<span class=x>    $anotherPlugin = $plugins-&gt;get(&#39;AnotherPlugin&#39;);</span>
+<span class=x>    return new Plugin($anotherPlugin);</span>
+<span class=x>}</span>
+</pre></div></p>
+<h3>Plugin Service Creation</h3>
+<p>The <code>get()</code> method has new behavior:</p>
+<ul>
+<li>When non-empty <code>$options</code> are passed, it <em>always</em> delegates to <code>build()</code>, and
+  thus will <em>always</em> return a <em>new instance</em>. If you are using <code>$options</code>, the
+  assumption is that you are using the plugin manager as a factory, and thus the
+  instance should not be cached.</li>
+<li>Without <code>$options</code>, <code>get()</code> will cache by default (the default behavior of
+  <code>ServiceManager</code>). To <em>never</em> cache instances, either set the
+  <code>$sharedByDefault</code> class property to <code>false</code>, or pass a boolean <code>false</code> value
+  via the <code>shared_by_default</code> configuration key.</li>
+</ul>
+<h3>Migration example</h3>
+<p>Let's consider the following plugin manager geared towards version 2:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use RuntimeException;</span>
+<span class=x>use Laminas\ServiceManager\AbstractPluginManager;</span>
+
+<span class=x>class ObserverPluginManager extends AbstractPluginManager</span>
+<span class=x>{</span>
+<span class=x>    protected $invokables = [</span>
+<span class=x>        &#39;mail&#39; =&gt; MailObserver::class,</span>
+<span class=x>        &#39;log&#39; =&gt; LogObserver::class,</span>
+<span class=x>    ];</span>
+
+<span class=x>    protected $shareByDefault = false;</span>
+
+<span class=x>    public function validatePlugin($instance)</span>
+<span class=x>    {</span>
+<span class=x>        if (! $instance instanceof ObserverInterface) {</span>
+<span class=x>            throw new RuntimeException(sprintf(</span>
+<span class=x>                &#39;Invalid plugin &quot;%s&quot; created; not an instance of %s&#39;,</span>
+<span class=x>                get_class($instance),</span>
+<span class=x>                ObserverInterface::class</span>
+<span class=x>            ));</span>
+<span class=x>        }</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>To prepare this for version 3, we need to do the following:</p>
+<ul>
+<li>We need to change the <code>$invokables</code> configuration to a combination of
+  <code>factories</code> and <code>aliases</code>.</li>
+<li>We need to implement a <code>validate()</code> method.</li>
+<li>We need to update the <code>validatePlugin()</code> method to proxy to <code>validate()</code>.</li>
+<li>We need to add a <code>$sharedByDefault</code> property (if <code>$shareByDefault</code> is present).</li>
+</ul>
+<p>Doing so, we get the following result:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>namespace MyNamespace;</span>
+
+<span class=x>use RuntimeException;</span>
+<span class=x>use Laminas\ServiceManager\AbstractPluginManager;</span>
+<span class=x>use Laminas\ServiceManager\Exception\InvalidServiceException;</span>
+<span class=x>use Laminas\ServiceManager\Factory\InvokableFactory;</span>
+
+<span class=x>class ObserverPluginManager extends AbstractPluginManager</span>
+<span class=x>{</span>
+<span class=x>    protected $instanceOf = ObserverInterface::class;</span>
+
+<span class=x>    protected $aliases = [</span>
+<span class=x>        &#39;mail&#39; =&gt; MailObserver::class,</span>
+<span class=x>        &#39;Mail&#39; =&gt; MailObserver::class,</span>
+<span class=x>        &#39;log&#39; =&gt; LogObserver::class,</span>
+<span class=x>        &#39;Log&#39; =&gt; LogObserver::class,</span>
+<span class=x>    ];</span>
+
+<span class=x>    protected $factories = [</span>
+<span class=x>        MailObserver::class       =&gt; InvokableFactory::class,</span>
+<span class=x>        LogObserver::class =&gt; InvokableFactory::class,</span>
+<span class=x>        // Legacy (v2) due to alias resolution</span>
+<span class=x>        &#39;mynamespacemailobserver&#39; =&gt; InvokableFactory::class,</span>
+<span class=x>        &#39;mynamespacelogobserver&#39;  =&gt; InvokableFactory::class,</span>
+<span class=x>    ];</span>
+
+<span class=x>    protected $shareByDefault = false;</span>
+
+<span class=x>    protected $sharedByDefault = false;</span>
+
+<span class=x>    public function validate($instance)</span>
+<span class=x>    {</span>
+<span class=x>        if (! $instance instanceof $this-&gt;instanceOf) {</span>
+<span class=x>            throw new InvalidServiceException(sprintf(</span>
+<span class=x>                &#39;Invalid plugin &quot;%s&quot; created; not an instance of %s&#39;,</span>
+<span class=x>                get_class($instance),</span>
+<span class=x>                $this-&gt;instanceOf</span>
+<span class=x>            ));</span>
+<span class=x>        }</span>
+<span class=x>    }</span>
+
+<span class=x>    public function validatePlugin($instance)</span>
+<span class=x>    {</span>
+<span class=x>        try {</span>
+<span class=x>            $this-&gt;validate($instance);</span>
+<span class=x>        } catch (InvalidServiceException $e) {</span>
+<span class=x>            throw new RuntimeException($e-&gt;getMessage(), $e-&gt;getCode(), $e);</span>
+<span class=x>        }</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>Things to note about the above:</p>
+<ul>
+<li>It introduces a new property, <code>$instanceOf</code>. We'll use this later, when we're
+  ready to clean up post-migration.</li>
+<li>It introduces four aliases. This is to allow fetching the various plugins as
+  any of <code>mail</code>, <code>Mail</code>, <code>log</code>, or <code>Log</code> &mdash; all of which are valid in
+  version 2, but, because version 3 does not normalize names, need to be
+  explicitly aliased.</li>
+<li>The aliases point to the fully qualified class name (FQCN) for the service
+  being generated, and these are mapped to <code>InvokableFactory</code> instances. This
+  means you can also fetch your plugins by their FQCN.</li>
+<li>There are also factory entries for the canonicalized FQCN of each factory,
+  which will be used in v2. (Canonicalization in v2 strips non-alphanumeric
+  characters, and casts to lowercase.)</li>
+<li><code>validatePlugin()</code> continues to throw the old exception</li>
+</ul>
+<p>The above will now work in both version 2 and version 3.</p>
+<h3>Migration testing</h3>
+<p>To test your changes, create a new <code>MigrationTest</code> case that uses
+<code>Laminas\ServiceManager\Test\CommonPluginManagerTrait</code>. Override
+<code>getPluginManager()</code> to return an instance of your plugin manager, and override
+<code>getV2InvalidPluginException()</code> to return the classname of the exception your
+<code>validatePlugin()</code> method throws:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use MyNamespace\ObserverInterface;</span>
+<span class=x>use MyNamespace\ObserverPluginManager;</span>
+<span class=x>use MyNamespace\Exception\RuntimeException;</span>
+<span class=x>use PHPUnit_Framework_TestCase as TestCase;</span>
+<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+<span class=x>use Laminas\ServiceManager\Test\CommonPluginManagerTrait;</span>
+
+<span class=x>class MigrationTest extends TestCase</span>
+<span class=x>{</span>
+<span class=x>    use CommonPluginManagerTrait;</span>
+
+<span class=x>    protected function getPluginManager()</span>
+<span class=x>    {</span>
+<span class=x>        return new ObserverPluginManager(new ServiceManager());</span>
+<span class=x>    }</span>
+
+<span class=x>    protected function getV2InvalidPluginException()</span>
+<span class=x>    {</span>
+<span class=x>        return RuntimeException::class;</span>
+<span class=x>    }</span>
+
+<span class=x>    protected function getInstanceOf()</span>
+<span class=x>    {</span>
+<span class=x>        return ObserverInterface::class;</span>
+<span class=x>    }</span>
+<span class=x>}</span>
+</pre></div></p>
+<p>This will check that:</p>
+<ul>
+<li>You have set the <code>$instanceOf</code> property.</li>
+<li><code>$shareByDefault</code> and <code>$sharedByDefault</code> match, if present.</li>
+<li>That requesting an invalid plugin throws the right exception.</li>
+<li>That all your aliases resolve.</li>
+</ul>
+<h3>Post migration</h3>
+<p>After you migrate to version 3, you can clean up your plugin manager:</p>
+<ul>
+<li>Remove the <code>validatePlugin()</code> method.</li>
+<li>If your <code>validate()</code> routine is only checking that the instance is of a single
+  type, and has no other logic, you can remove that implementation as well, as
+  the <code>AbstractPluginManager</code> already takes care of that when <code>$instanceOf</code> is
+  defined!</li>
+<li>Remove the canonicalized FQCN entry for each factory</li>
+</ul>
+<p>Performing these steps on the above, we get:</p>
+<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\AbstractPluginManager;</span>
+<span class=x>use Laminas\ServiceManager\Factory\InvokableFactory;</span>
+
+<span class=x>class ObserverPluginManager extends AbstractPluginManager</span>
+<span class=x>{</span>
+<span class=x>    protected $instanceOf = ObserverInterface::class;</span>
+
+<span class=x>    protected $aliases = [</span>
+<span class=x>        &#39;mail&#39; =&gt; MailObserver::class,</span>
+<span class=x>        &#39;Mail&#39; =&gt; MailObserver::class,</span>
+<span class=x>        &#39;log&#39; =&gt; LogObserver::class,</span>
+<span class=x>        &#39;Log&#39; =&gt; LogObserver::class,</span>
+<span class=x>    ];</span>
+
+<span class=x>    protected $factories = [</span>
+<span class=x>        MailObserver::class =&gt; InvokableFactory::class,</span>
+<span class=x>        LogObserver::class =&gt; InvokableFactory::class,</span>
+<span class=x>    ];</span>
+<span class=x>}</span>
+</pre></div></p>
+<h2 id="di-namespace">DI Namespace</h2>
+<p><strong>The <code>Laminas\ServiceManager\Di</code> namespace has been removed.</strong></p>
+<p>The <code>Laminas\Di</code> component is not actively maintained, and has been largely
+deprecated during the Laminas lifecycle in favor of the Service Manager. Its usage
+as an abstract factory is problematic and error prone when used in conjunction
+with the Service Manager; as such, we've removed it for the initial v3 release.</p>
+<p>We may re-introduce it via a separate component in the future.</p>
+<h2 id="miscellaneous-interfaces-traits-and-classes">Miscellaneous Interfaces, Traits, and Classes</h2>
+<p>The following interfaces, traits, and classes were <em>removed</em>:</p>
+<ul>
+<li><code>Laminas\ServiceManager\MutableCreationOptionsInterface</code>; this was previously
+  used by the <code>AbstractPluginManager</code>, and is no longer required as we ship a
+  separate <code>PluginManagerInterface</code>, and because the functionality is
+  encompassed by the <code>build()</code> method.</li>
+<li><code>Laminas\ServiceManager\MutableCreationOptionsTrait</code></li>
+<li><code>Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory</code>; its capabilities were
+  moved directly into the <code>ServiceManager</code>.</li>
+<li><code>Laminas\ServiceManager\ServiceLocatorAwareInterface</code></li>
+<li><code>Laminas\ServiceManager\ServiceLocatorAwareTrait</code></li>
+<li><code>Laminas\ServiceManager\ServiceManagerAwareInterface</code></li>
+</ul>
+<p>The <code>ServiceLocatorAware</code> and <code>ServiceManagerAware</code> interfaces and traits were
+too often abused under v2, and represent the antithesis of the purpose of the
+Service Manager component; dependencies should be directly injected, and the
+container should never be composed by objects.</p>
+<p>The following classes and interfaces have changes:</p>
+<ul>
+<li><code>Laminas\ServiceManager\Proxy\LazyServiceFactory</code> is now marked <code>final</code>, and
+   implements <code>Laminas\ServiceManager\Proxy\DelegatorFactoryInterface</code>. Its
+   dependencies and capabilities remain the same.</li>
+<li><code>Laminas\ServiceManager\ConfigInterface</code> now is expected to <em>return</em> the modified
+  <code>ServiceManager</code> instance.</li>
+<li><code>Laminas\ServiceManager\Config</code> was updated to follow the changes to
+  <code>ConfigInterface</code> and <code>ServiceManager</code>, and now returns the updated
+  <code>ServiceManager</code> instance from <code>configureServiceManager()</code>.</li>
+</ul>
+
+
+
+
+    <nav>
+    <ul class="page-nav hidden-print">
+
+        
+        <li class="page-nav__item">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../cookbook/factories-vs-abstract-factories/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
+        </li>
+
+        
+        <li class="page-nav__item">
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/laminas/laminas-servicemanager/edit/master/docs/book/migration.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
+
+                
+            </div>
+            <div class="col-md-3 col-sm-12 sidebar">
+                
+                    <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>
+                    
+    <div class="subnavigation hidden-print">
+        <h4 class="subnavigation__title">
+            <a href="..">laminas-servicemanager</a>
+        </h4>
+
+        <h5 class="subnavigation__subtitle">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item ">
+                                <a href="../quick-start/" class="subnavigation__link">Quick Start</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Reference</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../delegators/" class="subnavigation__link">Delegators</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../lazy-services/" class="subnavigation__link">Lazy services</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../plugin-managers/" class="subnavigation__link">Plugin managers</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../config-abstract-factory/" class="subnavigation__link">Configuration-based Abstract Factory</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../reflection-abstract-factory/" class="subnavigation__link">Reflection-based Abstract Factory</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../console-tools/" class="subnavigation__link">Console Tools</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item">
+                                <span class="subnavigation__headline">Cookbook</span>
+                                <ul class="subnavigation__list">
+                                    
+                                        
+    <li class="subnavigation__list-item ">
+        <a href="../cookbook/factories-vs-abstract-factories/" class="subnavigation__link">Factories vs Abstract Factories</a>
+    </li>
+
+                                    
+                                </ul>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Migration Guide</a>
+                            </li>
+                        
+                    
+                
+            
+        </ul>
+    </div>
+
+                
+            </div>
+        </div>
+    </div>
+
+    
+    <footer class="footer">
+    <div class="container">
+
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7 offset-md-2">
+                <h5>Laminas</h5>
+                <ul>
+                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
+                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+
+            
+            <div class="col-md-4 offset-md-2">
+                <h4 class="footer__headline">Support</h4>
+                <ul class="support__list">
+                    <li class="support__list-item">
+                        <a href="https://discourse.laminas.dev" class="support__link" title="Forum"><i class="fa fa-comments"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://laminas.dev/chat" class="support__link" title="Chat"><i class="fa fa-slack"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://github.com/laminas" class="support__link" title="Github"><i class="fa fa-github"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://twitter.com/getlaminas" class="support__link" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/blog/feed-rss.xml" class="support__link" title="Blog feed"><i class="fa fa-rss"></i></a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://getlaminas.org/security/feed" class="support__link" title="Security feed"><i class="fa fa-rss-square"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">License</h4>
+                <p>
+                    Code licensed under <a
+                        href="https://github.com/laminas/laminas-servicemanager//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                </p>
+            </div>
+
+            
+            <div class="col-md-3">
+                <h4 class="footer__headline">Copyright</h4>
+                <p>
+                    <!--Built with love by the Laminas team with the help of our
+                    <a href="https://github.com/laminas/laminas-servicemanager//graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script>
+        let base_url = '..',
+            project  = "components",
+            siteName = 'laminas-servicemanager';
+    </script>
+    <script src="/js/scripts.js"></script>
+        <script src="../search/main.js"></script>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in laminas-servicemanager" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</html>
