@@ -3,7 +3,7 @@
 - Since 3.2.0
 
 You can simplify the process of creating factories by registering
-`Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory` with your service
+`Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory` with your service
 manager instance. This allows you to define services using a configuration map,
 rather than having to create separate factories for each of your services. 
 
@@ -23,14 +23,14 @@ Or within configuration:
 
 ```php
 return [
-    // zend-mvc:
+    // laminas-mvc:
     'service_manager' => [
         'abstract_factories' => [
             ConfigAbstractFactory::class,
         ],
     ],
 
-    // zend-expressive or ConfigProvider consumers:
+    // mezzio or ConfigProvider consumers:
     'dependencies' => [
         'abstract_factories' => [
             ConfigAbstractFactory::class,
@@ -57,7 +57,7 @@ return [
 
 Configuration should be provided via the `config` service, which should return
 an array or `ArrayObject`. `ConfigAbstractFactory` looks for a top-level key in
-this service named after itself (i.e., `Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory`)
+this service named after itself (i.e., `Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory`)
 that is an array value. Each item in the array:
 
 - Should have a key representing the service name (typically the fully
@@ -69,7 +69,7 @@ that is an array value. Each item in the array:
 As an example:
 
 ```php
-use Zend\ServiceManager\AbstractFactory\ConfigAbstractFactory;
+use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 
 return [
     ConfigAbstractFactory::class => [

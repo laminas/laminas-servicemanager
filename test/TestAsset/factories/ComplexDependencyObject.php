@@ -1,10 +1,10 @@
 <?php
 
-namespace ZendTest\ServiceManager\TestAsset;
+namespace LaminasTest\ServiceManager\TestAsset;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use ZendTest\ServiceManager\TestAsset\ComplexDependencyObject;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use LaminasTest\ServiceManager\TestAsset\ComplexDependencyObject;
 
 class ComplexDependencyObjectFactory implements FactoryInterface
 {
@@ -17,8 +17,8 @@ class ComplexDependencyObjectFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         return new ComplexDependencyObject(
-            $container->get(\ZendTest\ServiceManager\TestAsset\SimpleDependencyObject::class),
-            $container->get(\ZendTest\ServiceManager\TestAsset\SecondComplexDependencyObject::class)
+            $container->get(\LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject::class),
+            $container->get(\LaminasTest\ServiceManager\TestAsset\SecondComplexDependencyObject::class)
         );
     }
 }
