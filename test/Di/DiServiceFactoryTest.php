@@ -1,20 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\Di;
+namespace LaminasTest\ServiceManager\Di;
 
-use Zend\Di\Di;
-use Zend\ServiceManager\Di\DiServiceFactory;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Di\Di;
+use Laminas\ServiceManager\Di\DiServiceFactory;
+use Laminas\ServiceManager\ServiceManager;
 
 /**
- * @group Zend_ServiceManager
+ * @group Laminas_ServiceManager
  */
 class DiServiceFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,14 +34,14 @@ class DiServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $instanceManager = new \Zend\Di\InstanceManager();
+        $instanceManager = new \Laminas\Di\InstanceManager();
         $instanceManager->addSharedInstanceWithParameters(
             $this->fooInstance = new \stdClass(),
             'foo',
             array('bar' => 'baz')
         );
-        $this->mockDi = $this->getMock('Zend\Di\Di', array(), array(null, $instanceManager));
-        $this->mockServiceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        $this->mockDi = $this->getMock('Laminas\Di\Di', array(), array(null, $instanceManager));
+        $this->mockServiceLocator = $this->getMock('Laminas\ServiceManager\ServiceLocatorInterface');
         $this->diServiceFactory = new DiServiceFactory(
             $this->mockDi,
             'foo',
@@ -51,21 +50,21 @@ class DiServiceFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\Di\DiServiceFactory::__construct
+     * @covers Laminas\ServiceManager\Di\DiServiceFactory::__construct
      */
     public function testConstructor()
     {
         $instance = new DiServiceFactory(
-            $this->getMock('Zend\Di\Di'),
+            $this->getMock('Laminas\Di\Di'),
             'string',
             array('foo' => 'bar')
         );
-        $this->assertInstanceOf('Zend\ServiceManager\Di\DiServiceFactory', $instance);
+        $this->assertInstanceOf('Laminas\ServiceManager\Di\DiServiceFactory', $instance);
     }
 
     /**
-     * @covers Zend\ServiceManager\Di\DiServiceFactory::createService
-     * @covers Zend\ServiceManager\Di\DiServiceFactory::get
+     * @covers Laminas\ServiceManager\Di\DiServiceFactory::createService
+     * @covers Laminas\ServiceManager\Di\DiServiceFactory::get
      */
     public function testCreateService()
     {

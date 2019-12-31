@@ -1,19 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\Di;
+namespace LaminasTest\ServiceManager\Di;
 
-use Zend\ServiceManager\Di\DiServiceInitializer;
-use Zend\ServiceManager\Di\DiInstanceManagerProxy;
+use Laminas\ServiceManager\Di\DiInstanceManagerProxy;
+use Laminas\ServiceManager\Di\DiServiceInitializer;
 
 /**
- * @group Zend_ServiceManager
+ * @group Laminas_ServiceManager
  */
 class DiServiceInitializerTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,10 +32,10 @@ class DiServiceInitializerTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->mockDi = $this->getMock('Zend\Di\Di', array('injectDependencies'));
-        $this->mockServiceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        $this->mockDi = $this->getMock('Laminas\Di\Di', array('injectDependencies'));
+        $this->mockServiceLocator = $this->getMock('Laminas\ServiceManager\ServiceLocatorInterface');
         $this->mockDiInstanceManagerProxy = new DiInstanceManagerProxy(
-            $this->mockDiInstanceManager = $this->getMock('Zend\Di\InstanceManager'),
+            $this->mockDiInstanceManager = $this->getMock('Laminas\Di\InstanceManager'),
             $this->mockServiceLocator
         );
         $this->diServiceInitializer = new DiServiceInitializer(
@@ -48,7 +47,7 @@ class DiServiceInitializerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\Di\DiServiceInitializer::initialize
+     * @covers Laminas\ServiceManager\Di\DiServiceInitializer::initialize
      */
     public function testInitialize()
     {
@@ -61,12 +60,12 @@ class DiServiceInitializerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zend\ServiceManager\Di\DiServiceInitializer::initialize
+     * @covers Laminas\ServiceManager\Di\DiServiceInitializer::initialize
      * @todo this needs to be moved into its own class
      */
     public function testProxyInstanceManagersStayInSync()
     {
-        $instanceManager = new \Zend\Di\InstanceManager();
+        $instanceManager = new \Laminas\Di\InstanceManager();
         $proxy = new DiInstanceManagerProxy($instanceManager, $this->mockServiceLocator);
         $instanceManager->addAlias('foo', 'bar');
 
