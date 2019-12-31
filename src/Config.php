@@ -1,22 +1,21 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager;
+namespace Laminas\ServiceManager;
 
-use Zend\Stdlib\ArrayUtils\MergeRemoveKey;
-use Zend\Stdlib\ArrayUtils\MergeReplaceKeyInterface;
+use Laminas\Stdlib\ArrayUtils\MergeRemoveKey;
+use Laminas\Stdlib\ArrayUtils\MergeReplaceKeyInterface;
 
 /**
  * Object for defining configuration and configuring an existing service manager instance.
  *
  * In order to provide configuration merging capabilities, this class implements
- * the same functionality as `Zend\Stdlib\ArrayUtils::merge()`. That routine
+ * the same functionality as `Laminas\Stdlib\ArrayUtils::merge()`. That routine
  * allows developers to specifically shape how values are merged:
  *
  * - A value which is an instance of `MergeRemoveKey` indicates the value should
@@ -25,7 +24,7 @@ use Zend\Stdlib\ArrayUtils\MergeReplaceKeyInterface;
  *   value it contains should be used to replace any previous versions.
  *
  * These features are advanced, and not typically used. If you wish to use them,
- * you will need to require the zend-stdlib package in your application.
+ * you will need to require the laminas-stdlib package in your application.
  */
 class Config implements ConfigInterface
 {
@@ -90,7 +89,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Copy paste from https://github.com/zendframework/zend-stdlib/commit/26fcc32a358aa08de35625736095cb2fdaced090
+     * Copy paste from https://github.com/laminas/laminas-stdlib/commit/26fcc32a358aa08de35625736095cb2fdaced090
      * to keep compatibility with previous version
      *
      * @link https://github.com/zendframework/zend-servicemanager/pull/68

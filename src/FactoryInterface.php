@@ -1,18 +1,17 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager;
+namespace Laminas\ServiceManager;
 
 /**
  * Backwards-compatibility shim for FactoryInterface.
  *
- * Implementations should update to implement only Zend\ServiceManager\Factory\FactoryInterface.
+ * Implementations should update to implement only Laminas\ServiceManager\Factory\FactoryInterface.
  *
  * If upgrading from v2, take the following steps:
  *
@@ -25,10 +24,10 @@ namespace Zend\ServiceManager;
  *   proxy to `__invoke()`.
  *
  * Once you have tested your code, you can then update your class to only implement
- * Zend\ServiceManager\Factory\FactoryInterface, and remove the `createService()`
+ * Laminas\ServiceManager\Factory\FactoryInterface, and remove the `createService()`
  * method.
  *
- * @deprecated Use Zend\ServiceManager\Factory\FactoryInterface instead.
+ * @deprecated Use Laminas\ServiceManager\Factory\FactoryInterface instead.
  */
 interface FactoryInterface extends Factory\FactoryInterface
 {
