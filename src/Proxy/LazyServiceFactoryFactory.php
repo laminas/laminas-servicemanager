@@ -1,23 +1,22 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager\Proxy;
+namespace Laminas\ServiceManager\Proxy;
 
+use Laminas\ServiceManager\Exception;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use ProxyManager\Configuration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\Exception;
 
 /**
- * Service factory responsible of instantiating {@see \Zend\ServiceManager\Proxy\LazyServiceFactory}
+ * Service factory responsible of instantiating {@see \Laminas\ServiceManager\Proxy\LazyServiceFactory}
  * and configuring it starting from application configuration
  */
 class LazyServiceFactoryFactory implements FactoryInterface
@@ -25,7 +24,7 @@ class LazyServiceFactoryFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      *
-     * @return \Zend\ServiceManager\Proxy\LazyServiceFactory
+     * @return \Laminas\ServiceManager\Proxy\LazyServiceFactory
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
