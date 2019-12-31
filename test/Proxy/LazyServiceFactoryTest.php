@@ -1,20 +1,19 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\Proxy;
+namespace LaminasTest\ServiceManager\Proxy;
 
-use Zend\ServiceManager\Proxy\LazyServiceFactory;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 
 /**
- * Tests for {@see \Zend\ServiceManager\Proxy\LazyServiceFactory}
+ * Tests for {@see \Laminas\ServiceManager\Proxy\LazyServiceFactory}
  *
- * @covers \Zend\ServiceManager\Proxy\LazyServiceFactory
+ * @covers \Laminas\ServiceManager\Proxy\LazyServiceFactory
  */
 class LazyServiceFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +23,7 @@ class LazyServiceFactoryTest extends \PHPUnit_Framework_TestCase
     protected $proxyFactory;
 
     /**
-     * @var \Zend\ServiceManager\ServiceLocatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Laminas\ServiceManager\ServiceLocatorInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $locator;
 
@@ -37,7 +36,7 @@ class LazyServiceFactoryTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Please install `ocramius/proxy-manager` to run these tests');
         }
 
-        $this->locator      = $this->getMock('Zend\\ServiceManager\\ServiceLocatorInterface');
+        $this->locator      = $this->getMock('Laminas\\ServiceManager\\ServiceLocatorInterface');
         $this->proxyFactory = $this
             ->getMockBuilder('ProxyManager\\Factory\\LazyLoadingValueHolderFactory')
             ->disableOriginalConstructor()
@@ -80,7 +79,7 @@ class LazyServiceFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = new LazyServiceFactory($this->proxyFactory, array());
 
-        $this->setExpectedException('Zend\\ServiceManager\\Exception\\InvalidServiceNameException');
+        $this->setExpectedException('Laminas\\ServiceManager\\Exception\\InvalidServiceNameException');
 
         $factory->createDelegatorWithName($this->locator, 'foo', 'baz', function () {});
     }
