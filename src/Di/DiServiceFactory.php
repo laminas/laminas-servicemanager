@@ -1,20 +1,18 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_ServiceManager
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager\Di;
+namespace Laminas\ServiceManager\Di;
 
-use Zend\Di\Di;
-use Zend\Di\Exception\ClassNotFoundException as DiClassNotFoundException;
-use Zend\ServiceManager\Exception;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Di\Di;
+use Laminas\Di\Exception\ClassNotFoundException as DiClassNotFoundException;
+use Laminas\ServiceManager\Exception;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class DiServiceFactory extends Di implements FactoryInterface
 {
@@ -27,12 +25,12 @@ class DiServiceFactory extends Di implements FactoryInterface
     /**@#-*/
 
     /**
-     * @var \Zend\Di\Di
+     * @var \Laminas\Di\Di
      */
     protected $di = null;
 
     /**
-     * @var \Zend\Di\InstanceManager
+     * @var \Laminas\Di\InstanceManager
      */
     protected $name = null;
 
@@ -52,8 +50,8 @@ class DiServiceFactory extends Di implements FactoryInterface
     protected $serviceLocator = null;
 
     /**
-     * @param \Zend\Di\Di $di
-     * @param null|\Zend\Di\InstanceManager $name
+     * @param \Laminas\Di\Di $di
+     * @param null|\Laminas\Di\InstanceManager $name
      * @param array $parameters
      * @param string $useServiceLocator
      */
