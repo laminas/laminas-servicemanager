@@ -1,11 +1,11 @@
 <?php
 
-namespace ZendBench\ServiceManager;
+namespace LaminasBench\ServiceManager;
 
+use Laminas\ServiceManager\ServiceManager;
 use PhpBench\Benchmark\Metadata\Annotations\Iterations;
 use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use PhpBench\Benchmark\Metadata\Annotations\Warmup;
-use Zend\ServiceManager\ServiceManager;
 
 /**
  * @Revs(100)
