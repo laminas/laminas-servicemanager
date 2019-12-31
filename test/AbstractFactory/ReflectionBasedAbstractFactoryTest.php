@@ -1,17 +1,18 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-servicemanager for the canonical source repository
- * @copyright Copyright (c) 2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\AbstractFactory;
+namespace LaminasTest\ServiceManager\AbstractFactory;
 
 use ArrayAccess;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
-use Zend\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 
 class ReflectionBasedAbstractFactoryTest extends TestCase
 {
@@ -53,6 +54,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService()
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
+        $this->container->has(\ZendTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface::class)->willReturn(false);
         $this->container->has('config')->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $this->expectException(ServiceNotFoundException::class);
@@ -163,6 +165,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     {
         $this->container->has('config')->willReturn(false);
         $this->container->has(ArrayAccess::class)->willReturn(false);
+        $this->container->has(\ZendTest\ServiceManager\AbstractFactory\ArrayAccess::class)->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $instance = $factory(
             $this->container->reveal(),

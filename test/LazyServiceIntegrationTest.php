@@ -1,12 +1,19 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-servicemanager for the canonical source repository
- * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager;
+namespace LaminasTest\ServiceManager;
 
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
+use Laminas\ServiceManager\ServiceManager;
+use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\Autoloader\AutoloaderInterface;
 use RecursiveDirectoryIterator;
@@ -14,15 +21,9 @@ use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
 use stdClass;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\InvokableFactory;
-use Zend\ServiceManager\Proxy\LazyServiceFactory;
-use Zend\ServiceManager\ServiceManager;
-use ZendTest\ServiceManager\TestAsset\InvokableObject;
 
 /**
- * @covers \Zend\ServiceManager\ServiceManager
+ * @covers \Laminas\ServiceManager\ServiceManager
  */
 class LazyServiceIntegrationTest extends TestCase
 {
@@ -30,7 +31,7 @@ class LazyServiceIntegrationTest extends TestCase
 
     public function setUp()
     {
-        $this->proxyDir = sys_get_temp_dir() . '/zend-servicemanager-proxy';
+        $this->proxyDir = sys_get_temp_dir() . '/laminas-servicemanager-proxy';
         if (! is_dir($this->proxyDir)) {
             mkdir($this->proxyDir);
         }
@@ -92,7 +93,7 @@ class LazyServiceIntegrationTest extends TestCase
     }
 
     /**
-     * @covers \Zend\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
+     * @covers \Laminas\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
      */
     public function testCanUseLazyServiceFactoryFactoryToCreateLazyServiceFactoryToActAsDelegatorToCreateLazyService()
     {
@@ -146,7 +147,7 @@ class LazyServiceIntegrationTest extends TestCase
     }
 
     /**
-     * @covers \Zend\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
+     * @covers \Laminas\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
      */
     public function testMissingClassMapRaisesExceptionOnAttemptToRetrieveLazyService()
     {
@@ -168,7 +169,7 @@ class LazyServiceIntegrationTest extends TestCase
     }
 
     /**
-     * @covers \Zend\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
+     * @covers \Laminas\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
      */
     public function testWillNotGenerateProxyClassFilesByDefault()
     {
