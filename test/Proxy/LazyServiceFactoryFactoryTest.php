@@ -1,22 +1,20 @@
 <?php
+
 /**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/zf2 for the canonical source repository
- * @copyright Copyright (c) 2005-2013 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- * @package   Zend_ServiceManager
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\Proxy;
+namespace LaminasTest\ServiceManager\Proxy;
 
-use Zend\ServiceManager\Proxy\LazyServiceFactoryFactory;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory;
+use Laminas\ServiceManager\ServiceManager;
 
 /**
- * Tests for {@see \Zend\ServiceManager\Proxy\LazyServiceFactoryFactory}
+ * Tests for {@see \Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory}
  *
- * @covers \Zend\ServiceManager\Proxy\LazyServiceFactoryFactory
+ * @covers \Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory
  */
 class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,11 +33,11 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidConfiguration($config)
     {
-        $locator  = $this->getMock('Zend\\ServiceManager\\ServiceLocatorInterface');
+        $locator  = $this->getMock('Laminas\\ServiceManager\\ServiceLocatorInterface');
         $factory  = new LazyServiceFactoryFactory();
 
         $locator->expects($this->any())->method('get')->with('Config')->will($this->returnValue($config));
-        $this->setExpectedException('Zend\\ServiceManager\\Exception\\InvalidArgumentException');
+        $this->setExpectedException('Laminas\\ServiceManager\\Exception\\InvalidArgumentException');
 
         $factory->createService($locator);
     }
@@ -47,7 +45,7 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
     public function testAutoGenerateProxyFiles()
     {
         $serviceManager = new ServiceManager();
-        $namespace      = 'ZendTestProxy' . uniqid();
+        $namespace      = 'LaminasTestProxy' . uniqid();
 
         $serviceManager->setService(
             'Config',
@@ -59,7 +57,7 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
                  ),
             )
         );
-        $serviceManager->setFactory('foo-delegator', 'Zend\ServiceManager\Proxy\LazyServiceFactoryFactory');
+        $serviceManager->setFactory('foo-delegator', 'Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory');
         $serviceManager->setInvokableClass('foo', __CLASS__);
         $serviceManager->addDelegator('foo', 'foo-delegator');
 
@@ -69,11 +67,11 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ProxyManager\\Proxy\\LazyLoadingInterface', $proxy);
         $this->assertInstanceOf(__CLASS__, $proxy);
         $this->assertSame(
-            $namespace . '\__PM__\ZendTest\ServiceManager\Proxy\LazyServiceFactoryFactoryTest',
+            $namespace . '\__PM__\LaminasTest\ServiceManager\Proxy\LazyServiceFactoryFactoryTest',
             get_class($proxy)
         );
         $this->assertFileExists(
-            sys_get_temp_dir() . '/' . $namespace . '__PM__ZendTestServiceManagerProxyLazyServiceFactoryFactoryTest.php'
+            sys_get_temp_dir() . '/' . $namespace . '__PM__LaminasTestServiceManagerProxyLazyServiceFactoryFactoryTest.php'
         );
         $this->assertFalse($proxy->isProxyInitialized());
         $this->assertEquals($this->invalidConfigProvider(), $proxy->invalidConfigProvider());
@@ -83,7 +81,7 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
     public function testAutoGenerateAndEvaluateProxies()
     {
         $serviceManager = new ServiceManager();
-        $namespace      = 'ZendTestProxy' . uniqid();
+        $namespace      = 'LaminasTestProxy' . uniqid();
 
         $serviceManager->setService(
             'Config',
@@ -94,7 +92,7 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
                  ),
             )
         );
-        $serviceManager->setFactory('foo-delegator', 'Zend\ServiceManager\Proxy\LazyServiceFactoryFactory');
+        $serviceManager->setFactory('foo-delegator', 'Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory');
         $serviceManager->setInvokableClass('foo', __CLASS__);
         $serviceManager->addDelegator('foo', 'foo-delegator');
 
@@ -104,11 +102,11 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ProxyManager\\Proxy\\LazyLoadingInterface', $proxy);
         $this->assertInstanceOf(__CLASS__, $proxy);
         $this->assertSame(
-            $namespace . '\__PM__\ZendTest\ServiceManager\Proxy\LazyServiceFactoryFactoryTest',
+            $namespace . '\__PM__\LaminasTest\ServiceManager\Proxy\LazyServiceFactoryFactoryTest',
             get_class($proxy)
         );
         $this->assertFileNotExists(
-            sys_get_temp_dir() . '/' . $namespace . '__PM__ZendTestServiceManagerProxyLazyServiceFactoryFactoryTest.php'
+            sys_get_temp_dir() . '/' . $namespace . '__PM__LaminasTestServiceManagerProxyLazyServiceFactoryFactoryTest.php'
         );
         $this->assertFalse($proxy->isProxyInitialized());
         $this->assertEquals($this->invalidConfigProvider(), $proxy->invalidConfigProvider());
@@ -119,7 +117,7 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $autoloaders    = spl_autoload_functions();
         $serviceManager = new ServiceManager();
-        $namespace      = 'ZendTestProxy' . uniqid();
+        $namespace      = 'LaminasTestProxy' . uniqid();
 
         $serviceManager->setService(
             'Config',
@@ -131,7 +129,7 @@ class LazyServiceFactoryFactoryTest extends \PHPUnit_Framework_TestCase
                  ),
             )
         );
-        $serviceManager->setFactory('foo-delegator', 'Zend\ServiceManager\Proxy\LazyServiceFactoryFactory');
+        $serviceManager->setFactory('foo-delegator', 'Laminas\ServiceManager\Proxy\LazyServiceFactoryFactory');
         $serviceManager->create('foo-delegator');
 
         $currentAutoloaders = spl_autoload_functions();
