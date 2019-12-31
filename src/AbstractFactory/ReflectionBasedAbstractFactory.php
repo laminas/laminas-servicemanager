@@ -1,17 +1,18 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-servicemanager for the canonical source repository
- * @copyright Copyright (c) 2016-2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-servicemanager/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\ServiceManager\AbstractFactory;
+namespace Laminas\ServiceManager\AbstractFactory;
 
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use ReflectionClass;
 use ReflectionParameter;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 /**
  * Reflection-based factory.
@@ -53,7 +54,7 @@ use Zend\ServiceManager\Factory\AbstractFactoryInterface;
  *   a default value is present; if the default is present, that will be used.
  * - If a service cannot be found for a given typehint, the factory will
  *   raise an exception detailing this.
- * - Some services provided by Zend Framework components do not have
+ * - Some services provided by Laminas components do not have
  *   entries based on their class name (for historical reasons); the
  *   factory allows defining a map of these class/interface names to the
  *   corresponding service name to allow them to resolve.
@@ -61,7 +62,7 @@ use Zend\ServiceManager\Factory\AbstractFactoryInterface;
  * `$options` passed to the factory are ignored in all cases, as we cannot
  * make assumptions about which argument(s) they might replace.
  *
- * Based on the LazyControllerAbstractFactory from zend-mvc.
+ * Based on the LazyControllerAbstractFactory from laminas-mvc.
  */
 class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
 {
@@ -76,8 +77,8 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      *
      * <code>
      * [
-     *     \Zend\Filter\FilterPluginManager::class       => 'FilterManager',
-     *     \Zend\Validator\ValidatorPluginManager::class => 'ValidatorManager',
+     *     \Laminas\Filter\FilterPluginManager::class       => 'FilterManager',
+     *     \Laminas\Validator\ValidatorPluginManager::class => 'ValidatorManager',
      * ]
      * </code>
      *

@@ -1,19 +1,20 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-servicemanager for the canonical source repository
- * @copyright Copyright (c) 2018 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-servicemanager/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager;
+namespace LaminasTest\ServiceManager;
 
+use Laminas\ServiceManager\PsrContainerDecorator;
+use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
-use Zend\ServiceManager\PsrContainerDecorator;
-use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Zend\ServiceManager\PsrContainerDecorator
+ * @covers \Laminas\ServiceManager\PsrContainerDecorator
  */
 class PsrContainerDecoratorTest extends TestCase
 {

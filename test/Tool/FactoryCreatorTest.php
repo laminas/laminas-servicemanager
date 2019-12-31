@@ -1,17 +1,18 @@
 <?php
+
 /**
- * @link      http://github.com/zendframework/zend-servicemanager for the canonical source repository
- * @copyright Copyright (c) 2016 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
+ * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
+ * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
+ * @license   https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\ServiceManager\Tool;
+namespace LaminasTest\ServiceManager\Tool;
 
+use Laminas\ServiceManager\Tool\FactoryCreator;
+use LaminasTest\ServiceManager\TestAsset\ComplexDependencyObject;
+use LaminasTest\ServiceManager\TestAsset\InvokableObject;
+use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
-use Zend\ServiceManager\Tool\FactoryCreator;
-use ZendTest\ServiceManager\TestAsset\ComplexDependencyObject;
-use ZendTest\ServiceManager\TestAsset\InvokableObject;
-use ZendTest\ServiceManager\TestAsset\SimpleDependencyObject;
 
 class FactoryCreatorTest extends TestCase
 {
