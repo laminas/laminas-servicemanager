@@ -1,8 +1,8 @@
 <?php
-namespace ZendBench\ServiceManager\BenchAsset;
+namespace LaminasBench\ServiceManager\BenchAsset;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class FactoryFoo implements FactoryInterface
 {
