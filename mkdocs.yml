@@ -2,10 +2,19 @@ docs_dir: docs/book
 site_dir: docs/html
 nav:
     - index.md
-    - { 'Quick Start': quick-start.md }
-    - { Reference: [{ 'PSR-11 Support': psr-11.md }, { 'Configuring the service manager': configuring-the-service-manager.md }, { Delegators: delegators.md }, { 'Lazy services': lazy-services.md }, { 'Plugin managers': plugin-managers.md }, { 'Configuration-based Abstract Factory': config-abstract-factory.md }, { 'Reflection-based Abstract Factory': reflection-abstract-factory.md }, { 'Console Tools': console-tools.md }] }
-    - { Cookbook: [{ 'Factories vs Abstract Factories': cookbook/factories-vs-abstract-factories.md }] }
-    - { 'Migration Guide': migration.md }
+    - 'Quick Start': quick-start.md
+    - Reference:
+      - 'PSR-11 Support': psr-11.md
+      - 'Configuring the service manager': configuring-the-service-manager.md
+      - Delegators: delegators.md
+      - 'Lazy services': lazy-services.md
+      - 'Plugin managers': plugin-managers.md
+      - 'Configuration-based Abstract Factory': config-abstract-factory.md
+      - 'Reflection-based Abstract Factory': reflection-abstract-factory.md
+      - 'Console Tools': console-tools.md
+    - Cookbook:
+      - 'Factories vs Abstract Factories': cookbook/factories-vs-abstract-factories.md
+    - 'Migration Guide': migration.md
 site_name: laminas-servicemanager
 site_description: 'laminas-servicemanager: factory-driven dependency injection container'
 repo_url: 'https://github.com/laminas/laminas-servicemanager'
