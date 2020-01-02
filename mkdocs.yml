@@ -17,3 +17,6 @@ nav:
 site_name: laminas-servicemanager
 site_description: 'laminas-servicemanager: factory-driven dependency injection container'
 repo_url: 'https://github.com/laminas/laminas-servicemanager'
+extra:
+    project: Components
+    project_url: 'https://docs.laminas.dev'
