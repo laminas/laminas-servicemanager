@@ -1,7 +1,7 @@
 docs_dir: docs/book
 site_dir: docs/html
 nav:
-    - index.md
+    - Home: index.md
     - 'Quick Start': quick-start.md
     - Reference:
       - 'Configuring the service manager': configuring-the-service-manager.md
@@ -19,4 +19,3 @@ site_description: 'laminas-servicemanager: factory-driven dependency injection c
 repo_url: 'https://github.com/laminas/laminas-servicemanager'
 extra:
     project: Components
-    project_url: 'https://docs.laminas.dev'
