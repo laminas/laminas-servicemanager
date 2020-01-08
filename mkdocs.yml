@@ -1,7 +1,7 @@
 docs_dir: docs/book
 site_dir: docs/html
 nav:
-    - index.md
+    - Home: index.md
     - 'Quick Start': quick-start.md
     - Reference:
       - 'PSR-11 Support': psr-11.md
