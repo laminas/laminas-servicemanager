@@ -20,4 +20,3 @@ site_description: 'laminas-servicemanager: factory-driven dependency injection c
 repo_url: 'https://github.com/laminas/laminas-servicemanager'
 extra:
     project: Components
-    project_url: 'https://docs.laminas.dev'
