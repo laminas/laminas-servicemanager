@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -61,20 +65,6 @@
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -319,37 +309,34 @@ rather than having to create separate factories for each of your services.</p>
 <p>Enable the <code>ConfigAbstractFactory</code> in the same way that you would enable
 any other abstract factory.</p>
 <p>Programmatically:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$serviceManager = new ServiceManager();</span>
-<span class=x>$serviceManager-&gt;addAbstractFactory(new ConfigAbstractFactory());</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$serviceManager = new ServiceManager();
+$serviceManager-&gt;addAbstractFactory(new ConfigAbstractFactory());</code></pre>
 <p>Or within configuration:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
-<span class=x>    // laminas-mvc:</span>
-<span class=x>    &#39;service_manager&#39; =&gt; [</span>
-<span class=x>        &#39;abstract_factories&#39; =&gt; [</span>
-<span class=x>            ConfigAbstractFactory::class,</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
+<pre class=codehilite><code class=language-php>return [
+    // laminas-mvc:
+    'service_manager' =&gt; [
+        'abstract_factories' =&gt; [
+            ConfigAbstractFactory::class,
+        ],
+    ],
 
-<span class=x>    // mezzio or ConfigProvider consumers:</span>
-<span class=x>    &#39;dependencies&#39; =&gt; [</span>
-<span class=x>        &#39;abstract_factories&#39; =&gt; [</span>
-<span class=x>            ConfigAbstractFactory::class,</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>];</span>
-</pre></div></p>
+    // mezzio or ConfigProvider consumers:
+    'dependencies' =&gt; [
+        'abstract_factories' =&gt; [
+            ConfigAbstractFactory::class,
+        ],
+    ],
+];</code></pre>
 <p>Like all abstract factories starting in version 3, you may also use the config
 abstract factory as a mapped factory, registering it as a factory for a specific
 class:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>return [</span>
-<span class=x>    &#39;service_manager&#39; =&gt; [</span>
-<span class=x>        &#39;factories&#39; =&gt; [</span>
-<span class=x>            SomeCustomClass::class =&gt; ConfigAbstractFactory::class,</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>return [
+    'service_manager' =&gt; [
+        'factories' =&gt; [
+            SomeCustomClass::class =&gt; ConfigAbstractFactory::class,
+        ],
+    ],
+];</code></pre>
 <h2 id="configuration">Configuration</h2>
 <p>Configuration should be provided via the <code>config</code> service, which should return
 an array or <code>ArrayObject</code>. <code>ConfigAbstractFactory</code> looks for a top-level key in
@@ -363,20 +350,19 @@ that is an array value. Each item in the array:</p>
   container.</li>
 </ul>
 <p>As an example:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;</span>
+<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 
-<span class=x>return [</span>
-<span class=x>    ConfigAbstractFactory::class =&gt; [</span>
-<span class=x>        MyInvokableClass::class =&gt; [],</span>
-<span class=x>        MySimpleClass::class =&gt; [</span>
-<span class=x>            Logger::class,</span>
-<span class=x>        ],</span>
-<span class=x>        Logger::class =&gt; [</span>
-<span class=x>            Handler::class,</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>];</span>
-</pre></div></p>
+return [
+    ConfigAbstractFactory::class =&gt; [
+        MyInvokableClass::class =&gt; [],
+        MySimpleClass::class =&gt; [
+            Logger::class,
+        ],
+        Logger::class =&gt; [
+            Handler::class,
+        ],
+    ],
+];</code></pre>
 <p>The definition tells the service manager how this abstract factory should manage
 dependencies in the classes defined. In the above example, <code>MySimpleClass</code> has a
 single dependency on a <code>Logger</code> instance. The abstract factory will simply look
@@ -389,45 +375,43 @@ if it will fail; however, if <code>Handler</code> is configured directly with th
 already &mdash; for example, mapped to a custom factory &mdash; the service will
 be created and used as a dependency.</p>
 <p>As another, more complete example, consider the following classes:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>class UserMapper</span>
-<span class=x>{</span>
-<span class=x>    public function __construct(Adapter $db, Cache $cache) {}</span>
-<span class=x>}</span>
+<pre class=codehilite><code class=language-php>class UserMapper
+{
+    public function __construct(Adapter $db, Cache $cache) {}
+}
 
-<span class=x>class Adapter</span>
-<span class=x>{</span>
-<span class=x>    public function __construct(array $config) {}</span>
-<span class=x>}</span>
+class Adapter
+{
+    public function __construct(array $config) {}
+}
 
-<span class=x>class Cache</span>
-<span class=x>{</span>
-<span class=x>    public function __construct(CacheAdapter $cacheAdapter) {}</span>
-<span class=x>}</span>
+class Cache
+{
+    public function __construct(CacheAdapter $cacheAdapter) {}
+}
 
-<span class=x>class CacheAdapter</span>
-<span class=x>{</span>
-<span class=x>}</span>
-</pre></div></p>
+class CacheAdapter
+{
+}</code></pre>
 <p>In this case, we can define the configuration for these classes as follows:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// config/autoload/dependencies.php or anywhere that gets merged into global config</span>
-<span class=x>return [</span>
-<span class=x>    ConfigAbstractFactory::class =&gt; [</span>
-<span class=x>        CacheAdapter::class =&gt; [], // no dependencies</span>
-<span class=x>        Cache::class =&gt; [</span>
-<span class=x>            CacheAdapter::class, // dependency on the CacheAdapter key defined above</span>
-<span class=x>        ],</span>
-<span class=x>        UserMapper::class =&gt; [</span>
-<span class=x>            Adapter::class, // will be called using normal factory defined below</span>
-<span class=x>            Cache::class, // defined above and will be created using this abstract factory</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>    &#39;service_manager&#39; =&gt; [</span>
-<span class=x>        &#39;factories&#39; =&gt; [</span>
-<span class=x>            Adapter::class =&gt; AdapterFactory::class, // normal factory not using above config</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>],</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>// config/autoload/dependencies.php or anywhere that gets merged into global config
+return [
+    ConfigAbstractFactory::class =&gt; [
+        CacheAdapter::class =&gt; [], // no dependencies
+        Cache::class =&gt; [
+            CacheAdapter::class, // dependency on the CacheAdapter key defined above
+        ],
+        UserMapper::class =&gt; [
+            Adapter::class, // will be called using normal factory defined below
+            Cache::class, // defined above and will be created using this abstract factory
+        ],
+    ],
+    'service_manager' =&gt; [
+        'factories' =&gt; [
+            Adapter::class =&gt; AdapterFactory::class, // normal factory not using above config
+        ],
+    ],
+],</code></pre>
 
 
 
@@ -488,20 +472,6 @@ be created and used as a dependency.</p>
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -642,9 +612,10 @@ be created and used as a dependency.</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -681,7 +652,7 @@ be created and used as a dependency.</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-servicemanager//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -690,8 +661,8 @@ be created and used as a dependency.</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-servicemanager//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-servicemanager/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -61,20 +65,6 @@
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -322,21 +312,20 @@ out dependencies.</p>
 which provides a reflection-based approach to instantiation, resolving
 constructor dependencies to the relevant services. The factory may be used as
 either an abstract factory, or mapped to specific service names as a factory:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;</span>
+<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
-<span class=x>return [</span>
-<span class=x>    /* ... */</span>
-<span class=x>    &#39;service_manager&#39; =&gt; [</span>
-<span class=x>        &#39;abstract_factories&#39; =&gt; [</span>
-<span class=x>            ReflectionBasedAbstractFactory::class,</span>
-<span class=x>        ],</span>
-<span class=x>        &#39;factories&#39; =&gt; [</span>
-<span class=x>            &#39;MyModule\Model\FooModel&#39; =&gt; ReflectionBasedAbstractFactory::class,</span>
-<span class=x>        ],</span>
-<span class=x>    ],</span>
-<span class=x>    /* ... */</span>
-<span class=x>];</span>
-</pre></div></p>
+return [
+    /* ... */
+    'service_manager' =&gt; [
+        'abstract_factories' =&gt; [
+            ReflectionBasedAbstractFactory::class,
+        ],
+        'factories' =&gt; [
+            'MyModule\Model\FooModel' =&gt; ReflectionBasedAbstractFactory::class,
+        ],
+    ],
+    /* ... */
+];</code></pre>
 <p>Mapping services to the factory is more explicit and performant.</p>
 <p>The factory operates with the following constraints/features:</p>
 <ul>
@@ -373,71 +362,67 @@ entries based on their class name (for historical reasons). As examples:</p>
 <p>To allow the <code>ReflectionBasedAbstractFactory</code> to find these, you have two
 options.</p>
 <p>The first is to pass an array of mappings via the constructor:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$reflectionFactory = new ReflectionBasedAbstractFactory([</span>
-<span class=x>    \Laminas\Console\Adapter\AdapterInterface::class     =&gt; &#39;ConsoleAdapter&#39;,</span>
-<span class=x>    \Laminas\Filter\FilterPluginManager::class           =&gt; &#39;FilterManager&#39;,</span>
-<span class=x>    \Laminas\Hydrator\HydratorPluginManager::class       =&gt; &#39;HydratorManager&#39;,</span>
-<span class=x>    \Laminas\InputFilter\InputFilterPluginManager::class =&gt; &#39;InputFilterManager&#39;,</span>
-<span class=x>    \Laminas\Log\FilterPluginManager::class              =&gt; &#39;LogFilterManager&#39;,</span>
-<span class=x>    \Laminas\Log\FormatterPluginManager::class           =&gt; &#39;LogFormatterManager&#39;,</span>
-<span class=x>    \Laminas\Log\ProcessorPluginManager::class           =&gt; &#39;LogProcessorManager&#39;,</span>
-<span class=x>    \Laminas\Log\WriterPluginManager::class              =&gt; &#39;LogWriterManager&#39;,</span>
-<span class=x>    \Laminas\Serializer\AdapterPluginManager::class      =&gt; &#39;SerializerAdapterManager&#39;,</span>
-<span class=x>    \Laminas\Validator\ValidatorPluginManager::class     =&gt; &#39;ValidatorManager&#39;,</span>
-<span class=x>]);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$reflectionFactory = new ReflectionBasedAbstractFactory([
+    \Laminas\Console\Adapter\AdapterInterface::class     =&gt; 'ConsoleAdapter',
+    \Laminas\Filter\FilterPluginManager::class           =&gt; 'FilterManager',
+    \Laminas\Hydrator\HydratorPluginManager::class       =&gt; 'HydratorManager',
+    \Laminas\InputFilter\InputFilterPluginManager::class =&gt; 'InputFilterManager',
+    \Laminas\Log\FilterPluginManager::class              =&gt; 'LogFilterManager',
+    \Laminas\Log\FormatterPluginManager::class           =&gt; 'LogFormatterManager',
+    \Laminas\Log\ProcessorPluginManager::class           =&gt; 'LogProcessorManager',
+    \Laminas\Log\WriterPluginManager::class              =&gt; 'LogWriterManager',
+    \Laminas\Serializer\AdapterPluginManager::class      =&gt; 'SerializerAdapterManager',
+    \Laminas\Validator\ValidatorPluginManager::class     =&gt; 'ValidatorManager',
+]);</code></pre>
 <p>This can be done either in your configuration file (which could be problematic
 when considering serialization for caching), or during an early phase of
 application bootstrapping.</p>
 <p>For instance, with laminas-mvc, this might be in your <code>Application</code> module's
 bootstrap listener:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace Application</span>
+<pre class=codehilite><code class=language-php>namespace Application
 
-<span class=x>use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;</span>
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
-<span class=x>class Module</span>
-<span class=x>{</span>
-<span class=x>    public function onBootstrap($e)</span>
-<span class=x>    {</span>
-<span class=x>        $application = $e-&gt;getApplication();</span>
-<span class=x>        $container = $e-&gt;getServiceManager();</span>
+class Module
+{
+    public function onBootstrap($e)
+    {
+        $application = $e-&gt;getApplication();
+        $container = $e-&gt;getServiceManager();
 
-<span class=x>        $container-&gt;addAbstractFactory(new ReflectionBasedAbstractFactory([</span>
-<span class=x>            /* ... */</span>
-<span class=x>        ]));</span>
-<span class=x>    }</span>
-<span class=x>}</span>
-</pre></div></p>
+        $container-&gt;addAbstractFactory(new ReflectionBasedAbstractFactory([
+            /* ... */
+        ]));
+    }
+}</code></pre>
 <p>For Mezzio, it could be part of your <code>config/container.php</code> definition:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$container = new ServiceManager();</span>
-<span class=x>(new Config($config[&#39;dependencies&#39;]))-&gt;configureServiceManager($container);</span>
-<span class=x>// Add the following:</span>
-<span class=x>$container-&gt;addAbstractFactory(new ReflectionBasedAbstractFactory([</span>
-<span class=x>    /* ... */</span>
-<span class=x>]));</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$container = new ServiceManager();
+(new Config($config['dependencies']))-&gt;configureServiceManager($container);
+// Add the following:
+$container-&gt;addAbstractFactory(new ReflectionBasedAbstractFactory([
+    /* ... */
+]));</code></pre>
 <p>The second approach is to extend the class, and define the map in the
 <code>$aliases</code> property:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>namespace Application;</span>
+<pre class=codehilite><code class=language-php>namespace Application;
 
-<span class=x>use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;</span>
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 
-<span class=x>class ReflectionAbstractFactory extends ReflectionBasedAbstractFactory</span>
-<span class=x>{</span>
-<span class=x>    protected $aliases = [</span>
-<span class=x>        \Laminas\Console\Adapter\AdapterInterface::class     =&gt; &#39;ConsoleAdapter&#39;,</span>
-<span class=x>        \Laminas\Filter\FilterPluginManager::class           =&gt; &#39;FilterManager&#39;,</span>
-<span class=x>        \Laminas\Hydrator\HydratorPluginManager::class       =&gt; &#39;HydratorManager&#39;,</span>
-<span class=x>        \Laminas\InputFilter\InputFilterPluginManager::class =&gt; &#39;InputFilterManager&#39;,</span>
-<span class=x>        \Laminas\Log\FilterPluginManager::class              =&gt; &#39;LogFilterManager&#39;,</span>
-<span class=x>        \Laminas\Log\FormatterPluginManager::class           =&gt; &#39;LogFormatterManager&#39;,</span>
-<span class=x>        \Laminas\Log\ProcessorPluginManager::class           =&gt; &#39;LogProcessorManager&#39;,</span>
-<span class=x>        \Laminas\Log\WriterPluginManager::class              =&gt; &#39;LogWriterManager&#39;,</span>
-<span class=x>        \Laminas\Serializer\AdapterPluginManager::class      =&gt; &#39;SerializerAdapterManager&#39;,</span>
-<span class=x>        \Laminas\Validator\ValidatorPluginManager::class     =&gt; &#39;ValidatorManager&#39;,</span>
-<span class=x>    ];</span>
-<span class=x>}</span>
-</pre></div></p>
+class ReflectionAbstractFactory extends ReflectionBasedAbstractFactory
+{
+    protected $aliases = [
+        \Laminas\Console\Adapter\AdapterInterface::class     =&gt; 'ConsoleAdapter',
+        \Laminas\Filter\FilterPluginManager::class           =&gt; 'FilterManager',
+        \Laminas\Hydrator\HydratorPluginManager::class       =&gt; 'HydratorManager',
+        \Laminas\InputFilter\InputFilterPluginManager::class =&gt; 'InputFilterManager',
+        \Laminas\Log\FilterPluginManager::class              =&gt; 'LogFilterManager',
+        \Laminas\Log\FormatterPluginManager::class           =&gt; 'LogFormatterManager',
+        \Laminas\Log\ProcessorPluginManager::class           =&gt; 'LogProcessorManager',
+        \Laminas\Log\WriterPluginManager::class              =&gt; 'LogWriterManager',
+        \Laminas\Serializer\AdapterPluginManager::class      =&gt; 'SerializerAdapterManager',
+        \Laminas\Validator\ValidatorPluginManager::class     =&gt; 'ValidatorManager',
+    ];
+}</code></pre>
 <p>You could then register it via class name in your service configuration.</p>
 <h2 id="alternatives">Alternatives</h2>
 <p>You may also use the <a href="../config-abstract-factory/">Config Abstract Factory</a>,
@@ -512,20 +497,6 @@ which gives slightly more flexibility in terms of mapping dependencies:</p>
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -666,9 +637,10 @@ which gives slightly more flexibility in terms of mapping dependencies:</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -705,7 +677,7 @@ which gives slightly more flexibility in terms of mapping dependencies:</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-servicemanager//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -714,8 +686,8 @@ which gives slightly more flexibility in terms of mapping dependencies:</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-servicemanager//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-servicemanager/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

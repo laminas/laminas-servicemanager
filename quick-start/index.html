@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -61,20 +65,6 @@
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -313,41 +303,36 @@ with the most common features of the Service manager.</p>
 <h2 id="1-install-laminas-service-manager">1. Install Laminas Service Manager</h2>
 <p>If you haven't already, <a href="https://getcomposer.org">install Composer</a>. Once you
 have, you can install the service manager:</p>
-<p> <div class=codehilite><pre><span></span>$ composer require laminas/laminas-servicemanager
-</pre></div></p>
+<pre class=codehilite><code class=language-bash>$ composer require laminas/laminas-servicemanager</code></pre>
 <h2 id="2-configuring-a-service-manager">2. Configuring a service manager</h2>
 <p>You can now create and configure a service manager. The service manager
 constructor accepts a simple array:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\ServiceManager;</span>
-<span class=x>use Laminas\ServiceManager\Factory\InvokableFactory;</span>
-<span class=x>use stdClass;</span>
+<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use stdClass;
 
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class,</span>
-<span class=x>    ],</span>
-<span class=x>]);</span>
-</pre></div></p>
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class,
+    ],
+]);</code></pre>
 <p>The service manager accepts a variety of keys; refer to the
 <a href="../configuring-the-service-manager/">Configuring service manager</a> section for
 full details.</p>
 <h2 id="3-retrieving-objects">3. Retrieving objects</h2>
 <p>Finally, you can retrieve instances using the <code>get()</code> method:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$object = $serviceManager-&gt;get(stdClass::class);</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>$object = $serviceManager-&gt;get(stdClass::class);</code></pre>
 <p>By default, all objects created through the service manager are shared. This
 means that calling the <code>get()</code> method twice will return the exact same object:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$object1 = $serviceManager-&gt;get(stdClass::class);</span>
-<span class=x>$object2 = $serviceManager-&gt;get(stdClass::class);</span>
+<pre class=codehilite><code class=language-php>$object1 = $serviceManager-&gt;get(stdClass::class);
+$object2 = $serviceManager-&gt;get(stdClass::class);
 
-<span class=x>var_dump($object1 === $object2); // prints &quot;true&quot;</span>
-</pre></div></p>
+var_dump($object1 === $object2); // prints &quot;true&quot;</code></pre>
 <p>You can use the <code>build()</code> method to retrieve discrete instances for a service:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$object1 = $serviceManager-&gt;build(stdClass::class);</span>
-<span class=x>$object2 = $serviceManager-&gt;build(stdClass::class);</span>
+<pre class=codehilite><code class=language-php>$object1 = $serviceManager-&gt;build(stdClass::class);
+$object2 = $serviceManager-&gt;build(stdClass::class);
 
-<span class=x>var_dump($object1 === $object2); // prints &quot;false&quot;</span>
-</pre></div></p>
+var_dump($object1 === $object2); // prints &quot;false&quot;</code></pre>
 
 
 
@@ -408,20 +393,6 @@ means that calling the <code>get()</code> method twice will return the exact sam
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -562,9 +533,10 @@ means that calling the <code>get()</code> method twice will return the exact sam
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -601,7 +573,7 @@ means that calling the <code>get()</code> method twice will return the exact sam
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-servicemanager//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -610,8 +582,8 @@ means that calling the <code>get()</code> method twice will return the exact sam
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-servicemanager//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-servicemanager/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

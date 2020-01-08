@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -61,20 +65,6 @@
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -352,90 +342,86 @@ constructor. The following keys are:</p>
   the <code>get</code> method should be cached. This is <code>true</code> by default.</li>
 </ul>
 <p>Here is an example of how you could configure a service manager:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\ServiceManager;
 
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;services&#39;           =&gt; [],</span>
-<span class=x>    &#39;invokables&#39;         =&gt; [],</span>
-<span class=x>    &#39;factories&#39;          =&gt; [],</span>
-<span class=x>    &#39;abstract_factories&#39; =&gt; [],</span>
-<span class=x>    &#39;delegators&#39;         =&gt; [],</span>
-<span class=x>    &#39;aliases&#39;            =&gt; [],</span>
-<span class=x>    &#39;initializers&#39;       =&gt; [],</span>
-<span class=x>    &#39;lazy_services&#39;      =&gt; [],</span>
-<span class=x>    &#39;shared&#39;             =&gt; [],</span>
-<span class=x>    &#39;shared_by_default&#39;  =&gt; true,</span>
-<span class=x>]);</span>
-</pre></div></p>
+$serviceManager = new ServiceManager([
+    'services'           =&gt; [],
+    'invokables'         =&gt; [],
+    'factories'          =&gt; [],
+    'abstract_factories' =&gt; [],
+    'delegators'         =&gt; [],
+    'aliases'            =&gt; [],
+    'initializers'       =&gt; [],
+    'lazy_services'      =&gt; [],
+    'shared'             =&gt; [],
+    'shared_by_default'  =&gt; true,
+]);</code></pre>
 <h2 id="factories">Factories</h2>
 <p>A factory is any callable or any class that implements the interface
 <code>Laminas\ServiceManager\Factory\FactoryInterface</code>.</p>
 <p>Service manager components provide a default factory that can be used to create
 objects that do not have any dependencies:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\Factory\InvokableFactory;</span>
-<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
-<span class=x>use stdClass;</span>
+<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
+use stdClass;
 
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        MyObject::class =&gt; MyObjectFactory::class,</span>
-<span class=x>    ],</span>
-<span class=x>]);</span>
-</pre></div></p>
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        MyObject::class =&gt; MyObjectFactory::class,
+    ],
+]);</code></pre>
 <blockquote>
 <p>For invokable classes we can use <code>Laminas\ServiceManager\Factory\InvokableFactory</code>
 but for performance reasons using <code>invokables</code> configuration is recommended.</p>
 </blockquote>
 <p>As said before, a factory can also be a callable, to create more complex objects:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
-<span class=x>use Laminas\ServiceManager\Factory\InvokableFactory;</span>
-<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
-<span class=x>use stdClass;</span>
+<pre class=codehilite><code class=language-php>use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
+use stdClass;
 
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class,</span>
-<span class=x>        MyObject::class =&gt; function(ContainerInterface $container, $requestedName) {</span>
-<span class=x>            $dependency = $container-&gt;get(stdClass::class);</span>
-<span class=x>            return new MyObject($dependency);</span>
-<span class=x>        },</span>
-<span class=x>    ],</span>
-<span class=x>]);</span>
-</pre></div></p>
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class,
+        MyObject::class =&gt; function(ContainerInterface $container, $requestedName) {
+            $dependency = $container-&gt;get(stdClass::class);
+            return new MyObject($dependency);
+        },
+    ],
+]);</code></pre>
 <p>Each factory always receive a <code>ContainerInterface</code> argument (this is the base
 interface that the <code>ServiceManager</code> implements), as well as the requested name
 as the second argument. In this case, the <code>$requestedName</code> is <code>MyObject</code>.</p>
 <p>Alternatively, the above code can be replaced by a factory class instead of a
 closure. This leads to more readable code. For instance:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// In MyObjectFactory.php file</span>
+<pre class=codehilite><code class=language-php>// In MyObjectFactory.php file
 
-<span class=x>class MyObjectFactory implements FactoryInterface</span>
-<span class=x>{</span>
-<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)</span>
-<span class=x>    {</span>
-<span class=x>        $dependency = $container-&gt;get(stdClass::class);</span>
-<span class=x>        return new MyObject($dependency);</span>
-<span class=x>    }</span>
-<span class=x>}</span>
+class MyObjectFactory implements FactoryInterface
+{
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        $dependency = $container-&gt;get(stdClass::class);
+        return new MyObject($dependency);
+    }
+}
 
-<span class=x>// or without implementing the interface:</span>
-<span class=x>class MyObjectFactory</span>
-<span class=x>{</span>
-<span class=x>    public function __invoke(ContainerInterface $container, $requestedName)</span>
-<span class=x>    {</span>
-<span class=x>        $dependency = $container-&gt;get(Dependency::class);</span>
-<span class=x>        return new MyObject($dependency);</span>
-<span class=x>    }</span>
-<span class=x>}</span>
+// or without implementing the interface:
+class MyObjectFactory
+{
+    public function __invoke(ContainerInterface $container, $requestedName)
+    {
+        $dependency = $container-&gt;get(Dependency::class);
+        return new MyObject($dependency);
+    }
+}
 
-<span class=x>// When creating the service manager:</span>
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class,</span>
-<span class=x>        MyObject::class =&gt; MyObjectFactory::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
-</pre></div></p>
+// When creating the service manager:
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class,
+        MyObject::class =&gt; MyObjectFactory::class
+    ]
+]);</code></pre>
 <blockquote>
 <p>For performance reasons, factories objects are not created until requested.
 In the above example, this means that the <code>MyObjectFactory</code> object won't be
@@ -448,35 +434,34 @@ parameter of a factory. This is useful when you need to create multiple
 services that are created exactly the same way, hence reducing the number of
 needed factories.</p>
 <p>For instance, if two services share the same creation pattern, you could attach the same factory:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// In MyObjectFactory.php file</span>
+<pre class=codehilite><code class=language-php>// In MyObjectFactory.php file
 
-<span class=x>class MyObjectFactory implements FactoryInterface</span>
-<span class=x>{</span>
-<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)</span>
-<span class=x>    {</span>
-<span class=x>        $dependency = $container-&gt;get(stdClass::class);</span>
-<span class=x>        return new $requestedName($dependency);</span>
-<span class=x>    }</span>
-<span class=x>}</span>
+class MyObjectFactory implements FactoryInterface
+{
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        $dependency = $container-&gt;get(stdClass::class);
+        return new $requestedName($dependency);
+    }
+}
 
-<span class=x>// or without implementing the interface:</span>
-<span class=x>class MyObjectFactory</span>
-<span class=x>{</span>
-<span class=x>    public function __invoke(ContainerInterface $container, $requestedName)</span>
-<span class=x>    {</span>
-<span class=x>        $dependency = $container-&gt;get(Dependency::class);</span>
-<span class=x>        return new $requestedName($dependency);</span>
-<span class=x>    }</span>
-<span class=x>}</span>
+// or without implementing the interface:
+class MyObjectFactory
+{
+    public function __invoke(ContainerInterface $container, $requestedName)
+    {
+        $dependency = $container-&gt;get(Dependency::class);
+        return new $requestedName($dependency);
+    }
+}
 
-<span class=x>// When creating the service manager:</span>
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        MyObjectA::class =&gt; MyObjectFactory::class,</span>
-<span class=x>        MyObjectB::class =&gt; MyObjectFactory::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
-</pre></div></p>
+// When creating the service manager:
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        MyObjectA::class =&gt; MyObjectFactory::class,
+        MyObjectB::class =&gt; MyObjectFactory::class
+    ]
+]);</code></pre>
 <p>This pattern can often replace abstract factories, and is more performant:</p>
 <ul>
 <li>Lookups for services do not need to query abstract factories; the service is
@@ -498,31 +483,30 @@ common creation pattern.</p>
 <p>An abstract factory must be registered inside the service manager, and is
 checked if no factory can create an object. Each abstract factory must
 implement <code>Laminas\ServiceManager\Factory\AbstractFactoryInterface</code>:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// In MyAbstractFactory.php:</span>
+<pre class=codehilite><code class=language-php>// In MyAbstractFactory.php:
 
-<span class=x>class MyAbstractFactory implements AbstractFactoryInterface</span>
-<span class=x>{</span>
-<span class=x>    public function canCreate(ContainerInterface $container, $requestedName)</span>
-<span class=x>    {</span>
-<span class=x>        return in_array(&#39;Traversable&#39;, class_implements($requestedName), true);</span>
-<span class=x>    }</span>
+class MyAbstractFactory implements AbstractFactoryInterface
+{
+    public function canCreate(ContainerInterface $container, $requestedName)
+    {
+        return in_array('Traversable', class_implements($requestedName), true);
+    }
 
-<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)</span>
-<span class=x>    {</span>
-<span class=x>        return $requestedName();</span>
-<span class=x>    }</span>
-<span class=x>}</span>
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    {
+        return $requestedName();
+    }
+}
 
-<span class=x>// When creating the service manager:</span>
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;abstract_factories&#39; =&gt; [</span>
-<span class=x>        new MyAbstractFactory() // You could also pass a class name: MyAbstractFactory::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+// When creating the service manager:
+$serviceManager = new ServiceManager([
+    'abstract_factories' =&gt; [
+        new MyAbstractFactory() // You could also pass a class name: MyAbstractFactory::class
+    ]
+]);
 
-<span class=x>// When fetching an object:</span>
-<span class=x>$object = $serviceManager-&gt;get(A::class);</span>
-</pre></div></p>
+// When fetching an object:
+$object = $serviceManager-&gt;get(A::class);</code></pre>
 <p>Here is what will happen:</p>
 <ol>
 <li>The service manager will check if it contains a factory mapped to the
@@ -549,23 +533,22 @@ efficiently (as described in the <code>Factories</code> section).</p>
 <p>An <em>alias</em> provides an alternative name for a registered service.</p>
 <p>An alias can also be mapped to another alias (it will be resolved recursively).
 For instance:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\Factory\InvokableFactory;</span>
-<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
-<span class=x>use stdClass;</span>
+<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\ServiceManager;
+use stdClass;
 
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class</span>
-<span class=x>    ],</span>
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class
+    ],
 
-<span class=x>    &#39;aliases&#39; =&gt; [</span>
-<span class=x>        &#39;A&#39; =&gt; stdClass::class,</span>
-<span class=x>        &#39;B&#39; =&gt; &#39;A&#39;</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+    'aliases' =&gt; [
+        'A' =&gt; stdClass::class,
+        'B' =&gt; 'A'
+    ]
+]);
 
-<span class=x>$object = $serviceManager-&gt;get(&#39;B&#39;);</span>
-</pre></div></p>
+$object = $serviceManager-&gt;get('B');</code></pre>
 <p>In this example, asking <code>B</code> will be resolved to <code>A</code>, which will be itself
 resolved to <code>stdClass::class</code>, which will finally be constructed using the
 provided factory.</p>
@@ -583,49 +566,47 @@ inject additional dependencies.</p>
 <p>For instance, if we'd want to automatically inject the dependency
 <code>EventManager::class</code> in all objects that implement the interface
 <code>EventManagerAwareInterface</code>, we could create the following initializer:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Interop\Container\ContainerInterface;</span>
-<span class=x>use stdClass;</span>
-<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+<pre class=codehilite><code class=language-php>use Interop\Container\ContainerInterface;
+use stdClass;
+use Laminas\ServiceManager\ServiceManager;
 
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;initializers&#39; =&gt; [</span>
-<span class=x>        function(ContainerInterface $container, $instance) {</span>
-<span class=x>            if (! $instance instanceof EventManagerAwareInterface) {</span>
-<span class=x>                return;</span>
-<span class=x>            }</span>
-<span class=x>            $instance-&gt;setEventManager($container-&gt;get(EventManager::class));</span>
-<span class=x>        }</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
-</pre></div></p>
+$serviceManager = new ServiceManager([
+    'initializers' =&gt; [
+        function(ContainerInterface $container, $instance) {
+            if (! $instance instanceof EventManagerAwareInterface) {
+                return;
+            }
+            $instance-&gt;setEventManager($container-&gt;get(EventManager::class));
+        }
+    ]
+]);</code></pre>
 <p>Alternately, you can create a class that implements
 <code>Laminas\ServiceManager\Initializer\InitializerInterface</code>, and pass it to the
 <code>initializers</code> array:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// In MyInitializer.php</span>
+<pre class=codehilite><code class=language-php>// In MyInitializer.php
 
-<span class=x>class MyInitializer implements InitializerInterface</span>
-<span class=x>{</span>
-<span class=x>    public function __invoke(ContainerInterface $container, $instance)</span>
-<span class=x>    {</span>
-<span class=x>        if (! $instance instanceof EventManagerAwareInterface) {</span>
-<span class=x>            return;</span>
-<span class=x>        }</span>
-<span class=x>        $instance-&gt;setEventManager($container-&gt;get(EventManager::class));</span>
-<span class=x>    }</span>
-<span class=x>}</span>
+class MyInitializer implements InitializerInterface
+{
+    public function __invoke(ContainerInterface $container, $instance)
+    {
+        if (! $instance instanceof EventManagerAwareInterface) {
+            return;
+        }
+        $instance-&gt;setEventManager($container-&gt;get(EventManager::class));
+    }
+}
 
-<span class=x>// When creating the service manager:</span>
+// When creating the service manager:
 
-<span class=x>use Interop\Container\ContainerInterface;</span>
-<span class=x>use stdClass;</span>
-<span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+use Interop\Container\ContainerInterface;
+use stdClass;
+use Laminas\ServiceManager\ServiceManager;
 
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;initializers&#39; =&gt; [</span>
-<span class=x>        new MyInitializer() // You could also use MyInitializer::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
-</pre></div></p>
+$serviceManager = new ServiceManager([
+    'initializers' =&gt; [
+        new MyInitializer() // You could also use MyInitializer::class
+    ]
+]);</code></pre>
 <blockquote>
 <p>Note that initializers are automatically created when the service manager is
 initialized, even if you pass a class name.</p>
@@ -655,63 +636,59 @@ primarily for backwards compatibility, but we highly discourage their usage.</p>
 method twice for a given service will return exactly the same service. This is
 typically what you want, as it can save a lot of memory and increase
 performance:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+<pre class=codehilite><code class=language-php>$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class
+    ]
+]);
 
-<span class=x>$object1 = $serviceManager-&gt;get(stdClass::class);</span>
-<span class=x>$object2 = $serviceManager-&gt;get(stdClass::class);</span>
+$object1 = $serviceManager-&gt;get(stdClass::class);
+$object2 = $serviceManager-&gt;get(stdClass::class);
 
-<span class=x>var_dump($object1 === $object2); // prints &quot;true&quot;</span>
-</pre></div></p>
+var_dump($object1 === $object2); // prints &quot;true&quot;</code></pre>
 <p>However, occasionally you may require discrete instances of a service. To
 enable this, you can use the <code>shared</code> key, providing a boolean false value for
 your service, as shown below:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class</span>
-<span class=x>    ],</span>
-<span class=x>    &#39;shared&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; false</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+<pre class=codehilite><code class=language-php>$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class
+    ],
+    'shared' =&gt; [
+        stdClass::class =&gt; false
+    ]
+]);
 
-<span class=x>$object1 = $serviceManager-&gt;get(stdClass::class);</span>
-<span class=x>$object2 = $serviceManager-&gt;get(stdClass::class);</span>
+$object1 = $serviceManager-&gt;get(stdClass::class);
+$object2 = $serviceManager-&gt;get(stdClass::class);
 
-<span class=x>var_dump($object1 === $object2); // prints &quot;false&quot;</span>
-</pre></div></p>
+var_dump($object1 === $object2); // prints &quot;false&quot;</code></pre>
 <p>Alternately, you can use the <code>build()</code> method instead of the <code>get()</code> method.
 The <code>build()</code> method works exactly the same as the <code>get</code> method, but never
 caches the service created, nor uses a previously cached instance for the
 service.</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+<pre class=codehilite><code class=language-php>$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class
+    ]
+]);
 
-<span class=x>$object1 = $serviceManager-&gt;build(stdClass::class);</span>
-<span class=x>$object2 = $serviceManager-&gt;build(stdClass::class);</span>
+$object1 = $serviceManager-&gt;build(stdClass::class);
+$object2 = $serviceManager-&gt;build(stdClass::class);
 
-<span class=x>var_dump($object1 === $object2); // prints &quot;false&quot;</span>
-</pre></div></p>
+var_dump($object1 === $object2); // prints &quot;false&quot;</code></pre>
 <p>Finally, you could also decide to disable caching by default (even when calling
 the <code>get()</code> method), by setting the <code>shared_by_default</code> option to false:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class</span>
-<span class=x>    ],</span>
-<span class=x>    &#39;shared_by_default&#39; =&gt; false,</span>
-<span class=x>]);</span>
+<pre class=codehilite><code class=language-php>$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class
+    ],
+    'shared_by_default' =&gt; false,
+]);
 
-<span class=x>$object1 = $serviceManager-&gt;get(stdClass::class);</span>
-<span class=x>$object2 = $serviceManager-&gt;get(stdClass::class);</span>
+$object1 = $serviceManager-&gt;get(stdClass::class);
+$object2 = $serviceManager-&gt;get(stdClass::class);
 
-<span class=x>var_dump($object1 === $object2); // prints &quot;false&quot;</span>
-</pre></div></p>
+var_dump($object1 === $object2); // prints &quot;false&quot;</code></pre>
 <h2 id="passing-config-to-a-factorydelegator">Passing config to a factory/delegator</h2>
 <p>So far, we have covered examples where services are created through factories
 (or abstract factories). The factory is able to create the object itself.</p>
@@ -730,43 +707,41 @@ similarly to the <code>get()</code> method, with two main differences:</p>
 </ul>
 <p>Those options are transferred to all factories, abstract factories, and delegators.
 For instance:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// In StringLengthValidatorFactory.php</span>
+<pre class=codehilite><code class=language-php>// In StringLengthValidatorFactory.php
 
-<span class=x>class StringLengthValidatorFactory implements FactoryInterface</span>
-<span class=x>{</span>
-<span class=x>    public function __invoke(ContainerInterface $container, $requestedName, array $options = [])</span>
-<span class=x>    {</span>
-<span class=x>        return new StringLengthValidator($options);</span>
-<span class=x>    }</span>
-<span class=x>}</span>
+class StringLengthValidatorFactory implements FactoryInterface
+{
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = [])
+    {
+        return new StringLengthValidator($options);
+    }
+}
 
-<span class=x>// When creating the service manager:</span>
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        StringLengthValidator::class =&gt; StringLengthValidatorFactory::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+// When creating the service manager:
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        StringLengthValidator::class =&gt; StringLengthValidatorFactory::class
+    ]
+]);
 
-<span class=x>// When creating the objects:</span>
+// When creating the objects:
 
-<span class=x>$validator1 = $serviceManager-&gt;build(StringLengthValidator::class, [&#39;min&#39; =&gt; 5]);</span>
-<span class=x>$validator2 = $serviceManager-&gt;build(StringLengthValidator::class, [&#39;min&#39; =&gt; 15]);</span>
-</pre></div></p>
+$validator1 = $serviceManager-&gt;build(StringLengthValidator::class, ['min' =&gt; 5]);
+$validator2 = $serviceManager-&gt;build(StringLengthValidator::class, ['min' =&gt; 15]);</code></pre>
 <p>In our previous example, because the <code>StringLengthValidator</code> does not have any
 other dependencies other than the <code>$options</code>, we could remove the factory, and
 simply map it to the built-in <code>InvokableFactory</code> factory:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// When creating the service manager:</span>
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        StringLengthValidator::class =&gt; InvokableFactory::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+<pre class=codehilite><code class=language-php>// When creating the service manager:
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        StringLengthValidator::class =&gt; InvokableFactory::class
+    ]
+]);
 
-<span class=x>// When creating the objects:</span>
+// When creating the objects:
 
-<span class=x>$validator1 = $serviceManager-&gt;build(StringLengthValidator::class, [&#39;min&#39; =&gt; 5]);</span>
-<span class=x>$validator2 = $serviceManager-&gt;build(StringLengthValidator::class, [&#39;min&#39; =&gt; 15]);</span>
-</pre></div></p>
+$validator1 = $serviceManager-&gt;build(StringLengthValidator::class, ['min' =&gt; 5]);
+$validator2 = $serviceManager-&gt;build(StringLengthValidator::class, ['min' =&gt; 15]);</code></pre>
 <p>This works because the <code>InvokableFactory</code> will automatically pass the options
 (if any) to the constructor of the created object.</p>
 <h2 id="altering-a-service-managers-config">Altering a service manager's config</h2>
@@ -795,58 +770,57 @@ following methods:</p>
   whether or not the named service should be shared.</li>
 </ul>
 <p>As examples:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>use Laminas\ServiceManager\ServiceManager;</span>
+<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\ServiceManager;
 
-<span class=x>$serviceManager = new ServiceManager([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        stdClass::class =&gt; InvokableFactory::class;</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+$serviceManager = new ServiceManager([
+    'factories' =&gt; [
+        stdClass::class =&gt; InvokableFactory::class;
+    ]
+]);
 
-<span class=x>$serviceManager-&gt;configure([</span>
-<span class=x>    &#39;factories&#39; =&gt; [</span>
-<span class=x>        DateTime::class =&gt; InvokableFactory::class</span>
-<span class=x>    ]</span>
-<span class=x>]);</span>
+$serviceManager-&gt;configure([
+    'factories' =&gt; [
+        DateTime::class =&gt; InvokableFactory::class
+    ]
+]);
 
-<span class=x>var_dump($newServiceManager-&gt;has(DateTime::class)); // prints true</span>
+var_dump($newServiceManager-&gt;has(DateTime::class)); // prints true
 
-<span class=x>// Create an alias from &#39;Date&#39; to &#39;DateTime&#39;</span>
-<span class=x>$serviceManager-&gt;setAlias(&#39;Date&#39;, DateTime::class);</span>
+// Create an alias from 'Date' to 'DateTime'
+$serviceManager-&gt;setAlias('Date', DateTime::class);
 
-<span class=x>// Set a factory for the &#39;Time&#39; service</span>
-<span class=x>$serviceManager-&gt;setFactory(&#39;Time&#39;, function ($container) {</span>
-<span class=x>    return $container-&gt;get(DateTime::class);</span>
-<span class=x>});</span>
+// Set a factory for the 'Time' service
+$serviceManager-&gt;setFactory('Time', function ($container) {
+    return $container-&gt;get(DateTime::class);
+});
 
-<span class=x>// Map a lazy service named &#39;localtime&#39; to the class DateTime.</span>
-<span class=x>$serviceManager-&gt;mapLazyService(&#39;localtime&#39;, DateTime::class);</span>
+// Map a lazy service named 'localtime' to the class DateTime.
+$serviceManager-&gt;mapLazyService('localtime', DateTime::class);
 
-<span class=x>// Add an abstract factory</span>
-<span class=x>$serviceManager-&gt;addAbstractFactory(new CustomAbstractFactory());</span>
+// Add an abstract factory
+$serviceManager-&gt;addAbstractFactory(new CustomAbstractFactory());
 
-<span class=x>// Add a delegator factory for the DateTime service</span>
-<span class=x>$serviceManager-&gt;addDelegator(DateTime::class, function ($container, $name, $callback) {</span>
-<span class=x>    $dateTime = $callback();</span>
-<span class=x>    $dateTime-&gt;setTimezone(new DateTimezone(&#39;UTC&#39;));</span>
-<span class=x>    return $dateTime;</span>
-<span class=x>});</span>
+// Add a delegator factory for the DateTime service
+$serviceManager-&gt;addDelegator(DateTime::class, function ($container, $name, $callback) {
+    $dateTime = $callback();
+    $dateTime-&gt;setTimezone(new DateTimezone('UTC'));
+    return $dateTime;
+});
 
-<span class=x>// Add an initializer</span>
-<span class=x>// Note: don&#39;t do this. Use delegator factories instead.</span>
-<span class=x>$serviceManager-&gt;addInitializer(function ($service, $instance) {</span>
-<span class=x>    if (! $instance instanceof DateTime) {</span>
-<span class=x>        return;</span>
-<span class=x>    }</span>
-<span class=x>    $instance-&gt;setTimezone(new DateTimezone(&#39;America/Chicago&#39;));</span>
-<span class=x>})</span>
+// Add an initializer
+// Note: don't do this. Use delegator factories instead.
+$serviceManager-&gt;addInitializer(function ($service, $instance) {
+    if (! $instance instanceof DateTime) {
+        return;
+    }
+    $instance-&gt;setTimezone(new DateTimezone('America/Chicago'));
+})
 
-<span class=x>// Explicitly map a service name to an instance.</span>
-<span class=x>$serviceManager-&gt;setService(&#39;foo&#39;, new stdClass);</span>
+// Explicitly map a service name to an instance.
+$serviceManager-&gt;setService('foo', new stdClass);
 
-<span class=x>// Mark the DateTime service as NOT being shared.</span>
-<span class=x>$serviceManager-&gt;setShared(DateTime::class, false);</span>
-</pre></div></p>
+// Mark the DateTime service as NOT being shared.
+$serviceManager-&gt;setShared(DateTime::class, false);</code></pre>
 
 
 
@@ -907,20 +881,6 @@ following methods:</p>
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -1061,9 +1021,10 @@ following methods:</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -1100,7 +1061,7 @@ following methods:</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-servicemanager//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -1109,8 +1070,8 @@ following methods:</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-servicemanager//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-servicemanager/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

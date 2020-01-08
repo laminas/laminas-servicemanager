@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -61,20 +65,6 @@
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -311,28 +301,27 @@
 <p>Starting in 3.2.0, laminas-servicemanager began shipping with console tools. This
 document details each.</p>
 <h2 id="generate-deps-for-config-factory">generate-deps-for-config-factory</h2>
-<p> <div class=codehilite><pre><span></span>$ ./vendor/bin/generate-deps-for-config-factory
+<pre class=codehilite><code class=language-bash>$ ./vendor/bin/generate-deps-for-config-factory
 Usage:
 
-  generate-deps-for-config-factory <span class=o>[</span>-h<span class=p>|</span>--help<span class=p>|</span>help<span class=o>]</span> <span class=o>[</span>-i<span class=p>|</span>--ignore-unresolved<span class=o>]</span> &lt;configFile&gt; &lt;className&gt;
+  generate-deps-for-config-factory [-h|--help|help] [-i|--ignore-unresolved] &lt;configFile&gt; &lt;className&gt;
 
 Arguments:
 
-  -h<span class=p>|</span>--help<span class=p>|</span><span class=nb>help</span>          This usage message
-  -i<span class=p>|</span>--ignore-unresolved  Ignore classes with unresolved direct dependencies.
-  &lt;configFile&gt;            Path to a config file <span class=k>for</span> which to generate
+  -h|--help|help          This usage message
+  -i|--ignore-unresolved  Ignore classes with unresolved direct dependencies.
+  &lt;configFile&gt;            Path to a config file for which to generate
                           configuration. If the file does not exist, it will
-                          be created. If it does exist, it must <span class=k>return</span> an
+                          be created. If it does exist, it must return an
                           array, and the file will be updated with new
                           configuration.
-  &lt;className&gt;             Name of the class to reflect and <span class=k>for</span> which to
+  &lt;className&gt;             Name of the class to reflect and for which to
                           generate dependency configuration.
 
 
-Reads the provided configuration file <span class=o>(</span>creating it <span class=k>if</span> it does not exist<span class=o>)</span>,
-and injects it with ConfigAbstractFactory dependency configuration <span class=k>for</span>
-the provided class name, writing the changes back to the file.
-</pre></div></p>
+Reads the provided configuration file (creating it if it does not exist),
+and injects it with ConfigAbstractFactory dependency configuration for
+the provided class name, writing the changes back to the file.</code></pre>
 <p>This utility will generate dependency configuration for the named class for use
 with the <a href="../config-abstract-factory/">ConfigAbstractFactory</a>. When doing so, it
 will read the named configuration file (creating it if it does not exist), and
@@ -345,27 +334,25 @@ exception message. By adding the flag, you can have it continue and produce
 configuration. This option is particularly useful when typehints are on
 interfaces or resolve to services served by other abstract factories.</p>
 <h2 id="generate-factory-for-class">generate-factory-for-class</h2>
-<p> <div class=codehilite><pre><span></span>$ ./vendor/bin/generate-factory-for-class
+<pre class=codehilite><code class=language-bash>$ ./vendor/bin/generate-factory-for-class
 
 Usage:
 
-  ./bin/generate-factory-for-class <span class=o>[</span>-h<span class=p>|</span>--help<span class=p>|</span>help<span class=o>]</span> &lt;className&gt;
+  ./bin/generate-factory-for-class [-h|--help|help] &lt;className&gt;
 
 Arguments:
 
-  -h<span class=p>|</span>--help<span class=p>|</span><span class=nb>help</span>    This usage message
-  &lt;className&gt;       Name of the class to reflect and <span class=k>for</span> which to generate
+  -h|--help|help    This usage message
+  &lt;className&gt;       Name of the class to reflect and for which to generate
                     a factory.
 
-Generates to STDOUT a factory <span class=k>for</span> creating the specified class<span class=p>;</span> this may <span class=k>then</span>
-be added to your application, and configured as a factory <span class=k>for</span> the class.
-</pre></div></p>
+Generates to STDOUT a factory for creating the specified class; this may then
+be added to your application, and configured as a factory for the class.</code></pre>
 <p>This utility generates a factory class for the given class, based on the
 typehints in its constructor. The factory is emitted to STDOUT, and may be piped
 to a file if desired:</p>
-<p> <div class=codehilite><pre><span></span>$ ./vendor/bin/generate-factory-for-class <span class=se>\</span>
-&gt; <span class=s2>&quot;Application\\Model\\AlbumModel&quot;</span> &gt; ./module/Application/src/Model/AlbumModelFactory.php
-</pre></div></p>
+<pre class=codehilite><code class=language-bash>$ ./vendor/bin/generate-factory-for-class \
+&gt; &quot;Application\\Model\\AlbumModel&quot; &gt; ./module/Application/src/Model/AlbumModelFactory.php</code></pre>
 <p>The class generated implements <code>Laminas\ServiceManager\Factory\FactoryInterface</code>,
 and is generated within the same namespace as the originating class.</p>
 
@@ -428,20 +415,6 @@ and is generated within the same namespace as the originating class.</p>
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
         <ul class="subnavigation__list">
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href=".." class="subnavigation__link">laminas-servicemanager</a>
-                            </li>
-                        
-                    
-                
             
 
                 
@@ -582,9 +555,10 @@ and is generated within the same namespace as the originating class.</p>
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -621,7 +595,7 @@ and is generated within the same namespace as the originating class.</p>
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/laminas/laminas-servicemanager//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/laminas/laminas-servicemanager/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -630,8 +604,8 @@ and is generated within the same namespace as the originating class.</p>
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/laminas/laminas-servicemanager//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/laminas/laminas-servicemanager/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>
