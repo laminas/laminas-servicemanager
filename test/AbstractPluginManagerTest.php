@@ -64,32 +64,6 @@ class AbstractPluginManagerTest extends TestCase
         $this->assertInstanceOf(InvokableObject::class, $object);
     }
 
-    public function testTransparentlyDecoratesNonInteropPsrContainerAsInteropContainer()
-    {
-        $invokableFactory = $this->getMockBuilder(FactoryInterface::class)
-            ->getMock();
-        $invokableFactory->method('__invoke')
-            ->will($this->returnArgument(0));
-
-        $config = [
-            'factories' => [
-                'creation context container' => $invokableFactory,
-            ],
-        ];
-
-        $container     = $this->getMockBuilder(PsrContainerInterface::class)
-            ->getMock();
-        $pluginManager = $this->getMockForAbstractClass(
-            AbstractPluginManager::class,
-            [$container, $config]
-        );
-
-        $object = $pluginManager->get('creation context container');
-
-        $this->assertInstanceOf(PsrContainerDecorator::class, $object);
-        $this->assertSame($container, $object->getContainer());
-    }
-
     public function testValidateInstance()
     {
         $config = [
