@@ -12,14 +12,15 @@
     <title>Migration Guide - laminas-servicemanager - Laminas Docs</title>
 
     <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
+    
 </head>
-<body id="page-top" class="components">
+<body id="page-top" class="components" data-spy="scroll" data-target=".toc" data-offset="20">
 
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
         
-        <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
+        <a class="logo-link navbar-brand" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
             <img src="https://docs.laminas.dev/img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
@@ -209,7 +210,7 @@
         <div class="row">
 
             
-            <div class="col-6 offset-md-2">
+            <div class="col-8">
                 <h1 class="header__title">
                     Components
 
@@ -239,7 +240,7 @@
     
     <div class="container">
         <div class="row">
-            <div class="col-md-2 col-sm-12">
+            <div class="col-md-9 col-sm-12 content" role="main">
                 
                 
                     
@@ -252,47 +253,47 @@
             <ul class="toc__list">
                 
                     <li class="toc__entry">
-                        <a href="#case-sensitivity-and-normalization" class="toc__link">Case Sensitivity and Normalization</a>
+                        <a href="#case-sensitivity-and-normalization" class="toc__link nav-link">Case Sensitivity and Normalization</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#configuration" class="toc__link">Configuration</a>
+                        <a href="#configuration" class="toc__link nav-link">Configuration</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#invokables" class="toc__link">Invokables</a>
+                        <a href="#invokables" class="toc__link nav-link">Invokables</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#lazy-services" class="toc__link">Lazy Services</a>
+                        <a href="#lazy-services" class="toc__link nav-link">Lazy Services</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#servicelocatorinterface-changes" class="toc__link">ServiceLocatorInterface Changes</a>
+                        <a href="#servicelocatorinterface-changes" class="toc__link nav-link">ServiceLocatorInterface Changes</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#servicemanager-api-changes" class="toc__link">ServiceManager API Changes</a>
+                        <a href="#servicemanager-api-changes" class="toc__link nav-link">ServiceManager API Changes</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#factories" class="toc__link">Factories</a>
+                        <a href="#factories" class="toc__link nav-link">Factories</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#initializers" class="toc__link">Initializers</a>
+                        <a href="#initializers" class="toc__link nav-link">Initializers</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#plugin-managers" class="toc__link">Plugin Managers</a>
+                        <a href="#plugin-managers" class="toc__link nav-link">Plugin Managers</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#di-namespace" class="toc__link">DI Namespace</a>
+                        <a href="#di-namespace" class="toc__link nav-link">DI Namespace</a>
                     </li>
                 
                     <li class="toc__entry">
-                        <a href="#miscellaneous-interfaces-traits-and-classes" class="toc__link">Miscellaneous Interfaces, Traits, and Classes</a>
+                        <a href="#miscellaneous-interfaces-traits-and-classes" class="toc__link nav-link">Miscellaneous Interfaces, Traits, and Classes</a>
                     </li>
                 
             </ul>
@@ -300,8 +301,7 @@
     
 
                 
-            </div>
-            <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
+
                 
                     <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -1645,7 +1645,7 @@ container should never be composed by objects.</p>
         </div>
 
         <div class="row">
-            <div class="col-md-10 offset-md-2">
+            <div class="col-md-12">
                 <h5>Laminas</h5>
                 <ul>
                     <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
@@ -1657,7 +1657,7 @@ container should never be composed by objects.</p>
         </div>
 
         <div class="row">
-            <div class="col-md-10 offset-md-2"> 
+            <div class="col-md-12">
                 <div class="row">
 
                     
@@ -1715,7 +1715,9 @@ container should never be composed by objects.</p>
             siteName = 'laminas-servicemanager';
     </script>
     <script src="https://docs.laminas.dev/js/scripts.js"></script>
+    
         <script src="../search/main.js"></script>
+    
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
