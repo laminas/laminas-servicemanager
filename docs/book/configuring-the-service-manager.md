@@ -57,13 +57,14 @@ use stdClass;
 
 $serviceManager = new ServiceManager([
     'factories' => [
+        stdClass::class => InvokableFactory::class,
         MyObject::class => MyObjectFactory::class,
     ],
 ]);
 ```
 
-> For invokable classes we can use `Laminas\ServiceManager\Factory\InvokableFactory`
-> but for performance reasons using `invokables` configuration is recommended.
+> For invokable classes we recommend using `Laminas\ServiceManager\Factory\InvokableFactory`,
+> because ServiceManager will convert all `invokables` into `factories` using `InvokableFactory` internally.
 
 As said before, a factory can also be a callable, to create more complex objects:
 
