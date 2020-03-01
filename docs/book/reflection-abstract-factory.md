@@ -102,7 +102,7 @@ class Module
     public function onBootstrap($e)
     {
         $application = $e->getApplication();
-        $container = $e->getServiceManager();
+        $container = $application->getServiceManager();
 
         $container->addAbstractFactory(new ReflectionBasedAbstractFactory([
             /* ... */
