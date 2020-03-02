@@ -447,7 +447,7 @@ class Module
     public function onBootstrap($e)
     {
         $application = $e-&gt;getApplication();
-        $container = $e-&gt;getServiceManager();
+        $container = $application-&gt;getServiceManager();
 
         $container-&gt;addAbstractFactory(new ReflectionBasedAbstractFactory([
             /* ... */
