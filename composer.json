@@ -78,6 +78,6 @@
         "upload-coverage": "coveralls -v"
     },
     "replace": {
-        "zendframework/zend-servicemanager": "self.version"
+        "zendframework/zend-servicemanager": "^3.4.0"
     }
 }
