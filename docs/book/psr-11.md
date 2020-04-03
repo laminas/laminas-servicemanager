@@ -19,7 +19,6 @@ following factory types:
 
 - `Laminas\ServiceManager\Factory\FactoryInterface`: use a callable with the
   following signature:
-
   ```php
   function (
       \Psr\Container\ContainerInterface $container,
@@ -30,7 +29,6 @@ following factory types:
 
 - `Laminas\ServiceManager\Factory\DelegatorFactoryInterface`: use a callable with
   the following signature:
-
   ```php
   function (
       \Psr\Container\ContainerInterface $container,
@@ -42,7 +40,6 @@ following factory types:
 
 - `Laminas\ServiceManager\Initializer\InitializerInterface`: use a callable with
   the following signature:
-
   ```php
   function (
       \Psr\Container\ContainerInterface $container,
