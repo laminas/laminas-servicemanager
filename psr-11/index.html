@@ -360,32 +360,32 @@ following factory types:</p>
 <li><code>Laminas\ServiceManager\Factory\FactoryInterface</code>: use a callable with the
   following signature:</li>
 </ul>
-<p><code>php
-  function (
-      \Psr\Container\ContainerInterface $container,
-      string $requestedName,
-      array $options = null
-  )</code></p>
+<pre class="highlight"><code class="language-php">function (
+    \Psr\Container\ContainerInterface $container,
+    string $requestedName,
+    array $options = null
+)</code></pre>
+
 <ul>
 <li><code>Laminas\ServiceManager\Factory\DelegatorFactoryInterface</code>: use a callable with
   the following signature:</li>
 </ul>
-<p><code>php
-  function (
-      \Psr\Container\ContainerInterface $container,
-      string $name,
-      callable $callback,
-      array $options = null
-  )</code></p>
+<pre class="highlight"><code class="language-php">function (
+    \Psr\Container\ContainerInterface $container,
+    string $name,
+    callable $callback,
+    array $options = null
+)</code></pre>
+
 <ul>
 <li><code>Laminas\ServiceManager\Initializer\InitializerInterface</code>: use a callable with
   the following signature:</li>
 </ul>
-<p><code>php
-  function (
-      \Psr\Container\ContainerInterface $container,
-      $instance
-  )</code></p>
+<pre class="highlight"><code class="language-php">function (
+    \Psr\Container\ContainerInterface $container,
+    $instance
+)</code></pre>
+
 <p>Abstract factories <em>can not</em> be duck typed, due to the additional <code>canCreate()</code>
 method.</p>
 <p>You can also leave your factories as-is for now, and update them once

@@ -366,7 +366,7 @@ intercept actions being performed on the delegate in an
 <a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming">AOP</a> fashioned way.</p>
 <h2 id="delegator-factory-signature">Delegator factory signature</h2>
 <p>A delegator factory has the following signature:</p>
-<pre class=codehilite><code class=language-php>use Interop\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 
 public function __invoke(
     ContainerInterface $container,
@@ -374,6 +374,7 @@ public function __invoke(
     callable $callback,
     array $options = null
 );</code></pre>
+
 <p>The parameters passed to the delegator factory are the following:</p>
 <ul>
 <li><code>$container</code> is the service locator that is used while creating the delegator
@@ -390,15 +391,16 @@ called.</p>
 <p>In the following example, an event is being triggered before <code>Buzzer::buzz()</code> is
 called and some output text is prepended.</p>
 <p>The delegated object <code>Buzzer</code> (original object) is defined as following:</p>
-<pre class=codehilite><code class=language-php>class Buzzer
+<pre class="highlight"><code class="language-php">class Buzzer
 {
     public function buzz()
     {
         return 'Buzz!';
     }
 }</code></pre>
+
 <p>The delegator class <code>BuzzerDelegator</code> has the following structure:</p>
-<pre class=codehilite><code class=language-php>use Laminas\EventManager\EventManagerInterface;
+<pre class="highlight"><code class="language-php">use Laminas\EventManager\EventManagerInterface;
 
 class BuzzerDelegator extends Buzzer
 {
@@ -418,15 +420,17 @@ class BuzzerDelegator extends Buzzer
         return $this-&gt;realBuzzer-&gt;buzz();
     }
 }</code></pre>
+
 <p>To use the <code>BuzzerDelegator</code>, you can run the following code:</p>
-<pre class=codehilite><code class=language-php>$wrappedBuzzer = new Buzzer();
+<pre class="highlight"><code class="language-php">$wrappedBuzzer = new Buzzer();
 $eventManager  = new Laminas\EventManager\EventManager();
 
-$eventManager-&gt;attach('buzz', function () { echo &quot;Stare at the art!\n&quot;; });
+$eventManager-&gt;attach('buzz', function () { echo "Stare at the art!\n"; });
 
 $buzzer = new BuzzerDelegator($wrappedBuzzer, $eventManager);
 
-echo $buzzer-&gt;buzz(); // &quot;Stare at the art!\nBuzz!&quot;</code></pre>
+echo $buzzer-&gt;buzz(); // "Stare at the art!\nBuzz!"</code></pre>
+
 <p>This logic is fairly simple as long as you have access to the instantiation
 logic of the <code>$wrappedBuzzer</code> object.</p>
 <p>You may not always be able to define how <code>$wrappedBuzzer</code> is created, since a
@@ -436,7 +440,7 @@ which you cannot modify without introducing further complexity.</p>
 decorate or modify any existing service.</p>
 <p>A simple delegator factory for the <code>buzzer</code> service can be implemented as
 following:</p>
-<pre class=codehilite><code class=language-php>use Interop\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
 class BuzzerDelegatorFactory implements DelegatorFactoryInterface
@@ -446,14 +450,15 @@ class BuzzerDelegatorFactory implements DelegatorFactoryInterface
         $realBuzzer   = call_user_func($callback);
         $eventManager = $container-&gt;get('EventManager');
 
-        $eventManager-&gt;attach('buzz', function () { echo &quot;Stare at the art!\n&quot;; });
+        $eventManager-&gt;attach('buzz', function () { echo "Stare at the art!\n"; });
 
         return new BuzzerDelegator($realBuzzer, $eventManager);
     }
 }</code></pre>
+
 <p>You can then instruct the service manager to handle the service <code>buzzer</code> as a
 delegate:</p>
-<pre class=codehilite><code class=language-php>use Laminas\ServiceManager\Factory\InvokableFactory;
+<pre class="highlight"><code class="language-php">use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 
 $serviceManager = new Laminas\ServiceManager\ServiceManager([
@@ -470,7 +475,8 @@ $serviceManager = new Laminas\ServiceManager\ServiceManager([
 // now, when fetching Buzzer, we get a BuzzerDelegator instead
 $buzzer = $serviceManager-&gt;get(Buzzer::class);
 
-$buzzer-&gt;buzz(); // &quot;Stare at the art!\nBuzz!&quot;</code></pre>
+$buzzer-&gt;buzz(); // "Stare at the art!\nBuzz!"</code></pre>
+
 <p>You can specify multiple delegators for a service. Each will add one decorator
 around the instantiation logic of that particular service.</p>
 <p>This latter point is the primary use case for delegators: <em>decorating the
