@@ -357,35 +357,34 @@ interfaces, which will require changes to any implementations you have. In the
 meantime, you can <a href="https://en.wikipedia.org/wiki/Duck_typing">duck-type</a> the
 following factory types:</p>
 <ul>
-<li><code>Laminas\ServiceManager\Factory\FactoryInterface</code>: use a callable with the
-  following signature:</li>
-</ul>
-<pre class="highlight"><code class="language-php">function (
+<li>
+<p><code>Laminas\ServiceManager\Factory\FactoryInterface</code>: use a callable with the
+  following signature:
+  <pre class="highlight"><code class="language-php">function (
     \Psr\Container\ContainerInterface $container,
     string $requestedName,
     array $options = null
-)</code></pre>
-
-<ul>
-<li><code>Laminas\ServiceManager\Factory\DelegatorFactoryInterface</code>: use a callable with
-  the following signature:</li>
-</ul>
-<pre class="highlight"><code class="language-php">function (
+)</code></pre></p>
+</li>
+<li>
+<p><code>Laminas\ServiceManager\Factory\DelegatorFactoryInterface</code>: use a callable with
+  the following signature:
+  <pre class="highlight"><code class="language-php">function (
     \Psr\Container\ContainerInterface $container,
     string $name,
     callable $callback,
     array $options = null
-)</code></pre>
-
-<ul>
-<li><code>Laminas\ServiceManager\Initializer\InitializerInterface</code>: use a callable with
-  the following signature:</li>
-</ul>
-<pre class="highlight"><code class="language-php">function (
+)</code></pre></p>
+</li>
+<li>
+<p><code>Laminas\ServiceManager\Initializer\InitializerInterface</code>: use a callable with
+  the following signature:
+  <pre class="highlight"><code class="language-php">function (
     \Psr\Container\ContainerInterface $container,
     $instance
-)</code></pre>
-
+)</code></pre></p>
+</li>
+</ul>
 <p>Abstract factories <em>can not</em> be duck typed, due to the additional <code>canCreate()</code>
 method.</p>
 <p>You can also leave your factories as-is for now, and update them once
