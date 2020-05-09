@@ -19,6 +19,6 @@ class PassthroughDelegatorFactory implements DelegatorFactoryInterface
      */
     public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null)
     {
-        return call_user_func($callback);
+        return $callback();
     }
 }
