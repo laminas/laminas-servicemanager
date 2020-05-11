@@ -9,14 +9,18 @@
 namespace Laminas\ServiceManager\Tool;
 
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionParameter;
 
 use function array_filter;
 use function array_map;
+use function array_merge;
 use function array_shift;
 use function count;
 use function implode;
+use function sort;
 use function sprintf;
 use function str_repeat;
 use function str_replace;
@@ -30,9 +34,7 @@ class FactoryCreator
 
 namespace %s;
 
-use Psr\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\FactoryInterface;
-use %s;
+%s
 
 class %sFactory implements FactoryInterface
 {
@@ -50,6 +52,11 @@ class %sFactory implements FactoryInterface
 
 EOT;
 
+    private const IMPORT_ALWAYS = [
+        FactoryInterface::class,
+        ContainerInterface::class,
+    ];
+
     /**
      * @param string $className
      * @return string
@@ -61,7 +68,7 @@ EOT;
         return sprintf(
             self::FACTORY_TEMPLATE,
             str_replace('\\' . $class, '', $className),
-            $className,
+            $this->createImportStatements($className),
             $class,
             $class,
             $class,
@@ -150,5 +157,14 @@ EOT;
                     $closePad
                 );
         }
+    }
+
+    private function createImportStatements(string $className): string
+    {
+        $imports = array_merge(self::IMPORT_ALWAYS, [$className]);
+        sort($imports);
+        return implode("\n", array_map(function ($import) {
+            return sprintf('use %s;', $import);
+        }, $imports));
     }
 }

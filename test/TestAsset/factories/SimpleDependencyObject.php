@@ -2,8 +2,8 @@
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use Laminas\ServiceManager\Factory\FactoryInterface;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
 
 class SimpleDependencyObjectFactory implements FactoryInterface
