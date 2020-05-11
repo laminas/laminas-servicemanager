@@ -42,12 +42,14 @@ matrix:
     - php: 7.3
       env:
         - DEPS=lowest
+        - PHPUNIT_MINIMUM="phpunit/phpunit:^6.5.14 ocramius/proxy-manager:^2.0"
     - php: 7.3
       env:
         - DEPS=latest
     - php: 7.4
       env:
         - DEPS=lowest
+        - PHPUNIT_MINIMUM="phpunit/phpunit:^7.5.20 ocramius/proxy-manager:^2.0"
     - php: 7.4
       env:
         - DEPS=latest
@@ -60,6 +62,7 @@ install:
   - if [[ $LEGACY_DEPS != '' ]]; then travis_retry composer update --with-dependencies $COMPOSER_ARGS $LEGACY_DEPS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
+  - if [[ $PHPUNIT_MINIMUM != '' ]]; then travis_retry composer require --update-with-dependencies $COMPOSER_ARGS $PHPUNIT_MINIMUM ; fi
   - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
   - stty cols 120 && composer show
 
