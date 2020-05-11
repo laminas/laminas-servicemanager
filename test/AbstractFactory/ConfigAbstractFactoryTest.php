@@ -224,7 +224,7 @@ class ConfigAbstractFactoryTest extends TestCase
             ]
         );
         self::expectException(ServiceNotCreatedException::class);
-        self::expectExceptionMessage('Dependencies config must exist and be an array');
+        self::expectExceptionMessage('Service dependencies config must exist and be an array');
 
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
@@ -240,7 +240,7 @@ class ConfigAbstractFactoryTest extends TestCase
             ]
         );
         self::expectException(ServiceNotCreatedException::class);
-        self::expectExceptionMessage('Dependencies config must exist and be an array');
+        self::expectExceptionMessage('Service dependencies config must exist and be an array');
 
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
@@ -258,7 +258,7 @@ class ConfigAbstractFactoryTest extends TestCase
             ]
         );
         self::expectException(ServiceNotCreatedException::class);
-        self::expectExceptionMessage('Dependencies config must exist and be an array');
+        self::expectExceptionMessage('Service dependencies config must exist and be an array');
 
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
@@ -282,7 +282,7 @@ class ConfigAbstractFactoryTest extends TestCase
         );
         self::expectException(ServiceNotCreatedException::class);
         self::expectExceptionMessage(
-            'Service message must be an array of strings, ["string","string","string","integer"] given'
+            'Service dependencies config must be an array of strings, ["string","string","string","integer"] given'
         );
 
         $abstractFactory($serviceManager, 'DirkGently');
