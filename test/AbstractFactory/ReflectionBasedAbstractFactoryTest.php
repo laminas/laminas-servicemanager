@@ -82,7 +82,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService()
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
-        $this->container->has(\ZendTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface::class)->willReturn(false);
+        $this->container->has(SampleInterface::class)->willReturn(false);
         $this->container->has('config')->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $this->expectException(ServiceNotFoundException::class);
@@ -193,7 +193,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     {
         $this->container->has('config')->willReturn(false);
         $this->container->has(ArrayAccess::class)->willReturn(false);
-        $this->container->has(\ZendTest\ServiceManager\AbstractFactory\ArrayAccess::class)->willReturn(false);
+        $this->container->has(\LaminasTest\ServiceManager\AbstractFactory\ArrayAccess::class)->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $instance = $factory(
             $this->container->reveal(),

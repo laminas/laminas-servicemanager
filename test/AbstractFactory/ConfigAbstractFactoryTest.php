@@ -223,8 +223,8 @@ class ConfigAbstractFactoryTest extends TestCase
                 ConfigAbstractFactory::class => 'Detective_Agency'
             ]
         );
-        $this->expectException(ServiceNotCreatedException::class);
-        $this->expectExceptionMessage('Dependencies config must exist and be an array');
+        self::expectException(ServiceNotCreatedException::class);
+        self::expectExceptionMessage('Service dependencies config must exist and be an array');
 
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
@@ -239,8 +239,8 @@ class ConfigAbstractFactoryTest extends TestCase
                 ConfigAbstractFactory::class => [],
             ]
         );
-        $this->expectException(ServiceNotCreatedException::class);
-        $this->expectExceptionMessage('Dependencies config must exist and be an array');
+        self::expectException(ServiceNotCreatedException::class);
+        self::expectExceptionMessage('Service dependencies config must exist and be an array');
 
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
@@ -257,8 +257,8 @@ class ConfigAbstractFactoryTest extends TestCase
                 ],
             ]
         );
-        $this->expectException(ServiceNotCreatedException::class);
-        $this->expectExceptionMessage('Dependencies config must exist and be an array');
+        self::expectException(ServiceNotCreatedException::class);
+        self::expectExceptionMessage('Service dependencies config must exist and be an array');
 
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
@@ -280,9 +280,9 @@ class ConfigAbstractFactoryTest extends TestCase
                 ],
             ]
         );
-        $this->expectException(ServiceNotCreatedException::class);
-        $this->expectExceptionMessage(
-            'Service message must be an array of strings, ["string","string","string","integer"] given'
+        self::expectException(ServiceNotCreatedException::class);
+        self::expectExceptionMessage(
+            'Service dependencies config must be an array of strings, ["string","string","string","integer"] given'
         );
 
         $abstractFactory($serviceManager, 'DirkGently');
