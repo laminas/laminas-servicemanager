@@ -51,6 +51,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
+- [#28](https://github.com/laminas/laminas-servicemanager/pull/28) provides updates to the `ConfigAbstractFactory` to ensure it works correctly under PHP 7.4 when the `config` service is represented by an `ArrayObject` or `ArrayAccess` implementation.
+
 - [#35](https://github.com/laminas/laminas-servicemanager/pull/35) updates two exception messagers from the `ConfigAbstractFactory` to be more clear about what caused them.
 
 ## 3.4.0 - 2018-12-22
