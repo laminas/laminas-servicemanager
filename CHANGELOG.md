@@ -2,13 +2,11 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-<<<<<<< HEAD
 ## 4.0.0 - TBD
 
 ### Added
 
 - Nothing.
-
 
 ### Changed
 
@@ -30,6 +28,28 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [zendframework/zend-servicemanager#230](https://github.com/zendframework/zend-servicemanager/pull/230) fixes a
   problem in detecting cyclic aliases, ensuring they are detected correctly.
+
+## 3.4.2 - TBD
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- Nothing.
 
 ## 3.4.1 - 2020-05-11
 
