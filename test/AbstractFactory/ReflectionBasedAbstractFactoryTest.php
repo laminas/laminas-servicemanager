@@ -14,6 +14,7 @@ use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
+use ZendTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface;
 
 class ReflectionBasedAbstractFactoryTest extends TestCase
 {
@@ -80,7 +81,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService()
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
-        $this->container->has(\ZendTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface::class)->willReturn(false);
+        $this->container->has(SampleInterface::class)->willReturn(false);
         $this->container->has('config')->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $this->expectException(ServiceNotFoundException::class);
