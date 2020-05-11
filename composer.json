@@ -51,10 +51,8 @@
         "ocramius/proxy-manager": "ProxyManager 1.* to handle lazy initialization of services"
     },
     "autoload": {
-        "files": [
-            "src/autoload.php"
-        ],
         "psr-4": {
+            "Interop\\Container\\": "container-interop/",
             "Laminas\\ServiceManager\\": "src/"
         }
     },

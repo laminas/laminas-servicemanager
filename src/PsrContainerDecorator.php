@@ -12,6 +12,8 @@ use Interop\Container\ContainerInterface;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 
 /**
+ * @deprecated This class is no longer used internally, and can be removed with
+ *     version 4.0.0.
  * @internal for use in abstract plugin manager
  */
 final class PsrContainerDecorator implements ContainerInterface
