@@ -4,7 +4,6 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 
 class SimpleDependencyObjectFactory implements FactoryInterface
@@ -17,6 +16,6 @@ class SimpleDependencyObjectFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new SimpleDependencyObject($container->get(InvokableObject::class));
+        return new SimpleDependencyObject($container->get(\LaminasTest\ServiceManager\TestAsset\InvokableObject::class));
     }
 }
