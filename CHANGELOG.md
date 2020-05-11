@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 3.4.1 - 2020-05-11
+
+### Added
+
+- Nothing.
+
+### Changed
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#35](https://github.com/laminas/laminas-servicemanager/pull/35) updates two exception messagers from the `ConfigAbstractFactory` to be more clear about what caused them.
+
 ## 3.4.0 - 2018-12-22
 
 ### Added
@@ -252,24 +274,6 @@ All notable changes to this project will be documented in this file, in reverse 
   in the delegator factories documentation.
 - [zendframework/zend-servicemanager#98](https://github.com/zendframework/zend-servicemanager/pull/98) Using coveralls ^1.0
   for tracking test code coverage changes.
-
-## 3.0.4 - TBD
-
-### Added
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
 
 ## 3.0.3 - 2016-02-02
 
