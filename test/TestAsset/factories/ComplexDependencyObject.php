@@ -2,11 +2,10 @@
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 use LaminasTest\ServiceManager\TestAsset\ComplexDependencyObject;
 
-class ComplexDependencyObjectFactory implements FactoryInterface
+class ComplexDependencyObjectFactory
 {
     /**
      * @param ContainerInterface $container

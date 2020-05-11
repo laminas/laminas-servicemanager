@@ -19,11 +19,10 @@ class FactoryCreator
 
 namespace %s;
 
-use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 use %s;
 
-class %sFactory implements FactoryInterface
+class %sFactory
 {
     /**
      * @param ContainerInterface $container

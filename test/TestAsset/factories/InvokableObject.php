@@ -2,11 +2,10 @@
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 
-class InvokableObjectFactory implements FactoryInterface
+class InvokableObjectFactory
 {
     /**
      * @param ContainerInterface $container
