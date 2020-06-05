@@ -24,7 +24,6 @@ use Psr\Container\ContainerInterface;
 use Zend\Stdlib\ArrayUtils;
 
 use function array_intersect;
-use function array_merge_recursive;
 use function class_exists;
 use function get_class;
 use function gettype;
