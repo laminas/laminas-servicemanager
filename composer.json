@@ -30,7 +30,7 @@
         }
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "laminas/laminas-stdlib": "^3.2.1",
         "laminas/laminas-zendframework-bridge": "^1.0",
         "psr/container": "^1.0"
