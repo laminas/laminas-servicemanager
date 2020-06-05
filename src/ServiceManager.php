@@ -748,13 +748,13 @@ class ServiceManager implements ServiceLocatorInterface
     private function mergeDelegators(array $config)
     {
         foreach ($config as $key => $delegators) {
-            if (!isset($this->delegators[$key])) {
+            if (! isset($this->delegators[$key])) {
                 $this->delegators[$key] = $delegators;
                 continue;
             }
 
             foreach ($delegators as $delegator) {
-                if (!in_array($delegator, $this->delegators[$key], true)) {
+                if (! in_array($delegator, $this->delegators[$key], true)) {
                     $this->delegators[$key][] = $delegator;
                 }
             }
