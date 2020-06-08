@@ -367,10 +367,10 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * Hotfix #3
+     * @group #3
      * @see https://github.com/laminas/laminas-servicemanager/issues/3
      */
-    public function testConfigureMultipleTimesAvoidsDuplicates()
+    public function testConfiguringADelegatorMultipleTimesDoesNotLeadToDuplicateDelegatorCalls()
     {
         $delegatorFactory = function (
             ContainerInterface $container,
