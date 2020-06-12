@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -16,11 +18,18 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
+use Prophecy\Prophecy\ObjectProphecy;
 use function file_get_contents;
 use function sprintf;
 
 class FactoryCreatorCommandTest extends TestCase
 {
+    /** @var ObjectProphecy|ConsoleHelper */
+    private $helper;
+
+    /** @var FactoryCreatorCommand */
+    private $command;
+
     public function setUp()
     {
         $this->helper = $this->prophesize(ConsoleHelper::class);

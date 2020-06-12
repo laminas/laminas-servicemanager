@@ -34,6 +34,8 @@ class FactoryCreator
     const FACTORY_TEMPLATE = <<<'EOT'
 <?php
 
+declare(strict_types=1);
+
 namespace %s;
 
 %s

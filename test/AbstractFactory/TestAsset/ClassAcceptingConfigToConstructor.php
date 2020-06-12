@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
