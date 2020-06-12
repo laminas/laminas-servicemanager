@@ -15,6 +15,7 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleServiceManager;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
@@ -363,5 +364,52 @@ class ServiceManagerTest extends TestCase
             ->willReturn(false);
 
         self::assertFalse($serviceManager->has('Alias'));
+    }
+
+    /**
+     * @group #3
+     * @see https://github.com/laminas/laminas-servicemanager/issues/3
+     */
+    public function testConfiguringADelegatorMultipleTimesDoesNotLeadToDuplicateDelegatorCalls()
+    {
+        $delegatorFactory = function (
+            ContainerInterface $container,
+            $name,
+            callable $callback
+        ) {
+            /** @var InvokableObject $instance */
+            $instance = $callback();
+            $options = $instance->getOptions();
+            $inc = $options['inc'] ?? 0;
+            return new InvokableObject(['inc' => ++$inc]);
+        };
+
+        $config = [
+            'factories' => [
+                'Foo' => function () {
+                    return new InvokableObject();
+                },
+            ],
+            'delegators' => [
+                'Foo' => [
+                    $delegatorFactory,
+                    LazyServiceFactory::class,
+                ],
+            ],
+            'lazy_services' => [
+                'class_map' => [
+                    'Foo' => InvokableObject::class,
+                ],
+            ],
+        ];
+
+        $serviceManager = new ServiceManager($config);
+        $serviceManager->configure($config);
+
+        /** @var InvokableObject $instance */
+        $instance = $serviceManager->get('Foo');
+
+        self::assertInstanceOf(InvokableObject::class, $instance);
+        self::assertSame(1, $instance->getOptions()['inc']);
     }
 }
