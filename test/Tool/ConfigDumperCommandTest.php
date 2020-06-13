@@ -11,6 +11,7 @@ namespace LaminasTest\ServiceManager\Tool;
 use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Laminas\ServiceManager\Tool\ConfigDumperCommand;
 use Laminas\Stdlib\ConsoleHelper;
+use LaminasTest\ServiceManager\BackportAssertionsTrait;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\ObjectWithObjectScalarDependency;
 use LaminasTest\ServiceManager\TestAsset\ObjectWithScalarDependency;
@@ -18,6 +19,7 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 use function file_get_contents;
 use function realpath;
@@ -25,7 +27,10 @@ use function sprintf;
 
 class ConfigDumperCommandTest extends TestCase
 {
-    public function setUp()
+    use ProphecyTrait;
+    use BackportAssertionsTrait;
+
+    public function setUp() : void
     {
         $this->configDir = vfsStream::setup('project');
         $this->helper = $this->prophesize(ConsoleHelper::class);

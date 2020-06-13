@@ -11,12 +11,15 @@ namespace LaminasTest\ServiceManager;
 use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
- * @covers Laminas\ServiceManager\Config
+ * @covers \Laminas\ServiceManager\Config
  */
 class ConfigTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testMergeArrays()
     {
         $config = [

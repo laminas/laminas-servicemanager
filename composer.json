@@ -41,6 +41,7 @@
         "mikey179/vfsstream": "^1.6.8",
         "ocramius/proxy-manager": "^2.1.1",
         "phpbench/phpbench": "^0.13.0",
+        "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9"
     },
     "provide": {

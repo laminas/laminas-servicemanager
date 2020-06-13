@@ -28,6 +28,7 @@ use function get_class;
 class ServiceManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
+    use BackportAssertionsTrait;
 
     public function createContainer(array $config = [])
     {

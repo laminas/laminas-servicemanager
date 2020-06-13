@@ -26,7 +26,7 @@ class FactoryCreatorTest extends TestCase
     /**
      * @internal param FactoryCreator $factoryCreator
      */
-    public function setUp()
+    public function setUp() : void
     {
         $this->factoryCreator = new FactoryCreator();
     }

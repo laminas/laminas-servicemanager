@@ -20,7 +20,9 @@ use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimplePluginManager;
 use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
 use PHPUnit\Framework\TestCase;
+
 use Psr\Container\ContainerInterface;
+use Prophecy\PhpUnit\ProphecyTrait;
 use stdClass;
 
 use function get_class;
@@ -33,6 +35,8 @@ use function set_error_handler;
 class AbstractPluginManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
+    use ProphecyTrait;
+    use BackportAssertionsTrait;
 
     public function createContainer(array $config = [])
     {
@@ -336,7 +340,7 @@ class AbstractPluginManagerTest extends TestCase
         $errorHandlerCalled = false;
         set_error_handler(function ($errno, $errmsg) use (&$errorHandlerCalled) {
             self::assertEquals(E_USER_DEPRECATED, $errno);
-            self::assertContains('3.0', $errmsg);
+            $this->assertStringContainsString('3.0', $errmsg);
             $errorHandlerCalled = true;
         }, E_USER_DEPRECATED);
         $pluginManager->validate($instance);
