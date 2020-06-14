@@ -1,2 +1,42 @@
 parameters:
 	ignoreErrors:
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/AbstractPluginManager.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 2
+			path: src/AbstractPluginManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$detectedCycles of static method Laminas\\\\ServiceManager\\\\Exception\\\\CyclicAliasException\\:\\:printCycles\\(\\) expects array\\<array\\<string\\>\\>, array\\<array\\<bool\\>\\> given\\.$#"
+			count: 1
+			path: src/Exception/CyclicAliasException.php
+
+		-
+			message: "#^If condition is always false\\.$#"
+			count: 1
+			path: src/ServiceManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$autoload_function of function spl_autoload_register expects callable\\(string\\)\\: void, ProxyManager\\\\Autoloader\\\\AutoloaderInterface given\\.$#"
+			count: 1
+			path: src/ServiceManager.php
+
+		-
+			message: "#^Negated boolean expression is always true\\.$#"
+			count: 7
+			path: src/ServiceManager.php
+
+		-
+			message: "#^Left side of && is always true\\.$#"
+			count: 1
+			path: src/Tool/ConfigDumper.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/Tool/FactoryCreator.php
+
