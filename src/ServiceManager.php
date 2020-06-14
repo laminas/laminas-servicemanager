@@ -70,7 +70,7 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Whether or not changes may be made to this instance.
      *
-     * @param bool
+     * @var bool
      */
     protected $allowOverride = false;
 

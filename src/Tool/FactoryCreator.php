@@ -77,7 +77,8 @@ EOT;
     }
 
     /**
-     * @param $className
+     * @param string $className
+     * @psalm-param class-string $className
      * @return string
      */
     private function getClassName($className)

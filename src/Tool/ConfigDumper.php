@@ -123,7 +123,8 @@ EOC;
     }
 
     /**
-     * @param $className
+     * @param string $className
+     * @psalm-param class-string $className
      * @throws InvalidArgumentException if class name is not a string or does
      *     not exist.
      */
