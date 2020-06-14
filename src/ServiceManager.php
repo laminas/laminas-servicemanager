@@ -646,7 +646,7 @@ class ServiceManager implements ServiceLocatorInterface
             };
         }
 
-        return $creationCallback($this->creationContext, $name, $creationCallback, $options);
+        return $creationCallback();
     }
 
     /**

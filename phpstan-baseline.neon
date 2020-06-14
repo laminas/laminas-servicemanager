@@ -1,28 +1,2 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$name\\)\\: Unexpected token \"\\$name\", expected type at offset 133$#"
-			count: 1
-			path: src/AbstractFactoryInterface.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$requestedName\\)\\: Unexpected token \"\\$requestedName\", expected type at offset 153$#"
-			count: 1
-			path: src/AbstractFactoryInterface.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$name\\)\\: Unexpected token \"\\$name\", expected type at offset 111$#"
-			count: 1
-			path: src/AbstractFactoryInterface.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\$requestedName\\)\\: Unexpected token \"\\$requestedName\", expected type at offset 131$#"
-			count: 1
-			path: src/AbstractFactoryInterface.php
-
-		-
-			message: "#^Closure invoked with 4 parameters, 0 required\\.$#"
-			count: 1
-			path: src/ServiceManager.php
-
-
