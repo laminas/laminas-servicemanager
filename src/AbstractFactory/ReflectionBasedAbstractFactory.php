@@ -10,6 +10,7 @@ namespace Laminas\ServiceManager\AbstractFactory;
 
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\Stdlib\DispatchableInterface;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionParameter;

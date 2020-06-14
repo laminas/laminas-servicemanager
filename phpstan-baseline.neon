@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Return typehint of method Laminas\\\\ServiceManager\\\\AbstractFactory\\\\ReflectionBasedAbstractFactory\\:\\:__invoke\\(\\) has invalid type Laminas\\\\ServiceManager\\\\AbstractFactory\\\\DispatchableInterface\\.$#"
-			count: 1
-			path: src/AbstractFactory/ReflectionBasedAbstractFactory.php
-
-		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$name\\)\\: Unexpected token \"\\$name\", expected type at offset 133$#"
 			count: 1
 			path: src/AbstractFactoryInterface.php
@@ -24,16 +19,6 @@ parameters:
 			message: "#^PHPDoc tag @param has invalid value \\(\\$requestedName\\)\\: Unexpected token \"\\$requestedName\", expected type at offset 131$#"
 			count: 1
 			path: src/AbstractFactoryInterface.php
-
-		-
-			message: "#^PHPDoc tag @throws with type Laminas\\\\ServiceManager\\\\Exception\\\\ServiceNotCreatedException\\|Laminas\\\\ServiceManager\\\\Exception\\\\ServiceNotFoundException\\|Laminas\\\\ServiceManager\\\\Factory\\\\ContainerException is not subtype of Throwable$#"
-			count: 1
-			path: src/Factory/DelegatorFactoryInterface.php
-
-		-
-			message: "#^PHPDoc tag @throws with type Laminas\\\\ServiceManager\\\\Exception\\\\ServiceNotCreatedException\\|Laminas\\\\ServiceManager\\\\Exception\\\\ServiceNotFoundException\\|Laminas\\\\ServiceManager\\\\Factory\\\\ContainerException is not subtype of Throwable$#"
-			count: 1
-			path: src/Factory/FactoryInterface.php
 
 		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$instance\\)\\: Unexpected token \"\\$instance\", expected type at offset 43$#"
