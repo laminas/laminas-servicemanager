@@ -13,6 +13,6 @@ use Psr\Container\ContainerExceptionInterface;
 /**
  * Base exception for all Laminas\ServiceManager exceptions.
  */
-interface ExceptionInterface extends ContainerExceptionInterface
+interface ExceptionInterface extends ContainerExceptionInterface, \Throwable
 {
 }

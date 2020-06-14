@@ -26,27 +26,12 @@ parameters:
 			path: src/InitializerInterface.php
 
 		-
-			message: "#^PHPDoc tag @throws with type Laminas\\\\ServiceManager\\\\ContainerException\\|Laminas\\\\ServiceManager\\\\Exception\\\\InvalidServiceException is not subtype of Throwable$#"
-			count: 1
-			path: src/PluginManagerInterface.php
-
-		-
-			message: "#^PHPDoc tag @throws with type Psr\\\\Container\\\\ContainerExceptionInterface is not subtype of Throwable$#"
-			count: 1
-			path: src/ServiceLocatorInterface.php
-
-		-
 			message: "#^PHPDoc tag @param has invalid value \\(bool\\)\\: Unexpected token \"\\\\n     \", expected variable at offset 89$#"
 			count: 1
 			path: src/ServiceManager.php
 
 		-
 			message: "#^Closure invoked with 4 parameters, 0 required\\.$#"
-			count: 1
-			path: src/ServiceManager.php
-
-		-
-			message: "#^PHPDoc tag @throws with type Laminas\\\\ServiceManager\\\\Exception\\\\ExceptionInterface is not subtype of Throwable$#"
 			count: 1
 			path: src/ServiceManager.php
 
