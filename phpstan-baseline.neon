@@ -36,11 +36,6 @@ parameters:
 			path: src/ServiceManager.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$abstractFactories$#"
-			count: 1
-			path: src/ServiceManager.php
-
-		-
 			message: "#^PHPDoc tag @param has invalid value \\(\\$className\\)\\: Unexpected token \"\\$className\", expected type at offset 18$#"
 			count: 1
 			path: src/Tool/ConfigDumper.php
