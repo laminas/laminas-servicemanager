@@ -41,6 +41,7 @@
         "mikey179/vfsstream": "^1.6.8",
         "ocramius/proxy-manager": "^2.1.1",
         "phpbench/phpbench": "^0.13.0",
+        "phpstan/phpstan": "^0.12.28",
         "phpunit/phpunit": "^7.5.20"
     },
     "provide": {
