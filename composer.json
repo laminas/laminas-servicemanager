@@ -30,7 +30,7 @@
         }
     },
     "require": {
-        "php": "^7.3",
+        "php": "^7.4",
         "laminas/laminas-stdlib": "^3.2.1",
         "laminas/laminas-zendframework-bridge": "^1.0",
         "psr/container": "^1.0"
@@ -39,8 +39,8 @@
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-container-config-test": "^0.2.1",
         "mikey179/vfsstream": "^1.6.8",
-        "ocramius/proxy-manager": "^2.1.1",
-        "phpbench/phpbench": "^0.13.0",
+        "ocramius/proxy-manager": "^2.8",
+        "phpbench/phpbench": "^0.17",
         "phpunit/phpunit": "^7.5.20"
     },
     "provide": {
