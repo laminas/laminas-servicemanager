@@ -21,10 +21,10 @@ matrix:
         - CS_CHECK=true
         - BENCHMARKS=true
         - TEST_COVERAGE=true
-    - php: 8.0
+    - php: nightly
       env:
         - DEPS=lowest
-    - php: 8.0
+    - php: nightly
       env:
         - DEPS=latest
 
