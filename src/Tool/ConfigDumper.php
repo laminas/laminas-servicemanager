@@ -98,7 +98,9 @@ EOC;
         $classConfig = [];
 
         foreach ($constructorArguments as $constructorArgument) {
-            $argumentType = $constructorArgument->getClass();
+            $type = $constructorArgument->getType();
+            $argumentType = null !== $type && !$type->isBuiltin() ? $type->getName() : null;
+
             if (is_null($argumentType)) {
                 if ($ignoreUnresolved) {
                     // don't throw an exception, just return the previous config
@@ -114,9 +116,8 @@ EOC;
                     $constructorArgument->getName()
                 ));
             }
-            $argumentName = $argumentType->getName();
-            $config = $this->createDependencyConfig($config, $argumentName, $ignoreUnresolved);
-            $classConfig[] = $argumentName;
+            $config = $this->createDependencyConfig($config, $argumentType, $ignoreUnresolved);
+            $classConfig[] = $argumentType;
         }
 
         $config[ConfigAbstractFactory::class][$className] = $classConfig;
