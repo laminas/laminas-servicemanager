@@ -116,7 +116,7 @@ EOT;
                 }
 
                 $type = $argument->getType();
-                $class = null !== $type && !$type->isBuiltin() ? $type->getName() : null;
+                $class = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
 
                 if (null === $class) {
                     throw new InvalidArgumentException(sprintf(
@@ -136,7 +136,7 @@ EOT;
 
         return array_map(function (ReflectionParameter $parameter) {
             $type = $parameter->getType();
-            return null !== $type && !$type->isBuiltin() ? $type->getName() : null;
+            return null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
         }, $constructorParameters);
     }
 

@@ -223,7 +223,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
             return [];
         }
 
-        if ($type === null || (is_string($type) && ! class_exists($type) && !interface_exists($type))) {
+        if ($type === null || (is_string($type) && ! class_exists($type) && ! interface_exists($type))) {
             if (! $parameter->isDefaultValueAvailable()) {
                 throw new ServiceNotFoundException(sprintf(
                     'Unable to create service "%s"; unable to resolve parameter "%s" '

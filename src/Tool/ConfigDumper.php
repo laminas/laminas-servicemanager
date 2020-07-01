@@ -99,7 +99,7 @@ EOC;
 
         foreach ($constructorArguments as $constructorArgument) {
             $type = $constructorArgument->getType();
-            $argumentType = null !== $type && !$type->isBuiltin() ? $type->getName() : null;
+            $argumentType = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
 
             if (is_null($argumentType)) {
                 if ($ignoreUnresolved) {
