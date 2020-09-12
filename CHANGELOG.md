@@ -10,28 +10,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## 4.0.0 - TBD
-
-### Added
-
-- Nothing.
-
-### Changed
-
 - [#40](https://github.com/laminas/laminas-servicemanager/pull/40) modifies the behavior of the `FactoryCreator` to alphabetize import statements.
 
 - [zendframework/zend-servicemanager#221](https://github.com/zendframework/zend-servicemanager/pull/221) provides enormous performance improvements for each of the various mutator methods (`setAlias()`, `setFactory()`, etc.), `has()` lookups, and initial container configuration.

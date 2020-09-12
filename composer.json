@@ -23,8 +23,6 @@
     "config": {
         "sort-packages": true
     },
-    "extra": {
-    },
     "require": {
         "php": "^7.4",
         "laminas/laminas-stdlib": "^3.2.1",
