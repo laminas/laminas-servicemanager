@@ -24,13 +24,14 @@ use function sprintf;
 
 class FactoryCreatorCommandTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     /** @var ObjectProphecy|ConsoleHelper */
     private $helper;
 
     /** @var FactoryCreatorCommand */
     private $command;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->helper = $this->prophesize(ConsoleHelper::class);
         $this->command = new FactoryCreatorCommand(ConfigDumperCommand::class, $this->helper->reveal());

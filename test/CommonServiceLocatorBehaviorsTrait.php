@@ -253,8 +253,8 @@ trait CommonServiceLocatorBehaviorsTrait
         ]);
 
         $initializer->expects($this->once())
-                    ->method('__invoke')
-                    ->with($this->creationContext, $this->isInstanceOf(stdClass::class));
+            ->method('__invoke')
+            ->with($this->creationContext, $this->isInstanceOf(stdClass::class));
 
         // We call it twice to make sure that the initializer is only called once
 
@@ -453,7 +453,7 @@ trait CommonServiceLocatorBehaviorsTrait
         );
 
         $config = $serviceManager->get('config');
-        self::assertInternalType('array', $config, 'Config service did not resolve as expected');
+        self::assertIsArray($config, 'Config service did not resolve as expected');
         self::assertSame(
             $config,
             $serviceManager->get('config'),
@@ -788,15 +788,18 @@ trait CommonServiceLocatorBehaviorsTrait
         return [
             'setAlias'                  => ['setAlias',           ['foo', 'bar']],
             'setInvokableClass'         => ['setInvokableClass',  ['foo', __CLASS__]],
-            'setFactory'                => ['setFactory',         ['foo', function () {}]],
+            'setFactory'                => ['setFactory',         ['foo', function () {
+            }]],
             'setService'                => ['setService',         ['foo', $this]],
             'setShared'                 => ['setShared',          ['foo', false]],
             'mapLazyService'            => ['mapLazyService',     ['foo', __CLASS__]],
-            'addDelegator'              => ['addDelegator',       ['foo', function () {}]],
+            'addDelegator'              => ['addDelegator',       ['foo', function () {
+            }]],
             'configure-alias'           => ['configure',          [['aliases'       => ['foo' => 'bar']]]],
             'configure-invokable'       => ['configure',          [['invokables'    => ['foo' => 'foo']]]],
             'configure-invokable-alias' => ['configure',          [['invokables'    => ['foo' => 'bar']]]],
-            'configure-factory'         => ['configure',          [['factories'     => ['foo' => function () {}]]]],
+            'configure-factory'         => ['configure',          [['factories'     => ['foo' => function () {
+            }]]]],
             'configure-service'         => ['configure',          [['services'      => ['foo' => $this]]]],
             'configure-shared'          => ['configure',          [['shared'        => ['foo' => false]]]],
             'configure-lazy-service'    => ['configure',          [['lazy_services' => ['class_map' => ['foo' => __CLASS__]]]]],
@@ -956,25 +959,25 @@ trait CommonServiceLocatorBehaviorsTrait
                 },
                 'factory' => SampleFactory::class,
                 'delegator' => SampleFactory::class,
-             ],
-             'delegators' => [
-                 'delegator' => [
-                     PassthroughDelegatorFactory::class
-                 ],
-             ],
+            ],
+            'delegators' => [
+                'delegator' => [
+                    PassthroughDelegatorFactory::class
+                ],
+            ],
             'invokables' => [
                 'invokable' => InvokableObject::class,
             ],
             'services' => [
                 'service' => new stdClass(),
             ],
-             'aliases' => [
+            'aliases' => [
                 'serviceAlias'          => 'service',
                 'invokableAlias'        => 'invokable',
                 'factoryAlias'          => 'factory',
                 'abstractFactoryAlias'  => 'foo',
                 'delegatorAlias'        => 'delegator',
-             ],
+            ],
             'abstract_factories' => [
                 AbstractFactoryFoo::class
             ]
@@ -982,7 +985,7 @@ trait CommonServiceLocatorBehaviorsTrait
         $config2 = $config1;
         $config2['shared_by_default'] = false;
 
-        $configs = [ $config1, $config2 ];
+        $configs = [$config1, $config2];
 
         foreach ($configs as $config) {
             $smTemplates[] = $this->createContainer($config);
