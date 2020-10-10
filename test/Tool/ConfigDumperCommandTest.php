@@ -20,6 +20,7 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 use function file_get_contents;
 use function PHPUnit\Framework\assertIsArray;
@@ -28,7 +29,8 @@ use function sprintf;
 
 class ConfigDumperCommandTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
+    use ProphecyTrait;
+
     public function setUp(): void
     {
         $this->configDir = vfsStream::setup('project');
