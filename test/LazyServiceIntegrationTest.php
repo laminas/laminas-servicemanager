@@ -44,8 +44,6 @@ use function unlink;
  */
 class LazyServiceIntegrationTest extends TestCase
 {
-    use BackportAssertionsTrait;
-
     public $proxyDir;
 
     public function setUp(): void

@@ -30,7 +30,6 @@ use function get_class;
 class ServiceManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
-    use BackportAssertionsTrait;
 
     public function createContainer(array $config = [])
     {
@@ -167,10 +166,21 @@ class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new ServiceManager($config);
-        self::assertAttributeSame([
-            InvokableObject::class => InvokableFactory::class,
-        ], 'factories', $serviceManager, 'Invokable object factory not found');
+        $serviceManager = new class ($config) extends ServiceManager
+        {
+            public function getFactories(): array
+            {
+                return $this->factories;
+            }
+        };
+
+        self::assertSame(
+            [
+                InvokableObject::class => InvokableFactory::class,
+            ],
+            $serviceManager->getFactories(),
+            'Invokable object factory not found'
+        );
     }
 
     public function testMapsNonSymmetricInvokablesAsAliasPlusInvokableFactory()
@@ -181,13 +191,33 @@ class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new ServiceManager($config);
-        self::assertAttributeSame([
-            'Invokable' => InvokableObject::class,
-        ], 'aliases', $serviceManager, 'Alias not found for non-symmetric invokable');
-        self::assertAttributeSame([
-            InvokableObject::class => InvokableFactory::class,
-        ], 'factories', $serviceManager, 'Factory not found for non-symmetric invokable target');
+        $serviceManager = new class ($config) extends ServiceManager
+        {
+            public function getFactories(): array
+            {
+                return $this->factories;
+            }
+
+            public function getAliases(): array
+            {
+                return $this->aliases;
+            }
+        };
+
+        self::assertSame(
+            [
+                'Invokable' => InvokableObject::class,
+            ],
+            $serviceManager->getAliases(),
+            'Alias not found for non-symmetric invokable'
+        );
+
+        self::assertSame(
+            [
+                InvokableObject::class => InvokableFactory::class,
+            ],
+            $serviceManager->getFactories()
+        );
     }
 
     /**
