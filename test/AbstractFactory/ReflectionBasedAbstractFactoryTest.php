@@ -14,17 +14,19 @@ use ArrayAccess;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 
 use function sprintf;
 
 class ReflectionBasedAbstractFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }

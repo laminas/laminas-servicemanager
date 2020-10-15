@@ -38,7 +38,7 @@ class LazyServiceFactoryTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->proxyFactory = $this->getMockBuilder(LazyLoadingValueHolderFactory::class)
             ->getMock();

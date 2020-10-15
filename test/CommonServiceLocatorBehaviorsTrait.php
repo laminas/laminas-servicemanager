@@ -453,7 +453,7 @@ trait CommonServiceLocatorBehaviorsTrait
         );
 
         $config = $serviceManager->get('config');
-        self::assertInternalType('array', $config, 'Config service did not resolve as expected');
+        self::assertIsArray($config, 'Config service did not resolve as expected');
         self::assertSame(
             $config,
             $serviceManager->get('config'),
@@ -722,7 +722,7 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $foo = $container->get('foo');
         self::assertInstanceOf(stdClass::class, $foo);
-        self::assertAttributeEquals('foo', 'name', $foo);
+        self::assertEquals('foo', $foo->name);
     }
 
     /**
@@ -748,7 +748,7 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $foo = $container->get('foo');
         self::assertInstanceOf(stdClass::class, $foo);
-        self::assertAttributeEquals(stdClass::class, 'name', $foo);
+        self::assertEquals(stdClass::class, $foo->name);
     }
 
     /**

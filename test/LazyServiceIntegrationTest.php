@@ -46,7 +46,7 @@ class LazyServiceIntegrationTest extends TestCase
 {
     public $proxyDir;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->proxyDir = sys_get_temp_dir() . '/laminas-servicemanager-proxy';
         if (! is_dir($this->proxyDir)) {
@@ -54,7 +54,7 @@ class LazyServiceIntegrationTest extends TestCase
         }
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         if (! is_dir($this->proxyDir)) {
             return;
@@ -144,7 +144,7 @@ class LazyServiceIntegrationTest extends TestCase
             $instance,
             'Service returned does not extend ' . InvokableObject::class
         );
-        self::assertContains(
+        self::assertStringContainsString(
             'TestAssetProxy',
             get_class($instance),
             'Service returned does not contain expected namespace'
@@ -152,8 +152,7 @@ class LazyServiceIntegrationTest extends TestCase
 
         // Test proxying works as expected
         $options = $instance->getOptions();
-        self::assertInternalType(
-            'array',
+        self::assertIsArray(
             $options,
             'Expected an array of options'
         );
@@ -219,7 +218,7 @@ class LazyServiceIntegrationTest extends TestCase
             $instance,
             'Service returned does not extend ' . InvokableObject::class
         );
-        self::assertContains(
+        self::assertStringContainsString(
             'TestAssetProxy',
             get_class($instance),
             'Service returned does not contain expected namespace'
@@ -227,8 +226,7 @@ class LazyServiceIntegrationTest extends TestCase
 
         // Test proxying works as expected
         $options = $instance->getOptions();
-        self::assertInternalType(
-            'array',
+        self::assertIsArray(
             $options,
             'Expected an array of options'
         );

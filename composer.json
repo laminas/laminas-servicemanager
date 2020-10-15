@@ -24,7 +24,7 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ~8.0.0",
         "laminas/laminas-stdlib": "^3.2.1",
         "laminas/laminas-zendframework-bridge": "^1.0",
         "psr/container": "^1.0"
@@ -35,7 +35,8 @@
         "mikey179/vfsstream": "^1.6.8",
         "ocramius/proxy-manager": "^2.8",
         "phpbench/phpbench": "^0.17",
-        "phpunit/phpunit": "^7.5.20"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.3"
     },
     "provide": {
         "psr/container-implementation": "^1.0"

@@ -20,6 +20,7 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 use function file_get_contents;
 use function realpath;
@@ -27,7 +28,9 @@ use function sprintf;
 
 class ConfigDumperCommandTest extends TestCase
 {
-    public function setUp()
+    use ProphecyTrait;
+
+    public function setUp(): void
     {
         $this->configDir = vfsStream::setup('project');
         $this->helper = $this->prophesize(ConsoleHelper::class);
@@ -115,10 +118,10 @@ class ConfigDumperCommandTest extends TestCase
         self::assertEquals(0, $command([$config, SimpleDependencyObject::class]));
 
         $generated = include $config;
-        self::assertInternalType('array', $generated);
+        self::assertIsArray($generated);
         self::assertArrayHasKey(ConfigAbstractFactory::class, $generated);
         $factoryConfig = $generated[ConfigAbstractFactory::class];
-        self::assertInternalType('array', $factoryConfig);
+        self::assertIsArray($factoryConfig);
         self::assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
         self::assertArrayHasKey(InvokableObject::class, $factoryConfig);
         self::assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
@@ -140,10 +143,10 @@ class ConfigDumperCommandTest extends TestCase
         self::assertEquals(0, $command([$argument, $config, ObjectWithObjectScalarDependency::class]));
 
         $generated = include $config;
-        self::assertInternalType('array', $generated);
+        self::assertIsArray($generated);
         self::assertArrayHasKey(ConfigAbstractFactory::class, $generated);
         $factoryConfig = $generated[ConfigAbstractFactory::class];
-        self::assertInternalType('array', $factoryConfig);
+        self::assertIsArray($factoryConfig);
         self::assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
         self::assertArrayHasKey(InvokableObject::class, $factoryConfig);
         self::assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
@@ -209,10 +212,10 @@ class ConfigDumperCommandTest extends TestCase
         self::assertEquals(0, $command([$config, SimpleDependencyObject::class]));
 
         $generated = include $config;
-        self::assertInternalType('array', $generated);
+        self::assertIsArray($generated);
         self::assertArrayHasKey(ConfigAbstractFactory::class, $generated);
         $factoryConfig = $generated[ConfigAbstractFactory::class];
-        self::assertInternalType('array', $factoryConfig);
+        self::assertIsArray($factoryConfig);
         self::assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
         self::assertArrayHasKey(InvokableObject::class, $factoryConfig);
         self::assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
