@@ -166,10 +166,17 @@ class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new ServiceManager($config);
-        self::assertAttributeSame([
+        $serviceManager = new class ($config) extends ServiceManager
+        {
+            public function getFactories(): array
+            {
+                return $this->factories;
+            }
+        };
+
+        self::assertSame([
             InvokableObject::class => InvokableFactory::class,
-        ], 'factories', $serviceManager, 'Invokable object factory not found');
+        ], $serviceManager->getFactories(), 'Invokable object factory not found');
     }
 
     public function testMapsNonSymmetricInvokablesAsAliasPlusInvokableFactory()
@@ -180,13 +187,24 @@ class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new ServiceManager($config);
-        self::assertAttributeSame([
+        $serviceManager = new class ($config) extends ServiceManager
+        {
+            public function getAliases(): array
+            {
+                return $this->aliases;
+            }
+
+            public function getFactories(): array
+            {
+                return $this->factories;
+            }
+        };
+        self::assertSame([
             'Invokable' => InvokableObject::class,
-        ], 'aliases', $serviceManager, 'Alias not found for non-symmetric invokable');
-        self::assertAttributeSame([
+        ], $serviceManager->getAliases(), 'Alias not found for non-symmetric invokable');
+        self::assertSame([
             InvokableObject::class => InvokableFactory::class,
-        ], 'factories', $serviceManager, 'Factory not found for non-symmetric invokable target');
+        ], $serviceManager->getFactories(), 'Factory not found for non-symmetric invokable target');
     }
 
     /**
