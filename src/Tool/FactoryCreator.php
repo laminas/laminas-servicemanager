@@ -81,6 +81,31 @@ EOT;
     }
 
     /**
+     * Gets the parameter's class name.
+     *
+     * @param ReflectionParameter $parameter
+     *   The parameter.
+     *
+     * @return string|null
+     *   The parameter's class name or NULL if the parameter is not a class.
+     */
+    public static function getParameterClassName(ReflectionParameter $parameter) {
+        $name = NULL;
+        if ($parameter->hasType() && !$parameter->getType()->isBuiltin()) {
+            $name = $parameter->getType()->getName();
+            $lc_name = strtolower($name);
+            switch ($lc_name) {
+            case 'self':
+                return $parameter->getDeclaringClass()->getName();
+
+            case 'parent':
+                return ($parent = $parameter->getDeclaringClass()->getParentClass()) ? $parent->name : NULL;
+            }
+        }
+        return $name;
+    }
+
+    /**
      * @param $className
      * @return string
      */
@@ -115,7 +140,7 @@ EOT;
                     return false;
                 }
 
-                if (null === $argument->getClass()) {
+                if (null === $this->getParameterClassName($argument)) {
                     throw new InvalidArgumentException(sprintf(
                         'Cannot identify type for constructor argument "%s"; '
                         . 'no type hint, or non-class/interface type hint',
@@ -132,7 +157,7 @@ EOT;
         }
 
         return array_map(function (ReflectionParameter $parameter) {
-            return $parameter->getClass()->getName();
+            return $parameter->getType()->getName();
         }, $constructorParameters);
     }
 

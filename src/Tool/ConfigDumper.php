@@ -98,7 +98,7 @@ EOC;
         $classConfig = [];
 
         foreach ($constructorArguments as $constructorArgument) {
-            $argumentType = $constructorArgument->getClass();
+            $argumentType = $constructorArgument->getType();
             if (is_null($argumentType)) {
                 if ($ignoreUnresolved) {
                     // don't throw an exception, just return the previous config

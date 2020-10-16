@@ -193,7 +193,8 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
          *   resolved to a service in the container.
          */
         return function (ReflectionParameter $parameter) use ($container, $requestedName) {
-            if ($parameter->isArray() && $parameter->getName() === 'config') {
+            if ($parameter->getType() && $parameter->getType()->getName() === 'array'
+                && $parameter->getName() === 'config') {
                 return $container->get('config');
             }
             return $this->resolveParameter($parameter, $container, $requestedName);
@@ -212,24 +213,24 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      */
     private function resolveParameter(ReflectionParameter $parameter, ContainerInterface $container, $requestedName)
     {
-        if ($parameter->isArray()) {
+        if ($this->getParameterClassName($parameter) === 'array') {
             return [];
         }
 
-        if (! $parameter->getClass()) {
+        if ($parameter->hasType() && ! $parameter->getType()->isBuiltin()) {
             if (! $parameter->isDefaultValueAvailable()) {
                 throw new ServiceNotFoundException(sprintf(
                     'Unable to create service "%s"; unable to resolve parameter "%s" '
                     . 'to a class, interface, or array type',
                     $requestedName,
-                    $parameter->getName()
+                    $parameter->getType()
                 ));
             }
 
             return $parameter->getDefaultValue();
         }
 
-        $type = $parameter->getClass()->getName();
+        $type = $parameter->getType()->getName();
         $type = $this->aliases[$type] ?? $type;
 
         if ($container->has($type)) {
@@ -248,5 +249,30 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
         // Type not available in container, but the value is optional and has a
         // default defined.
         return $parameter->getDefaultValue();
+    }
+
+        /**
+     * Gets the parameter's class name.
+     *
+     * @param ReflectionParameter $parameter
+     *   The parameter.
+     *
+     * @return string|null
+     *   The parameter's class name or NULL if the parameter is not a class.
+     */
+    public static function getParameterClassName(ReflectionParameter $parameter) {
+        $name = NULL;
+        if ($parameter->hasType() && !$parameter->getType()->isBuiltin()) {
+            $name = $parameter->getType()->getName();
+            $lc_name = strtolower($name);
+            switch ($lc_name) {
+            case 'self':
+                return $parameter->getDeclaringClass()->getName();
+
+            case 'parent':
+                return ($parent = $parameter->getDeclaringClass()->getParentClass()) ? $parent->name : NULL;
+            }
+        }
+        return $name;
     }
 }
