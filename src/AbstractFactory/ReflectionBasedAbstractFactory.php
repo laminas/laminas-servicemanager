@@ -217,13 +217,13 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
             return [];
         }
 
-        if ($parameter->hasType() && ! $parameter->getType()->isBuiltin()) {
+        if (! $parameter->hasType() || ($parameter->hasType() && $parameter->getType()->isBuiltin())) {
             if (! $parameter->isDefaultValueAvailable()) {
                 throw new ServiceNotFoundException(sprintf(
                     'Unable to create service "%s"; unable to resolve parameter "%s" '
                     . 'to a class, interface, or array type',
                     $requestedName,
-                    $parameter->getType()
+                    $parameter->getName()
                 ));
             }
 
@@ -260,17 +260,18 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      * @return string|null
      *   The parameter's class name or NULL if the parameter is not a class.
      */
-    public static function getParameterClassName(ReflectionParameter $parameter) {
-        $name = NULL;
-        if ($parameter->hasType() && !$parameter->getType()->isBuiltin()) {
+    public static function getParameterClassName(ReflectionParameter $parameter)
+    {
+        $name = null;
+        if ($parameter->hasType() && ! $parameter->getType()->isBuiltin()) {
             $name = $parameter->getType()->getName();
             $lc_name = strtolower($name);
             switch ($lc_name) {
-            case 'self':
-                return $parameter->getDeclaringClass()->getName();
+                case 'self':
+                    return $parameter->getDeclaringClass()->getName();
 
-            case 'parent':
-                return ($parent = $parameter->getDeclaringClass()->getParentClass()) ? $parent->name : NULL;
+                case 'parent':
+                    return ($parent = $parameter->getDeclaringClass()->getParentClass()) ? $parent->name : null;
             }
         }
         return $name;
