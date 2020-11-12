@@ -174,7 +174,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
         self::assertInstanceOf(TestAsset\ClassWithMixedConstructorParameters::class, $instance);
 
         self::assertEquals($config, $instance->config);
-        self::assertEquals([], $instance->options);
+        self::assertEquals(null, $instance->options);
         self::assertSame($sample, $instance->sample);
         self::assertSame($validators, $instance->validators);
     }
