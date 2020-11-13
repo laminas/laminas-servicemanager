@@ -260,7 +260,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      * @return string|null
      *   The parameter's class name or NULL if the parameter is not a class.
      */
-    public static function getParameterClassName(ReflectionParameter $parameter)
+    private function getParameterClassName(ReflectionParameter $parameter)
     {
         $name = null;
         if ($parameter->hasType() && ! $parameter->getType()->isBuiltin()) {
