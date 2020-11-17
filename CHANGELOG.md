@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#51](https://github.com/laminas/laminas-servicemanager/pull/51) Adds PHP 8.0 support
 
 ### Changed
 
