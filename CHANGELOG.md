@@ -20,6 +20,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
+- [#50](https://github.com/laminas/laminas-servicemanager/pull/50) Removes PHP support prior 7.4.0
+
 - [zendframework/zend-servicemanager#197](https://github.com/zendframework/zend-servicemanager/pull/197) drops
   support for PHP versions prior to 7.1.
 
