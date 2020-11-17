@@ -120,10 +120,10 @@ class ServiceManagerTest extends TestCase
         // @codingStandardsIgnoreStart
         return [
             // Description => [$sharedByDefault, $serviceShared, $serviceDefined, $expectedInstance]
-            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [ $sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [ $sharedByDefault,  $serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [ $sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [ $sharedByDefault, !$serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [$sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [$sharedByDefault,  $serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [$sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [$sharedByDefault, !$serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [!$sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [!$sharedByDefault,  $serviceShared, !$serviceDefined, !$shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [!$sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
@@ -166,10 +166,21 @@ class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new ServiceManager($config);
-        self::assertAttributeSame([
-            InvokableObject::class => InvokableFactory::class,
-        ], 'factories', $serviceManager, 'Invokable object factory not found');
+        $serviceManager = new class ($config) extends ServiceManager
+        {
+            public function getFactories(): array
+            {
+                return $this->factories;
+            }
+        };
+
+        self::assertSame(
+            [
+                InvokableObject::class => InvokableFactory::class,
+            ],
+            $serviceManager->getFactories(),
+            'Invokable object factory not found'
+        );
     }
 
     public function testMapsNonSymmetricInvokablesAsAliasPlusInvokableFactory()
@@ -180,13 +191,33 @@ class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new ServiceManager($config);
-        self::assertAttributeSame([
-            'Invokable' => InvokableObject::class,
-        ], 'aliases', $serviceManager, 'Alias not found for non-symmetric invokable');
-        self::assertAttributeSame([
-            InvokableObject::class => InvokableFactory::class,
-        ], 'factories', $serviceManager, 'Factory not found for non-symmetric invokable target');
+        $serviceManager = new class ($config) extends ServiceManager
+        {
+            public function getFactories(): array
+            {
+                return $this->factories;
+            }
+
+            public function getAliases(): array
+            {
+                return $this->aliases;
+            }
+        };
+
+        self::assertSame(
+            [
+                'Invokable' => InvokableObject::class,
+            ],
+            $serviceManager->getAliases(),
+            'Alias not found for non-symmetric invokable'
+        );
+
+        self::assertSame(
+            [
+                InvokableObject::class => InvokableFactory::class,
+            ],
+            $serviceManager->getFactories()
+        );
     }
 
     /**
@@ -291,8 +322,8 @@ class ServiceManagerTest extends TestCase
         $abstractFactory
             ->method('canCreate')
             ->withConsecutive(
-                [ $this->anything(), $this->equalTo('Alias') ],
-                [ $this->anything(), $this->equalTo('ServiceName')]
+                [$this->anything(), $this->equalTo('Alias')],
+                [$this->anything(), $this->equalTo('ServiceName')]
             )
             ->willReturnCallback(function ($context, $name) {
                 return $name === 'Alias';

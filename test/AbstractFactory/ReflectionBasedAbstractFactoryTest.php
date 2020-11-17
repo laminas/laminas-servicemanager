@@ -16,15 +16,18 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 use function sprintf;
 
 class ReflectionBasedAbstractFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }
@@ -45,7 +48,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
         self::assertFalse($factory->canCreate($this->container->reveal(), $requestedName));
     }
 
-    public function testCanCreateReturnsFalseWhenConstructorIsPrivate() : void
+    public function testCanCreateReturnsFalseWhenConstructorIsPrivate(): void
     {
         self::assertFalse(
             (new ReflectionBasedAbstractFactory())->canCreate(
@@ -56,7 +59,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
         );
     }
 
-    public function testCanCreateReturnsTrueWhenClassHasNoConstructor() : void
+    public function testCanCreateReturnsTrueWhenClassHasNoConstructor(): void
     {
         self::assertTrue(
             (new ReflectionBasedAbstractFactory())->canCreate(
