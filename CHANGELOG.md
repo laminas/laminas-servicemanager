@@ -33,29 +33,30 @@ All notable changes to this project will be documented in this file, in reverse 
 - [zendframework/zend-servicemanager#230](https://github.com/zendframework/zend-servicemanager/pull/230) fixes a
   problem in detecting cyclic aliases, ensuring they are detected correctly.
 
-## 3.4.1 - 2020-05-11
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+## 3.4.1 - 2020-12-01
 
 ### Fixed
 
 - [#28](https://github.com/laminas/laminas-servicemanager/pull/28) provides updates to the `ConfigAbstractFactory` to ensure it works correctly under PHP 7.4 when the `config` service is represented by an `ArrayObject` or `ArrayAccess` implementation.
 
 - [#35](https://github.com/laminas/laminas-servicemanager/pull/35) updates two exception messagers from the `ConfigAbstractFactory` to be more clear about what caused them.
+
+
+-----
+
+### Release Notes for [3.4.1](https://github.com/laminas/laminas-servicemanager/milestone/3)
+
+
+
+### 3.4.1
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+#### Bug,Documentation
+
+ - [52: Add `new` operator in `AbstractFactory` documentation example](https://github.com/laminas/laminas-servicemanager/pull/52) thanks to @fbrinker
 
 ## 3.4.0 - 2018-12-22
 
