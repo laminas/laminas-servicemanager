@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.5.0 - TBD
+## 3.5.0 - 2020-12-01
 
 ### Added
 
@@ -13,10 +13,6 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#40](https://github.com/laminas/laminas-servicemanager/pull/40) modifies the behavior of the `FactoryCreator` to alphabetize import statements.
 
 - [zendframework/zend-servicemanager#221](https://github.com/zendframework/zend-servicemanager/pull/221) provides enormous performance improvements for each of the various mutator methods (`setAlias()`, `setFactory()`, etc.), `has()` lookups, and initial container configuration.
-
-### Deprecated
-
-- Nothing.
 
 ### Removed
 
@@ -32,6 +28,34 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [zendframework/zend-servicemanager#230](https://github.com/zendframework/zend-servicemanager/pull/230) fixes a
   problem in detecting cyclic aliases, ensuring they are detected correctly.
+
+
+-----
+
+### Release Notes for [3.5.0](https://github.com/laminas/laminas-servicemanager/milestone/1)
+
+
+
+### 3.5.0
+
+- Total issues resolved: **2**
+- Total pull requests resolved: **6**
+- Total contributors: **5**
+
+#### Duplicate,Enhancement,hacktoberfest-accepted
+
+ - [57: Add support for PHP 8, fix tests](https://github.com/laminas/laminas-servicemanager/pull/57) thanks to @ocean
+
+#### Enhancement
+
+ - [56: add phpunit9 support](https://github.com/laminas/laminas-servicemanager/pull/56) thanks to @gennadigennadigennadi
+ - [51: Initial support for PHP 8.0](https://github.com/laminas/laminas-servicemanager/pull/51) thanks to @snapshotpl
+ - [50: Updated mimumum PHP version to 7.4 and tried to add 8.0 to CI](https://github.com/laminas/laminas-servicemanager/pull/50) thanks to @GeeH
+ - [42: #6 Bump supported PHP version to 7.3](https://github.com/laminas/laminas-servicemanager/pull/42) thanks to @GeeH and @weierophinney
+
+#### Bug
+
+ - [43: #3 Ported 279 from ZF repository - fixes merging of duplicate delegator factory definitions](https://github.com/laminas/laminas-servicemanager/pull/43) thanks to @GeeH and @weierophinney
 
 ## 3.4.1 - 2020-12-01
 
