@@ -149,12 +149,6 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
         <a href="../../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -379,7 +373,6 @@ factory.</p>
         SomeService::class =&gt; AnAbstractFactory::class,
     ],
 ];</code></pre>
-
 <p>Why would you choose one approach over the other?</p>
 <h2 id="comparisons">Comparisons</h2>
 <div class="table-responsive"><table>
@@ -435,7 +428,7 @@ immediate hash table lookup; abstract factories involve:</p>
 <li>which may contain additional lookups and/or retrievals in the container</li>
 </ul>
 </li>
-<li>invocation of a factory method (assuming succesful lookup)</li>
+<li>invocation of a factory method (assuming successful lookup)</li>
 </ul>
 <p>As such, having an explicit map can aid performance dramatically.</p>
 <p>Additionally, having an explicit map can aid in understanding what class is
@@ -563,12 +556,6 @@ development evolution is:</p>
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item ">

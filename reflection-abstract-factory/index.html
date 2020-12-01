@@ -149,12 +149,6 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -385,7 +379,6 @@ return [
     ],
     /* ... */
 ];</code></pre>
-
 <p>Mapping services to the factory is more explicit and performant.</p>
 <p>The factory operates with the following constraints/features:</p>
 <ul>
@@ -434,7 +427,6 @@ options.</p>
     \Laminas\Serializer\AdapterPluginManager::class      =&gt; 'SerializerAdapterManager',
     \Laminas\Validator\ValidatorPluginManager::class     =&gt; 'ValidatorManager',
 ]);</code></pre>
-
 <p>This can be done either in your configuration file (which could be problematic
 when considering serialization for caching), or during an early phase of
 application bootstrapping.</p>
@@ -456,7 +448,6 @@ class Module
         ]));
     }
 }</code></pre>
-
 <p>For Mezzio, it could be part of your <code>config/container.php</code> definition:</p>
 <pre class="highlight"><code class="language-php">$container = new ServiceManager();
 (new Config($config['dependencies']))-&gt;configureServiceManager($container);
@@ -464,7 +455,6 @@ class Module
 $container-&gt;addAbstractFactory(new ReflectionBasedAbstractFactory([
     /* ... */
 ]));</code></pre>
-
 <p>The second approach is to extend the class, and define the map in the
 <code>$aliases</code> property:</p>
 <pre class="highlight"><code class="language-php">namespace Application;
@@ -486,7 +476,6 @@ class ReflectionAbstractFactory extends ReflectionBasedAbstractFactory
         \Laminas\Validator\ValidatorPluginManager::class     =&gt; 'ValidatorManager',
     ];
 }</code></pre>
-
 <p>You could then register it via class name in your service configuration.</p>
 <h2 id="alternatives">Alternatives</h2>
 <p>You may also use the <a href="../config-abstract-factory/">Config Abstract Factory</a>,
@@ -594,12 +583,6 @@ which gives slightly more flexibility in terms of mapping dependencies:</p>
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item ">

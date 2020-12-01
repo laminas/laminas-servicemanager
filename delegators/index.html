@@ -149,12 +149,6 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -366,7 +360,7 @@ intercept actions being performed on the delegate in an
 <a href="http://en.wikipedia.org/wiki/Aspect-oriented_programming">AOP</a> fashioned way.</p>
 <h2 id="delegator-factory-signature">Delegator factory signature</h2>
 <p>A delegator factory has the following signature:</p>
-<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
 
 public function __invoke(
     ContainerInterface $container,
@@ -374,7 +368,6 @@ public function __invoke(
     callable $callback,
     array $options = null
 );</code></pre>
-
 <p>The parameters passed to the delegator factory are the following:</p>
 <ul>
 <li><code>$container</code> is the service locator that is used while creating the delegator
@@ -398,7 +391,6 @@ called and some output text is prepended.</p>
         return 'Buzz!';
     }
 }</code></pre>
-
 <p>The delegator class <code>BuzzerDelegator</code> has the following structure:</p>
 <pre class="highlight"><code class="language-php">use Laminas\EventManager\EventManagerInterface;
 
@@ -420,7 +412,6 @@ class BuzzerDelegator extends Buzzer
         return $this-&gt;realBuzzer-&gt;buzz();
     }
 }</code></pre>
-
 <p>To use the <code>BuzzerDelegator</code>, you can run the following code:</p>
 <pre class="highlight"><code class="language-php">$wrappedBuzzer = new Buzzer();
 $eventManager  = new Laminas\EventManager\EventManager();
@@ -430,7 +421,6 @@ $eventManager-&gt;attach('buzz', function () { echo "Stare at the art!\n"; });
 $buzzer = new BuzzerDelegator($wrappedBuzzer, $eventManager);
 
 echo $buzzer-&gt;buzz(); // "Stare at the art!\nBuzz!"</code></pre>
-
 <p>This logic is fairly simple as long as you have access to the instantiation
 logic of the <code>$wrappedBuzzer</code> object.</p>
 <p>You may not always be able to define how <code>$wrappedBuzzer</code> is created, since a
@@ -440,7 +430,7 @@ which you cannot modify without introducing further complexity.</p>
 decorate or modify any existing service.</p>
 <p>A simple delegator factory for the <code>buzzer</code> service can be implemented as
 following:</p>
-<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
 class BuzzerDelegatorFactory implements DelegatorFactoryInterface
@@ -455,7 +445,6 @@ class BuzzerDelegatorFactory implements DelegatorFactoryInterface
         return new BuzzerDelegator($realBuzzer, $eventManager);
     }
 }</code></pre>
-
 <p>You can then instruct the service manager to handle the service <code>buzzer</code> as a
 delegate:</p>
 <pre class="highlight"><code class="language-php">use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -476,7 +465,6 @@ $serviceManager = new Laminas\ServiceManager\ServiceManager([
 $buzzer = $serviceManager-&gt;get(Buzzer::class);
 
 $buzzer-&gt;buzz(); // "Stare at the art!\nBuzz!"</code></pre>
-
 <p>You can specify multiple delegators for a service. Each will add one decorator
 around the instantiation logic of that particular service.</p>
 <p>This latter point is the primary use case for delegators: <em>decorating the
@@ -574,12 +562,6 @@ instantiation logic for a service</em>.</p>
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item ">

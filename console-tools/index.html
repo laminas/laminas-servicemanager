@@ -149,12 +149,6 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -381,7 +375,6 @@ Arguments:
 Reads the provided configuration file (creating it if it does not exist),
 and injects it with ConfigAbstractFactory dependency configuration for
 the provided class name, writing the changes back to the file.</code></pre>
-
 <p>This utility will generate dependency configuration for the named class for use
 with the <a href="../config-abstract-factory/">ConfigAbstractFactory</a>. When doing so, it
 will read the named configuration file (creating it if it does not exist), and
@@ -408,13 +401,11 @@ Arguments:
 
 Generates to STDOUT a factory for creating the specified class; this may then
 be added to your application, and configured as a factory for the class.</code></pre>
-
 <p>This utility generates a factory class for the given class, based on the
 typehints in its constructor. The factory is emitted to STDOUT, and may be piped
 to a file if desired:</p>
 <pre class="highlight"><code class="language-bash">$ ./vendor/bin/generate-factory-for-class \
 &gt; "Application\\Model\\AlbumModel" &gt; ./module/Application/src/Model/AlbumModelFactory.php</code></pre>
-
 <p>The class generated implements <code>Laminas\ServiceManager\Factory\FactoryInterface</code>,
 and is generated within the same namespace as the originating class.</p>
 
@@ -510,12 +501,6 @@ and is generated within the same namespace as the originating class.</p>
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item ">

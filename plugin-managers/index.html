@@ -149,12 +149,6 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -372,7 +366,6 @@ specified inside a specialized <code>ValidatorPluginManager</code>.</p>
 {
     protected $instanceOf = ValidatorInterface::class;
 }</code></pre>
-
 <p>The <code>$instanceOf</code> variable specifies a class/interface type that all instances
 retrieved from the plugin manager must fulfill. If an instance created by the
 plugin manager does not match, a <code>Laminas\ServiceManager\Exception\InvalidServiceException</code>
@@ -390,7 +383,6 @@ validation rules, you can override the <code>validate()</code> method:</p>
         throw new InvalidServiceException('This is not a valid service!');
     }
 }</code></pre>
-
 <h2 id="configuring-a-plugin-manager">Configuring a plugin manager</h2>
 <p>A plugin manager requires that you pass a parent service manager (typically,
 the application's service manager) as well as service configuration. Service
@@ -418,7 +410,6 @@ $pluginManager = $serviceManager-&gt;get(ValidatorPluginManager::class);
 // Use the plugin manager
 
 $validator = $pluginManager-&gt;get(StringLengthValidator::class);</code></pre>
-
 <blockquote>
 <p>Unlike the version 2 implementation, when inside the context of the factory
 of a service created by a plugin manager, the passed container <strong>will not
@@ -429,7 +420,6 @@ manager from the container:</p>
     $validators = $container-&gt;get(ValidatorPluginManager::class);
     // ...
 }</code></pre>
-
 </blockquote>
 
 
@@ -524,12 +514,6 @@ manager from the container:</p>
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item ">

@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="laminas-servicemanager: factory-driven dependency injection container">  
-    <link rel="canonical" href="https://docs.laminas.dev/laminas-servicemanager/psr-11/">
+    <link rel="canonical" href="https://docs.laminas.dev/laminas-servicemanager/migration-v4/">
     <link rel="shortcut icon" href="https://docs.laminas.dev/img/trademark-laminas-foundation-rgb.svg">
 
-    <title>PSR-11 Support - laminas-servicemanager - Laminas Docs</title>
+    <title>Migration Guide - laminas-servicemanager - Laminas Docs</title>
 
     <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
     
@@ -148,12 +148,6 @@
                                 <ul class="subnavigation__list">
                                     
                                         
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
     <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -303,6 +297,17 @@
 
     
     
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#psr-11-container-interface" class="toc__link nav-link">PSR-11: Container Interface</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
 
                 
 
@@ -317,15 +322,8 @@
                 <li class="breadcrumb-item"><a href="..">laminas-servicemanager</a></li>
 
                 
-                    
-                        
-                        
-                            <li class="breadcrumb-item">Reference</li>
-                        
-                    
-                
 
-                <li class="breadcrumb-item active" aria-current="page">PSR-11 Support</li>
+                <li class="breadcrumb-item active" aria-current="page">Migration Guide</li>
             
         
     </ol>
@@ -338,84 +336,47 @@
 
     
     
-        <h2 class="chapter__headline">Reference</h2>
-    
 
-    <h1 id="psr-11-support">PSR-11 Support</h1>
-<p><a href="https://github.com/container-interop/container-interop/releases/tag/1.2.0">container-interop/container-interop 1.2.0</a>
-modifies its codebase to extend interfaces from <a href="https://github.com/php-fig/container">psr/container</a>
-(the official interfaces for <a href="http://www.php-fig.org/psr/psr-11/">PSR-11</a>). If
-you are on a pre-3.3.0 version of laminas-servicemanager, update your project, and
-receive container-interop 1.2, then laminas-servicemanager can already act as a
-PSR-11 provider!</p>
-<p>laminas-servicemanager 3.3.0 requires at least version 1.2 of container-interop,
-and <em>also</em> requires psr/container 1.0 to explicitly signal that it is a PSR-11
-provider, and to allow removal of the container-interop dependency later.</p>
-<p>Version 4.0 will require only psr/container, and will update the various factory
-interfaces and exception implementations to typehint against the PSR-11
-interfaces, which will require changes to any implementations you have. In the
-meantime, you can <a href="https://en.wikipedia.org/wiki/Duck_typing">duck-type</a> the
-following factory types:</p>
-<ul>
-<li>
-<p><code>Laminas\ServiceManager\Factory\FactoryInterface</code>: use a callable with the
-  following signature:
-  <pre class="highlight"><code class="language-php">function (
-    \Psr\Container\ContainerInterface $container,
-    string $requestedName,
-    array $options = null
-)</code></pre></p>
-</li>
-<li>
-<p><code>Laminas\ServiceManager\Factory\DelegatorFactoryInterface</code>: use a callable with
-  the following signature:
-  <pre class="highlight"><code class="language-php">function (
-    \Psr\Container\ContainerInterface $container,
-    string $name,
-    callable $callback,
-    array $options = null
-)</code></pre></p>
-</li>
-<li>
-<p><code>Laminas\ServiceManager\Initializer\InitializerInterface</code>: use a callable with
-  the following signature:
-  <pre class="highlight"><code class="language-php">function (
-    \Psr\Container\ContainerInterface $container,
-    $instance
-)</code></pre></p>
-</li>
-</ul>
-<p>Abstract factories <em>can not</em> be duck typed, due to the additional <code>canCreate()</code>
-method.</p>
-<p>You can also leave your factories as-is for now, and update them once
-laminas-servicemanager v4.0 is released, at which time we will be providing tooling
-to help migrate your factories to PSR-11.</p>
+    <h1 id="migration-guide">Migration Guide</h1>
+<p>Migration guide for Laminas Service version 4.0.0.</p>
+<h2 id="psr-11-container-interface">PSR-11: Container Interface</h2>
+<p><a href="https://github.com/container-interop/container-interop"><code>container-interop/container-interop</code></a>
+was officially deprecated in favor of <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-11-container.md">PSR-11</a>
+on February 13, 2017. As such, all uses of the interop-container interfaces
+have been replaced with PSR-11 containers interfaces as follows:
+  - <code>Interop\Container\ContainerInterface</code> to <code>Psr\Container\ContainerInterface</code>,
+  - <code>Interop\Container\Exception\ContainerException</code> to <code>Psr\Container\ContainerExceptionInterface</code>,
+  - <code>Interop\Container\Exception\NotFoundException</code> to <code>Psr\Container\NotFoundExceptionInterface</code>.</p>
+<p>Further, installs of <code>container-interop/container-interop</code> below version <code>1.2.0</code>
+is prohibited via Composer's <code>conflicts</code> configuration. Version <code>1.2.0</code> <em>does</em>
+extend the PSR-11 interfaces, and is thus still usable.</p>
+<p>If your project typehints any <code>Interop\ContainerInterop\*</code> interfaces where any
+<code>Laminas\ServiceManager\*</code> classes are expected, you <em><strong>must</strong></em> update your code to
+expect <code>Laminas\ServiceManager\*</code> or <code>Psr\Container\*</code> classes or interfaces instead.
+The latter is preferred, unless your code utilizes any additional functionality
+provided by the <code>Laminas\ServiceManager\*</code> classes that are not declared in the
+PSR-11 interfaces.</p>
+<p>To do this, use your favorite find-and-replace tool to update the following:
+  - <code>use Interop\Container\ContainerInterface;</code> -&gt; <code>use Psr\Container\ContainerInterface;</code>
+  - <code>use Interop\Container\Exception\ContainerException;</code> -&gt; <code>use Psr\Container\ContainerExceptionInterface;</code>
+  - <code>use Interop\Container\Exception\NotFoundException;</code> -&gt; <code>use Psr\Container\NotFoundExceptionInterface;</code>
+    - <strong>Note:</strong> You will also need to replace <code>ContainerException</code> with <code>ContainerExceptionInterface</code>
+      and <code>NotFoundException</code> with <code>NotFoundExceptionInterface</code> where it is used
+      throughout your code. If you <em>don't</em> want to do that, you can include
+      <code>as ContainerException</code>/<code>as NotFoundException</code> in the find-and-replace,
+      and any existing use of <code>ContainerException</code>/<code>NotFoundException</code> will
+      continue to work.</p>
+<blockquote>
+<h3>Note</h3>
+<p>If you use fully-qualified class names in your typehints, rather than taking
+advantage of <code>use</code> statements, you will need to run additional find-and-replace
+commands to update those class paths within your code. The exact finds and
+replaces to run for those scenarios are not covered in this migration guide, as
+they can vary greatly and are not a generally recommended practice.</p>
+</blockquote>
 
 
 
-
-    <nav>
-    <ul class="page-nav hidden-print">
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../quick-start/">
-                    <i class="fa fa-chevron-left"></i> Previous
-                </a>
-            
-        </li>
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../configuring-the-service-manager/">
-                    Next <i class="fa fa-chevron-right"></i>
-                </a>
-            
-        </li>
-    </ul>
-</nav>
 
 
 
@@ -423,7 +384,7 @@ to help migrate your factories to PSR-11.</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-servicemanager/edit/master/docs/book/psr-11.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/laminas/laminas-servicemanager/edit/master/docs/book/migration-v4.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>
@@ -483,12 +444,6 @@ to help migrate your factories to PSR-11.</p>
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item ">

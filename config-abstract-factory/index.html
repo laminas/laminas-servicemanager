@@ -149,12 +149,6 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -370,7 +364,6 @@ any other abstract factory.</p>
 <p>Programmatically:</p>
 <pre class="highlight"><code class="language-php">$serviceManager = new ServiceManager();
 $serviceManager-&gt;addAbstractFactory(new ConfigAbstractFactory());</code></pre>
-
 <p>Or within configuration:</p>
 <pre class="highlight"><code class="language-php">return [
     // laminas-mvc:
@@ -387,7 +380,6 @@ $serviceManager-&gt;addAbstractFactory(new ConfigAbstractFactory());</code></pre
         ],
     ],
 ];</code></pre>
-
 <p>Like all abstract factories starting in version 3, you may also use the config
 abstract factory as a mapped factory, registering it as a factory for a specific
 class:</p>
@@ -398,7 +390,6 @@ class:</p>
         ],
     ],
 ];</code></pre>
-
 <h2 id="configuration">Configuration</h2>
 <p>Configuration should be provided via the <code>config</code> service, which should return
 an array or <code>ArrayObject</code>. <code>ConfigAbstractFactory</code> looks for a top-level key in
@@ -425,7 +416,6 @@ return [
         ],
     ],
 ];</code></pre>
-
 <p>The definition tells the service manager how this abstract factory should manage
 dependencies in the classes defined. In the above example, <code>MySimpleClass</code> has a
 single dependency on a <code>Logger</code> instance. The abstract factory will simply look
@@ -456,7 +446,6 @@ class Cache
 class CacheAdapter
 {
 }</code></pre>
-
 <p>In this case, we can define the configuration for these classes as follows:</p>
 <pre class="highlight"><code class="language-php">// config/autoload/dependencies.php or anywhere that gets merged into global config
 return [
@@ -569,12 +558,6 @@ return [
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item ">

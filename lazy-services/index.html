@@ -149,12 +149,6 @@
                                     
                                         
     <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
-    <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -386,7 +380,6 @@ capable of generating lazy loading proxies for your services.</p>
 <p>The lazy service facilities depend on <a href="https://github.com/Ocramius/ProxyManager">ProxyManager</a>;
 you will need to install that package before using the feature:</p>
 <pre class="highlight"><code class="language-php">$ composer require ocramius/proxy-manager</code></pre>
-
 <h2 id="practical-example">Practical example</h2>
 <p>To demonstrate how a lazy service works, you may use the following <code>Buzzer</code>
 example class, which is designed to be slow at instantiation time for
@@ -406,7 +399,6 @@ class Buzzer
         return 'Buzz!';
     }
 }</code></pre>
-
 <p>You can then proceed and configure the service manager to generate proxies
 instead of real services:</p>
 <pre class="highlight"><code class="language-php">use MyApp\Buzzer;
@@ -431,7 +423,6 @@ $serviceManager = new \Laminas\ServiceManager\ServiceManager([
         ],
     ],
 ]);</code></pre>
-
 <p>This configuration tells the service manager to add the add
 <code>LazyServiceFactory</code> as a delegator for <code>Buzzer</code>.</p>
 <p>You can now retrieve the buzzer:</p>
@@ -439,7 +430,6 @@ $serviceManager = new \Laminas\ServiceManager\ServiceManager([
 
 $buzzer = $serviceManager-&gt;get(Buzzer::class);
 echo $buzzer-&gt;buzz();</code></pre>
-
 <p>To verify that the proxying occurred correctly, you can run the following code,
 which should delay the 5 seconds wait time hardcoded in <code>Buzzer::__construct</code>
 until <code>Buzzer::buzz</code> is invoked:</p>
@@ -451,7 +441,6 @@ for ($i = 0; $i &lt; 100; $i += 1) {
 }
 
 echo $buzzer-&gt;buzz();</code></pre>
-
 <h2 id="configuration">Configuration</h2>
 <p>This is the config structure expected by <code>Laminas\ServiceManager\Proxy\LazyServiceFactory</code>,
 in the <code>lazy_services</code> key passed in the service manager configuration:</p>
@@ -472,7 +461,6 @@ in the <code>lazy_services</code> key passed in the service manager configuratio
     // whether the generated proxy classes should be written to disk or generated on-the-fly
     'write_proxy_files' =&gt; false,
 ];</code></pre>
-
 <p>After you have an instance, you can map lazy service/class pairs using
 <code>mapLazyService()</code>:</p>
 <pre class="highlight"><code class="language-php">$container-&gt;mapLazyService('foo', \MyApplication\Foo::class);</code></pre>
@@ -569,12 +557,6 @@ in the <code>lazy_services</code> key passed in the service manager configuratio
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item ">

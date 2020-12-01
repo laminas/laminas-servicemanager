@@ -148,12 +148,6 @@
                                 <ul class="subnavigation__list">
                                     
                                         
-    <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
-                                    
-                                        
     <li class="subnavigation__list-item subnavigation__list-item--active">
         <a href="./" class="subnavigation__link">Configuring the service manager</a>
     </li>
@@ -276,7 +270,7 @@
             </div>
 
             
-            <div class="col-4 text-sm-right">
+            <div class="col-4 text-right">
                 
                     
 
@@ -415,7 +409,6 @@ $serviceManager = new ServiceManager([
     'shared'             =&gt; [],
     'shared_by_default'  =&gt; true,
 ]);</code></pre>
-
 <h2 id="factories">Factories</h2>
 <p>A factory is any callable or any class that implements the interface
 <code>Laminas\ServiceManager\Factory\FactoryInterface</code>.</p>
@@ -431,13 +424,12 @@ $serviceManager = new ServiceManager([
         MyObject::class =&gt; MyObjectFactory::class,
     ],
 ]);</code></pre>
-
 <blockquote>
 <p>For invokable classes we recommend using <code>Laminas\ServiceManager\Factory\InvokableFactory</code>,
 because ServiceManager will convert all <code>invokables</code> into <code>factories</code> using <code>InvokableFactory</code> internally.</p>
 </blockquote>
 <p>As said before, a factory can also be a callable, to create more complex objects:</p>
-<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 use stdClass;
@@ -451,7 +443,6 @@ $serviceManager = new ServiceManager([
         },
     ],
 ]);</code></pre>
-
 <p>Each factory always receive a <code>ContainerInterface</code> argument (this is the base
 interface that the <code>ServiceManager</code> implements), as well as the requested name
 as the second argument. In this case, the <code>$requestedName</code> is <code>MyObject</code>.</p>
@@ -485,7 +476,6 @@ $serviceManager = new ServiceManager([
         MyObject::class =&gt; MyObjectFactory::class
     ]
 ]);</code></pre>
-
 <blockquote>
 <p>For performance reasons, factories objects are not created until requested.
 In the above example, this means that the <code>MyObjectFactory</code> object won't be
@@ -526,7 +516,6 @@ $serviceManager = new ServiceManager([
         MyObjectB::class =&gt; MyObjectFactory::class
     ]
 ]);</code></pre>
-
 <p>This pattern can often replace abstract factories, and is more performant:</p>
 <ul>
 <li>Lookups for services do not need to query abstract factories; the service is
@@ -572,7 +561,6 @@ $serviceManager = new ServiceManager([
 
 // When fetching an object:
 $object = $serviceManager-&gt;get(A::class);</code></pre>
-
 <p>Here is what will happen:</p>
 <ol>
 <li>The service manager will check if it contains a factory mapped to the
@@ -615,7 +603,6 @@ $serviceManager = new ServiceManager([
 ]);
 
 $object = $serviceManager-&gt;get('B');</code></pre>
-
 <p>In this example, asking <code>B</code> will be resolved to <code>A</code>, which will be itself
 resolved to <code>stdClass::class</code>, which will finally be constructed using the
 provided factory.</p>
@@ -633,7 +620,7 @@ inject additional dependencies.</p>
 <p>For instance, if we'd want to automatically inject the dependency
 <code>EventManager::class</code> in all objects that implement the interface
 <code>EventManagerAwareInterface</code>, we could create the following initializer:</p>
-<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
 use stdClass;
 use Laminas\ServiceManager\ServiceManager;
 
@@ -647,7 +634,6 @@ $serviceManager = new ServiceManager([
         }
     ]
 ]);</code></pre>
-
 <p>Alternately, you can create a class that implements
 <code>Laminas\ServiceManager\Initializer\InitializerInterface</code>, and pass it to the
 <code>initializers</code> array:</p>
@@ -666,7 +652,7 @@ class MyInitializer implements InitializerInterface
 
 // When creating the service manager:
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use stdClass;
 use Laminas\ServiceManager\ServiceManager;
 
@@ -675,7 +661,6 @@ $serviceManager = new ServiceManager([
         new MyInitializer() // You could also use MyInitializer::class
     ]
 ]);</code></pre>
-
 <blockquote>
 <p>Note that initializers are automatically created when the service manager is
 initialized, even if you pass a class name.</p>
@@ -715,7 +700,6 @@ $object1 = $serviceManager-&gt;get(stdClass::class);
 $object2 = $serviceManager-&gt;get(stdClass::class);
 
 var_dump($object1 === $object2); // prints "true"</code></pre>
-
 <p>However, occasionally you may require discrete instances of a service. To
 enable this, you can use the <code>shared</code> key, providing a boolean false value for
 your service, as shown below:</p>
@@ -732,7 +716,6 @@ $object1 = $serviceManager-&gt;get(stdClass::class);
 $object2 = $serviceManager-&gt;get(stdClass::class);
 
 var_dump($object1 === $object2); // prints "false"</code></pre>
-
 <p>Alternately, you can use the <code>build()</code> method instead of the <code>get()</code> method.
 The <code>build()</code> method works exactly the same as the <code>get</code> method, but never
 caches the service created, nor uses a previously cached instance for the
@@ -747,7 +730,6 @@ $object1 = $serviceManager-&gt;build(stdClass::class);
 $object2 = $serviceManager-&gt;build(stdClass::class);
 
 var_dump($object1 === $object2); // prints "false"</code></pre>
-
 <p>Finally, you could also decide to disable caching by default (even when calling
 the <code>get()</code> method), by setting the <code>shared_by_default</code> option to false:</p>
 <pre class="highlight"><code class="language-php">$serviceManager = new ServiceManager([
@@ -761,14 +743,13 @@ $object1 = $serviceManager-&gt;get(stdClass::class);
 $object2 = $serviceManager-&gt;get(stdClass::class);
 
 var_dump($object1 === $object2); // prints "false"</code></pre>
-
 <h2 id="passing-config-to-a-factorydelegator">Passing config to a factory/delegator</h2>
 <p>So far, we have covered examples where services are created through factories
 (or abstract factories). The factory is able to create the object itself.</p>
 <p>Occasionally you may need to pass additional options that act as a "context".
 For instance, we could have a <code>StringLengthValidator</code> service registered.
 However, this validator can have multiple options, such as <code>min</code> and <code>max</code>.
-Because this is dependant on the caller context (or might even be retrieved
+Because this is dependent on the caller context (or might even be retrieved
 from a database, for instance), the factory cannot know what options to give
 when constructing the validator.</p>
 <p>To solve this issue, the service manager offers a <code>build()</code> method. It works
@@ -801,7 +782,6 @@ $serviceManager = new ServiceManager([
 
 $validator1 = $serviceManager-&gt;build(StringLengthValidator::class, ['min' =&gt; 5]);
 $validator2 = $serviceManager-&gt;build(StringLengthValidator::class, ['min' =&gt; 15]);</code></pre>
-
 <p>In our previous example, because the <code>StringLengthValidator</code> does not have any
 other dependencies other than the <code>$options</code>, we could remove the factory, and
 simply map it to the built-in <code>InvokableFactory</code> factory:</p>
@@ -816,7 +796,6 @@ $serviceManager = new ServiceManager([
 
 $validator1 = $serviceManager-&gt;build(StringLengthValidator::class, ['min' =&gt; 5]);
 $validator2 = $serviceManager-&gt;build(StringLengthValidator::class, ['min' =&gt; 15]);</code></pre>
-
 <p>This works because the <code>InvokableFactory</code> will automatically pass the options
 (if any) to the constructor of the created object.</p>
 <h2 id="altering-a-service-managers-config">Altering a service manager's config</h2>
@@ -906,7 +885,7 @@ $serviceManager-&gt;setShared(DateTime::class, false);</code></pre>
         
         <li class="page-nav__item">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../psr-11/">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../quick-start/">
                     <i class="fa fa-chevron-left"></i> Previous
                 </a>
             
@@ -989,12 +968,6 @@ $serviceManager-&gt;setShared(DateTime::class, false);</code></pre>
                             <li class="subnavigation__list-item">
                                 <span class="subnavigation__headline">Reference</span>
                                 <ul class="subnavigation__list">
-                                    
-                                        
-    <li class="subnavigation__list-item ">
-        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
-    </li>
-
                                     
                                         
     <li class="subnavigation__list-item subnavigation__list-item--active">
