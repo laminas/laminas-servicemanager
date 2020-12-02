@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager\Exception;
 
 use InvalidArgumentException as SplInvalidArgumentException;
-use Zend\ServiceManager\AbstractFactoryInterface;
-use Zend\ServiceManager\Initializer\InitializerInterface;
+use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\Initializer\InitializerInterface;
 
 use function get_class;
 use function gettype;
