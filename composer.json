@@ -45,7 +45,7 @@
         "psr/container-implementation": "^1.0"
     },
     "conflict": {
-        "laminas/laminas-code": "<3.3.1"
+        "laminas/laminas-code": "<3.4.0"
     },
     "suggest": {
         "laminas/laminas-stdlib": "laminas-stdlib ^2.7.7 | ^3.1 if you wish to use the MergeReplaceKey or MergeRemoveKey features in Config instances",
