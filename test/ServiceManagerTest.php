@@ -9,6 +9,7 @@
 namespace LaminasTest\ServiceManager;
 
 use DateTime;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
@@ -267,6 +268,28 @@ class ServiceManagerTest extends TestCase
 
         self::assertSame($service, $alias);
         self::assertSame($service, $headAlias);
+    }
+
+    public function testAbstractFactoryShouldBeCheckedForResolvedAliasesInsteadOfAliasNameName()
+    {
+        $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
+
+        $serviceManager = new SimpleServiceManager([
+            'aliases' => [
+                'Alias' => 'ServiceName',
+            ],
+            'abstract_factories' => [
+                $abstractFactory,
+            ],
+        ]);
+
+        $abstractFactory
+            ->expects(self::once())
+            ->method('canCreate')
+            ->with(self::anything(), 'ServiceName')
+            ->willReturn(true);
+
+        $this->assertTrue($serviceManager->has('Alias'));
     }
 
     public static function sampleFactory()
