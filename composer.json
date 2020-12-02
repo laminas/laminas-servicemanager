@@ -33,6 +33,7 @@
     "require-dev": {
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-container-config-test": "^0.2.2",
+        "laminas/laminas-dependency-plugin": "^2.1",
         "mikey179/vfsstream": "^1.6.8",
         "ocramius/proxy-manager": "^2.2.3",
         "phpbench/phpbench": "^0.17",
