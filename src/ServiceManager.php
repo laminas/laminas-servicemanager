@@ -16,6 +16,7 @@ use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\Stdlib\ArrayUtils;
 use ProxyManager\Configuration as ProxyConfiguration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\FileLocator\FileLocator;
@@ -363,7 +364,7 @@ class ServiceManager implements ServiceLocatorInterface
         }
 
         if (isset($config['delegators'])) {
-            $this->delegators = array_merge_recursive($this->delegators, $config['delegators']);
+            $this->mergeDelegators($config['delegators']);
         }
 
         if (isset($config['shared'])) {
@@ -384,7 +385,7 @@ class ServiceManager implements ServiceLocatorInterface
         // If lazy service configuration was provided, reset the lazy services
         // delegator factory.
         if (isset($config['lazy_services']) && ! empty($config['lazy_services'])) {
-            $this->lazyServices          = array_merge_recursive($this->lazyServices, $config['lazy_services']);
+            $this->lazyServices          = ArrayUtils::merge($this->lazyServices, $config['lazy_services']);
             $this->lazyServicesDelegator = null;
         }
 
@@ -740,6 +741,32 @@ class ServiceManager implements ServiceLocatorInterface
         );
 
         return $this->lazyServicesDelegator;
+    }
+
+    /**
+     * Merge delegators avoiding multiple same delegators for the same service.
+     * It works with strings and class instances.
+     * It's not possible to de-duple anonymous functions
+     *
+     * @param string[][]|Factory\DelegatorFactoryInterface[][] $config
+     * @return string[][]|Factory\DelegatorFactoryInterface[][]
+     */
+    private function mergeDelegators(array $config)
+    {
+        foreach ($config as $key => $delegators) {
+            if (!isset($this->delegators[$key])) {
+                $this->delegators[$key] = $delegators;
+                continue;
+            }
+
+            foreach ($delegators as $delegator) {
+                if (!in_array($delegator, $this->delegators[$key], true)) {
+                    $this->delegators[$key][] = $delegator;
+                }
+            }
+        }
+
+        return $this->delegators;
     }
 
     /**
