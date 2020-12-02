@@ -48,6 +48,9 @@
         "container-interop/container-interop-implementation": "^1.2",
         "psr/container-implementation": "^1.0"
     },
+    "conflict": {
+        "laminas/laminas-code": "<3.3.1"
+    },
     "suggest": {
         "laminas/laminas-stdlib": "laminas-stdlib ^2.7.7 | ^3.1 if you wish to use the MergeReplaceKey or MergeRemoveKey features in Config instances",
         "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
