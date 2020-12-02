@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ConfigTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     public function testMergeArrays()
     {
         $config = [

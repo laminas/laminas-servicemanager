@@ -34,9 +34,10 @@
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-container-config-test": "^0.2.2",
         "mikey179/vfsstream": "^1.6.8",
-        "ocramius/proxy-manager": "^2.1.1",
-        "phpbench/phpbench": "^0.13.0",
-        "phpunit/phpunit": "^7.5.20"
+        "ocramius/proxy-manager": "^2.2.3",
+        "phpbench/phpbench": "^0.17",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.4"
     },
     "provide": {
         "container-interop/container-interop-implementation": "^1.2",

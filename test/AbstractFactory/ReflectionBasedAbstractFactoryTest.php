@@ -21,10 +21,12 @@ use function sprintf;
 
 class ReflectionBasedAbstractFactoryTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
+
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }
@@ -45,7 +47,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
         self::assertFalse($factory->canCreate($this->container->reveal(), $requestedName));
     }
 
-    public function testCanCreateReturnsFalseWhenConstructorIsPrivate()
+    public function testCanCreateReturnsFalseWhenConstructorIsPrivate(): void
     {
         self::assertFalse(
             (new ReflectionBasedAbstractFactory())->canCreate(
@@ -56,7 +58,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
         );
     }
 
-    public function testCanCreateReturnsTrueWhenClassHasNoConstructor()
+    public function testCanCreateReturnsTrueWhenClassHasNoConstructor(): void
     {
         self::assertTrue(
             (new ReflectionBasedAbstractFactory())->canCreate(

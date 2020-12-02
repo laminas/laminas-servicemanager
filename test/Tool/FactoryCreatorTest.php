@@ -28,7 +28,7 @@ class FactoryCreatorTest extends TestCase
     /**
      * @internal param FactoryCreator $factoryCreator
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->factoryCreator = new FactoryCreator();
     }
@@ -44,7 +44,7 @@ class FactoryCreatorTest extends TestCase
     public function testCreateFactoryCreatesForSimpleDependencies()
     {
         $className = SimpleDependencyObject::class;
-        $factory = file_get_contents(__DIR__. '/../TestAsset/factories/SimpleDependencyObject.php');
+        $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
 
         self::assertEquals($factory, $this->factoryCreator->createFactory($className));
     }
@@ -52,7 +52,7 @@ class FactoryCreatorTest extends TestCase
     public function testCreateFactoryCreatesForComplexDependencies()
     {
         $className = ComplexDependencyObject::class;
-        $factory = file_get_contents(__DIR__. '/../TestAsset/factories/ComplexDependencyObject.php');
+        $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/ComplexDependencyObject.php');
 
         self::assertEquals($factory, $this->factoryCreator->createFactory($className));
     }

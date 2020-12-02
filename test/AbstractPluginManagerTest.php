@@ -37,7 +37,9 @@ use function set_error_handler;
  */
 class AbstractPluginManagerTest extends TestCase
 {
+    use \Prophecy\PhpUnit\ProphecyTrait;
     use CommonServiceLocatorBehaviorsTrait;
+    use BackportAssertionsTrait;
 
     public function createContainer(array $config = [])
     {
@@ -61,9 +63,9 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager = new SimplePluginManager($container, $config);
 
         $invokableFactory->expects($this->once())
-                         ->method('__invoke')
-                         ->with($container, InvokableObject::class)
-                         ->will($this->returnValue(new InvokableObject()));
+            ->method('__invoke')
+            ->with($container, InvokableObject::class)
+            ->will($this->returnValue(new InvokableObject()));
 
         $object = $pluginManager->get(InvokableObject::class);
 
@@ -367,7 +369,7 @@ class AbstractPluginManagerTest extends TestCase
         $errorHandlerCalled = false;
         set_error_handler(function ($errno, $errmsg) use (&$errorHandlerCalled) {
             self::assertEquals(E_USER_DEPRECATED, $errno);
-            self::assertContains('3.0', $errmsg);
+            self::assertStringContainsString('3.0', $errmsg);
             $errorHandlerCalled = true;
         }, E_USER_DEPRECATED);
         $pluginManager->validate($instance);

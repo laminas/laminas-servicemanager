@@ -31,6 +31,7 @@ use function get_class;
 class ServiceManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
+    use BackportAssertionsTrait;
 
     public function createContainer(array $config = [])
     {
@@ -121,10 +122,10 @@ class ServiceManagerTest extends TestCase
         // @codingStandardsIgnoreStart
         return [
             // Description => [$sharedByDefault, $serviceShared, $serviceDefined, $expectedInstance]
-            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [ $sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [ $sharedByDefault,  $serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [ $sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [ $sharedByDefault, !$serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [$sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [$sharedByDefault,  $serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [$sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [$sharedByDefault, !$serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [!$sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [!$sharedByDefault,  $serviceShared, !$serviceDefined, !$shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [!$sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
@@ -292,8 +293,8 @@ class ServiceManagerTest extends TestCase
         $abstractFactory
             ->method('canCreate')
             ->withConsecutive(
-                [ $this->anything(), $this->equalTo('Alias') ],
-                [ $this->anything(), $this->equalTo('ServiceName')]
+                [$this->anything(), $this->equalTo('Alias')],
+                [$this->anything(), $this->equalTo('ServiceName')]
             )
             ->willReturnCallback(function ($context, $name) {
                 return $name === 'Alias';
