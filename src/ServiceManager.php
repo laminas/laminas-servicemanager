@@ -24,7 +24,6 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 
 use function array_intersect;
-use function array_merge_recursive;
 use function class_exists;
 use function get_class;
 use function gettype;
@@ -754,13 +753,13 @@ class ServiceManager implements ServiceLocatorInterface
     private function mergeDelegators(array $config)
     {
         foreach ($config as $key => $delegators) {
-            if (!isset($this->delegators[$key])) {
+            if (! array_key_exists($key, $this->delegators)) {
                 $this->delegators[$key] = $delegators;
                 continue;
             }
 
             foreach ($delegators as $delegator) {
-                if (!in_array($delegator, $this->delegators[$key], true)) {
+                if (! in_array($delegator, $this->delegators[$key], true)) {
                     $this->delegators[$key][] = $delegator;
                 }
             }
