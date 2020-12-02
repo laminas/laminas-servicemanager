@@ -22,19 +22,18 @@ use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 
-use function \array_merge;
-use function \array_merge_recursive;
-use function \class_exists;
-use function \get_class;
-use function \gettype;
-use function \is_callable;
-use function \is_object;
-use function \is_string;
-use function \spl_autoload_register;
-use function \spl_object_hash;
-use function \sprintf;
-use function \trigger_error;
-use function \in_array;
+use function array_merge_recursive;
+use function class_exists;
+use function get_class;
+use function gettype;
+use function in_array;
+use function is_callable;
+use function is_object;
+use function is_string;
+use function spl_autoload_register;
+use function spl_object_hash;
+use function sprintf;
+use function trigger_error;
 
 /**
  * Service Manager.
@@ -185,18 +184,18 @@ class ServiceManager implements ServiceLocatorInterface
      */
     public function get($name)
     {
-        // We start by checking if we have cached the requested service (this
-        // is the fastest method).
+        // We start by checking if we have cached the requested service;
+        // this is the fastest method.
         if (isset($this->services[$name])) {
             return $this->services[$name];
         }
 
-        // Determine if the service should be shared
+        // Determine if the service should be shared.
         $sharedService = isset($this->shared[$name]) ? $this->shared[$name] : $this->sharedByDefault;
 
         // We achieve better performance if we can let all alias
-        // considerations out
-        if (empty($this->aliases)) {
+        // considerations out.
+        if (! $this->aliases) {
             $object = $this->doCreate($name);
 
             // Cache the object for later, if it is supposed to be shared.
@@ -206,19 +205,20 @@ class ServiceManager implements ServiceLocatorInterface
             return $object;
         }
 
-        // Here we have to deal with requests which may be aliases
+        // We now deal with requests which may be aliases.
         $resolvedName = isset($this->aliases[$name]) ? $this->aliases[$name] : $name;
 
-        // Can only become true, if the requested service is an shared alias
+        // The following is only true if the requested service is a shared alias.
         $sharedAlias = $sharedService && isset($this->services[$resolvedName]);
-        // If the alias is configured as shared service, we are done.
+
+        // If the alias is configured as a shared service, we are done.
         if ($sharedAlias) {
             $this->services[$name] = $this->services[$resolvedName];
             return $this->services[$resolvedName];
         }
 
-        // At this point we have to create the object. We use the
-        // resolved name for that.
+        // At this point, we have to create the object.
+        // We use the resolved name for that.
         $object = $this->doCreate($resolvedName);
 
         // Cache the object for later, if it is supposed to be shared.
@@ -226,7 +226,8 @@ class ServiceManager implements ServiceLocatorInterface
             $this->services[$resolvedName] = $object;
         }
 
-        // Also do so for aliases, this allows sharing based on service name used.
+        // Also cache under the alias name; this allows sharing based on the
+        // service name used.
         if ($sharedAlias) {
             $this->services[$name] = $object;
         }
@@ -239,7 +240,7 @@ class ServiceManager implements ServiceLocatorInterface
      */
     public function build($name, array $options = null)
     {
-        // We never cache when using "build"
+        // We never cache when using "build".
         $name = $this->aliases[$name] ?? $name;
         return $this->doCreate($name, $options);
     }
@@ -249,30 +250,30 @@ class ServiceManager implements ServiceLocatorInterface
      */
     public function has($name)
     {
-        // Check services and factories first to speedup the most common requests
+        // Check services and factories first to speedup the most common requests.
         if (isset($this->services[$name]) || isset($this->factories[$name])) {
             return true;
         }
 
-        // Check abstract factories next
+        // Check abstract factories next.
         foreach ($this->abstractFactories as $abstractFactory) {
             if ($abstractFactory->canCreate($this->creationContext, $name)) {
                 return true;
             }
         }
 
-        // If $name is no alias, we are done
+        // If $name is not an alias, we are done.
         if (! isset($this->aliases[$name])) {
             return false;
         }
 
-        // Finally check aliases
+        // Check aliases.
         $resolvedName = $this->aliases[$name];
         if (isset($this->services[$resolvedName]) || isset($this->factories[$resolvedName])) {
             return true;
         }
 
-        // Check abstract factories on $resolvedName also
+        // Check abstract factories on the $resolvedName as well.
         foreach ($this->abstractFactories as $abstractFactory) {
             if ($abstractFactory->canCreate($this->creationContext, $resolvedName)) {
                 return true;
@@ -342,8 +343,8 @@ class ServiceManager implements ServiceLocatorInterface
      */
     public function configure(array $config)
     {
-        // This is a bulk update/initial configuration
-        // So we check all definitions upfront
+        // This is a bulk update/initial configuration,
+        // so we check all definitions up front.
         $this->validateServiceNames($config);
 
         if (isset($config['services'])) {
@@ -351,18 +352,7 @@ class ServiceManager implements ServiceLocatorInterface
         }
 
         if (isset($config['invokables']) && ! empty($config['invokables'])) {
-            $aliases   = $this->createAliasesForInvokables($config['invokables']);
-            $factories = $this->createFactoriesForInvokables($config['invokables']);
-
-            if (! empty($aliases)) {
-                $config['aliases'] = (isset($config['aliases']))
-                    ? array_merge($config['aliases'], $aliases)
-                    : $aliases;
-            }
-
-            $config['factories'] = (isset($config['factories']))
-                ? array_merge($config['factories'], $factories)
-                : $factories;
+            $this->createAliasesAndFactoriesForInvokables($config['invokables']);
         }
 
         if (isset($config['factories'])) {
@@ -377,7 +367,7 @@ class ServiceManager implements ServiceLocatorInterface
             $this->shared = $config['shared'] + $this->shared;
         }
 
-        if (isset($config['aliases'])) {
+        if (! empty($config['aliases'])) {
             $this->aliases = $config['aliases'] + $this->aliases;
             $this->mapAliasesToTargets();
         } elseif (! $this->configured && ! empty($this->aliases)) {
@@ -399,7 +389,7 @@ class ServiceManager implements ServiceLocatorInterface
         // instantiate them to avoid checks during service construction.
         if (isset($config['abstract_factories'])) {
             $abstractFactories = $config['abstract_factories'];
-            // $key not needed, but foreach faster
+            // $key not needed, but foreach is faster than foreach + array_values.
             foreach ($abstractFactories as $key => $abstractFactory) {
                 $this->resolveAbstractFactoryInstance($abstractFactory);
             }
@@ -419,14 +409,16 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * @param string $alias
      * @param string $target
+     * @throws ContainerModificationsNotAllowedException if $alias already
+     *     exists as a service and overrides are disallowed.
      */
     public function setAlias($alias, $target)
     {
-        if (! isset($this->services[$alias]) || $this->allowOverride) {
-            $this->mapAliasToTarget($alias, $target);
-            return;
+        if (isset($this->services[$alias]) && ! $this->allowOverride) {
+            throw ContainerModificationsNotAllowedException::fromExistingService($alias);
         }
-        throw new ContainerModificationsNotAllowedException($alias);
+
+        $this->mapAliasToTarget($alias, $target);
     }
 
     /**
@@ -435,10 +427,16 @@ class ServiceManager implements ServiceLocatorInterface
      * @param string $name Service name
      * @param null|string $class Class to which to map; if omitted, $name is
      *     assumed.
+     * @throws ContainerModificationsNotAllowedException if $name already
+     *     exists as a service and overrides are disallowed.
      */
     public function setInvokableClass($name, $class = null)
     {
-        $this->configure(['invokables' => [$name => $class ?: $name]]);
+        if (isset($this->services[$name]) && ! $this->allowOverride) {
+            throw ContainerModificationsNotAllowedException::fromExistingService($name);
+        }
+
+        $this->createAliasesAndFactoriesForInvokables([$name => $class ?? $name]);
     }
 
     /**
@@ -447,14 +445,16 @@ class ServiceManager implements ServiceLocatorInterface
      * @param string $name Service name
      * @param string|callable|Factory\FactoryInterface $factory Factory to which
      *     to map.
+     * @throws ContainerModificationsNotAllowedException if $name already
+     *     exists as a service and overrides are disallowed.
      */
     public function setFactory($name, $factory)
     {
-        if (! isset($this->services[$name]) || $this->allowOverride) {
-            $this->factories[$name] = $factory;
-            return;
+        if (isset($this->services[$name]) && ! $this->allowOverride) {
+            throw ContainerModificationsNotAllowedException::fromExistingService($name);
         }
-        throw new ContainerModificationsNotAllowedException($name);
+
+        $this->factories[$name] = $factory;
     }
 
     /**
@@ -472,7 +472,8 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Add an abstract factory for resolving services.
      *
-     * @param string|Factory\AbstractFactoryInterface $factory Service name
+     * @param string|Factory\AbstractFactoryInterface $factory Abstract factory
+     *     instance or class name.
      */
     public function addAbstractFactory($factory)
     {
@@ -506,14 +507,15 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * @param string $name Service name
      * @param array|object $service
+     * @throws ContainerModificationsNotAllowedException if $name already
+     *     exists as a service and overrides are disallowed.
      */
     public function setService($name, $service)
     {
-        if (! isset($this->services[$name]) || $this->allowOverride) {
-            $this->services[$name] = $service;
-            return;
+        if (isset($this->services[$name]) && ! $this->allowOverride) {
+            throw ContainerModificationsNotAllowedException::fromExistingService($name);
         }
-        throw new ContainerModificationsNotAllowedException($name);
+        $this->services[$name] = $service;
     }
 
     /**
@@ -521,67 +523,36 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * @param string $name Service name
      * @param boolean $flag Whether or not the service should be shared.
+     * @throws ContainerModificationsNotAllowedException if $name already
+     *     exists as a service and overrides are disallowed.
      */
     public function setShared($name, $flag)
     {
-        if (! isset($this->services[$name]) || $this->allowOverride) {
-            $this->shared[$name] = (bool) $flag;
-            return;
+        if (isset($this->services[$name]) && ! $this->allowOverride) {
+            throw ContainerModificationsNotAllowedException::fromExistingService($name);
         }
-        throw new ContainerModificationsNotAllowedException($name);
+
+        $this->shared[$name] = (bool) $flag;
     }
 
     /**
      * Instantiate initializers for to avoid checks during service construction.
      *
      * @param string[]|Initializer\InitializerInterface[]|callable[] $initializers
-     *
-     * @return void
-     */
-    private function resolveInitializer($initializer)
-    {
-        if (is_string($initializer) && class_exists($initializer)) {
-            $initializer = new $initializer();
-        }
-
-        if (is_callable($initializer)) {
-            $this->initializers[] = $initializer;
-            return;
-        }
-
-        // Error condition; let's find out why.
-
-        if (is_string($initializer)) {
-            throw new InvalidArgumentException(sprintf(
-                'An invalid initializer was registered; resolved to class or function "%s" '
-                . 'which does not exist; please provide a valid function name or class '
-                . 'name resolving to an implementation of %s',
-                $initializer,
-                Initializer\InitializerInterface::class
-            ));
-        }
-
-        // Otherwise, we have an invalid type.
-        throw new InvalidArgumentException(sprintf(
-            'An invalid initializer was registered. Expected a callable, or an instance of '
-            . '(or string class name resolving to) "%s", '
-            . 'but "%s" was received',
-            Initializer\InitializerInterface::class,
-            (is_object($initializer) ? get_class($initializer) : gettype($initializer))
-        ));
-    }
-
-    /**
-     * Instantiate initializers for to avoid checks during service construction.
-     *
-     * @param string[]|Initializer\InitializerInterface[]|callable[] $initializers
-     *
-     * @return void
      */
     private function resolveInitializers(array $initializers)
     {
         foreach ($initializers as $initializer) {
-            $this->resolveInitializer($initializer);
+            if (is_string($initializer) && class_exists($initializer)) {
+                $initializer = new $initializer();
+            }
+
+            if (is_callable($initializer)) {
+                $this->initializers[] = $initializer;
+                return;
+            }
+
+            throw InvalidArgumentException::fromInvalidInitializer($initializer);
         }
     }
 
@@ -655,9 +626,9 @@ class ServiceManager implements ServiceLocatorInterface
             if (! is_callable($delegatorFactory)) {
                 if (is_string($delegatorFactory)) {
                     throw new ServiceNotCreatedException(sprintf(
-                        'An invalid delegator factory was registered; resolved to class or function "%s" '
-                        . 'which does not exist; please provide a valid function name or class name resolving '
-                        . 'to an implementation of %s',
+                        'An invalid delegator factory was registered; resolved to class or function "%s"'
+                        . ' which does not exist; please provide a valid function name or class name resolving'
+                        . ' to an implementation of %s',
                         $delegatorFactory,
                         DelegatorFactoryInterface::class
                     ));
@@ -769,49 +740,22 @@ class ServiceManager implements ServiceLocatorInterface
     }
 
     /**
-     * Create aliases for invokable classes.
+     * Create aliases and factories for invokable classes.
      *
      * If an invokable service name does not match the class it maps to, this
      * creates an alias to the class (which will later be mapped as an
      * invokable factory).
      *
      * @param array $invokables
-     * @return array
      */
-    private function createAliasesForInvokables(array $invokables)
+    private function createAliasesAndFactoriesForInvokables(array $invokables)
     {
-        $aliases = [];
         foreach ($invokables as $name => $class) {
-            if ($name === $class) {
-                continue;
+            $this->factories[$class] = Factory\InvokableFactory::class;
+            if ($name !== $class) {
+                $this->aliases[$name] = $class;
             }
-            $aliases[$name] = $class;
         }
-        return $aliases;
-    }
-
-    /**
-     * Create invokable factories for invokable classes.
-     *
-     * If an invokable service name does not match the class it maps to, this
-     * creates an invokable factory entry for the class name; otherwise, it
-     * creates an invokable factory for the entry name.
-     *
-     * @param array $invokables
-     * @return array
-     */
-    private function createFactoriesForInvokables(array $invokables)
-    {
-        $factories = [];
-        foreach ($invokables as $name => $class) {
-            if ($name === $class) {
-                $factories[$name] = Factory\InvokableFactory::class;
-                continue;
-            }
-
-            $factories[$class] = Factory\InvokableFactory::class;
-        }
-        return $factories;
     }
 
     /**
@@ -836,70 +780,69 @@ class ServiceManager implements ServiceLocatorInterface
 
         if (isset($config['services'])) {
             foreach ($config['services'] as $service => $_) {
-                if (! isset($this->services[$service]) || $this->allowOverride) {
-                    continue;
+                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                    throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
-                throw new ContainerModificationsNotAllowedException($service);
             }
         }
 
         if (isset($config['aliases'])) {
             foreach ($config['aliases'] as $service => $_) {
-                if (! isset($this->services[$service]) || $this->allowOverride) {
-                    continue;
+                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                    throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
-                throw new ContainerModificationsNotAllowedException($service);
             }
         }
 
         if (isset($config['invokables'])) {
             foreach ($config['invokables'] as $service => $_) {
-                if (! isset($this->services[$service]) || $this->allowOverride) {
-                    continue;
+                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                    throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
-                throw new ContainerModificationsNotAllowedException($service);
             }
         }
 
         if (isset($config['factories'])) {
             foreach ($config['factories'] as $service => $_) {
-                if (! isset($this->services[$service]) || $this->allowOverride) {
-                    continue;
+                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                    throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
-                throw new ContainerModificationsNotAllowedException($service);
             }
         }
 
         if (isset($config['delegators'])) {
             foreach ($config['delegators'] as $service => $_) {
-                if (! isset($this->services[$service]) || $this->allowOverride) {
-                    continue;
+                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                    throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
-                throw new ContainerModificationsNotAllowedException($service);
             }
         }
 
         if (isset($config['shared'])) {
             foreach ($config['shared'] as $service => $_) {
-                if (! isset($this->services[$service]) || $this->allowOverride) {
-                    continue;
+                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                    throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
-                throw new ContainerModificationsNotAllowedException($service);
             }
         }
 
         if (isset($config['lazy_services']['class_map'])) {
             foreach ($config['lazy_services']['class_map'] as $service => $_) {
-                if (! isset($this->services[$service]) || $this->allowOverride) {
-                    continue;
+                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                    throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
-                throw new ContainerModificationsNotAllowedException($service);
             }
         }
     }
 
     /**
      * Assuming that the alias name is valid (see above) resolve/add it.
+     *
+     * This is done differently from bulk mapping aliases for performance reasons, as the
+     * algorithms for mapping a single item efficiently are different from those of mapping
+     * many.
+     *
+     * @see mapAliasesToTargets() below
      *
      * @param string $alias
      * @param string $target
@@ -929,13 +872,12 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Assuming that all provided alias keys are valid resolve them.
      *
-     * This as an adaptation of Tarjan's strongly connected components
-     * algorithm. We detect cycles as well reduce the graph so that
-     * each alias key gets associated with the resolved service.
      * This function maps $this->aliases in place.
      *
      * This algorithm is fast for mass updates through configure().
      * It is not appropriate if just a single alias is added.
+     *
+     * @see mapAliasToTarget above
      *
      */
     private function mapAliasesToTargets()
@@ -947,7 +889,6 @@ class ServiceManager implements ServiceLocatorInterface
             }
             $tCursor = $this->aliases[$alias];
             $aCursor = $alias;
-            $stack = [];
             while (isset($this->aliases[$tCursor])) {
                 $tagged[$aCursor] = true;
                 $this->aliases[$aCursor] = $this->aliases[$tCursor];
@@ -970,7 +911,7 @@ class ServiceManager implements ServiceLocatorInterface
     private function resolveAbstractFactoryInstance($abstractFactory)
     {
         if (is_string($abstractFactory) && class_exists($abstractFactory)) {
-            // cached string
+            // Cached string factory name
             if (! isset($this->cachedAbstractFactories[$abstractFactory])) {
                 $this->cachedAbstractFactories[$abstractFactory] = new $abstractFactory();
             }
@@ -978,31 +919,11 @@ class ServiceManager implements ServiceLocatorInterface
             $abstractFactory = $this->cachedAbstractFactories[$abstractFactory];
         }
 
-        if ($abstractFactory instanceof Factory\AbstractFactoryInterface) {
-            $abstractFactoryObjHash = spl_object_hash($abstractFactory);
-            $this->abstractFactories[$abstractFactoryObjHash] = $abstractFactory;
-            return;
+        if (! $abstractFactory instanceof Factory\AbstractFactoryInterface) {
+            throw InvalidArgumentException::fromInvalidAbstractFactory($abstractFactory);
         }
 
-        // Error condition; let's find out why.
-
-        // If we still have a string, we have a class name that does not resolve
-        if (is_string($abstractFactory)) {
-            throw new InvalidArgumentException(sprintf(
-                'An invalid abstract factory was registered; resolved to class "%s" '
-                . 'which does not exist; please provide a valid class name resolving '
-                . 'to an implementation of %s',
-                $abstractFactory,
-                AbstractFactoryInterface::class
-            ));
-        }
-
-        // Otherwise, we have an invalid type.
-        throw new InvalidArgumentException(sprintf(
-            'An invalid abstract factory was registered. Expected an instance of "%s", '
-            . 'but "%s" was received',
-            AbstractFactoryInterface::class,
-            (is_object($abstractFactory) ? get_class($abstractFactory) : gettype($abstractFactory))
-        ));
+        $abstractFactoryObjHash = spl_object_hash($abstractFactory);
+        $this->abstractFactories[$abstractFactoryObjHash] = $abstractFactory;
     }
 }

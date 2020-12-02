@@ -21,12 +21,11 @@ use function sprintf;
 class CyclicAliasException extends InvalidArgumentException
 {
     /**
-     * @param string   conflicting alias key
+     * @param string   $alias conflicting alias key
      * @param string[] $aliases map of referenced services, indexed by alias name (string)
-     *
      * @return self
      */
-    public static function fromCyclicAlias($alias, $aliases)
+    public static function fromCyclicAlias($alias, array $aliases)
     {
         $cycle = $alias;
         $cursor = $alias;
@@ -37,14 +36,13 @@ class CyclicAliasException extends InvalidArgumentException
         $cycle .= ' -> ' . $alias . "\n";
 
         return new self(sprintf(
-            "A cycle was detected within the aliases defintions:\n%s",
+            "A cycle was detected within the aliases definitions:\n%s",
             $cycle
         ));
     }
 
     /**
      * @param string[] $aliases map of referenced services, indexed by alias name (string)
-     *
      * @return self
      */
     public static function fromAliasesMap(array $aliases)
@@ -76,7 +74,6 @@ class CyclicAliasException extends InvalidArgumentException
      *
      * @param string[] $aliases
      * @param string   $alias
-     *
      * @return array|null
      */
     private static function getCycleFor(array $aliases, $alias)
@@ -90,7 +87,6 @@ class CyclicAliasException extends InvalidArgumentException
             }
 
             $cycleCandidate[$targetName] = true;
-
             $targetName = $aliases[$targetName];
         }
 
@@ -99,7 +95,6 @@ class CyclicAliasException extends InvalidArgumentException
 
     /**
      * @param string[] $aliases
-     *
      * @return string
      */
     private static function printReferencesMap(array $aliases)
@@ -115,7 +110,6 @@ class CyclicAliasException extends InvalidArgumentException
 
     /**
      * @param string[][] $detectedCycles
-     *
      * @return string
      */
     private static function printCycles(array $detectedCycles)
@@ -125,7 +119,6 @@ class CyclicAliasException extends InvalidArgumentException
 
     /**
      * @param string[] $detectedCycle
-     *
      * @return string
      */
     private static function printCycle(array $detectedCycle)
@@ -146,7 +139,6 @@ class CyclicAliasException extends InvalidArgumentException
 
     /**
      * @param bool[][] $detectedCycles
-     *
      * @return bool[][] de-duplicated
      */
     private static function deDuplicateDetectedCycles(array $detectedCycles)

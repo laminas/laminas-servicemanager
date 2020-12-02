@@ -15,13 +15,16 @@ use DomainException;
  */
 class ContainerModificationsNotAllowedException extends DomainException implements ExceptionInterface
 {
-
-    public function __construct($service)
+    /**
+     * @param string $service Name of service that already exists.
+     * @return self
+     */
+    public static function fromExistingService($service)
     {
-        parent::__construct(sprintf(
-            'The container does not allow to replace/update a service'
-            . ' with existing instances; the following '
-            . 'already exist in the container: %s',
+        return new self(sprintf(
+            'The container does not allow replacing or updating a service'
+            . ' with existing instances; the following service'
+            . ' already exists in the container: %s',
             $service
         ));
     }

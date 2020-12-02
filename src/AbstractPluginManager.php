@@ -134,6 +134,8 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
 
     /**
      * Override setService for additional plugin validation.
+     *
+     * {@inheritDoc}
      */
     public function setService($name, $service)
     {
