@@ -82,7 +82,6 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService()
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
-        $this->container->has(SampleInterface::class)->willReturn(false);
         $this->container->has('config')->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $this->expectException(ServiceNotFoundException::class);
