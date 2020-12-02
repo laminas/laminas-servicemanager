@@ -3,8 +3,8 @@
 namespace LaminasTest\ServiceManager\TestAsset;
 
 use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\FactoryInterface;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class InvokableObjectFactory implements FactoryInterface
 {
