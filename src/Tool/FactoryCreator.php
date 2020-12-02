@@ -115,7 +115,10 @@ EOT;
                     return false;
                 }
 
-                if (null === $argument->getClass()) {
+                $type = $argument->getType();
+                $class = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
+
+                if (null === $class) {
                     throw new InvalidArgumentException(sprintf(
                         'Cannot identify type for constructor argument "%s"; '
                         . 'no type hint, or non-class/interface type hint',
@@ -132,7 +135,8 @@ EOT;
         }
 
         return array_map(function (ReflectionParameter $parameter) {
-            return $parameter->getClass()->getName();
+            $type = $parameter->getType();
+            return null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
         }, $constructorParameters);
     }
 
