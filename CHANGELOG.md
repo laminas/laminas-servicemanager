@@ -18,7 +18,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [zendframework/zend-servicemanager#197](https://github.com/zendframework/zend-servicemanager/pull/197) drops
+  support for PHP versions prior to 7.1.
+
+- [zendframework/zend-servicemanager#193](https://github.com/zendframework/zend-servicemanager/pull/193) drops
+  support for HHVM.
 
 ### Fixed
 
