@@ -14,7 +14,6 @@ use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
-use ZendTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface;
 
 use function sprintf;
 
@@ -194,7 +193,6 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     {
         $this->container->has('config')->willReturn(false);
         $this->container->has(ArrayAccess::class)->willReturn(false);
-        $this->container->has(\ZendTest\ServiceManager\AbstractFactory\ArrayAccess::class)->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $instance = $factory(
             $this->container->reveal(),
