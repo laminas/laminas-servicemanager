@@ -11,6 +11,11 @@ namespace Laminas\ServiceManager;
 use Laminas\Stdlib\ArrayUtils\MergeRemoveKey;
 use Laminas\Stdlib\ArrayUtils\MergeReplaceKeyInterface;
 
+use function array_key_exists;
+use function array_keys;
+use function is_array;
+use function is_int;
+
 /**
  * Object for defining configuration and configuring an existing service manager instance.
  *

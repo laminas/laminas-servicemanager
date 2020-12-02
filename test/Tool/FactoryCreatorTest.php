@@ -14,6 +14,8 @@ use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
 
+use function file_get_contents;
+
 class FactoryCreatorTest extends TestCase
 {
     /**

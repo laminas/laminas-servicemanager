@@ -11,6 +11,17 @@ namespace Laminas\ServiceManager\Tool;
 use Laminas\ServiceManager\Exception;
 use Laminas\Stdlib\ConsoleHelper;
 
+use function array_shift;
+use function class_exists;
+use function count;
+use function dirname;
+use function file_exists;
+use function file_put_contents;
+use function in_array;
+use function is_array;
+use function is_writable;
+use function sprintf;
+
 class ConfigDumperCommand
 {
     const COMMAND_DUMP = 'dump';

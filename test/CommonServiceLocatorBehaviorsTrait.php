@@ -27,6 +27,10 @@ use LaminasTest\ServiceManager\TestAsset\SimpleAbstractFactory;
 use ReflectionProperty;
 use stdClass;
 
+use function call_user_func_array;
+use function restore_error_handler;
+use function set_error_handler;
+
 trait CommonServiceLocatorBehaviorsTrait
 {
     /**

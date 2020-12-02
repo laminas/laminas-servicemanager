@@ -14,6 +14,10 @@ use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use ReflectionClass;
 use ReflectionParameter;
 
+use function array_map;
+use function class_exists;
+use function sprintf;
+
 /**
  * Reflection-based factory.
  *

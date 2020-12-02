@@ -19,6 +19,10 @@ use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
+use function file_get_contents;
+use function realpath;
+use function sprintf;
+
 class ConfigDumperCommandTest extends TestCase
 {
     public function setUp()

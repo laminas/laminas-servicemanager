@@ -12,6 +12,12 @@ use ArrayObject;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
+use function array_key_exists;
+use function array_map;
+use function array_values;
+use function is_array;
+use function json_encode;
+
 final class ConfigAbstractFactory implements AbstractFactoryInterface
 {
 

@@ -26,6 +26,10 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use stdClass;
 
+use function get_class;
+use function restore_error_handler;
+use function set_error_handler;
+
 /**
  * @covers \Laminas\ServiceManager\AbstractPluginManager
  */

@@ -12,6 +12,9 @@ use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 
+use function get_class;
+use function sprintf;
+
 class V2v3PluginManager extends AbstractPluginManager
 {
     protected $aliases = [

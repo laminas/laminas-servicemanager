@@ -14,6 +14,8 @@ use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 
+use function sprintf;
+
 /**
  * Delegator factory responsible of instantiating lazy loading value holder proxies of
  * given services at runtime

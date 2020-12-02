@@ -8,6 +8,16 @@
 
 namespace Laminas\ServiceManager\Exception;
 
+use function array_filter;
+use function array_keys;
+use function array_map;
+use function array_values;
+use function implode;
+use function reset;
+use function serialize;
+use function sort;
+use function sprintf;
+
 class CyclicAliasException extends InvalidArgumentException
 {
     /**

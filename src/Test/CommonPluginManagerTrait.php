@@ -12,6 +12,9 @@ use Laminas\ServiceManager\Exception\InvalidServiceException;
 use ReflectionClass;
 use ReflectionProperty;
 
+use function get_class;
+use function method_exists;
+
 /**
  * Trait for testing plugin managers for v2-v3 compatibility
  *

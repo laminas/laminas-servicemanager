@@ -11,6 +11,10 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use Laminas\ServiceManager\AbstractPluginManager;
 use RuntimeException;
 
+use function call_user_func;
+use function is_callable;
+use function sprintf;
+
 class V2ValidationPluginManager extends AbstractPluginManager
 {
     public $assertion;

@@ -16,6 +16,9 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
+use function file_get_contents;
+use function sprintf;
+
 class FactoryCreatorCommandTest extends TestCase
 {
     public function setUp()

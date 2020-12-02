@@ -16,6 +16,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use ZendTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface;
 
+use function sprintf;
+
 class ReflectionBasedAbstractFactoryTest extends TestCase
 {
     /** @var ContainerInterface|ObjectProphecy */
