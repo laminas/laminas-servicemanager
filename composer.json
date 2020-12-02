@@ -38,6 +38,7 @@
     },
     "require-dev": {
         "laminas/laminas-coding-standard": "~1.0.0",
+        "laminas/laminas-container-config-test": "^0.2.2",
         "mikey179/vfsstream": "^1.6.5",
         "ocramius/proxy-manager": "^2.1.1",
         "phpbench/phpbench": "^0.13.0",
