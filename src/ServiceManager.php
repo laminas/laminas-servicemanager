@@ -22,6 +22,7 @@ use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 
+use function array_intersect;
 use function array_merge_recursive;
 use function class_exists;
 use function get_class;

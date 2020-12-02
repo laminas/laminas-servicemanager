@@ -10,6 +10,8 @@ namespace Laminas\ServiceManager\Exception;
 
 use DomainException;
 
+use function sprintf;
+
 /**
  * @inheritDoc
  */
