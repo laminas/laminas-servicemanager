@@ -136,13 +136,17 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
 
     /**
      * {@inheritDoc}
+     * @throws \ReflectionException
      */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
         return class_exists($requestedName) && $this->canCallConstructor($requestedName);
     }
 
-    private function canCallConstructor($requestedName)
+    /**
+     * @throws \ReflectionException
+     */
+    private function canCallConstructor(string $requestedName) : bool
     {
         $constructor = (new ReflectionClass($requestedName))->getConstructor();
 
