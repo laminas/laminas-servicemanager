@@ -27,6 +27,7 @@ use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use stdClass;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 use function get_class;
 use function restore_error_handler;
@@ -37,9 +38,9 @@ use function set_error_handler;
  */
 class AbstractPluginManagerTest extends TestCase
 {
-    use \Prophecy\PhpUnit\ProphecyTrait;
     use CommonServiceLocatorBehaviorsTrait;
     use BackportAssertionsTrait;
+    use ProphecyTrait;
 
     public function createContainer(array $config = [])
     {
