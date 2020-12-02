@@ -39,7 +39,6 @@ use function set_error_handler;
 class AbstractPluginManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
-    use BackportAssertionsTrait;
     use ProphecyTrait;
 
     public function createContainer(array $config = [])
@@ -236,7 +235,7 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager = new TestAsset\LenientPluginManager();
         restore_error_handler();
 
-        self::assertAttributeSame($pluginManager, 'creationContext', $pluginManager);
+        self::assertSame($pluginManager, $pluginManager->getCreationContext());
         $serviceManager = new ServiceManager();
 
         set_error_handler(function ($errno, $errstr) {
@@ -245,7 +244,7 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager->setServiceLocator($serviceManager);
         restore_error_handler();
 
-        self::assertAttributeSame($serviceManager, 'creationContext', $pluginManager);
+        self::assertSame($serviceManager, $pluginManager->getCreationContext());
     }
 
     /**
@@ -258,7 +257,7 @@ class AbstractPluginManagerTest extends TestCase
         }, E_USER_DEPRECATED);
         $pluginManager = new TestAsset\LenientPluginManager();
         restore_error_handler();
-        self::assertAttributeSame($pluginManager, 'creationContext', $pluginManager);
+        self::assertSame($pluginManager, $pluginManager->getCreationContext());
     }
 
     /**
@@ -275,7 +274,7 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager = new TestAsset\LenientPluginManager($config->reveal());
         restore_error_handler();
 
-        self::assertAttributeSame($pluginManager, 'creationContext', $pluginManager);
+        self::assertSame($pluginManager, $pluginManager->getCreationContext());
     }
 
     public function invalidConstructorArguments()

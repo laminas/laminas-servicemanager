@@ -715,6 +715,7 @@ trait CommonServiceLocatorBehaviorsTrait
                 }
             ],
         ]);
+
         $container->addDelegator('foo', function ($container, $name, $callback) {
             $instance = $callback();
             $instance->name = $name;
@@ -723,7 +724,7 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $foo = $container->get('foo');
         self::assertInstanceOf(stdClass::class, $foo);
-        self::assertAttributeEquals('foo', 'name', $foo);
+        self::assertSame('foo', $foo->name);
     }
 
     /**
@@ -749,7 +750,7 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $foo = $container->get('foo');
         self::assertInstanceOf(stdClass::class, $foo);
-        self::assertAttributeEquals(stdClass::class, 'name', $foo);
+        self::assertSame(stdClass::class, $foo->name);
     }
 
     /**
