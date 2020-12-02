@@ -27,11 +27,11 @@ matrix:
     - php: 7.4
       env:
         - DEPS=latest
-    - php: 8.0
+    - php: nightly
       env:
         - DEPS=lowest
         - COMPOSER_ARGS="$COMPOSER_ARGS --ignore-platform-reqs"
-    - php: 8.0
+    - php: nightly
       env:
         - DEPS=latest
         - COMPOSER_ARGS="$COMPOSER_ARGS --ignore-platform-reqs"
