@@ -38,6 +38,8 @@ matrix:
 
 before_install:
   - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
+  # Restore composer back to v1
+  - composer self-update --1
 
 install:
   - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
