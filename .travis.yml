@@ -42,7 +42,7 @@ before_install:
   - composer self-update --1
 
 install:
-  - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs
+  - travis_retry composer install $COMPOSER_ARGS
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS ; fi
