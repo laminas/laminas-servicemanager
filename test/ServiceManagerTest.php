@@ -270,7 +270,7 @@ class ServiceManagerTest extends TestCase
         self::assertSame($service, $headAlias);
     }
 
-    public function testAbstractFactoryShouldBeCheckedForResolvedAliasesInsteadOfAliasNameName()
+    public function testAbstractFactoryShouldBeCheckedForResolvedAliasesInsteadOfAliasName()
     {
         $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
 
@@ -286,8 +286,8 @@ class ServiceManagerTest extends TestCase
         $abstractFactory
             ->expects(self::once())
             ->method('canCreate')
-            ->with(self::anything(), 'ServiceName')
-            ->willReturn(true);
+            ->with($this->anything())
+            ->willReturn($this->equalTo('ServiceName'));
 
         $this->assertTrue($serviceManager->has('Alias'));
     }

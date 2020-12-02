@@ -16,6 +16,101 @@ use PHPUnit\Framework\TestCase;
  */
 class CyclicAliasExceptionTest extends TestCase
 {
+
+    /**
+     * @dataProvider cyclicAliasProvider
+     *
+     * @param string   conflicting alias key
+     * @param string[] $aliases
+     * @param string   $expectedMessage
+     *
+     * @return void
+     */
+    public function testFromCyclicAlias($alias, array $aliases, $expectedMessage)
+    {
+        $exception = CyclicAliasException::fromCyclicAlias($alias, $aliases);
+
+        self::assertInstanceOf(CyclicAliasException::class, $exception);
+        self::assertSame($expectedMessage, $exception->getMessage());
+    }
+
+    /**
+     * Test data provider for testFromCyclicAlias
+     *
+     * @return string[][]|string[][][]
+     */
+    public function cyclicAliasProvider()
+    {
+        return
+        [
+            [
+                'a',
+                [
+                    'a' => 'a',
+                ],
+                "A cycle was detected within the aliases defintions:\n"
+                . "a -> a\n",
+            ],
+            [
+                'a',
+                [
+                    'a' => 'b',
+                    'b' => 'a'
+                ],
+                "A cycle was detected within the aliases defintions:\n"
+                . "a -> b -> a\n",
+            ],
+            [
+                'b',
+                [
+                    'a' => 'b',
+                    'b' => 'a'
+                ],
+                "A cycle was detected within the aliases defintions:\n"
+                . "b -> a -> b\n",
+            ],
+            [
+                'b',
+                [
+                    'a' => 'b',
+                    'b' => 'a',
+                ],
+                "A cycle was detected within the aliases defintions:\n"
+                . "b -> a -> b\n",
+            ],
+            [
+                'a',
+                [
+                    'a' => 'b',
+                    'b' => 'c',
+                    'c' => 'a',
+                ],
+                "A cycle was detected within the aliases defintions:\n"
+                . "a -> b -> c -> a\n",
+            ],
+            [
+                'b',
+                [
+                    'a' => 'b',
+                    'b' => 'c',
+                    'c' => 'a',
+                ],
+                "A cycle was detected within the aliases defintions:\n"
+                . "b -> c -> a -> b\n",
+            ],
+            [
+                'c',
+                [
+                    'a' => 'b',
+                    'b' => 'c',
+                    'c' => 'a',
+                ],
+                "A cycle was detected within the aliases defintions:\n"
+                . "c -> a -> b -> c\n",
+            ],
+        ];
+    }
+
     /**
      * @dataProvider aliasesProvider
      *
