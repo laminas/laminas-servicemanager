@@ -39,18 +39,18 @@
     "require-dev": {
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-container-config-test": "^0.2.2",
-        "mikey179/vfsstream": "^1.6.5",
+        "mikey179/vfsstream": "^1.6.8",
         "ocramius/proxy-manager": "^2.1.1",
         "phpbench/phpbench": "^0.13.0",
-        "phpunit/phpunit": "^6.4.4"
+        "phpunit/phpunit": "^7.5.20"
     },
     "provide": {
         "container-interop/container-interop-implementation": "^1.2",
         "psr/container-implementation": "^1.0"
     },
     "suggest": {
-        "laminas/laminas-stdlib": "laminas-stdlib ^2.5 if you wish to use the MergeReplaceKey or MergeRemoveKey features in Config instances",
-        "zendframework/zend-stdlib": "zend-stdlib ^2.7.7 | ^3.1 if you wish to use the MergeReplaceKey or MergeRemoveKey features in Config instances"
+        "laminas/laminas-stdlib": "laminas-stdlib ^2.7.7 | ^3.1 if you wish to use the MergeReplaceKey or MergeRemoveKey features in Config instances",
+        "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
     },
     "autoload": {
         "psr-4": {
