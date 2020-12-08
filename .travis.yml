@@ -24,7 +24,13 @@ matrix:
       env:
         - DEPS=lowest
     - php: 7.4
+    - php: 8.0
       env:
+        - DEPS=lowest
+        - COMPOSER_ARGS="$COMPOSER_ARGS --ignore-platform-req=php"
+    - php: 8.0
+      env:
+        - COMPOSER_ARGS="$COMPOSER_ARGS --ignore-platform-req=php"
     - php: nightly
       env:
         - DEPS=lowest
@@ -32,6 +38,8 @@ matrix:
     - php: nightly
       env:
         - COMPOSER_ARGS="$COMPOSER_ARGS --ignore-platform-req=php"
+  allow_failures:
+    - php: nightly
 
 before_install:
   - if [[ $TEST_COVERAGE != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
