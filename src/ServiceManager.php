@@ -48,7 +48,7 @@ use function trigger_error;
  * - abstract factories
  * - delegator factories
  * - lazy service factories (generated proxies)
- * - initializers (interface injection)
+ * - initializers (interface )
  *
  * It also provides the ability to inject specific service instances and to
  * define aliases.

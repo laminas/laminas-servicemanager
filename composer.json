@@ -62,7 +62,8 @@
     },
     "bin": [
         "bin/generate-deps-for-config-factory",
-        "bin/generate-factory-for-class"
+        "bin/generate-factory-for-class",
+        "bin/inspect-container"
     ],
     "scripts": {
         "check": [
