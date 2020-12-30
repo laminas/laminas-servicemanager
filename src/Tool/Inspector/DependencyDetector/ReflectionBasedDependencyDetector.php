@@ -102,7 +102,7 @@ final class ReflectionBasedDependencyDetector implements DependencyDetectorInter
     {
         if ($parameter->getClass() === null) {
             // FIXME config param
-            if (!$this->isOptional($parameter)) {
+            if (! $this->isOptional($parameter)) {
                 throw new UnexpectedScalarTypeInspectorException($serviceName, $parameter->getName());
             }
         }

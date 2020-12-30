@@ -110,7 +110,7 @@ final class DependencyConfig
         $factories = $dependencies['factories'] ?? [];
         foreach ($factories as $serviceName => $factoryClass) {
             // I saw some cases with Service::class => null, don't think we should allow it here
-            if (!is_string($factoryClass) || !class_exists($factoryClass)) {
+            if (! is_string($factoryClass) || ! class_exists($factoryClass)) {
                 throw new MissingFactoryInspectorException($serviceName);
             }
         }

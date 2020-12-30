@@ -74,4 +74,3 @@ final class UniqueHitsStatsCollectorDecorator implements StatsCollectorInterface
         $this->collector->finish();
     }
 }
-
