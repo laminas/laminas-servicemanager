@@ -65,6 +65,8 @@ final class Inspector
     }
 
     /**
+     * @psalm-var list<string> $instantiationStack
+     *
      * @param Dependency $dependency
      * @param array $instantiationStack
      * @throws Throwable
@@ -87,6 +89,8 @@ final class Inspector
     }
 
     /**
+     * @psalm-var list<string> $instantiationStack
+     *
      * @param Dependency $dependency
      * @param array $instantiationStack
      */
@@ -99,6 +103,9 @@ final class Inspector
     }
 
     /**
+     * @psalm-var list<string> $instantiationStack
+     * @psalm-return list<string>
+     *
      * @param Dependency $dependency
      * @param array $instantiationStack
      * @return array
@@ -115,15 +122,17 @@ final class Inspector
     }
 
     /**
+     * @psalm-return list<string>
+     *
      * @param Dependency $dependency
      * @param array $instantiationStack
      */
     private function collect(Dependency $dependency, array $instantiationStack): void
     {
         if ($this->dependenciesDetector->canDetect($dependency->getName())) {
-            $this->collector->collectAutowireFactory($dependency->getName(), $instantiationStack);
+            $this->collector->collectAutowireFactoryHit($dependency->getName(), $instantiationStack);
         } else {
-            $this->collector->collectCustomFactory($instantiationStack);
+            $this->collector->collectCustomFactoryHit($dependency->getName(), $instantiationStack);
         }
     }
 }

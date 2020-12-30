@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool\Inspector;
 
+use Laminas\ServiceManager\Tool\Inspector\Collector\UniqueHitsCollectorDecorator;
 use Laminas\ServiceManager\Tool\Inspector\DependencyDetector\DependencyDetectorInterface;
 use Laminas\ServiceManager\Tool\Inspector\DependencyDetector\ReflectionBasedDependencyDetector;
 use Laminas\ServiceManager\Tool\Inspector\Collector\ConsoleCollector;
@@ -101,7 +102,9 @@ EOH;
                 $dependencyDetector = $container->get(DependencyDetectorInterface::class);
             }
 
-            $containerInspector = new Inspector($dependenciesConfig, $dependencyDetector, new ConsoleCollector());
+            $collector = new UniqueHitsCollectorDecorator(new ConsoleCollector());
+
+            $containerInspector = new Inspector($dependenciesConfig, $dependencyDetector, $collector);
             $containerInspector();
         } catch (Throwable $e) {
             $this->helper->writeErrorMessage(PHP_EOL . $e->getMessage());

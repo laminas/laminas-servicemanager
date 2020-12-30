@@ -30,7 +30,7 @@ final class ConsoleCollector implements CollectorInterface
      * @param string $dependencyName
      * @param array $instantiationStack
      */
-    public function collectAutowireFactory(string $dependencyName, array $instantiationStack): void
+    public function collectAutowireFactoryHit(string $dependencyName, array $instantiationStack): void
     {
         $this->autowireFactoryCount++;
         $this->collectDeep(count($instantiationStack));
@@ -45,9 +45,10 @@ final class ConsoleCollector implements CollectorInterface
     }
 
     /**
+     * @param string $dependencyName
      * @param array $instantiationStack
      */
-    public function collectCustomFactory(array $instantiationStack): void
+    public function collectCustomFactoryHit(string $dependencyName, array $instantiationStack): void
     {
         $this->collectDeep(count($instantiationStack));
         $this->customFactoryCount++;

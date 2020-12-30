@@ -61,7 +61,9 @@ final class ReflectionBasedDependencyDetector implements DependencyDetectorInter
      */
     public function canDetect(string $serviceName): bool
     {
-        return $this->config->getFactory($serviceName) === ReflectionBasedAbstractFactory::class;
+        $class = $this->config->getFactory($serviceName);
+
+        return $class === ReflectionBasedAbstractFactory::class;
     }
 
     /**

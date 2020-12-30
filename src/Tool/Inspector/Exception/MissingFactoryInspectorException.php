@@ -23,6 +23,6 @@ final class MissingFactoryInspectorException extends LogicException implements I
      */
     public function __construct(string $name, Throwable $previous = null)
     {
-        parent::__construct(sprintf("No factories were provided for '%s' service.", $name), 0, $previous);
+        parent::__construct(sprintf("No factory is provided for '%s' service.", $name), 0, $previous);
     }
 }

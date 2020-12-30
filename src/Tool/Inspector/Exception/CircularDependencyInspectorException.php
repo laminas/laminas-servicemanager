@@ -32,7 +32,7 @@ final class CircularDependencyInspectorException extends LogicException implemen
         $this->instantiationStack = $instantiationStack;
 
         $message = sprintf(
-            'Circular dependency: %s -> %s',
+            'Circular dependency detected: %s -> %s',
             implode(' -> ', $instantiationStack),
             $name
         );

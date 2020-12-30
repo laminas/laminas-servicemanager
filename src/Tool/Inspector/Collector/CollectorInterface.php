@@ -16,12 +16,13 @@ interface CollectorInterface
      * @param string $dependencyName
      * @param array $instantiationStack
      */
-    public function collectAutowireFactory(string $dependencyName, array $instantiationStack): void;
+    public function collectAutowireFactoryHit(string $dependencyName, array $instantiationStack): void;
 
     /**
+     * @param string $dependencyName
      * @param array $instantiationStack
      */
-    public function collectCustomFactory(array $instantiationStack): void;
+    public function collectCustomFactoryHit(string $dependencyName, array $instantiationStack): void;
 
     /**
      * @param string $dependencyName

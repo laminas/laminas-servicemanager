@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager\Tool\Inspector;
 
 use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Tool\Inspector\Exception\MissingFactoryInspectorException;
 
 use function class_exists;
 use function in_array;
@@ -18,21 +19,28 @@ use function in_array;
 final class DependencyConfig
 {
     /**
-     * @var array
+     * @psalm-var array<string, string>
      */
-    private array $dependencies;
+    private array $factories;
 
     /**
-     * @var array
+     * @psalm-var list<string>
+     */
+    private array $invokables;
+
+    /**
+     * @psalm-var array<string, string>
      */
     private array $resolvedAliases;
 
+
     /**
-     * @param array $dependencies
+     * @psalm-var array<string, string> $dependencies
      */
     public function __construct(array $dependencies)
     {
-        $this->dependencies = $dependencies;
+        $this->factories = $this->getValidFactories($dependencies);
+        $this->invokables = $dependencies['invokables'] ?? [];
         $this->resolvedAliases = (new AliasResolver())($dependencies['aliases'] ?? []);
     }
 
@@ -41,7 +49,7 @@ final class DependencyConfig
      */
     public function getFactories(): array
     {
-        return $this->dependencies['factories'] ?? [];
+        return $this->factories;
     }
 
     /**
@@ -59,7 +67,7 @@ final class DependencyConfig
      */
     public function isInvokable(string $dependencyName): bool
     {
-        $isInvokable = in_array($dependencyName, $this->dependencies['invokables'] ?? [], true);
+        $isInvokable = in_array($dependencyName, $this->invokables, true);
         $hasInvokableFactory = $this->getFactory($dependencyName) === InvokableFactory::class;
 
         return $isInvokable || $hasInvokableFactory;
@@ -76,6 +84,8 @@ final class DependencyConfig
             return false;
         }
 
+        // TODO check if invokable/FactoryInterface
+
         return class_exists($factoryClass);
     }
 
@@ -87,6 +97,26 @@ final class DependencyConfig
     {
         $realName = $this->getRealName($dependencyName);
 
-        return $this->dependencies['factories'][$realName] ?? null;
+        return $this->factories[$realName] ?? null;
+    }
+
+    /**
+     * @psalm-var list<string> $dependencies
+     * @psalm-return list<string>
+     *
+     * @param array $dependencies
+     * @return array
+     */
+    private function getValidFactories(array $dependencies): array
+    {
+        // TODO implement more checks here
+        $factories = $dependencies['factories'] ?? [];
+        foreach ($factories as $serviceName => $factoryClass) {
+            if (!$this->hasFactory($serviceName)) {
+                throw new MissingFactoryInspectorException($serviceName);
+            }
+        }
+
+        return $factories;
     }
 }
