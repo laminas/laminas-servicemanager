@@ -15,7 +15,7 @@ use function max;
 use function printf;
 use function str_repeat;
 
-final class ConsoleCollector implements CollectorInterface
+final class ConsoleStatsCollector implements StatsCollectorInterface
 {
     private const COLOR_GREEN = "\e[1;32m";
     private const COLOR_YELLOW = "\e[33m";

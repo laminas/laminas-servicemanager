@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool\Inspector\Collector;
 
-interface CollectorInterface
+interface StatsCollectorInterface
 {
     /**
      * @param string $dependencyName

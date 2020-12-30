@@ -16,6 +16,7 @@ use Laminas\ServiceManager\Tool\Inspector\Dependency;
 use Laminas\ServiceManager\Tool\Inspector\Exception\UnexpectedScalarTypeInspectorException;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionParameter;
 
 final class ReflectionBasedDependencyDetector implements DependencyDetectorInterface
 {
@@ -45,9 +46,9 @@ final class ReflectionBasedDependencyDetector implements DependencyDetectorInter
 
         // TODO throw an exception on interface
 
-        $serviceName = $this->config->getRealName($serviceName);
+        $realServiceName = $this->config->getRealName($serviceName);
         // TODO Check if invokable has zero params
-        if ($this->config->isInvokable($serviceName)) {
+        if ($this->config->isInvokable($realServiceName)) {
             return [];
         }
 
@@ -81,25 +82,38 @@ final class ReflectionBasedDependencyDetector implements DependencyDetectorInter
 
         $unsatisfiedDependencies = [];
         foreach ($constructor->getParameters() as $parameter) {
-            $isOptional = $parameter->isOptional() || $parameter->getType()->allowsNull();
-
-            if ($parameter->getClass() === null) {
-                // FIXME config
-                if ($isOptional) {
-                    return $unsatisfiedDependencies;
-                }
-
-                throw new UnexpectedScalarTypeInspectorException($serviceName, $parameter->getName());
-            }
-
+            $this->assertHasClassTypeHint($parameter, $serviceName);
             $realDependencyName = $this->config->getRealName($parameter->getClass()->getName());
             if ($this->config->isInvokable($realDependencyName)) {
                 continue;
             }
 
-            $unsatisfiedDependencies[] = new Dependency($realDependencyName, $isOptional);
+            $unsatisfiedDependencies[] = new Dependency($realDependencyName, $this->isOptional($parameter));
         }
 
         return $unsatisfiedDependencies;
+    }
+
+    /**
+     * @param ReflectionParameter $parameter
+     * @param string $serviceName
+     */
+    private function assertHasClassTypeHint(ReflectionParameter $parameter, string $serviceName): void
+    {
+        if ($parameter->getClass() === null) {
+            // FIXME config param
+            if (!$this->isOptional($parameter)) {
+                throw new UnexpectedScalarTypeInspectorException($serviceName, $parameter->getName());
+            }
+        }
+    }
+
+    /**
+     * @param ReflectionParameter $parameter
+     * @return bool
+     */
+    private function isOptional(ReflectionParameter $parameter): bool
+    {
+        return $parameter->isOptional() || ($parameter->hasType() && $parameter->getType()->allowsNull());
     }
 }

@@ -15,6 +15,7 @@ use Laminas\ServiceManager\Tool\Inspector\Exception\MissingFactoryInspectorExcep
 
 use function class_exists;
 use function in_array;
+use function is_string;
 
 final class DependencyConfig
 {
@@ -40,8 +41,8 @@ final class DependencyConfig
     public function __construct(array $dependencies)
     {
         $this->factories = $this->getValidFactories($dependencies);
-        $this->invokables = $dependencies['invokables'] ?? [];
-        $this->resolvedAliases = (new AliasResolver())($dependencies['aliases'] ?? []);
+        $this->invokables = $this->getValidInvokables($dependencies);
+        $this->resolvedAliases = $this->getValidResolvedAliases($dependencies);
     }
 
     /**
@@ -53,56 +54,52 @@ final class DependencyConfig
     }
 
     /**
-     * @param string $dependencyName
+     * @param string $serviceName
      * @return string
      */
-    public function getRealName(string $dependencyName): string
+    public function getRealName(string $serviceName): string
     {
-        return $this->resolvedAliases[$dependencyName] ?? $dependencyName;
+        return $this->resolvedAliases[$serviceName] ?? $serviceName;
     }
 
     /**
-     * @param string $dependencyName
+     * @param string $serviceName
      * @return bool
      */
-    public function isInvokable(string $dependencyName): bool
+    public function isInvokable(string $serviceName): bool
     {
-        $isInvokable = in_array($dependencyName, $this->invokables, true);
-        $hasInvokableFactory = $this->getFactory($dependencyName) === InvokableFactory::class;
+        $realServiceName = $this->getRealName($serviceName);
+        $isInvokable = in_array($realServiceName, $this->invokables, true);
+        $hasInvokableFactory = $this->getFactory($realServiceName) === InvokableFactory::class;
 
         return $isInvokable || $hasInvokableFactory;
     }
 
     /**
-     * @param string $dependencyName
+     * @param string $serviceName
      * @return bool
      */
-    public function hasFactory(string $dependencyName): bool
+    public function hasFactory(string $serviceName): bool
     {
-        $factoryClass = $this->getFactory($dependencyName);
-        if ($factoryClass === null) {
-            return false;
-        }
-
         // TODO check if invokable/FactoryInterface
 
-        return class_exists($factoryClass);
+        return $this->getFactory($serviceName) !== null;
     }
 
     /**
-     * @param string $dependencyName
+     * @param string $serviceName
      * @return string|null
      */
-    public function getFactory(string $dependencyName): ?string
+    public function getFactory(string $serviceName): ?string
     {
-        $realName = $this->getRealName($dependencyName);
+        $realName = $this->getRealName($serviceName);
 
         return $this->factories[$realName] ?? null;
     }
 
     /**
-     * @psalm-var list<string> $dependencies
-     * @psalm-return list<string>
+     * @psalm-var array<string, string> $dependencies
+     * @psalm-return array<string, string>
      *
      * @param array $dependencies
      * @return array
@@ -112,11 +109,40 @@ final class DependencyConfig
         // TODO implement more checks here
         $factories = $dependencies['factories'] ?? [];
         foreach ($factories as $serviceName => $factoryClass) {
-            if (!$this->hasFactory($serviceName)) {
+            // I saw some cases with Service::class => null, don't think we should allow it here
+            if (!is_string($factoryClass) || !class_exists($factoryClass)) {
                 throw new MissingFactoryInspectorException($serviceName);
             }
         }
 
         return $factories;
+    }
+
+    /**
+     * @psalm-var array<string, string> $dependencies
+     * @psalm-return list<string>
+     *
+     * @param array $dependencies
+     * @return array
+     */
+    private function getValidInvokables(array $dependencies): array
+    {
+        // TODO implement more checks here
+
+        return $dependencies['invokables'] ?? [];
+    }
+
+    /**
+     * @psalm-var array<string, string> $dependencies
+     * @psalm-return array<string, string>
+     *
+     * @param array $dependencies
+     * @return array
+     */
+    private function getValidResolvedAliases(array $dependencies): array
+    {
+        // TODO implement more checks here
+
+        return (new AliasResolver())($dependencies['aliases'] ?? []);
     }
 }

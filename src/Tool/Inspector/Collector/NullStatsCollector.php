@@ -10,39 +10,14 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool\Inspector\Collector;
 
-final class UniqueHitsCollectorDecorator implements CollectorInterface
+final class NullStatsCollector implements StatsCollectorInterface
 {
-    /**
-     * @var CollectorInterface
-     */
-    private CollectorInterface $collector;
-
-    /**
-     * @psalm-var list<string>
-     */
-    private array $hits = [];
-
-    /**
-     * @param CollectorInterface $collector
-     */
-    public function __construct(CollectorInterface $collector)
-    {
-        $this->collector = $collector;
-    }
-
     /**
      * @param string $dependencyName
      * @param array $instantiationStack
      */
     public function collectAutowireFactoryHit(string $dependencyName, array $instantiationStack): void
     {
-        if (isset($this->hits[$dependencyName])) {
-            return;
-        }
-
-        $this->hits[$dependencyName] = true;
-
-        $this->collector->collectAutowireFactoryHit($dependencyName, $instantiationStack);
     }
 
     /**
@@ -51,13 +26,6 @@ final class UniqueHitsCollectorDecorator implements CollectorInterface
      */
     public function collectCustomFactoryHit(string $dependencyName, array $instantiationStack): void
     {
-        if (isset($this->hits[$dependencyName])) {
-            return;
-        }
-
-        $this->hits[$dependencyName] = true;
-
-        $this->collector->collectCustomFactoryHit($dependencyName, $instantiationStack);
     }
 
     /**
@@ -66,12 +34,9 @@ final class UniqueHitsCollectorDecorator implements CollectorInterface
      */
     public function collectError(string $dependencyName, array $instantiationStack): void
     {
-        $this->collector->collectError($dependencyName, $instantiationStack);
     }
 
     public function finish(): void
     {
-        $this->collector->finish();
     }
 }
-

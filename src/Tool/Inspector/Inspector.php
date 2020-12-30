@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool\Inspector;
 
-use Laminas\ServiceManager\Tool\Inspector\Collector\CollectorInterface;
+use Laminas\ServiceManager\Tool\Inspector\Collector\StatsCollectorInterface;
 use Laminas\ServiceManager\Tool\Inspector\DependencyDetector\DependencyDetectorInterface;
 use Laminas\ServiceManager\Tool\Inspector\Exception\CircularDependencyInspectorException;
 use Laminas\ServiceManager\Tool\Inspector\Exception\MissingFactoryInspectorException;
@@ -31,19 +31,19 @@ final class Inspector
     private DependencyDetectorInterface $dependenciesDetector;
 
     /**
-     * @var CollectorInterface
+     * @var StatsCollectorInterface
      */
-    private CollectorInterface $collector;
+    private StatsCollectorInterface $collector;
 
     /**
      * @param DependencyConfig $config
      * @param DependencyDetectorInterface $dependenciesDetector
-     * @param CollectorInterface $collector
+     * @param StatsCollectorInterface $collector
      */
     public function __construct(
         DependencyConfig $config,
         DependencyDetectorInterface $dependenciesDetector,
-        CollectorInterface $collector
+        StatsCollectorInterface $collector
     ) {
         $this->config = $config;
         $this->dependenciesDetector = $dependenciesDetector;
@@ -55,9 +55,9 @@ final class Inspector
      */
     public function __invoke(): void
     {
-        foreach ($this->config->getFactories() as $dependencyName => $_) {
-            if ($this->dependenciesDetector->canDetect($dependencyName)) {
-                $this->walk(new Dependency($dependencyName));
+        foreach ($this->config->getFactories() as $serviceName => $_) {
+            if ($this->dependenciesDetector->canDetect($serviceName)) {
+                $this->walk(new Dependency($serviceName));
             }
         }
 
@@ -73,18 +73,18 @@ final class Inspector
      */
     private function walk(Dependency $dependency, array $instantiationStack = []): void
     {
-        $this->collect($dependency, $instantiationStack);
-        $this->assertCircularDependency($dependency, $instantiationStack);
+        $this->collectStats($dependency, $instantiationStack);
+        $this->assertNotCircularDependency($dependency, $instantiationStack);
 
         $instantiationStack[] = $dependency->getName();
 
-        foreach ($this->detectDependencies($dependency, $instantiationStack) as $dependency) {
-            if (! $this->config->hasFactory($dependency->getName()) && ! $dependency->isOptional()) {
-                $this->collector->collectError($dependency->getName(), $instantiationStack);
-                throw new MissingFactoryInspectorException($dependency->getName());
+        foreach ($this->detectDependencies($dependency, $instantiationStack) as $childDependency) {
+            if (! $this->config->hasFactory($childDependency->getName()) && ! $childDependency->isOptional()) {
+                $this->collector->collectError($childDependency->getName(), $instantiationStack);
+                throw new MissingFactoryInspectorException($childDependency->getName());
             }
 
-            $this->walk($dependency, $instantiationStack);
+            $this->walk($childDependency, $instantiationStack);
         }
     }
 
@@ -94,7 +94,7 @@ final class Inspector
      * @param Dependency $dependency
      * @param array $instantiationStack
      */
-    private function assertCircularDependency(Dependency $dependency, array $instantiationStack): void
+    private function assertNotCircularDependency(Dependency $dependency, array $instantiationStack): void
     {
         if (in_array($dependency->getName(), $instantiationStack, true)) {
             $this->collector->collectError($dependency->getName(), $instantiationStack);
@@ -127,7 +127,7 @@ final class Inspector
      * @param Dependency $dependency
      * @param array $instantiationStack
      */
-    private function collect(Dependency $dependency, array $instantiationStack): void
+    private function collectStats(Dependency $dependency, array $instantiationStack): void
     {
         if ($this->dependenciesDetector->canDetect($dependency->getName())) {
             $this->collector->collectAutowireFactoryHit($dependency->getName(), $instantiationStack);
