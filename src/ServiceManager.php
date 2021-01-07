@@ -752,7 +752,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @param string[][]|Factory\DelegatorFactoryInterface[][] $config
      * @return string[][]|Factory\DelegatorFactoryInterface[][]
      */
-    private function mergeDelegators(array $config)
+    private function mergeDelegators(array $config): array
     {
         foreach ($config as $key => $delegators) {
             if (! array_key_exists($key, $this->delegators)) {
@@ -776,10 +776,8 @@ class ServiceManager implements ServiceLocatorInterface
      * If an invokable service name does not match the class it maps to, this
      * creates an alias to the class (which will later be mapped as an
      * invokable factory).
-     *
-     * @param array $invokables
      */
-    private function createAliasesAndFactoriesForInvokables(array $invokables)
+    private function createAliasesAndFactoriesForInvokables(array $invokables): void
     {
         foreach ($invokables as $name => $class) {
             $this->factories[$class] = Factory\InvokableFactory::class;
@@ -799,11 +797,10 @@ class ServiceManager implements ServiceLocatorInterface
      * a given service name we do not have a service instance
      * in the cache OR override is explicitly allowed.
      *
-     * @param array $config
      * @throws ContainerModificationsNotAllowedException if any
      *     service key is invalid.
      */
-    private function validateServiceNames(array $config)
+    private function validateServiceNames(array $config): void
     {
         if ($this->allowOverride || ! $this->configured) {
             return;
@@ -874,11 +871,8 @@ class ServiceManager implements ServiceLocatorInterface
      * many.
      *
      * @see mapAliasesToTargets() below
-     *
-     * @param string $alias
-     * @param string $target
      */
-    private function mapAliasToTarget($alias, $target)
+    private function mapAliasToTarget(string $alias, string $target): void
     {
         // $target is either an alias or something else
         // if it is an alias, resolve it
@@ -915,9 +909,8 @@ class ServiceManager implements ServiceLocatorInterface
      * It is not appropriate if just a single alias is added.
      *
      * @see mapAliasToTarget above
-     *
      */
-    private function mapAliasesToTargets()
+    private function mapAliasesToTargets(): void
     {
         $tagged = [];
         foreach ($this->aliases as $alias => $target) {
@@ -961,9 +954,8 @@ class ServiceManager implements ServiceLocatorInterface
      * Instantiate abstract factories in order to avoid checks during service construction.
      *
      * @param string|Factory\AbstractFactoryInterface $abstractFactories
-     * @return void
      */
-    private function resolveAbstractFactoryInstance($abstractFactory)
+    private function resolveAbstractFactoryInstance($abstractFactory): void
     {
         if (is_string($abstractFactory) && class_exists($abstractFactory)) {
             // Cached string factory name

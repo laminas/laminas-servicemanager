@@ -38,7 +38,7 @@ class FactoryCreatorTest extends TestCase
         $className = InvokableObject::class;
         $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/InvokableObject.php');
 
-        self::assertEquals($factory, $this->factoryCreator->createFactory($className));
+        $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
     }
 
     public function testCreateFactoryCreatesForSimpleDependencies()
@@ -46,7 +46,7 @@ class FactoryCreatorTest extends TestCase
         $className = SimpleDependencyObject::class;
         $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
 
-        self::assertEquals($factory, $this->factoryCreator->createFactory($className));
+        $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
     }
 
     public function testCreateFactoryCreatesForComplexDependencies()
@@ -54,6 +54,6 @@ class FactoryCreatorTest extends TestCase
         $className = ComplexDependencyObject::class;
         $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/ComplexDependencyObject.php');
 
-        self::assertEquals($factory, $this->factoryCreator->createFactory($className));
+        $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
     }
 }

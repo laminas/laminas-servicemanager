@@ -57,7 +57,7 @@ class ConfigTest extends TestCase
             ],
         ];
 
-        self::assertEquals($expected, $result);
+        $this->assertEquals($expected, $result);
     }
 
     public function testPassesKnownServiceConfigKeysToServiceManagerWithConfigMethod()
@@ -113,7 +113,7 @@ class ConfigTest extends TestCase
         $services->configure($expected)->willReturn('CALLED');
 
         $configuration = new Config($config);
-        self::assertEquals('CALLED', $configuration->configureServiceManager($services->reveal()));
+        $this->assertEquals('CALLED', $configuration->configureServiceManager($services->reveal()));
 
         return [
             'array'  => $expected,
@@ -128,6 +128,6 @@ class ConfigTest extends TestCase
     {
         $configuration  = $dependencies['array'];
         $configInstance = $dependencies['config'];
-        self::assertSame($configuration, $configInstance->toArray());
+        $this->assertSame($configuration, $configInstance->toArray());
     }
 }

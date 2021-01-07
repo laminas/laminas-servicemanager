@@ -58,7 +58,7 @@ class ConfigDumperCommandTest extends TestCase
     {
         $command = $this->command;
         $this->assertHelp();
-        self::assertEquals(0, $command([]));
+        $this->assertEquals(0, $command([]));
     }
 
     public function helpArguments()
@@ -85,7 +85,7 @@ class ConfigDumperCommandTest extends TestCase
     {
         $command = $this->command;
         $this->assertHelp();
-        self::assertEquals(0, $command([$argument]));
+        $this->assertEquals(0, $command([$argument]));
     }
 
     public function testEmitsErrorWhenTooFewArgumentsPresent()
@@ -93,7 +93,7 @@ class ConfigDumperCommandTest extends TestCase
         $command = $this->command;
         $this->assertErrorRaised('Missing class name');
         $this->assertHelp(STDERR);
-        self::assertEquals(1, $command(['foo']));
+        $this->assertEquals(1, $command(['foo']));
     }
 
     public function testRaisesExceptionIfConfigFileNotFoundAndDirectoryNotWritable()
@@ -104,7 +104,7 @@ class ConfigDumperCommandTest extends TestCase
         $config = vfsStream::url('project/config/test.config.php');
         $this->assertErrorRaised(sprintf('Cannot create configuration at path "%s"; not writable.', $config));
         $this->assertHelp(STDERR);
-        self::assertEquals(1, $command([$config, 'Not\A\Real\Class']));
+        $this->assertEquals(1, $command([$config, 'Not\A\Real\Class']));
     }
 
     public function testGeneratesConfigFileWhenProvidedConfigurationFileNotFound()
@@ -116,17 +116,17 @@ class ConfigDumperCommandTest extends TestCase
 
         $this->helper->writeLine('<info>[DONE]</info> Changes written to ' . $config)->shouldBeCalled();
 
-        self::assertEquals(0, $command([$config, SimpleDependencyObject::class]));
+        $this->assertEquals(0, $command([$config, SimpleDependencyObject::class]));
 
         $generated = include $config;
-        self::assertIsArray($generated);
-        self::assertArrayHasKey(ConfigAbstractFactory::class, $generated);
+        $this->assertIsArray($generated);
+        $this->assertArrayHasKey(ConfigAbstractFactory::class, $generated);
         $factoryConfig = $generated[ConfigAbstractFactory::class];
-        self::assertIsArray($factoryConfig);
-        self::assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
-        self::assertArrayHasKey(InvokableObject::class, $factoryConfig);
-        self::assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
-        self::assertEquals([], $factoryConfig[InvokableObject::class]);
+        $this->assertIsArray($factoryConfig);
+        $this->assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
+        $this->assertArrayHasKey(InvokableObject::class, $factoryConfig);
+        $this->assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
+        $this->assertEquals([], $factoryConfig[InvokableObject::class]);
     }
 
     /**
@@ -141,24 +141,24 @@ class ConfigDumperCommandTest extends TestCase
 
         $this->helper->writeLine('<info>[DONE]</info> Changes written to ' . $config)->shouldBeCalled();
 
-        self::assertEquals(0, $command([$argument, $config, ObjectWithObjectScalarDependency::class]));
+        $this->assertEquals(0, $command([$argument, $config, ObjectWithObjectScalarDependency::class]));
 
         $generated = include $config;
-        self::assertIsArray($generated);
-        self::assertArrayHasKey(ConfigAbstractFactory::class, $generated);
+        $this->assertIsArray($generated);
+        $this->assertArrayHasKey(ConfigAbstractFactory::class, $generated);
         $factoryConfig = $generated[ConfigAbstractFactory::class];
-        self::assertIsArray($factoryConfig);
-        self::assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
-        self::assertArrayHasKey(InvokableObject::class, $factoryConfig);
-        self::assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
-        self::assertEquals([], $factoryConfig[InvokableObject::class]);
+        $this->assertIsArray($factoryConfig);
+        $this->assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
+        $this->assertArrayHasKey(InvokableObject::class, $factoryConfig);
+        $this->assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
+        $this->assertEquals([], $factoryConfig[InvokableObject::class]);
 
-        self::assertArrayHasKey(ObjectWithObjectScalarDependency::class, $factoryConfig);
-        self::assertContains(
+        $this->assertArrayHasKey(ObjectWithObjectScalarDependency::class, $factoryConfig);
+        $this->assertContains(
             SimpleDependencyObject::class,
             $factoryConfig[ObjectWithObjectScalarDependency::class]
         );
-        self::assertContains(
+        $this->assertContains(
             ObjectWithScalarDependency::class,
             $factoryConfig[ObjectWithObjectScalarDependency::class]
         );
@@ -173,7 +173,7 @@ class ConfigDumperCommandTest extends TestCase
         $config = vfsStream::url('project/config/invalid.config.php');
         $this->assertErrorRaised('Configuration at path "' . $config . '" does not return an array.');
         $this->assertHelp(STDERR);
-        self::assertEquals(1, $command([$config, 'Not\A\Real\Class']));
+        $this->assertEquals(1, $command([$config, 'Not\A\Real\Class']));
     }
 
     public function testEmitsErrorWhenClassDoesNotExist()
@@ -185,7 +185,7 @@ class ConfigDumperCommandTest extends TestCase
         $config = vfsStream::url('project/config/test.config.php');
         $this->assertErrorRaised('Class "Not\\A\\Real\\Class" does not exist or could not be autoloaded.');
         $this->assertHelp(STDERR);
-        self::assertEquals(1, $command([$config, 'Not\A\Real\Class']));
+        $this->assertEquals(1, $command([$config, 'Not\A\Real\Class']));
     }
 
     public function testEmitsErrorWhenUnableToCreateConfiguration()
@@ -197,7 +197,7 @@ class ConfigDumperCommandTest extends TestCase
         $config = vfsStream::url('project/config/test.config.php');
         $this->assertErrorRaised('Unable to create config for "' . ObjectWithScalarDependency::class . '":');
         $this->assertHelp(STDERR);
-        self::assertEquals(1, $command([$config, ObjectWithScalarDependency::class]));
+        $this->assertEquals(1, $command([$config, ObjectWithScalarDependency::class]));
     }
 
     public function testEmitsConfigFileToStdoutWhenSuccessful()
@@ -210,16 +210,16 @@ class ConfigDumperCommandTest extends TestCase
 
         $this->helper->writeLine('<info>[DONE]</info> Changes written to ' . $config)->shouldBeCalled();
 
-        self::assertEquals(0, $command([$config, SimpleDependencyObject::class]));
+        $this->assertEquals(0, $command([$config, SimpleDependencyObject::class]));
 
         $generated = include $config;
-        self::assertIsArray($generated);
-        self::assertArrayHasKey(ConfigAbstractFactory::class, $generated);
+        $this->assertIsArray($generated);
+        $this->assertArrayHasKey(ConfigAbstractFactory::class, $generated);
         $factoryConfig = $generated[ConfigAbstractFactory::class];
-        self::assertIsArray($factoryConfig);
-        self::assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
-        self::assertArrayHasKey(InvokableObject::class, $factoryConfig);
-        self::assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
-        self::assertEquals([], $factoryConfig[InvokableObject::class]);
+        $this->assertIsArray($factoryConfig);
+        $this->assertArrayHasKey(SimpleDependencyObject::class, $factoryConfig);
+        $this->assertArrayHasKey(InvokableObject::class, $factoryConfig);
+        $this->assertContains(InvokableObject::class, $factoryConfig[SimpleDependencyObject::class]);
+        $this->assertEquals([], $factoryConfig[InvokableObject::class]);
     }
 }

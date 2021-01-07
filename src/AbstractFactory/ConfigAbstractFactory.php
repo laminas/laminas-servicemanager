@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager\AbstractFactory;
 
 use ArrayObject;
+use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
@@ -28,7 +29,7 @@ final class ConfigAbstractFactory implements AbstractFactoryInterface
      *
      * {@inheritdoc}
      */
-    public function canCreate(\Interop\Container\ContainerInterface $container, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
         if (! $container->has('config')) {
             return false;
@@ -45,7 +46,7 @@ final class ConfigAbstractFactory implements AbstractFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(\Interop\Container\ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         if (! $container->has('config')) {
             throw new ServiceNotCreatedException('Cannot find a config array in the container');
@@ -72,8 +73,8 @@ final class ConfigAbstractFactory implements AbstractFactoryInterface
 
         $serviceDependencies = $dependencies[$requestedName];
 
-        if ($serviceDependencies !== array_values(array_map('\strval', $serviceDependencies))) {
-            $problem = json_encode(array_map('\gettype', $serviceDependencies));
+        if ($serviceDependencies !== array_values(array_map('strval', $serviceDependencies))) {
+            $problem = json_encode(array_map('gettype', $serviceDependencies));
             throw new ServiceNotCreatedException(
                 'Service dependencies config must be an array of strings, ' . $problem . ' given'
             );

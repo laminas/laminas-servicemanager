@@ -51,7 +51,7 @@ class LazyServiceFactoryTest extends TestCase
 
     public function testImplementsDelegatorFactoryInterface()
     {
-        self::assertInstanceOf(DelegatorFactoryInterface::class, $this->factory);
+        $this->assertInstanceOf(DelegatorFactoryInterface::class, $this->factory);
     }
 
     public function testThrowExceptionWhenServiceNotExists()
@@ -88,7 +88,7 @@ class LazyServiceFactoryTest extends TestCase
             ->method('createProxy')
             ->willReturnCallback(
                 function ($className, $initializer) use ($expectedService) {
-                    self::assertEquals('FooClass', $className, 'class name not match');
+                    $this->assertEquals('FooClass', $className, 'class name not match');
 
                     $wrappedInstance = null;
                     $result = $initializer(
@@ -96,8 +96,8 @@ class LazyServiceFactoryTest extends TestCase
                         $this->getMockBuilder(LazyLoadingInterface::class)->getMock()
                     );
 
-                    self::assertEquals('fooValue', $wrappedInstance, 'expected callback return value');
-                    self::assertTrue($result, 'initializer should return true');
+                    $this->assertEquals('fooValue', $wrappedInstance, 'expected callback return value');
+                    $this->assertTrue($result, 'initializer should return true');
 
                     return $expectedService;
                 }
@@ -105,7 +105,7 @@ class LazyServiceFactoryTest extends TestCase
 
         $result = $this->factory->__invoke($container, 'fooService', [$callback, 'callback']);
 
-        self::assertSame($expectedService, $result, 'service created not match the expected');
+        $this->assertSame($expectedService, $result, 'service created not match the expected');
     }
 
     /**

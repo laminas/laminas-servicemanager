@@ -25,9 +25,8 @@ class CyclicAliasException extends InvalidArgumentException
     /**
      * @param string   $alias conflicting alias key
      * @param string[] $aliases map of referenced services, indexed by alias name (string)
-     * @return self
      */
-    public static function fromCyclicAlias($alias, array $aliases)
+    public static function fromCyclicAlias(string $alias, array $aliases): self
     {
         $cycle = $alias;
         $cursor = $alias;

@@ -34,7 +34,7 @@ class ConfigAbstractFactoryTest extends TestCase
             ]
         );
 
-        self::assertFalse($abstractFactory->canCreate($serviceManager, InvokableObject::class));
+        $this->assertFalse($abstractFactory->canCreate($serviceManager, InvokableObject::class));
 
         $serviceManager->setAllowOverride(true);
         $serviceManager->setService(
@@ -45,7 +45,7 @@ class ConfigAbstractFactoryTest extends TestCase
                 ]
             ]
         );
-        self::assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
+        $this->assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
 
         $serviceManager->setAllowOverride(true);
         $serviceManager->setService(
@@ -61,7 +61,7 @@ class ConfigAbstractFactoryTest extends TestCase
                 ]
             ]
         );
-        self::assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
+        $this->assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
     }
 
     public function testCanCreate()
@@ -77,8 +77,8 @@ class ConfigAbstractFactoryTest extends TestCase
             ]
         );
 
-        self::assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
-        self::assertFalse($abstractFactory->canCreate($serviceManager, ServiceManager::class));
+        $this->assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
+        $this->assertFalse($abstractFactory->canCreate($serviceManager, ServiceManager::class));
     }
 
     public function testCanCreateReturnsTrueWhenConfigIsAnArrayObject()
@@ -94,8 +94,8 @@ class ConfigAbstractFactoryTest extends TestCase
             ])
         );
 
-        self::assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
-        self::assertFalse($abstractFactory->canCreate($serviceManager, ServiceManager::class));
+        $this->assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
+        $this->assertFalse($abstractFactory->canCreate($serviceManager, ServiceManager::class));
     }
 
     public function testFactoryCanCreateInstancesWhenConfigIsAnArrayObject()
@@ -111,7 +111,7 @@ class ConfigAbstractFactoryTest extends TestCase
             ])
         );
 
-        self::assertInstanceOf(InvokableObject::class, $abstractFactory($serviceManager, InvokableObject::class));
+        $this->assertInstanceOf(InvokableObject::class, $abstractFactory($serviceManager, InvokableObject::class));
     }
 
     public function testInvokeWithInvokableClass()
@@ -127,7 +127,7 @@ class ConfigAbstractFactoryTest extends TestCase
             ]
         );
 
-        self::assertInstanceOf(InvokableObject::class, $abstractFactory($serviceManager, InvokableObject::class));
+        $this->assertInstanceOf(InvokableObject::class, $abstractFactory($serviceManager, InvokableObject::class));
     }
 
     public function testInvokeWithSimpleArguments()
@@ -147,7 +147,7 @@ class ConfigAbstractFactoryTest extends TestCase
         );
         $serviceManager->addAbstractFactory($abstractFactory);
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             SimpleDependencyObject::class,
             $abstractFactory($serviceManager, SimpleDependencyObject::class)
         );
@@ -177,7 +177,7 @@ class ConfigAbstractFactoryTest extends TestCase
         );
         $serviceManager->addAbstractFactory($abstractFactory);
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ComplexDependencyObject::class,
             $abstractFactory($serviceManager, ComplexDependencyObject::class)
         );

@@ -32,29 +32,29 @@ use function substr;
 class FactoryCreator
 {
     const FACTORY_TEMPLATE = <<<'EOT'
-<?php
-
-declare(strict_types=1);
-
-namespace %s;
-
-%s
-
-class %sFactory implements FactoryInterface
-{
-    /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param null|array $options
-     * @return %s
-     */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
-    {
-        return new %s(%s);
-    }
-}
-
-EOT;
+        <?php
+        
+        declare(strict_types=1);
+        
+        namespace %s;
+        
+        %s
+        
+        class %sFactory implements FactoryInterface
+        {
+            /**
+             * @param ContainerInterface $container
+             * @param string $requestedName
+             * @param null|array $options
+             * @return %s
+             */
+            public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+            {
+                return new %s(%s);
+            }
+        }
+        
+        EOT;
 
     private const IMPORT_ALWAYS = [
         FactoryInterface::class,
@@ -110,7 +110,7 @@ EOT;
 
         $constructorParameters = array_filter(
             $constructorParameters,
-            function (ReflectionParameter $argument) {
+            function (ReflectionParameter $argument): bool {
                 if ($argument->isOptional()) {
                     return false;
                 }
@@ -134,7 +134,7 @@ EOT;
             return [];
         }
 
-        return array_map(function (ReflectionParameter $parameter) {
+        return array_map(function (ReflectionParameter $parameter): ?string {
             $type = $parameter->getType();
             return null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
         }, $constructorParameters);
@@ -146,7 +146,7 @@ EOT;
      */
     private function createArgumentString($className)
     {
-        $arguments = array_map(function ($dependency) {
+        $arguments = array_map(function (string $dependency): string {
             return sprintf('$container->get(\\%s::class)', $dependency);
         }, $this->getConstructorParameters($className));
 
@@ -171,7 +171,7 @@ EOT;
     {
         $imports = array_merge(self::IMPORT_ALWAYS, [$className]);
         sort($imports);
-        return implode("\n", array_map(function ($import) {
+        return implode("\n", array_map(function (string $import): string {
             return sprintf('use %s;', $import);
         }, $imports));
     }

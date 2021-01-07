@@ -30,8 +30,8 @@ class CyclicAliasExceptionTest extends TestCase
     {
         $exception = CyclicAliasException::fromCyclicAlias($alias, $aliases);
 
-        self::assertInstanceOf(CyclicAliasException::class, $exception);
-        self::assertSame($expectedMessage, $exception->getMessage());
+        $this->assertInstanceOf(CyclicAliasException::class, $exception);
+        $this->assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**
@@ -120,8 +120,8 @@ class CyclicAliasExceptionTest extends TestCase
     {
         $exception = CyclicAliasException::fromAliasesMap($aliases);
 
-        self::assertInstanceOf(CyclicAliasException::class, $exception);
-        self::assertSame($expectedMessage, $exception->getMessage());
+        $this->assertInstanceOf(CyclicAliasException::class, $exception);
+        $this->assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**
