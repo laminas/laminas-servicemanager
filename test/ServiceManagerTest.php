@@ -454,14 +454,14 @@ class ServiceManagerTest extends TestCase
     {
         $initializerOneCalled = $initializerTwoCalled = false;
         $initializers = [
-            static function (object $service) use (&$initializerOneCalled): object {
-                $initializerOneCalled = true;
-                return $service;
-            },
-            static function (object $service) use (&$initializerTwoCalled): object {
-                $initializerTwoCalled = true;
-                return $service;
-            },
+        static function (object $service) use (&$initializerOneCalled): object {
+            $initializerOneCalled = true;
+            return $service;
+        },
+        static function (object $service) use (&$initializerTwoCalled): object {
+            $initializerTwoCalled = true;
+            return $service;
+        },
         ];
 
         $serviceManager = new ServiceManager([

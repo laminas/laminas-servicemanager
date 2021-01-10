@@ -554,7 +554,7 @@ class ServiceManager implements ServiceLocatorInterface
 
             if (is_callable($initializer)) {
                 $this->initializers[] = $initializer;
-                return;
+                continue;
             }
 
             throw InvalidArgumentException::fromInvalidInitializer($initializer);
