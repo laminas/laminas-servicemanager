@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -11,6 +13,14 @@ namespace Laminas\ServiceManager;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
+
+use function class_exists;
+use function get_class;
+use function gettype;
+use function is_object;
+use function method_exists;
+use function sprintf;
+use function trigger_error;
 
 /**
  * Abstract plugin manager.
@@ -122,6 +132,17 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
         parent::configure($config);
 
         return $this;
+    }
+
+    /**
+     * Override setService for additional plugin validation.
+     *
+     * {@inheritDoc}
+     */
+    public function setService($name, $service)
+    {
+        $this->validate($service);
+        parent::setService($name, $service);
     }
 
     /**

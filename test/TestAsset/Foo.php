@@ -10,9 +10,12 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-class DoubleDependencyObject
+class Foo
 {
-    public function __construct(InvokableObject $anInvokableObject, InvokableObject $anotherInvokableObject)
+    protected $options;
+
+    public function __construct($options = null)
     {
+        $this->options = $options;
     }
 }

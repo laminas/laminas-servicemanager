@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -25,6 +27,11 @@ use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use stdClass;
+use Prophecy\PhpUnit\ProphecyTrait;
+
+use function get_class;
+use function restore_error_handler;
+use function set_error_handler;
 
 /**
  * @covers \Laminas\ServiceManager\AbstractPluginManager
@@ -32,6 +39,7 @@ use stdClass;
 class AbstractPluginManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
+    use ProphecyTrait;
 
     public function createContainer(array $config = [])
     {
@@ -55,9 +63,9 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager = new SimplePluginManager($container, $config);
 
         $invokableFactory->expects($this->once())
-                         ->method('__invoke')
-                         ->with($container, InvokableObject::class)
-                         ->will($this->returnValue(new InvokableObject()));
+            ->method('__invoke')
+            ->with($container, InvokableObject::class)
+            ->will($this->returnValue(new InvokableObject()));
 
         $object = $pluginManager->get(InvokableObject::class);
 
@@ -227,7 +235,7 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager = new TestAsset\LenientPluginManager();
         restore_error_handler();
 
-        $this->assertAttributeSame($pluginManager, 'creationContext', $pluginManager);
+        $this->assertSame($pluginManager, $pluginManager->getCreationContext());
         $serviceManager = new ServiceManager();
 
         set_error_handler(function ($errno, $errstr) {
@@ -236,7 +244,7 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager->setServiceLocator($serviceManager);
         restore_error_handler();
 
-        $this->assertAttributeSame($serviceManager, 'creationContext', $pluginManager);
+        $this->assertSame($serviceManager, $pluginManager->getCreationContext());
     }
 
     /**
@@ -249,7 +257,7 @@ class AbstractPluginManagerTest extends TestCase
         }, E_USER_DEPRECATED);
         $pluginManager = new TestAsset\LenientPluginManager();
         restore_error_handler();
-        $this->assertAttributeSame($pluginManager, 'creationContext', $pluginManager);
+        $this->assertSame($pluginManager, $pluginManager->getCreationContext());
     }
 
     /**
@@ -266,7 +274,7 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager = new TestAsset\LenientPluginManager($config->reveal());
         restore_error_handler();
 
-        $this->assertAttributeSame($pluginManager, 'creationContext', $pluginManager);
+        $this->assertSame($pluginManager, $pluginManager->getCreationContext());
     }
 
     public function invalidConstructorArguments()
@@ -361,7 +369,7 @@ class AbstractPluginManagerTest extends TestCase
         $errorHandlerCalled = false;
         set_error_handler(function ($errno, $errmsg) use (&$errorHandlerCalled) {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
-            $this->assertContains('3.0', $errmsg);
+            $this->assertStringContainsString('3.0', $errmsg);
             $errorHandlerCalled = true;
         }, E_USER_DEPRECATED);
         $pluginManager->validate($instance);

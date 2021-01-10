@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -22,38 +24,46 @@ use LaminasTest\ServiceManager\TestAsset\ObjectWithScalarDependency;
 use LaminasTest\ServiceManager\TestAsset\SecondComplexDependencyObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
+
+use function file_put_contents;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
 
 class ConfigDumperTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ConfigDumper
      */
     private $dumper;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->dumper = new ConfigDumper();
     }
 
     public function testCreateDependencyConfigExceptsIfClassNameIsNotString()
     {
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage('Class name must be a string, integer given');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Class name must be a string, integer given');
         $this->dumper->createDependencyConfig([], 42);
     }
 
     public function testCreateDependencyConfigExceptsIfClassDoesNotExist()
     {
         $className = 'Dirk\Gentley\Holistic\Detective\Agency';
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage('Cannot find class or interface with name ' . $className);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot find class or interface with name ' . $className);
         $this->dumper->createDependencyConfig([], $className);
     }
 
     public function testCreateDependencyConfigInvokableObjectReturnsEmptyArray()
     {
         $config = $this->dumper->createDependencyConfig([], InvokableObject::class);
-        self::assertEquals(
+        $this->assertEquals(
             [
                 ConfigAbstractFactory::class => [
                     InvokableObject::class => []
@@ -66,7 +76,7 @@ class ConfigDumperTest extends TestCase
     public function testCreateDependencyConfigSimpleDependencyReturnsCorrectly()
     {
         $config = $this->dumper->createDependencyConfig([], SimpleDependencyObject::class);
-        self::assertEquals(
+        $this->assertEquals(
             [
                 ConfigAbstractFactory::class => [
                     SimpleDependencyObject::class => [
@@ -88,17 +98,17 @@ class ConfigDumperTest extends TestCase
             ],
         ];
         $config = $this->dumper->createDependencyConfig([ConfigAbstractFactory::class => []], FailingFactory::class);
-        self::assertEquals($expectedConfig, $config);
+        $this->assertEquals($expectedConfig, $config);
     }
 
     public function testCreateDependencyConfigWithoutTypeHintedParameterExcepts()
     {
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage(
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
             'Cannot create config for constructor argument "aName", '
-            . 'it has no type hint, or non-class/interface type hint'
+                . 'it has no type hint, or non-class/interface type hint'
         );
-        $config = $this->dumper->createDependencyConfig(
+        $this->dumper->createDependencyConfig(
             [ConfigAbstractFactory::class => []],
             ObjectWithScalarDependency::class
         );
@@ -106,10 +116,10 @@ class ConfigDumperTest extends TestCase
 
     public function testCreateDependencyConfigWithContainerAndNoServiceWithoutTypeHintedParameterExcepts()
     {
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage(
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
             'Cannot create config for constructor argument "aName", '
-            . 'it has no type hint, or non-class/interface type hint'
+                . 'it has no type hint, or non-class/interface type hint'
         );
         $container = $this->prophesize(ContainerInterface::class);
         $container->has(ObjectWithScalarDependency::class)
@@ -118,7 +128,7 @@ class ConfigDumperTest extends TestCase
 
         $dumper = new ConfigDumper($container->reveal());
 
-        $config = $dumper->createDependencyConfig(
+        $dumper->createDependencyConfig(
             [ConfigAbstractFactory::class => []],
             ObjectWithScalarDependency::class
         );
@@ -138,7 +148,7 @@ class ConfigDumperTest extends TestCase
             ObjectWithObjectScalarDependency::class
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 ConfigAbstractFactory::class => [
                     SimpleDependencyObject::class => [
@@ -162,7 +172,7 @@ class ConfigDumperTest extends TestCase
             ObjectWithObjectScalarDependency::class,
             true
         );
-        self::assertEquals(
+        $this->assertEquals(
             [
                 ConfigAbstractFactory::class => [
                     SimpleDependencyObject::class => [
@@ -190,7 +200,7 @@ class ConfigDumperTest extends TestCase
             ],
         ];
 
-        self::assertEquals($config, $this->dumper->createDependencyConfig($config, SimpleDependencyObject::class));
+        $this->assertEquals($config, $this->dumper->createDependencyConfig($config, SimpleDependencyObject::class));
     }
 
     public function testCreateDependencyConfigWorksWithMultipleDependenciesOfSameType()
@@ -205,21 +215,21 @@ class ConfigDumperTest extends TestCase
             ],
         ];
 
-        self::assertEquals($expectedConfig, $this->dumper->createDependencyConfig([], DoubleDependencyObject::class));
+        $this->assertEquals($expectedConfig, $this->dumper->createDependencyConfig([], DoubleDependencyObject::class));
     }
 
     public function testCreateFactoryMappingsExceptsIfClassNameIsNotString()
     {
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage('Class name must be a string, integer given');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Class name must be a string, integer given');
         $this->dumper->createFactoryMappings([], 42);
     }
 
     public function testCreateFactoryMappingsExceptsIfClassDoesNotExist()
     {
         $className = 'Dirk\Gentley\Holistic\Detective\Agency';
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage('Cannot find class or interface with name ' . $className);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot find class or interface with name ' . $className);
         $this->dumper->createFactoryMappings([], $className);
     }
 
@@ -232,7 +242,7 @@ class ConfigDumperTest extends TestCase
                 ],
             ],
         ];
-        self::assertEquals($config, $this->dumper->createFactoryMappings($config, InvokableObject::class));
+        $this->assertEquals($config, $this->dumper->createFactoryMappings($config, InvokableObject::class));
     }
 
     public function testCreateFactoryMappingsAddsClassIfNotExists()
@@ -244,7 +254,7 @@ class ConfigDumperTest extends TestCase
                 ],
             ],
         ];
-        self::assertEquals($expectedConfig, $this->dumper->createFactoryMappings([], InvokableObject::class));
+        $this->assertEquals($expectedConfig, $this->dumper->createFactoryMappings([], InvokableObject::class));
     }
 
     public function testCreateFactoryMappingsIgnoresExistingsMappings()
@@ -256,18 +266,18 @@ class ConfigDumperTest extends TestCase
                 ],
             ],
         ];
-        self::assertEquals($config, $this->dumper->createFactoryMappings($config, InvokableObject::class));
+        $this->assertEquals($config, $this->dumper->createFactoryMappings($config, InvokableObject::class));
     }
 
     public function testCreateFactoryMappingsFromConfigReturnsIfNoConfigKey()
     {
-        self::assertEquals([], $this->dumper->createFactoryMappingsFromConfig([]));
+        $this->assertEquals([], $this->dumper->createFactoryMappingsFromConfig([]));
     }
 
     public function testCreateFactoryMappingsFromConfigExceptsWhenConfigNotArray()
     {
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage(
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
             'Config key for ' . ConfigAbstractFactory::class . ' should be an array, boolean given'
         );
 
@@ -311,7 +321,7 @@ class ConfigDumperTest extends TestCase
             ],
         ];
 
-        self::assertEquals($expectedConfig, $this->dumper->createFactoryMappingsFromConfig($config));
+        $this->assertEquals($expectedConfig, $this->dumper->createFactoryMappingsFromConfig($config));
     }
 
     /**
@@ -320,17 +330,17 @@ class ConfigDumperTest extends TestCase
     public function testDumpConfigFileReturnsContentsForConfigFileUsingUsingClassNotationAndShortArrays(array $config)
     {
         $formatted = $this->dumper->dumpConfigFile($config);
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<' . "?php\n\n/**\n * This file generated by Laminas\ServiceManager\Tool\ConfigDumper.\n",
             $formatted
         );
 
-        $this->assertNotContains('array(', $formatted);
-        $this->assertContains('::class', $formatted);
+        $this->assertStringNotContainsString('array(', $formatted);
+        $this->assertStringContainsString('::class', $formatted);
 
         $file = tempnam(sys_get_temp_dir(), 'ZSCLI');
         file_put_contents($file, $formatted);
-        $test = include($file);
+        $test = include $file;
         unlink($file);
 
         $this->assertEquals($test, $config);
@@ -339,7 +349,7 @@ class ConfigDumperTest extends TestCase
     public function testWillDumpConfigForClassDependingOnInterfaceButOmitInterfaceConfig()
     {
         $config = $this->dumper->createDependencyConfig([], ClassDependingOnAnInterface::class);
-        self::assertEquals(
+        $this->assertEquals(
             [
                 ConfigAbstractFactory::class => [
                     ClassDependingOnAnInterface::class => [

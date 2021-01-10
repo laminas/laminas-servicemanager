@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -14,14 +16,18 @@ use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
-use ZendTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface;
+use Prophecy\PhpUnit\ProphecyTrait;
+
+use function sprintf;
 
 class ReflectionBasedAbstractFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = $this->prophesize(ContainerInterface::class);
     }
@@ -42,9 +48,9 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
         $this->assertFalse($factory->canCreate($this->container->reveal(), $requestedName));
     }
 
-    public function testCanCreateReturnsFalseWhenConstructorIsPrivate()
+    public function testCanCreateReturnsFalseWhenConstructorIsPrivate(): void
     {
-        self::assertFalse(
+        $this->assertFalse(
             (new ReflectionBasedAbstractFactory())->canCreate(
                 $this->container->reveal(),
                 TestAsset\ClassWithPrivateConstructor::class
@@ -53,9 +59,9 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
         );
     }
 
-    public function testCanCreateReturnsTrueWhenClassHasNoConstructor()
+    public function testCanCreateReturnsTrueWhenClassHasNoConstructor(): void
     {
-        self::assertTrue(
+        $this->assertTrue(
             (new ReflectionBasedAbstractFactory())->canCreate(
                 $this->container->reveal(),
                 TestAsset\ClassWithNoConstructor::class
@@ -81,7 +87,6 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService()
     {
         $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
-        $this->container->has(SampleInterface::class)->willReturn(false);
         $this->container->has('config')->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $this->expectException(ServiceNotFoundException::class);
@@ -101,7 +106,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
             'Unable to create service "%s"; unable to resolve parameter "foo" to a class, interface, or array type',
             TestAsset\ClassWithScalarParameters::class
         ));
-        $instance = $factory($this->container->reveal(), TestAsset\ClassWithScalarParameters::class);
+        $factory($this->container->reveal(), TestAsset\ClassWithScalarParameters::class);
     }
 
     public function testFactoryInjectsConfigServiceForConfigArgumentsTypeHintedAsArray()
@@ -192,7 +197,6 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
     {
         $this->container->has('config')->willReturn(false);
         $this->container->has(ArrayAccess::class)->willReturn(false);
-        $this->container->has(\ZendTest\ServiceManager\AbstractFactory\ArrayAccess::class)->willReturn(false);
         $factory = new ReflectionBasedAbstractFactory();
         $instance = $factory(
             $this->container->reveal(),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -36,7 +38,7 @@ class LazyServiceFactoryTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->proxyFactory = $this->getMockBuilder(LazyLoadingValueHolderFactory::class)
             ->getMock();
@@ -63,8 +65,7 @@ class LazyServiceFactoryTest extends TestCase
         $container = $this->createContainerMock();
 
         $this->proxyFactory->expects($this->never())
-            ->method('createProxy')
-        ;
+            ->method('createProxy');
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage('The requested service "not_exists" was not found in the provided services map');
 
@@ -78,8 +79,7 @@ class LazyServiceFactoryTest extends TestCase
             ->getMock();
         $callback->expects($this->once())
             ->method('callback')
-            ->willReturn('fooValue')
-        ;
+            ->willReturn('fooValue');
         $container = $this->createContainerMock();
         $expectedService = $this->getMockBuilder(VirtualProxyInterface::class)
             ->getMock();
@@ -101,8 +101,7 @@ class LazyServiceFactoryTest extends TestCase
 
                     return $expectedService;
                 }
-            )
-        ;
+            );
 
         $result = $this->factory->__invoke($container, 'fooService', [$callback, 'callback']);
 

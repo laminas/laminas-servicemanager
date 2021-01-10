@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -18,6 +20,6 @@ class FailingExceptionWithStringAsCodeFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        throw (new ExceptionWithStringAsCode('There is an error'));
+        throw new ExceptionWithStringAsCode('There is an error');
     }
 }

@@ -6,11 +6,15 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#51](https://github.com/laminas/laminas-servicemanager/pull/51) Adds PHP 8.0 support
+
+- [#64](https://github.com/laminas/laminas-servicemanager/pull/64) Backports changes from upcoming 4.0 release and re-adds PHP 7.3 support.
 
 ### Changed
 
-- Nothing.
+- [#40](https://github.com/laminas/laminas-servicemanager/pull/40) modifies the behavior of the `FactoryCreator` to alphabetize import statements.
+
+- [zendframework/zend-servicemanager#221](https://github.com/zendframework/zend-servicemanager/pull/221) provides enormous performance improvements for each of the various mutator methods (`setAlias()`, `setFactory()`, etc.), `has()` lookups, and initial container configuration.
 
 ### Deprecated
 
@@ -18,11 +22,18 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#50](https://github.com/laminas/laminas-servicemanager/pull/50) Removes PHP support prior 7.4.0
+
+- [zendframework/zend-servicemanager#197](https://github.com/zendframework/zend-servicemanager/pull/197) drops
+  support for PHP versions prior to 7.1.
+
+- [zendframework/zend-servicemanager#193](https://github.com/zendframework/zend-servicemanager/pull/193) drops
+  support for HHVM.
 
 ### Fixed
 
-- Nothing.
+- [zendframework/zend-servicemanager#230](https://github.com/zendframework/zend-servicemanager/pull/230) fixes a
+  problem in detecting cyclic aliases, ensuring they are detected correctly.
 
 ## 3.5.1 - 2020-12-01
 

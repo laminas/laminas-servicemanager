@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -22,6 +24,21 @@ use RecursiveRegexIterator;
 use RegexIterator;
 use stdClass;
 
+use function array_filter;
+use function closedir;
+use function get_class;
+use function is_dir;
+use function is_file;
+use function iterator_to_array;
+use function mkdir;
+use function opendir;
+use function readdir;
+use function rmdir;
+use function spl_autoload_functions;
+use function spl_autoload_unregister;
+use function sys_get_temp_dir;
+use function unlink;
+
 /**
  * @covers \Laminas\ServiceManager\ServiceManager
  */
@@ -29,7 +46,7 @@ class LazyServiceIntegrationTest extends TestCase
 {
     public $proxyDir;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->proxyDir = sys_get_temp_dir() . '/laminas-servicemanager-proxy';
         if (! is_dir($this->proxyDir)) {
@@ -37,7 +54,7 @@ class LazyServiceIntegrationTest extends TestCase
         }
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         if (! is_dir($this->proxyDir)) {
             return;
@@ -127,7 +144,7 @@ class LazyServiceIntegrationTest extends TestCase
             $instance,
             'Service returned does not extend ' . InvokableObject::class
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'TestAssetProxy',
             get_class($instance),
             'Service returned does not contain expected namespace'
@@ -135,8 +152,7 @@ class LazyServiceIntegrationTest extends TestCase
 
         // Test proxying works as expected
         $options = $instance->getOptions();
-        $this->assertInternalType(
-            'array',
+        $this->assertIsArray(
             $options,
             'Expected an array of options'
         );
@@ -152,8 +168,7 @@ class LazyServiceIntegrationTest extends TestCase
     public function testMissingClassMapRaisesExceptionOnAttemptToRetrieveLazyService()
     {
         $config = [
-            'lazy_services' => [
-            ],
+            'lazy_services' => [],
             'factories' => [
                 InvokableObject::class => InvokableFactory::class,
             ],
@@ -202,7 +217,7 @@ class LazyServiceIntegrationTest extends TestCase
             $instance,
             'Service returned does not extend ' . InvokableObject::class
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             'TestAssetProxy',
             get_class($instance),
             'Service returned does not contain expected namespace'
@@ -210,8 +225,7 @@ class LazyServiceIntegrationTest extends TestCase
 
         // Test proxying works as expected
         $options = $instance->getOptions();
-        $this->assertInternalType(
-            'array',
+        $this->assertIsArray(
             $options,
             'Expected an array of options'
         );

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -12,7 +14,12 @@ use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use ReflectionClass;
+use ReflectionNamedType;
 use ReflectionParameter;
+
+use function array_map;
+use function class_exists;
+use function sprintf;
 
 /**
  * Reflection-based factory.
@@ -138,7 +145,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
         return class_exists($requestedName) && $this->canCallConstructor($requestedName);
     }
 
-    private function canCallConstructor($requestedName)
+    private function canCallConstructor(string $requestedName) : bool
     {
         $constructor = (new ReflectionClass($requestedName))->getConstructor();
 
@@ -187,8 +194,11 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
          *   resolved to a service in the container.
          */
         return function (ReflectionParameter $parameter) use ($container, $requestedName) {
-            if ($parameter->isArray() && $parameter->getName() === 'config') {
-                return $container->get('config');
+            if ($parameter->getName() === 'config') {
+                $type = $parameter->getType();
+                if ($type instanceof ReflectionNamedType && $type->getName() === 'array') {
+                    return $container->get('config');
+                }
             }
             return $this->resolveParameter($parameter, $container, $requestedName);
         };
@@ -206,11 +216,14 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      */
     private function resolveParameter(ReflectionParameter $parameter, ContainerInterface $container, $requestedName)
     {
-        if ($parameter->isArray()) {
+        $type = $parameter->getType();
+        $type = $type instanceof ReflectionNamedType ? $type->getName() : null;
+
+        if ($type === 'array') {
             return [];
         }
 
-        if (! $parameter->getClass()) {
+        if ($type === null || (is_string($type) && ! class_exists($type) && ! interface_exists($type))) {
             if (! $parameter->isDefaultValueAvailable()) {
                 throw new ServiceNotFoundException(sprintf(
                     'Unable to create service "%s"; unable to resolve parameter "%s" '
@@ -223,8 +236,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
             return $parameter->getDefaultValue();
         }
 
-        $type = $parameter->getClass()->getName();
-        $type = isset($this->aliases[$type]) ? $this->aliases[$type] : $type;
+        $type = $this->aliases[$type] ?? $type;
 
         if ($container->has($type)) {
             return $container->get($type);

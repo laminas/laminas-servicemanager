@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -10,6 +12,16 @@ namespace Laminas\ServiceManager\Tool;
 
 use Laminas\ServiceManager\Exception;
 use Laminas\Stdlib\ConsoleHelper;
+
+use function array_shift;
+use function class_exists;
+use function dirname;
+use function file_exists;
+use function file_put_contents;
+use function in_array;
+use function is_array;
+use function is_writable;
+use function sprintf;
 
 class ConfigDumperCommand
 {
@@ -114,7 +126,7 @@ EOH;
      */
     private function parseArgs(array $args)
     {
-        if (! count($args)) {
+        if (! $args) {
             return $this->createHelpArgument();
         }
 
@@ -130,7 +142,7 @@ EOH;
             $arg1 = array_shift($args);
         }
 
-        if (! count($args)) {
+        if (! $args) {
             return $this->createErrorArgument('Missing class name');
         }
 

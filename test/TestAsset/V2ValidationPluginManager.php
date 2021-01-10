@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -10,6 +12,9 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 use Laminas\ServiceManager\AbstractPluginManager;
 use RuntimeException;
+
+use function is_callable;
+use function sprintf;
 
 class V2ValidationPluginManager extends AbstractPluginManager
 {
@@ -24,6 +29,6 @@ class V2ValidationPluginManager extends AbstractPluginManager
             ));
         }
 
-        call_user_func($this->assertion, $plugin);
+        ($this->assertion)($plugin);
     }
 }

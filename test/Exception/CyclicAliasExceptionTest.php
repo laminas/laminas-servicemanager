@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -16,20 +18,103 @@ use PHPUnit\Framework\TestCase;
  */
 class CyclicAliasExceptionTest extends TestCase
 {
+
+    /**
+     * @dataProvider cyclicAliasProvider
+     *
+     * @param string               $alias, conflicting alias key
+     * @param array<string,string> $aliases
+     */
+    public function testFromCyclicAlias(string $alias, array $aliases, string $expectedMessage): void
+    {
+        $exception = CyclicAliasException::fromCyclicAlias($alias, $aliases);
+
+        $this->assertInstanceOf(CyclicAliasException::class, $exception);
+        $this->assertSame($expectedMessage, $exception->getMessage());
+    }
+
+    /**
+     * Test data provider for testFromCyclicAlias
+     *
+     * @return array<
+     *     non-empty-string,
+     *     array{0:non-empty-string,1:array<non-empty-string,non-empty-string>,non-empty-string}
+     * >
+     */
+    public function cyclicAliasProvider(): array
+    {
+        return [
+            'a -> a' => [
+                'a',
+                [
+                    'a' => 'a',
+                ],
+                "A cycle was detected within the aliases definitions:\n"
+                . "a -> a\n",
+            ],
+            'a -> b -> a' => [
+                'a',
+                [
+                    'a' => 'b',
+                    'b' => 'a',
+                ],
+                "A cycle was detected within the aliases definitions:\n"
+                . "a -> b -> a\n",
+            ],
+            'b -> a -> b'  => [
+                'b',
+                [
+                    'a' => 'b',
+                    'b' => 'a',
+                ],
+                "A cycle was detected within the aliases definitions:\n"
+                . "b -> a -> b\n",
+            ],
+            'a -> b -> c -> a' => [
+                'a',
+                [
+                    'a' => 'b',
+                    'b' => 'c',
+                    'c' => 'a',
+                ],
+                "A cycle was detected within the aliases definitions:\n"
+                . "a -> b -> c -> a\n",
+            ],
+            'b -> c -> a -> b' => [
+                'b',
+                [
+                    'a' => 'b',
+                    'b' => 'c',
+                    'c' => 'a',
+                ],
+                "A cycle was detected within the aliases definitions:\n"
+                . "b -> c -> a -> b\n",
+            ],
+            'c -> a -> b -> c' => [
+                'c',
+                [
+                    'a' => 'b',
+                    'b' => 'c',
+                    'c' => 'a',
+                ],
+                "A cycle was detected within the aliases definitions:\n"
+                . "c -> a -> b -> c\n",
+            ],
+        ];
+    }
+
     /**
      * @dataProvider aliasesProvider
      *
      * @param string[] $aliases
      * @param string   $expectedMessage
-     *
-     * @return void
      */
     public function testFromAliasesMap(array $aliases, $expectedMessage)
     {
         $exception = CyclicAliasException::fromAliasesMap($aliases);
 
-        self::assertInstanceOf(CyclicAliasException::class, $exception);
-        self::assertSame($expectedMessage, $exception->getMessage());
+        $this->assertInstanceOf(CyclicAliasException::class, $exception);
+        $this->assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**

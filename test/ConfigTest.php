@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -11,12 +13,15 @@ namespace LaminasTest\ServiceManager;
 use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @covers Laminas\ServiceManager\Config
  */
 class ConfigTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function testMergeArrays()
     {
         $config = [

@@ -11,27 +11,16 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager\TestAsset;
 
 use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
-class SimpleAbstractFactory implements AbstractFactoryInterface
+class PassthroughDelegatorFactory implements DelegatorFactoryInterface
 {
     /**
      * {@inheritDoc}
+     * @see \Laminas\ServiceManager\Factory\DelegatorFactoryInterface::__invoke()
      */
-    public function canCreate(ContainerInterface $container, $name)
+    public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null)
     {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __invoke(ContainerInterface $container, $className, array $options = null)
-    {
-        if (empty($options)) {
-            return new $className();
-        }
-
-        return new $className($options);
+        return $callback();
     }
 }

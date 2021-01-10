@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -11,6 +13,9 @@ namespace Laminas\ServiceManager\Test;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use ReflectionClass;
 use ReflectionProperty;
+
+use function get_class;
+use function method_exists;
 
 /**
  * Trait for testing plugin managers for v2-v3 compatibility

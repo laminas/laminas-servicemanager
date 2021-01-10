@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -10,6 +12,11 @@ namespace Laminas\ServiceManager\Tool;
 
 use Laminas\ServiceManager\Exception;
 use Laminas\Stdlib\ConsoleHelper;
+
+use function array_shift;
+use function class_exists;
+use function in_array;
+use function sprintf;
 
 class FactoryCreatorCommand
 {
@@ -99,7 +106,7 @@ EOH;
      */
     private function parseArgs(array $args)
     {
-        if (! count($args)) {
+        if (! $args) {
             return $this->createArguments(self::COMMAND_HELP);
         }
 

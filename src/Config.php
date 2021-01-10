@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -10,6 +12,11 @@ namespace Laminas\ServiceManager;
 
 use Laminas\Stdlib\ArrayUtils\MergeRemoveKey;
 use Laminas\Stdlib\ArrayUtils\MergeReplaceKeyInterface;
+
+use function array_key_exists;
+use function array_keys;
+use function is_array;
+use function is_int;
 
 /**
  * Object for defining configuration and configuring an existing service manager instance.

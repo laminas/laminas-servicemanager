@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -9,14 +11,19 @@
 namespace LaminasTest\ServiceManager;
 
 use DateTime;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleServiceManager;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
+
+
+use function get_class;
 
 /**
  * @covers \Laminas\ServiceManager\ServiceManager
@@ -114,10 +121,10 @@ class ServiceManagerTest extends TestCase
         // @codingStandardsIgnoreStart
         return [
             // Description => [$sharedByDefault, $serviceShared, $serviceDefined, $expectedInstance]
-            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [ $sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [ $sharedByDefault,  $serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [ $sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [ $sharedByDefault, !$serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [$sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [$sharedByDefault,  $serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [$sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [$sharedByDefault, !$serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [!$sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [!$sharedByDefault,  $serviceShared, !$serviceDefined, !$shouldReturnSameInstance],
             'SharedByDefault: F, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [!$sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
@@ -160,10 +167,21 @@ class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new ServiceManager($config);
-        $this->assertAttributeSame([
-            InvokableObject::class => InvokableFactory::class,
-        ], 'factories', $serviceManager, 'Invokable object factory not found');
+        $serviceManager = new class ($config) extends ServiceManager
+        {
+            public function getFactories(): array
+            {
+                return $this->factories;
+            }
+        };
+
+        $this->assertSame(
+            [
+                InvokableObject::class => InvokableFactory::class,
+            ],
+            $serviceManager->getFactories(),
+            'Invokable object factory not found'
+        );
     }
 
     public function testMapsNonSymmetricInvokablesAsAliasPlusInvokableFactory()
@@ -174,13 +192,33 @@ class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new ServiceManager($config);
-        $this->assertAttributeSame([
-            'Invokable' => InvokableObject::class,
-        ], 'aliases', $serviceManager, 'Alias not found for non-symmetric invokable');
-        $this->assertAttributeSame([
-            InvokableObject::class => InvokableFactory::class,
-        ], 'factories', $serviceManager, 'Factory not found for non-symmetric invokable target');
+        $serviceManager = new class ($config) extends ServiceManager
+        {
+            public function getFactories(): array
+            {
+                return $this->factories;
+            }
+
+            public function getAliases(): array
+            {
+                return $this->aliases;
+            }
+        };
+
+        $this->assertSame(
+            [
+                'Invokable' => InvokableObject::class,
+            ],
+            $serviceManager->getAliases(),
+            'Alias not found for non-symmetric invokable'
+        );
+
+        $this->assertSame(
+            [
+                InvokableObject::class => InvokableFactory::class,
+            ],
+            $serviceManager->getFactories()
+        );
     }
 
     /**
@@ -269,6 +307,31 @@ class ServiceManagerTest extends TestCase
         $this->assertSame($service, $headAlias);
     }
 
+    public function testAbstractFactoryShouldBeCheckedForResolvedAliasesInsteadOfAliasName()
+    {
+        $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
+
+        $serviceManager = new SimpleServiceManager([
+            'aliases' => [
+                'Alias' => 'ServiceName',
+            ],
+            'abstract_factories' => [
+                $abstractFactory,
+            ],
+        ]);
+
+        $abstractFactory
+            ->method('canCreate')
+            ->withConsecutive(
+                [$this->anything(), $this->equalTo('Alias')],
+                [$this->anything(), $this->equalTo('ServiceName')]
+            )
+            ->willReturnCallback(function ($context, $name) {
+                return $name === 'Alias';
+            });
+        $this->assertTrue($serviceManager->has('Alias'));
+    }
+
     public static function sampleFactory()
     {
         return new stdClass();
@@ -283,5 +346,104 @@ class ServiceManagerTest extends TestCase
         ];
         $serviceManager = new SimpleServiceManager($config);
         $this->assertEquals(stdClass::class, get_class($serviceManager->get(stdClass::class)));
+    }
+
+    public function testResolvedAliasFromAbstractFactory()
+    {
+        $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
+
+        $serviceManager = new SimpleServiceManager([
+            'aliases' => [
+                'Alias' => 'ServiceName',
+            ],
+            'abstract_factories' => [
+                $abstractFactory,
+            ],
+        ]);
+
+        $abstractFactory
+            ->expects($this->any())
+            ->method('canCreate')
+            ->withConsecutive(
+                [$this->anything(), 'Alias'],
+                [$this->anything(), 'ServiceName']
+            )
+            ->will($this->returnCallback(function ($context, $name) {
+                return $name === 'ServiceName';
+            }));
+
+        $this->assertTrue($serviceManager->has('Alias'));
+    }
+
+    public function testResolvedAliasNoMatchingAbstractFactoryReturnsFalse()
+    {
+        $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
+
+        $serviceManager = new SimpleServiceManager([
+            'aliases' => [
+                'Alias' => 'ServiceName',
+            ],
+            'abstract_factories' => [
+                $abstractFactory,
+            ],
+        ]);
+
+        $abstractFactory
+            ->expects($this->any())
+            ->method('canCreate')
+            ->withConsecutive(
+                [$this->anything(), 'Alias'],
+                [$this->anything(), 'ServiceName']
+            )
+            ->willReturn(false);
+
+        $this->assertFalse($serviceManager->has('Alias'));
+    }
+
+    /**
+     * Hotfix #3
+     * @see https://github.com/laminas/laminas-servicemanager/issues/3
+     */
+    public function testConfigureMultipleTimesAvoidsDuplicates()
+    {
+        $delegatorFactory = function (
+            ContainerInterface $container,
+            $name,
+            callable $callback
+        ) {
+            /** @var InvokableObject $instance */
+            $instance = $callback();
+            $options = $instance->getOptions();
+            $inc = $options['inc'] ?? 0;
+            return new InvokableObject(['inc' => ++$inc]);
+        };
+
+        $config = [
+            'factories' => [
+                'Foo' => function () {
+                    return new InvokableObject();
+                },
+            ],
+            'delegators' => [
+                'Foo' => [
+                    $delegatorFactory,
+                    LazyServiceFactory::class,
+                ],
+            ],
+            'lazy_services' => [
+                'class_map' => [
+                    'Foo' => InvokableObject::class,
+                ],
+            ],
+        ];
+
+        $serviceManager = new ServiceManager($config);
+        $serviceManager->configure($config);
+
+        /** @var InvokableObject $instance */
+        $instance = $serviceManager->get('Foo');
+
+        $this->assertInstanceOf(InvokableObject::class, $instance);
+        $this->assertSame(1, $instance->getOptions()['inc']);
     }
 }

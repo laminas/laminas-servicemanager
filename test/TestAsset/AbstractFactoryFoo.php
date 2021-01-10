@@ -13,25 +13,18 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
-class SimpleAbstractFactory implements AbstractFactoryInterface
+class AbstractFactoryFoo implements AbstractFactoryInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function canCreate(ContainerInterface $container, $name)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return true;
+        if ($requestedName === 'foo') {
+            return new Foo($options);
+        }
+        return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function __invoke(ContainerInterface $container, $className, array $options = null)
+    public function canCreate(ContainerInterface $container, $requestedName)
     {
-        if (empty($options)) {
-            return new $className();
-        }
-
-        return new $className($options);
+        return ($requestedName === 'foo');
     }
 }

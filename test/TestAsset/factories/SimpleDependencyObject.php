@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\ServiceManager\TestAsset;
 
 use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\FactoryInterface;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class SimpleDependencyObjectFactory implements FactoryInterface
 {

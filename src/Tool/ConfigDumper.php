@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * @see       https://github.com/laminas/laminas-servicemanager for the canonical source repository
  * @copyright https://github.com/laminas/laminas-servicemanager/blob/master/COPYRIGHT.md
@@ -14,6 +16,22 @@ use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use ReflectionClass;
 use ReflectionParameter;
 use Traversable;
+
+use function array_filter;
+use function array_key_exists;
+use function class_exists;
+use function date;
+use function get_class;
+use function gettype;
+use function implode;
+use function interface_exists;
+use function is_array;
+use function is_int;
+use function is_null;
+use function is_string;
+use function sprintf;
+use function str_repeat;
+use function var_export;
 
 class ConfigDumper
 {
@@ -80,7 +98,9 @@ EOC;
         $classConfig = [];
 
         foreach ($constructorArguments as $constructorArgument) {
-            $argumentType = $constructorArgument->getClass();
+            $type = $constructorArgument->getType();
+            $argumentType = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
+
             if (is_null($argumentType)) {
                 if ($ignoreUnresolved) {
                     // don't throw an exception, just return the previous config
@@ -96,9 +116,8 @@ EOC;
                     $constructorArgument->getName()
                 ));
             }
-            $argumentName = $argumentType->getName();
-            $config = $this->createDependencyConfig($config, $argumentName, $ignoreUnresolved);
-            $classConfig[] = $argumentName;
+            $config = $this->createDependencyConfig($config, $argumentType, $ignoreUnresolved);
+            $classConfig[] = $argumentType;
         }
 
         $config[ConfigAbstractFactory::class][$className] = $classConfig;
