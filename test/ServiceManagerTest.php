@@ -446,4 +446,34 @@ class ServiceManagerTest extends TestCase
         $this->assertInstanceOf(InvokableObject::class, $instance);
         $this->assertSame(1, $instance->getOptions()['inc']);
     }
+
+    /**
+     * @link https://github.com/laminas/laminas-servicemanager/issues/70
+     */
+    public function testWillApplyAllInitializersAfterServiceCreation(): void
+    {
+        $initializerOneCalled = $initializerTwoCalled = false;
+        $initializers = [
+            static function (object $service) use (&$initializerOneCalled): object {
+                $initializerOneCalled = true;
+                return $service;
+            },
+            static function (object $service) use (&$initializerTwoCalled): object {
+                $initializerTwoCalled = true;
+                return $service;
+            },
+        ];
+
+        $serviceManager = new ServiceManager([
+            'invokables' => [
+                stdClass::class => stdClass::class,
+            ],
+            'initializers' => $initializers,
+        ]);
+
+        $serviceManager->get(stdClass::class);
+
+        self::assertTrue($initializerOneCalled, 'First initializer was not called');
+        self::assertTrue($initializerTwoCalled, 'Second initializer was not called');
+    }
 }
