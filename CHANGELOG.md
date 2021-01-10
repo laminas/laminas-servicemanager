@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.6.0 - TBD
+## 3.6.0 - 2021-01-10
 
 ### Added
 
@@ -15,10 +15,6 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#40](https://github.com/laminas/laminas-servicemanager/pull/40) modifies the behavior of the `FactoryCreator` to alphabetize import statements.
 
 - [zendframework/zend-servicemanager#221](https://github.com/zendframework/zend-servicemanager/pull/221) provides enormous performance improvements for each of the various mutator methods (`setAlias()`, `setFactory()`, etc.), `has()` lookups, and initial container configuration.
-
-### Deprecated
-
-- Nothing.
 
 ### Removed
 
@@ -34,6 +30,24 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [zendframework/zend-servicemanager#230](https://github.com/zendframework/zend-servicemanager/pull/230) fixes a
   problem in detecting cyclic aliases, ensuring they are detected correctly.
+
+
+-----
+
+### Release Notes for [3.6.0](https://github.com/laminas/laminas-servicemanager/milestone/5)
+
+Feature release (minor)
+
+### 3.6.0
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **2**
+- Total contributors: **1**
+
+#### Enhancement
+
+ - [64: Backport 4.x](https://github.com/laminas/laminas-servicemanager/pull/64) thanks to @boesing
+ - [63: Backport of 4afad5b660b8544bcf279aea09730d4f07f4fac0](https://github.com/laminas/laminas-servicemanager/pull/63) thanks to @boesing
 
 ## 3.5.1 - 2020-12-01
 
