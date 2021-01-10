@@ -2,27 +2,24 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.6.1 - TBD
+## 3.6.1 - 2021-01-10
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [3.6.1](https://github.com/laminas/laminas-servicemanager/milestone/7)
 
-- Nothing.
+3.6.x bugfix release (patch)
 
-### Deprecated
+### 3.6.1
 
-- Nothing.
+- Total issues resolved: **1**
+- Total pull requests resolved: **1**
+- Total contributors: **2**
 
-### Removed
+#### BC Break,Bug
 
-- Nothing.
-
-### Fixed
-
-- Nothing.
+ - [71: Regression fix regarding initializers](https://github.com/laminas/laminas-servicemanager/pull/71) thanks to @boesing and @Grundik
 
 ## 3.6.0 - 2021-01-10
 
