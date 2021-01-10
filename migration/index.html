@@ -149,6 +149,12 @@
                                     
                                         
     <li class="subnavigation__list-item ">
+        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -581,7 +587,7 @@ method <code>mapLazyService($name, $class)</code>:</p>
 $container-&gt;mapLazyService('MyClass');</code></pre>
 <h2 id="servicelocatorinterface-changes">ServiceLocatorInterface Changes</h2>
 <p>The <code>ServiceLocatorInterface</code> now extends the
-<a href="https://github.com/php-fig/container">Psr\Container\ContainerInterface</a>
+<a href="https://github.com/container-interop/container-interop">container-interop</a>
 interface <code>ContainerInterface</code>, which defines the same <code>get()</code> and <code>has()</code>
 methods as were previously defined.</p>
 <p>Additionally, it adds a new method:</p>
@@ -742,7 +748,7 @@ class LenientAbstractFactory implements AbstractFactoryInterface
 <p>To update this for version 3 compatibility, you will add the methods
 <code>canCreate()</code> and <code>__invoke()</code>, move the code from the existing methods into
 them, and update the existing methods to proxy to the new methods:</p>
-<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\AbstractFactoryInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 
@@ -776,7 +782,7 @@ the migration artifacts:</p>
   from your implementation.</li>
 </ul>
 <p>From our example above, we would update the class to read as follows:</p>
-<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface; // &lt;-- note the change!
 
 class LenientAbstractFactory implements AbstractFactoryInterface
@@ -846,7 +852,7 @@ class ObserverAttachmentDelegator implements DelegatorFactoryInterface
 }</code></pre>
 <p>To prepare this for version 3, we'd implement the <code>__invoke()</code> signature from
 version 3, and modify <code>createDelegatorWithName()</code> to proxy to it:</p>
-<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\DelegatorFactoryInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 
@@ -871,7 +877,7 @@ the migration artifacts:</p>
 <li>Remove the <code>createDelegatorWithName()</code> method from your implementation.</li>
 </ul>
 <p>From our example above, we would update the class to read as follows:</p>
-<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface; // &lt;-- note the change!
 
 class ObserverAttachmentDelegator implements DelegatorFactoryInterface
@@ -935,7 +941,7 @@ class FooFactory implements FactoryInterface
 }</code></pre>
 <p>To prepare this for version 3, we'd implement the <code>__invoke()</code> signature from
 version 3, and modify <code>createService()</code> to proxy to it:</p>
-<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\FactoryInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 
@@ -962,7 +968,7 @@ the migration artifacts:</p>
 <li>Remove the <code>createService()</code> method from your implementation.</li>
 </ul>
 <p>From our example above, we would update the class to read as follows:</p>
-<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface; // &lt;-- note the change!
 
 class FooFactory implements FactoryInterface
@@ -1039,7 +1045,7 @@ class FooInitializer implements InitializerInterface
 }</code></pre>
 <p>To prepare this for version 3, we'd implement the <code>__invoke()</code> signature from
 version 3, and modify <code>initialize()</code> to proxy to it:</p>
-<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\InitializerInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 
@@ -1066,7 +1072,7 @@ the migration artifacts:</p>
 <li>Remove the <code>initialize()</code> method from your implementation.</li>
 </ul>
 <p>From our example above, we would update the class to read as follows:</p>
-<pre class="highlight"><code class="language-php">use Psr\Container\ContainerInterface;
+<pre class="highlight"><code class="language-php">use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Initializer\InitializerInterface; // &lt;-- note the change!
 
 class FooInitializer implements InitializerInterface
@@ -1585,6 +1591,12 @@ container should never be composed by objects.</p>
                                     
                                         
     <li class="subnavigation__list-item ">
+        <a href="../psr-11/" class="subnavigation__link">PSR-11 Support</a>
+    </li>
+
+                                    
+                                        
+    <li class="subnavigation__list-item ">
         <a href="../configuring-the-service-manager/" class="subnavigation__link">Configuring the service manager</a>
     </li>
 
@@ -1671,6 +1683,7 @@ container should never be composed by objects.</p>
         </ul>
     </div>
 
+                    
                 
             </div>
         </div>
@@ -1743,7 +1756,7 @@ container should never be composed by objects.</p>
                         <p>
                             <!--Built with love by the Laminas team with the help of our
                             <a href="https://github.com/laminas/laminas-servicemanager/graphs/contributors">contributors</a>.<br>-->
-                            &copy; 2020 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
+                            &copy; 2021 <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
                         </p>
                     </div>
                 </div>
