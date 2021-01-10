@@ -22,11 +22,10 @@ class CyclicAliasExceptionTest extends TestCase
     /**
      * @dataProvider cyclicAliasProvider
      *
-     * @param string   $alias, conflicting alias key
-     * @param string[] $aliases
-     * @param string   $expectedMessage
+     * @param string               $alias, conflicting alias key
+     * @param array<string,string> $aliases
      */
-    public function testFromCyclicAlias($alias, array $aliases, $expectedMessage)
+    public function testFromCyclicAlias(string $alias, array $aliases, string $expectedMessage): void
     {
         $exception = CyclicAliasException::fromCyclicAlias($alias, $aliases);
 
@@ -37,12 +36,15 @@ class CyclicAliasExceptionTest extends TestCase
     /**
      * Test data provider for testFromCyclicAlias
      *
-     * @return string[][]|string[][][]
+     * @return array<
+     *     non-empty-string,
+     *     array{0:non-empty-string,1:array<non-empty-string,non-empty-string>,non-empty-string}
+     * >
      */
-    public function cyclicAliasProvider()
+    public function cyclicAliasProvider(): array
     {
         return [
-            [
+            'a -> a' => [
                 'a',
                 [
                     'a' => 'a',
@@ -50,25 +52,16 @@ class CyclicAliasExceptionTest extends TestCase
                 "A cycle was detected within the aliases definitions:\n"
                 . "a -> a\n",
             ],
-            [
+            'a -> b -> a' => [
                 'a',
                 [
                     'a' => 'b',
-                    'b' => 'a'
+                    'b' => 'a',
                 ],
                 "A cycle was detected within the aliases definitions:\n"
                 . "a -> b -> a\n",
             ],
-            [
-                'b',
-                [
-                    'a' => 'b',
-                    'b' => 'a'
-                ],
-                "A cycle was detected within the aliases definitions:\n"
-                . "b -> a -> b\n",
-            ],
-            [
+            'b -> a -> b'  => [
                 'b',
                 [
                     'a' => 'b',
@@ -77,7 +70,7 @@ class CyclicAliasExceptionTest extends TestCase
                 "A cycle was detected within the aliases definitions:\n"
                 . "b -> a -> b\n",
             ],
-            [
+            'a -> b -> c -> a' => [
                 'a',
                 [
                     'a' => 'b',
@@ -87,7 +80,7 @@ class CyclicAliasExceptionTest extends TestCase
                 "A cycle was detected within the aliases definitions:\n"
                 . "a -> b -> c -> a\n",
             ],
-            [
+            'b -> c -> a -> b' => [
                 'b',
                 [
                     'a' => 'b',
@@ -97,7 +90,7 @@ class CyclicAliasExceptionTest extends TestCase
                 "A cycle was detected within the aliases definitions:\n"
                 . "b -> c -> a -> b\n",
             ],
-            [
+            'c -> a -> b -> c' => [
                 'c',
                 [
                     'a' => 'b',
