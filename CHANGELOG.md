@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#51](https://github.com/laminas/laminas-servicemanager/pull/51) Adds PHP 8.0 support
 
+- [#64](https://github.com/laminas/laminas-servicemanager/pull/64) Backports changes from upcoming 4.0 release and re-adds PHP 7.3 support.
+
 ### Changed
 
 - [#40](https://github.com/laminas/laminas-servicemanager/pull/40) modifies the behavior of the `FactoryCreator` to alphabetize import statements.
