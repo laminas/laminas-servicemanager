@@ -2,27 +2,24 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.5.2 - TBD
+## 3.5.2 - 2021-01-17
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [3.5.2](https://github.com/laminas/laminas-servicemanager/milestone/6)
 
-- Nothing.
+3.5.x bugfix release (patch)
 
-### Deprecated
+### 3.5.2
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
 
-### Removed
+#### Bug
 
-- Nothing.
-
-### Fixed
-
-- Nothing.
+ - [75: backported testConfigureInvokablesTakePrecedenceOverFactories to 3.5.x](https://github.com/laminas/laminas-servicemanager/pull/75) thanks to @driehle
 
 ## 3.5.1 - 2020-12-01
 
