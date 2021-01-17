@@ -41,7 +41,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 #### BC Break,Bug
 
- - [71: Regression fix regarding initializers](https://github.com/laminas/laminas-servicemanager/pull/71) thanks to @boesing and @Grundik
+- [71: Regression fix regarding initializers](https://github.com/laminas/laminas-servicemanager/pull/71) thanks to @boesing and @Grundik
 
 ## 3.6.0 - 2021-01-10
 
@@ -87,8 +87,27 @@ Feature release (minor)
 
 #### Enhancement
 
- - [64: Backport 4.x](https://github.com/laminas/laminas-servicemanager/pull/64) thanks to @boesing
- - [63: Backport of 4afad5b660b8544bcf279aea09730d4f07f4fac0](https://github.com/laminas/laminas-servicemanager/pull/63) thanks to @boesing
+- [64: Backport 4.x](https://github.com/laminas/laminas-servicemanager/pull/64) thanks to @boesing
+- [63: Backport of 4afad5b660b8544bcf279aea09730d4f07f4fac0](https://github.com/laminas/laminas-servicemanager/pull/63) thanks to @boesing
+
+## 3.5.2 - 2021-01-17
+
+
+-----
+
+### Release Notes for [3.5.2](https://github.com/laminas/laminas-servicemanager/milestone/6)
+
+3.5.x bugfix release (patch)
+
+### 3.5.2
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+#### Bug
+
+ - [75: backported testConfigureInvokablesTakePrecedenceOverFactories to 3.5.x](https://github.com/laminas/laminas-servicemanager/pull/75) thanks to @driehle
 
 ## 3.5.1 - 2020-12-01
 
