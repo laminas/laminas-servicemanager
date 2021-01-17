@@ -2,27 +2,25 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.6.2 - TBD
+## 3.6.2 - 2021-01-17
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [3.6.2](https://github.com/laminas/laminas-servicemanager/milestone/9)
 
-- Nothing.
+3.6.x bugfix release (patch)
 
-### Deprecated
+### 3.6.2
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **2**
+- Total contributors: **2**
 
-### Removed
+#### Bug
 
-- Nothing.
-
-### Fixed
-
-- Nothing.
+ - [76: Merge release 3.5.2 into 3.6.x](https://github.com/laminas/laminas-servicemanager/pull/76) thanks to @github-actions[bot]
+ - [74: Fix invokables merging precedence in `3.6.x`](https://github.com/laminas/laminas-servicemanager/pull/74) thanks to @driehle
 
 ## 3.6.1 - 2021-01-10
 
