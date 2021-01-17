@@ -339,6 +339,29 @@ trait CommonServiceLocatorBehaviorsTrait
         $newServiceManager->get(DateTime::class);
     }
 
+    public function testConfigureInvokablesTakePrecedenceOverFactories()
+    {
+        $firstFactory  = $this->getMockBuilder(FactoryInterface::class)
+            ->getMock();
+
+        $serviceManager = $this->createContainer([
+            'aliases' => [
+                'custom_alias' => DateTime::class,
+            ],
+            'factories' => [
+                DateTime::class => $firstFactory,
+            ],
+            'invokables' => [
+                'custom_alias' => stdClass::class,
+            ],
+        ]);
+
+        $firstFactory->expects($this->never())->method('__invoke');
+
+        $object = $serviceManager->get('custom_alias');
+        $this->assertInstanceOf(stdClass::class, $object);
+    }
+
     /**
      * @group has
      */
