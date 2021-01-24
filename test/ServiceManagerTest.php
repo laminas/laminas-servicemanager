@@ -476,4 +476,92 @@ class ServiceManagerTest extends TestCase
         self::assertTrue($initializerOneCalled, 'First initializer was not called');
         self::assertTrue($initializerTwoCalled, 'Second initializer was not called');
     }
+
+    /**
+     * @param array<string,mixed>  $config
+     * @param non-empty-string $serviceName
+     * @param non-empty-string $alias
+     * @dataProvider aliasedServices
+     */
+    public function testWontShareServiceWhenRequestedByAlias(array $config, string $serviceName, string $alias): void
+    {
+        $serviceManager = new ServiceManager($config);
+        $service = $serviceManager->get($serviceName);
+        $serviceFromAlias = $serviceManager->get($alias);
+        $serviceFromServiceNameAfterUsingAlias = $serviceManager->get($serviceName);
+
+        self::assertNotSame($service, $serviceFromAlias);
+        self::assertNotSame($service, $serviceFromServiceNameAfterUsingAlias);
+        self::assertNotSame($serviceFromAlias, $serviceFromServiceNameAfterUsingAlias);
+    }
+
+    /**
+     * @return array<non-empty-string,array{0:array<string,mixed>,1:non-empty-string,2:non-empty-string}>
+     */
+    public function aliasedServices(): array
+    {
+        return [
+            'invokables' => [
+                [
+                    'invokables' => [
+                        stdClass::class => stdClass::class,
+                    ],
+                    'aliases' => [
+                        'object' => stdClass::class,
+                    ],
+                    'shared' => [
+                        stdClass::class => false,
+                    ],
+                ],
+                stdClass::class,
+                'object',
+            ],
+            'factories' => [
+                [
+                    'factories' => [
+                        stdClass::class => static function (): stdClass {
+                            return new stdClass();
+                        },
+                    ],
+                    'aliases' => [
+                        'object' => stdClass::class,
+                    ],
+                    'shared' => [
+                        stdClass::class => false,
+                    ],
+                ],
+                stdClass::class,
+                'object',
+            ],
+            'abstract factories' => [
+                [
+                    'abstract_factories' => [
+                        new class implements AbstractFactoryInterface {
+
+                            public function canCreate(\Interop\Container\ContainerInterface $container, $requestedName)
+                            {
+                                return $requestedName === stdClass::class;
+                            }
+
+                            public function __invoke(
+                                \Interop\Container\ContainerInterface $container,
+                                $requestedName,
+                                array $options = null
+                            ) {
+                                return new stdClass();
+                            }
+                        }
+                    ],
+                    'aliases' => [
+                        'object' => stdClass::class,
+                    ],
+                    'shared' => [
+                        stdClass::class => false,
+                    ],
+                ],
+                stdClass::class,
+                'object',
+            ],
+        ];
+    }
 }
