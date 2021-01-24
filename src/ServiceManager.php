@@ -211,6 +211,11 @@ class ServiceManager implements ServiceLocatorInterface
         // We now deal with requests which may be aliases.
         $resolvedName = isset($this->aliases[$name]) ? $this->aliases[$name] : $name;
 
+        // Update shared service information as we checked if the alias was shared before.
+        if ($resolvedName !== $name) {
+            $sharedService = $this->shared[$resolvedName] ?? $sharedService;
+        }
+
         // The following is only true if the requested service is a shared alias.
         $sharedAlias = $sharedService && isset($this->services[$resolvedName]);
 
