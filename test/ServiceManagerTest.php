@@ -564,4 +564,29 @@ class ServiceManagerTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @link https://github.com/laminas/laminas-servicemanager/issues/80
+     */
+    public function testHasVerifiesAliasesBeforeUsingAbstractFactories(): void
+    {
+        $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
+        $abstractFactory
+            ->expects(self::never())
+            ->method('canCreate');
+
+        $serviceManager = new ServiceManager([
+            'services' => [
+                'Config' => [],
+            ],
+            'aliases' => [
+                'config' => 'Config',
+            ],
+            'abstract_factories' => [
+                $abstractFactory,
+            ],
+        ]);
+
+        self::assertTrue($serviceManager->has('config'));
+    }
 }
