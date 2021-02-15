@@ -34,7 +34,7 @@
         "composer/package-versions-deprecated": "^1.0",
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-container-config-test": "^0.3",
-        "laminas/laminas-dependency-plugin": "^2.1",
+        "laminas/laminas-dependency-plugin": "^2.1.2",
         "mikey179/vfsstream": "^1.6.8",
         "ocramius/proxy-manager": "^2.2.3",
         "phpbench/phpbench": "^1.0.0-alpha3",
@@ -68,6 +68,7 @@
         "bin/generate-factory-for-class"
     ],
     "scripts": {
+        "benchmark": "phpbench run --revs=2 --iterations=2 --report=aggregate",
         "check": [
             "@cs-check",
             "@test"
