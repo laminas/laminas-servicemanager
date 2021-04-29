@@ -1,0 +1,1554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.7.1@cd53e047a58f71f646dd6bf45476076ab07b5d44">
+  <file src="src/AbstractFactory/ConfigAbstractFactory.php">
+    <InvalidStringClass occurrences="1">
+      <code>new $requestedName(...$arguments)</code>
+    </InvalidStringClass>
+    <MixedArgument occurrences="2">
+      <code>$serviceDependencies</code>
+      <code>$serviceDependencies</code>
+    </MixedArgument>
+    <MixedArrayAccess occurrences="1">
+      <code>$config[self::class]</code>
+    </MixedArrayAccess>
+    <MixedAssignment occurrences="2">
+      <code>$config</code>
+      <code>$dependencies</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/AbstractFactory/ReflectionBasedAbstractFactory.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$requestedName</code>
+    </ArgumentTypeCoercion>
+    <LessSpecificReturnStatement occurrences="3">
+      <code>new $requestedName()</code>
+      <code>new $requestedName()</code>
+      <code>new $requestedName(...$parameters)</code>
+    </LessSpecificReturnStatement>
+    <MissingClosureReturnType occurrences="2">
+      <code>function (ReflectionParameter $parameter) use ($container, $requestedName) {</code>
+      <code>function (ReflectionParameter $parameter) use ($container, $requestedName) {</code>
+    </MissingClosureReturnType>
+    <MissingParamType occurrences="1">
+      <code>$requestedName</code>
+    </MissingParamType>
+    <MixedArgument occurrences="3">
+      <code>$requestedName</code>
+      <code>$requestedName</code>
+      <code>$requestedName</code>
+    </MixedArgument>
+    <MixedMethodCall occurrences="3">
+      <code>new $requestedName()</code>
+      <code>new $requestedName()</code>
+      <code>new $requestedName(...$parameters)</code>
+    </MixedMethodCall>
+    <MoreSpecificReturnType occurrences="1">
+      <code>DispatchableInterface</code>
+    </MoreSpecificReturnType>
+    <RedundantCondition occurrences="1">
+      <code>is_string($type)</code>
+    </RedundantCondition>
+    <UndefinedDocblockClass occurrences="1">
+      <code>DispatchableInterface</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/AbstractFactoryInterface.php">
+    <MissingParamType occurrences="4">
+      <code>$name</code>
+      <code>$name</code>
+      <code>$requestedName</code>
+      <code>$requestedName</code>
+    </MissingParamType>
+  </file>
+  <file src="src/AbstractPluginManager.php">
+    <DocblockTypeContradiction occurrences="2">
+      <code>gettype($instance)</code>
+    </DocblockTypeContradiction>
+    <MissingReturnType occurrences="1">
+      <code>setService</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="2">
+      <code>$instance</code>
+      <code>$service</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="2">
+      <code>$instance</code>
+      <code>$service</code>
+    </MixedAssignment>
+    <ParamNameMismatch occurrences="1">
+      <code>$name</code>
+    </ParamNameMismatch>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$service</code>
+    </PossiblyInvalidArgument>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>is_object($instance)</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="src/Config.php">
+    <MissingReturnType occurrences="1">
+      <code>merge</code>
+    </MissingReturnType>
+    <MixedAssignment occurrences="7">
+      <code>$a[$key]</code>
+      <code>$a[$key]</code>
+      <code>$a[$key]</code>
+      <code>$a[$key]</code>
+      <code>$a[]</code>
+      <code>$this-&gt;config</code>
+      <code>$value</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Exception/CyclicAliasException.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>self::deDuplicateDetectedCycles($detectedCycles)</code>
+    </InvalidScalarArgument>
+    <MixedArgumentTypeCoercion occurrences="2">
+      <code>$alias</code>
+      <code>$detectedCycles</code>
+    </MixedArgumentTypeCoercion>
+    <PossiblyFalseOperand occurrences="1">
+      <code>$cycle</code>
+    </PossiblyFalseOperand>
+  </file>
+  <file src="src/Factory/DelegatorFactoryInterface.php">
+    <UndefinedDocblockClass occurrences="1">
+      <code>ContainerException</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Factory/FactoryInterface.php">
+    <UndefinedDocblockClass occurrences="1">
+      <code>ContainerException</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Factory/InvokableFactory.php">
+    <InvalidStringClass occurrences="2">
+      <code>new $requestedName</code>
+      <code>new $requestedName($options)</code>
+    </InvalidStringClass>
+  </file>
+  <file src="src/InitializerInterface.php">
+    <MissingParamType occurrences="1">
+      <code>$instance</code>
+    </MissingParamType>
+  </file>
+  <file src="src/PluginManagerInterface.php">
+    <UndefinedDocblockClass occurrences="1">
+      <code>ContainerException</code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Proxy/LazyServiceFactory.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;servicesMap[$name]</code>
+    </ArgumentTypeCoercion>
+    <MissingClosureParamType occurrences="1">
+      <code>$wrappedInstance</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function (&amp;$wrappedInstance, LazyLoadingInterface $proxy) use ($callback) {</code>
+    </MissingClosureReturnType>
+    <MissingParamType occurrences="1">
+      <code>$name</code>
+    </MissingParamType>
+    <MixedArgument occurrences="1">
+      <code>$name</code>
+    </MixedArgument>
+    <MixedArrayOffset occurrences="1">
+      <code>$this-&gt;servicesMap[$name]</code>
+    </MixedArrayOffset>
+    <MixedAssignment occurrences="1">
+      <code>$wrappedInstance</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/ServiceLocatorInterface.php">
+    <InvalidThrow occurrences="1">
+      <code>ContainerExceptionInterface</code>
+    </InvalidThrow>
+  </file>
+  <file src="src/ServiceManager.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>gettype($delegatorFactory)</code>
+    </DocblockTypeContradiction>
+    <InvalidCatch occurrences="1"/>
+    <InvalidDocblockParamName occurrences="1">
+      <code>$abstractFactories</code>
+    </InvalidDocblockParamName>
+    <InvalidThrow occurrences="1">
+      <code>ExceptionInterface</code>
+    </InvalidThrow>
+    <MissingClosureReturnType occurrences="2">
+      <code>function () use ($delegatorFactory, $name, $creationCallback, $options) {</code>
+      <code>function () use ($name, $options) {</code>
+    </MissingClosureReturnType>
+    <MissingParamType occurrences="1">
+      <code>$abstractFactory</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="2">
+      <code>$allowOverride</code>
+      <code>$this-&gt;allowOverride</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="15">
+      <code>addAbstractFactory</code>
+      <code>addDelegator</code>
+      <code>addInitializer</code>
+      <code>createAliasesAndFactoriesForInvokables</code>
+      <code>mapAliasToTarget</code>
+      <code>mapAliasesToTargets</code>
+      <code>mapLazyService</code>
+      <code>resolveInitializers</code>
+      <code>setAlias</code>
+      <code>setAllowOverride</code>
+      <code>setFactory</code>
+      <code>setInvokableClass</code>
+      <code>setService</code>
+      <code>setShared</code>
+      <code>validateServiceNames</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="15">
+      <code>$config['delegators']</code>
+      <code>$config['initializers']</code>
+      <code>$config['invokables']</code>
+      <code>$config['lazy_services']</code>
+      <code>$object</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$this-&gt;lazyServices['class_map']</code>
+      <code>$this-&gt;lazyServices['proxies_namespace']</code>
+      <code>$this-&gt;lazyServices['proxies_target_dir']</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="2">
+      <code>$alias</code>
+      <code>$alias</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayOffset occurrences="8">
+      <code>$this-&gt;factories[$class]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+    </MixedArrayOffset>
+    <MixedAssignment occurrences="20">
+      <code>$abstractFactories</code>
+      <code>$abstractFactory</code>
+      <code>$abstractFactory</code>
+      <code>$class</code>
+      <code>$key</code>
+      <code>$object</code>
+      <code>$object</code>
+      <code>$object</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$this-&gt;aliases</code>
+      <code>$this-&gt;factories</code>
+      <code>$this-&gt;services</code>
+      <code>$this-&gt;shared</code>
+      <code>$this-&gt;sharedByDefault</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="2">
+      <code>bool</code>
+      <code>object</code>
+    </MixedInferredReturnType>
+    <MixedMethodCall occurrences="4">
+      <code>new $abstractFactory()</code>
+      <code>new $delegatorFactory()</code>
+      <code>new $factory()</code>
+      <code>new $initializer()</code>
+    </MixedMethodCall>
+    <MixedOperand occurrences="4">
+      <code>$config['aliases']</code>
+      <code>$config['factories']</code>
+      <code>$config['services']</code>
+      <code>$config['shared']</code>
+    </MixedOperand>
+    <MixedPropertyTypeCoercion occurrences="1">
+      <code>$this-&gt;aliases</code>
+    </MixedPropertyTypeCoercion>
+    <MixedReturnStatement occurrences="2">
+      <code>$creationCallback($this-&gt;creationContext, $name, $creationCallback, $options)</code>
+      <code>$this-&gt;allowOverride</code>
+    </MixedReturnStatement>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$this-&gt;delegators</code>
+    </PropertyTypeCoercion>
+    <RedundantCastGivenDocblockType occurrences="2">
+      <code>(bool) $flag</code>
+      <code>(bool) $flag</code>
+    </RedundantCastGivenDocblockType>
+    <RedundantCondition occurrences="7">
+      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
+      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
+      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
+      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
+      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
+      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
+      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
+    </RedundantCondition>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>is_object($delegatorFactory)</code>
+    </RedundantConditionGivenDocblockType>
+    <TooManyArguments occurrences="1">
+      <code>$creationCallback($this-&gt;creationContext, $name, $creationCallback, $options)</code>
+    </TooManyArguments>
+    <TypeDoesNotContainType occurrences="1">
+      <code>$sharedAlias</code>
+    </TypeDoesNotContainType>
+    <UnusedVariable occurrences="4">
+      <code>$delegatorFactory</code>
+      <code>$key</code>
+      <code>$service</code>
+      <code>$target</code>
+    </UnusedVariable>
+  </file>
+  <file src="src/Test/CommonPluginManagerTrait.php">
+    <MissingParamType occurrences="2">
+      <code>$alias</code>
+      <code>$expected</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="7">
+      <code>aliasProvider</code>
+      <code>getServiceNotFoundException</code>
+      <code>testInstanceOfMatches</code>
+      <code>testLoadingInvalidElementRaisesException</code>
+      <code>testPluginAliasesResolve</code>
+      <code>testRegisteringInvalidElementRaisesException</code>
+      <code>testShareByDefaultAndSharedByDefault</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="4">
+      <code>$alias</code>
+      <code>$expected</code>
+      <code>$this-&gt;getServiceNotFoundException()</code>
+      <code>$this-&gt;getServiceNotFoundException()</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="4">
+      <code>$alias</code>
+      <code>$expected</code>
+      <code>$shareByDefault</code>
+      <code>$sharedByDefault</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Tool/ConfigDumper.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$className</code>
+    </ArgumentTypeCoercion>
+    <InvalidArgument occurrences="1">
+      <code>$value</code>
+    </InvalidArgument>
+    <MissingParamType occurrences="1">
+      <code>$className</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="1">
+      <code>validateClassName</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="3">
+      <code>$argumentType</code>
+      <code>$config['service_manager']</code>
+      <code>$config['service_manager']['factories']</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="1">
+      <code>$className</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAssignment occurrences="3">
+      <code>$config['service_manager']['factories']</code>
+      <code>$config[ConfigAbstractFactory::class][$className]</code>
+      <code>$config[ConfigAbstractFactory::class][$className]</code>
+    </MixedArrayAssignment>
+    <MixedAssignment occurrences="4">
+      <code>$argumentType</code>
+      <code>$classConfig[]</code>
+      <code>$dependency</code>
+      <code>$value</code>
+    </MixedAssignment>
+    <PossiblyNullArgument occurrences="1">
+      <code>$key</code>
+    </PossiblyNullArgument>
+    <PossiblyNullPropertyAssignmentValue occurrences="1">
+      <code>$container</code>
+    </PossiblyNullPropertyAssignmentValue>
+    <PossiblyNullReference occurrences="1">
+      <code>getParameters</code>
+    </PossiblyNullReference>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>$this-&gt;container</code>
+    </RedundantConditionGivenDocblockType>
+    <UndefinedMethod occurrences="1">
+      <code>getName</code>
+    </UndefinedMethod>
+    <UnusedVariable occurrences="1">
+      <code>$dependency</code>
+    </UnusedVariable>
+  </file>
+  <file src="src/Tool/ConfigDumperCommand.php">
+    <MixedArgument occurrences="14">
+      <code>$arguments-&gt;class</code>
+      <code>$arguments-&gt;class</code>
+      <code>$arguments-&gt;config</code>
+      <code>$arguments-&gt;configFile</code>
+      <code>$arguments-&gt;configFile</code>
+      <code>$arguments-&gt;ignoreUnresolved</code>
+      <code>$arguments-&gt;message</code>
+      <code>$class</code>
+      <code>$class</code>
+      <code>$configFile</code>
+      <code>$configFile</code>
+      <code>$configFile</code>
+      <code>$configFile</code>
+      <code>$configFile</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="3">
+      <code>$arg1</code>
+      <code>$arg1</code>
+      <code>$configFile</code>
+    </MixedAssignment>
+    <RedundantCondition occurrences="1">
+      <code>false</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Tool/FactoryCreator.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$className</code>
+    </ArgumentTypeCoercion>
+    <MissingClosureReturnType occurrences="1">
+      <code>function (ReflectionParameter $parameter) {</code>
+    </MissingClosureReturnType>
+    <MissingParamType occurrences="1">
+      <code>$className</code>
+    </MissingParamType>
+    <MixedArgument occurrences="3">
+      <code>$className</code>
+      <code>$className</code>
+      <code>$dependency</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="1">
+      <code>$class</code>
+    </MixedAssignment>
+    <PossiblyFalseOperand occurrences="1">
+      <code>strrpos($className, '\\')</code>
+    </PossiblyFalseOperand>
+    <PossiblyNullReference occurrences="1">
+      <code>getParameters</code>
+    </PossiblyNullReference>
+    <TypeDoesNotContainType occurrences="1">
+      <code>! $reflectionClass</code>
+    </TypeDoesNotContainType>
+    <UndefinedMethod occurrences="2">
+      <code>getName</code>
+      <code>getName</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Tool/FactoryCreatorCommand.php">
+    <MixedArgument occurrences="5">
+      <code>$arguments-&gt;class</code>
+      <code>$arguments-&gt;class</code>
+      <code>$arguments-&gt;message</code>
+      <code>$class</code>
+      <code>$class</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="1">
+      <code>$arg1</code>
+    </MixedAssignment>
+  </file>
+  <file src="test/AbstractFactory/ConfigAbstractFactoryTest.php">
+    <InvalidArgument occurrences="1">
+      <code>'Holistic'</code>
+    </InvalidArgument>
+    <MissingReturnType occurrences="14">
+      <code>testCanCreate</code>
+      <code>testCanCreateReturnsTrueIfDependencyNotArrays</code>
+      <code>testCanCreateReturnsTrueWhenConfigIsAnArrayObject</code>
+      <code>testExceptsWhenConfigIsNotArray</code>
+      <code>testExceptsWhenConfigKeyNotSet</code>
+      <code>testExceptsWhenConfigNotSet</code>
+      <code>testExceptsWhenServiceConfigDoesNotExist</code>
+      <code>testExceptsWhenServiceConfigForRequestedNameIsNotArray</code>
+      <code>testExceptsWhenServiceConfigForRequestedNameIsNotArrayOfStrings</code>
+      <code>testExceptsWhenServiceConfigIsNotArray</code>
+      <code>testFactoryCanCreateInstancesWhenConfigIsAnArrayObject</code>
+      <code>testInvokeWithComplexArguments</code>
+      <code>testInvokeWithInvokableClass</code>
+      <code>testInvokeWithSimpleArguments</code>
+    </MissingReturnType>
+  </file>
+  <file src="test/AbstractFactory/ReflectionBasedAbstractFactoryTest.php">
+    <DocblockTypeContradiction occurrences="8">
+      <code>assertInstanceOf</code>
+      <code>assertInstanceOf</code>
+      <code>assertInstanceOf</code>
+      <code>assertInstanceOf</code>
+      <code>assertInstanceOf</code>
+      <code>assertInstanceOf</code>
+      <code>assertInstanceOf</code>
+      <code>assertInstanceOf</code>
+    </DocblockTypeContradiction>
+    <MissingParamType occurrences="1">
+      <code>$requestedName</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="2">
+      <code>$instance-&gt;foo</code>
+      <code>$instance-&gt;value</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="12">
+      <code>nonClassRequestedNames</code>
+      <code>testCanCreateReturnsFalseForNonClassRequestedNames</code>
+      <code>testFactoryCanInjectKnownTypeHintedServices</code>
+      <code>testFactoryCanSupplyAMixOfParameterTypes</code>
+      <code>testFactoryInjectsConfigServiceForConfigArgumentsTypeHintedAsArray</code>
+      <code>testFactoryInstantiatesClassDirectlyIfConstructorHasNoArguments</code>
+      <code>testFactoryInstantiatesClassDirectlyIfItHasNoConstructor</code>
+      <code>testFactoryRaisesExceptionForScalarParameters</code>
+      <code>testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService</code>
+      <code>testFactoryResolvesTypeHintsForServicesToWellKnownServiceNames</code>
+      <code>testFactoryWillUseDefaultValueForTypeHintedArgument</code>
+      <code>testFactoryWillUseDefaultValueWhenPresentForScalarArgument</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="16">
+      <code>$requestedName</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>$this-&gt;container-&gt;reveal()</code>
+      <code>SampleInterface::class</code>
+      <code>\LaminasTest\ServiceManager\AbstractFactory\ArrayAccess::class</code>
+    </MixedArgument>
+    <MixedMethodCall occurrences="6">
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </MixedMethodCall>
+    <PossiblyInvalidMethodCall occurrences="15">
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+      <code>willReturn</code>
+    </PossiblyInvalidMethodCall>
+    <PossiblyUndefinedMethod occurrences="13">
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+      <code>reveal</code>
+    </PossiblyUndefinedMethod>
+    <UndefinedClass occurrences="2">
+      <code>SampleInterface</code>
+      <code>\LaminasTest\ServiceManager\AbstractFactory\ArrayAccess</code>
+    </UndefinedClass>
+  </file>
+  <file src="test/AbstractFactory/TestAsset/ClassWithScalarDependencyDefiningDefaultValue.php">
+    <MissingPropertyType occurrences="1">
+      <code>$foo</code>
+    </MissingPropertyType>
+  </file>
+  <file src="test/AbstractFactory/TestAsset/ClassWithScalarParameters.php">
+    <MissingParamType occurrences="2">
+      <code>$bar</code>
+      <code>$foo</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="2">
+      <code>$bar</code>
+      <code>$foo</code>
+    </MissingPropertyType>
+  </file>
+  <file src="test/AbstractFactory/TestAsset/ClassWithTypehintedDefaultValue.php">
+    <MissingPropertyType occurrences="1">
+      <code>$value</code>
+    </MissingPropertyType>
+  </file>
+  <file src="test/AbstractPluginManagerTest.php">
+    <DeprecatedMethod occurrences="1">
+      <code>setServiceLocator</code>
+    </DeprecatedMethod>
+    <InvalidArgument occurrences="6"/>
+    <MissingClosureParamType occurrences="16">
+      <code>$callback</code>
+      <code>$container</code>
+      <code>$errmsg</code>
+      <code>$errno</code>
+      <code>$errno</code>
+      <code>$errno</code>
+      <code>$errno</code>
+      <code>$errno</code>
+      <code>$errno</code>
+      <code>$errstr</code>
+      <code>$errstr</code>
+      <code>$errstr</code>
+      <code>$errstr</code>
+      <code>$errstr</code>
+      <code>$name</code>
+      <code>$plugin</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="2">
+      <code>function ($container, $name, $callback) {</code>
+      <code>function ($plugin) use ($instance, &amp;$assertionCalled) {</code>
+    </MissingClosureReturnType>
+    <MissingParamType occurrences="2">
+      <code>$arg</code>
+      <code>$shareByDefault</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="22">
+      <code>createContainer</code>
+      <code>invalidConstructorArguments</code>
+      <code>shareByDefaultSettings</code>
+      <code>testAbstractFactoryGetsCreationContext</code>
+      <code>testAliasPropertyResolves</code>
+      <code>testAutoInvokableServicesAreNotKnownBeforeRetrieval</code>
+      <code>testCachesInstanceByDefaultIfNoOptionsArePassed</code>
+      <code>testCallingSetServiceLocatorSetsCreationContextWithDeprecationNotice</code>
+      <code>testCanPassConfigInterfaceAsFirstConstructorArgumentWithDeprecationNotice</code>
+      <code>testCanWrapCreationInDelegators</code>
+      <code>testGetRaisesExceptionWhenNoFactoryIsResolved</code>
+      <code>testInjectCreationContextInFactories</code>
+      <code>testPassingConfigInstanceAsFirstConstructorArgumentSkipsSecondArgumentWithDeprecationNotice</code>
+      <code>testPassingNoInitialConstructorArgumentSetsPluginManagerAsCreationContextWithDeprecationNotice</code>
+      <code>testPassingNonContainerNonConfigNonNullFirstConstructorArgumentRaisesException</code>
+      <code>testPassingServiceInstanceViaConfigureShouldRaiseExceptionForInvalidPlugin</code>
+      <code>testPluginManagersMayOptOutOfSupportingAutoInvokableServices</code>
+      <code>testReturnsDiscreteInstancesIfOptionsAreProvidedRegardlessOfShareByDefaultSetting</code>
+      <code>testSetServiceShouldRaiseExceptionForInvalidPlugin</code>
+      <code>testSupportsRetrievingAutoInvokableServicesByDefault</code>
+      <code>testValidateInstance</code>
+      <code>testValidateWillFallBackToValidatePluginWhenDefinedAndEmitDeprecationNotice</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="3">
+      <code>$arg</code>
+      <code>$errmsg</code>
+      <code>$pluginManager</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="3">
+      <code>$instance</code>
+      <code>$instance</code>
+      <code>$pluginManager</code>
+    </MixedAssignment>
+    <MixedFunctionCall occurrences="1">
+      <code>$callback()</code>
+    </MixedFunctionCall>
+    <MixedMethodCall occurrences="1">
+      <code>get</code>
+    </MixedMethodCall>
+    <MixedPropertyAssignment occurrences="1">
+      <code>$instance</code>
+    </MixedPropertyAssignment>
+    <MixedPropertyFetch occurrences="2">
+      <code>$instance-&gt;foo</code>
+      <code>$instance-&gt;option</code>
+    </MixedPropertyFetch>
+    <UnusedClosureParam occurrences="7">
+      <code>$container</code>
+      <code>$errstr</code>
+      <code>$errstr</code>
+      <code>$errstr</code>
+      <code>$errstr</code>
+      <code>$errstr</code>
+      <code>$name</code>
+    </UnusedClosureParam>
+  </file>
+  <file src="test/CommonServiceLocatorBehaviorsTrait.php">
+    <InvalidArgument occurrences="2">
+      <code>ContainerExceptionInterface::class</code>
+    </InvalidArgument>
+    <InvalidArrayOffset occurrences="1">
+      <code>$config['shared']</code>
+    </InvalidArrayOffset>
+    <MissingClosureParamType occurrences="15">
+      <code>$callback</code>
+      <code>$callback</code>
+      <code>$className</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$errno</code>
+      <code>$errstr</code>
+      <code>$instance</code>
+      <code>$instance</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$requestedName</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="3">
+      <code>function ($container, $name, $callback) {</code>
+      <code>function ($container, $name, $callback) {</code>
+      <code>function ($container, $requestedName, array $options = null) {</code>
+    </MissingClosureReturnType>
+    <MissingParamType occurrences="11">
+      <code>$abstractFactory</code>
+      <code>$args</code>
+      <code>$container</code>
+      <code>$contains</code>
+      <code>$contains</code>
+      <code>$contains</code>
+      <code>$delegator</code>
+      <code>$expected</code>
+      <code>$factory</code>
+      <code>$initializer</code>
+      <code>$method</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="1">
+      <code>$creationContext</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="52">
+      <code>abstractFactories</code>
+      <code>invalidAbstractFactories</code>
+      <code>invalidDelegators</code>
+      <code>invalidFactories</code>
+      <code>invalidInitializers</code>
+      <code>methodsAffectedByOverrideSettings</code>
+      <code>provideConsistencyOverInternalStatesTests</code>
+      <code>testAllowOverrideFlagIsFalseByDefault</code>
+      <code>testAllowOverrideFlagIsMutable</code>
+      <code>testAllowsMultipleInstancesOfTheSameAbstractFactory</code>
+      <code>testBuildNeverSharesInstances</code>
+      <code>testCanBuildObjectWithInvokableFactory</code>
+      <code>testCanConfigureAllServiceTypes</code>
+      <code>testCanCreateObjectWithClosureFactory</code>
+      <code>testCanCreateServiceWithAbstractFactory</code>
+      <code>testCanCreateServiceWithAlias</code>
+      <code>testCanDisableSharedByDefault</code>
+      <code>testCanDisableSharedForSingleService</code>
+      <code>testCanEnableSharedForSingleService</code>
+      <code>testCanInjectAbstractFactories</code>
+      <code>testCanInjectAliases</code>
+      <code>testCanInjectDelegators</code>
+      <code>testCanInjectFactories</code>
+      <code>testCanInjectInitializers</code>
+      <code>testCanInjectInvokables</code>
+      <code>testCanInjectServices</code>
+      <code>testCanInjectSharingRules</code>
+      <code>testCanMapLazyServices</code>
+      <code>testCanRetrieveParentContainerViaGetServiceLocatorWithDeprecationNotice</code>
+      <code>testCanSpecifyAbstractFactoryUsingStringViaConfiguration</code>
+      <code>testCanSpecifyInitializerUsingStringViaConfiguration</code>
+      <code>testCheckingServiceExistenceWithChecksAgainstAbstractFactories</code>
+      <code>testConfigureCanAddNewServices</code>
+      <code>testConfigureCanOverridePreviousSettings</code>
+      <code>testConfiguringInstanceRaisesExceptionIfAllowOverrideIsFalse</code>
+      <code>testConsistencyOverInternalStates</code>
+      <code>testCoverageDepthFirstTaggingOnRecursiveAliasDefinitions</code>
+      <code>testCrashesOnCyclicAliases</code>
+      <code>testGetRaisesExceptionWhenNoFactoryIsResolved</code>
+      <code>testHasChecksAgainstAbstractFactories</code>
+      <code>testHasReturnsFalseIfServiceNotConfigured</code>
+      <code>testHasReturnsTrueIfFactoryIsConfigured</code>
+      <code>testHasReturnsTrueIfServiceIsConfigured</code>
+      <code>testInitializersAreRunAfterCreation</code>
+      <code>testInvalidDelegatorShouldRaiseExceptionDuringCreation</code>
+      <code>testIsSharedByDefault</code>
+      <code>testMinimalCyclicAliasDefinitionShouldThrow</code>
+      <code>testPassingInvalidAbstractFactoryTypeViaConfigurationRaisesException</code>
+      <code>testPassingInvalidInitializerTypeViaConfigurationRaisesException</code>
+      <code>testThrowExceptionIfServiceCannotBeCreated</code>
+      <code>testThrowExceptionWithStringAsCodeIfServiceCannotBeCreated</code>
+      <code>testWillReUseAnExistingNamedAbstractFactoryInstance</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="6">
+      <code>$container</code>
+      <code>$contains</code>
+      <code>$contains</code>
+      <code>$contains</code>
+      <code>$lazyServices</code>
+      <code>$lazyServices['class_map']</code>
+    </MixedArgument>
+    <MixedArrayAccess occurrences="2">
+      <code>$lazyServices['class_map']</code>
+      <code>$lazyServices['class_map']</code>
+    </MixedArrayAccess>
+    <MixedArrayAssignment occurrences="7">
+      <code>$callSequences[]</code>
+      <code>$factories['non-class-string']</code>
+      <code>$factories['non-class-string']</code>
+      <code>$invalidDelegators['invalid-classname']</code>
+      <code>$invalidDelegators['non-invokable-class']</code>
+      <code>$smTemplates[]</code>
+      <code>$tests[]</code>
+    </MixedArrayAssignment>
+    <MixedArrayOffset occurrences="1">
+      <code>$names[$name]</code>
+    </MixedArrayOffset>
+    <MixedAssignment occurrences="68">
+      <code>$callSequence</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$factories</code>
+      <code>$factories</code>
+      <code>$first</code>
+      <code>$instance</code>
+      <code>$instance</code>
+      <code>$invalidDelegators</code>
+      <code>$lazyServices</code>
+      <code>$name</code>
+      <code>$names[$name]</code>
+      <code>$newServiceManager</code>
+      <code>$newServiceManager</code>
+      <code>$object1</code>
+      <code>$object1</code>
+      <code>$object1</code>
+      <code>$object1</code>
+      <code>$object1</code>
+      <code>$object2</code>
+      <code>$object2</code>
+      <code>$object2</code>
+      <code>$object2</code>
+      <code>$object2</code>
+      <code>$second</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$serviceManager</code>
+      <code>$shared</code>
+      <code>$shared</code>
+      <code>$sm</code>
+      <code>$sm</code>
+      <code>$sm</code>
+      <code>$smTemplate</code>
+      <code>$smTemplates[]</code>
+    </MixedAssignment>
+    <MixedClone occurrences="1">
+      <code>clone $smTemplate</code>
+    </MixedClone>
+    <MixedFunctionCall occurrences="2">
+      <code>$callback()</code>
+      <code>$callback()</code>
+    </MixedFunctionCall>
+    <MixedMethodCall occurrences="82">
+      <code>$method</code>
+      <code>addAbstractFactory</code>
+      <code>addAbstractFactory</code>
+      <code>addAbstractFactory</code>
+      <code>addAbstractFactory</code>
+      <code>addDelegator</code>
+      <code>addInitializer</code>
+      <code>build</code>
+      <code>build</code>
+      <code>build</code>
+      <code>configure</code>
+      <code>configure</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>get</code>
+      <code>getAllowOverride</code>
+      <code>getAllowOverride</code>
+      <code>getServiceLocator</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>has</code>
+      <code>mapLazyService</code>
+      <code>setAlias</code>
+      <code>setAlias</code>
+      <code>setAllowOverride</code>
+      <code>setAllowOverride</code>
+      <code>setFactory</code>
+      <code>setInvokableClass</code>
+      <code>setService</code>
+      <code>setShared</code>
+    </MixedMethodCall>
+    <MixedPropertyAssignment occurrences="2">
+      <code>$instance</code>
+      <code>$instance</code>
+    </MixedPropertyAssignment>
+    <PossiblyUndefinedVariable occurrences="4">
+      <code>$callSequences</code>
+      <code>$smTemplates</code>
+      <code>$tests</code>
+      <code>$tests</code>
+    </PossiblyUndefinedVariable>
+    <UndefinedDocblockClass occurrences="1">
+      <code>ContainerInterface</code>
+    </UndefinedDocblockClass>
+    <UnusedClosureParam occurrences="10">
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$container</code>
+      <code>$errstr</code>
+      <code>$name</code>
+      <code>$options</code>
+      <code>$requestedName</code>
+      <code>$serviceLocator</code>
+    </UnusedClosureParam>
+    <UnusedVariable occurrences="1">
+      <code>$sm</code>
+    </UnusedVariable>
+  </file>
+  <file src="test/ConfigTest.php">
+    <MissingParamType occurrences="1">
+      <code>$dependencies</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="3">
+      <code>testMergeArrays</code>
+      <code>testPassesKnownServiceConfigKeysToServiceManagerWithConfigMethod</code>
+      <code>testToArrayReturnsConfiguration</code>
+    </MissingReturnType>
+    <MixedArrayAccess occurrences="2">
+      <code>$dependencies['array']</code>
+      <code>$dependencies['config']</code>
+    </MixedArrayAccess>
+    <MixedAssignment occurrences="2">
+      <code>$configInstance</code>
+      <code>$configuration</code>
+    </MixedAssignment>
+    <MixedMethodCall occurrences="1">
+      <code>toArray</code>
+    </MixedMethodCall>
+  </file>
+  <file src="test/Exception/CyclicAliasExceptionTest.php">
+    <MissingReturnType occurrences="2">
+      <code>testFromAliasesMap</code>
+      <code>testFromCyclicAlias</code>
+    </MissingReturnType>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>testFromCyclicAlias</code>
+    </PossiblyInvalidArgument>
+  </file>
+  <file src="test/Factory/InvokableFactoryTest.php">
+    <MissingReturnType occurrences="1">
+      <code>testCanCreateObject</code>
+    </MissingReturnType>
+  </file>
+  <file src="test/LazyServiceIntegrationTest.php">
+    <MissingClosureParamType occurrences="1">
+      <code>$autoload</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="1">
+      <code>function ($autoload) {</code>
+    </MissingClosureReturnType>
+    <MissingParamType occurrences="3">
+      <code>$directory</code>
+      <code>$message</code>
+      <code>$message</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="1">
+      <code>$proxyDir</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="9">
+      <code>assertProxyDirEmpty</code>
+      <code>assertProxyFileWritten</code>
+      <code>listProxyFiles</code>
+      <code>removeDir</code>
+      <code>testCanUseLazyServiceFactoryFactoryToCreateLazyServiceFactoryToActAsDelegatorToCreateLazyService</code>
+      <code>testMissingClassMapRaisesExceptionOnAttemptToRetrieveLazyService</code>
+      <code>testOnlyOneProxyAutoloaderItsRegisteredOnSubsequentCalls</code>
+      <code>testRaisesServiceNotFoundExceptionIfRequestedLazyServiceIsNotInClassMap</code>
+      <code>testWillNotGenerateProxyClassFilesByDefault</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="8">
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$this-&gt;listProxyFiles()</code>
+      <code>$this-&gt;listProxyFiles()</code>
+      <code>$this-&gt;proxyDir</code>
+      <code>$this-&gt;proxyDir</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="3">
+      <code>$instance</code>
+      <code>$message</code>
+      <code>$message</code>
+    </MixedAssignment>
+    <MixedOperand occurrences="1">
+      <code>$directory</code>
+    </MixedOperand>
+    <MixedReturnTypeCoercion occurrences="2">
+      <code>AutoloaderInterface[]</code>
+      <code>array_filter(spl_autoload_functions(), $filter)</code>
+    </MixedReturnTypeCoercion>
+    <RedundantConditionGivenDocblockType occurrences="2">
+      <code>assertIsArray</code>
+      <code>assertIsArray</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="test/Proxy/LazyServiceFactoryTest.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>'stdClass'</code>
+      <code>'stdClass'</code>
+    </ArgumentTypeCoercion>
+    <DeprecatedMethod occurrences="2">
+      <code>setMethods</code>
+      <code>setMethods</code>
+    </DeprecatedMethod>
+    <InvalidArgument occurrences="2">
+      <code>[$callback, 'callback']</code>
+      <code>[$callback, 'callback']</code>
+    </InvalidArgument>
+    <MissingClosureParamType occurrences="2">
+      <code>$className</code>
+      <code>$initializer</code>
+    </MissingClosureParamType>
+    <MissingReturnType occurrences="3">
+      <code>testCreates</code>
+      <code>testImplementsDelegatorFactoryInterface</code>
+      <code>testThrowExceptionWhenServiceNotExists</code>
+    </MissingReturnType>
+    <MixedFunctionCall occurrences="1"/>
+    <MixedMethodCall occurrences="3">
+      <code>method</code>
+      <code>method</code>
+      <code>willReturnCallback</code>
+    </MixedMethodCall>
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$container</code>
+      <code>$container</code>
+    </PossiblyInvalidArgument>
+    <UndefinedDocblockClass occurrences="5">
+      <code>$container</code>
+      <code>$this-&gt;proxyFactory</code>
+      <code>$this-&gt;proxyFactory</code>
+      <code>ContainerInterface|MockObject</code>
+      <code>LazyLoadingValueHolderFactory|MockObject</code>
+    </UndefinedDocblockClass>
+    <UndefinedMethod occurrences="2">
+      <code>expects</code>
+      <code>expects</code>
+    </UndefinedMethod>
+    <UnusedVariable occurrences="1">
+      <code>$wrappedInstance</code>
+    </UnusedVariable>
+  </file>
+  <file src="test/ServiceManagerTest.php">
+    <MissingClosureParamType occurrences="8">
+      <code>$callback</code>
+      <code>$container</code>
+      <code>$context</code>
+      <code>$context</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+      <code>$name</code>
+    </MissingClosureParamType>
+    <MissingClosureReturnType occurrences="3">
+      <code>function (</code>
+      <code>function ($container, $name, $callback) {</code>
+      <code>function () {</code>
+    </MissingClosureReturnType>
+    <MissingParamType occurrences="4">
+      <code>$serviceDefined</code>
+      <code>$serviceShared</code>
+      <code>$sharedByDefault</code>
+      <code>$shouldBeSameInstance</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="19">
+      <code>createContainer</code>
+      <code>sampleFactory</code>
+      <code>shareProvider</code>
+      <code>testAbstractFactoryShouldBeCheckedForResolvedAliasesInsteadOfAliasName</code>
+      <code>testAliasToAnExplicitServiceShouldWork</code>
+      <code>testCanWrapCreationInDelegators</code>
+      <code>testConfigurationCanBeMerged</code>
+      <code>testConfigurationTakesPrecedenceWhenMerged</code>
+      <code>testConfiguringADelegatorMultipleTimesDoesNotLeadToDuplicateDelegatorCalls</code>
+      <code>testFactoryMayBeStaticMethodDescribedByCallableString</code>
+      <code>testMapsNonSymmetricInvokablesAsAliasPlusInvokableFactory</code>
+      <code>testMapsOneToOneInvokablesAsInvokableFactoriesInternally</code>
+      <code>testResolvedAliasFromAbstractFactory</code>
+      <code>testResolvedAliasNoMatchingAbstractFactoryReturnsFalse</code>
+      <code>testServiceManagerIsAPsr11Container</code>
+      <code>testSetAliasShouldWorkWithRecursiveAlias</code>
+      <code>testShareability</code>
+      <code>testSharedServicesReferencingAliasShouldBeHonored</code>
+      <code>testSharedServicesReferencingInvokableAliasShouldBeHonored</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="1">
+      <code>$serviceManager-&gt;get(stdClass::class)</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="15">
+      <code>$a</code>
+      <code>$alias</code>
+      <code>$alias</code>
+      <code>$b</code>
+      <code>$headAlias</code>
+      <code>$inc</code>
+      <code>$inc</code>
+      <code>$instance</code>
+      <code>$instance</code>
+      <code>$instance1</code>
+      <code>$instance1</code>
+      <code>$instance2</code>
+      <code>$instance2</code>
+      <code>$service</code>
+      <code>$service</code>
+    </MixedAssignment>
+    <MixedFunctionCall occurrences="1">
+      <code>$callback()</code>
+    </MixedFunctionCall>
+    <MixedOperand occurrences="1">
+      <code>$inc</code>
+    </MixedOperand>
+    <MixedPropertyAssignment occurrences="1">
+      <code>$instance</code>
+    </MixedPropertyAssignment>
+    <MixedPropertyFetch occurrences="2">
+      <code>$instance-&gt;foo</code>
+      <code>$instance-&gt;option</code>
+    </MixedPropertyFetch>
+    <UnusedClosureParam occurrences="6">
+      <code>$container</code>
+      <code>$container</code>
+      <code>$context</code>
+      <code>$context</code>
+      <code>$name</code>
+      <code>$name</code>
+    </UnusedClosureParam>
+    <UnusedVariable occurrences="1">
+      <code>$inc</code>
+    </UnusedVariable>
+  </file>
+  <file src="test/TestAsset/AbstractFactoryFoo.php">
+    <FalsableReturnStatement occurrences="1">
+      <code>false</code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType occurrences="1">
+      <code>__invoke</code>
+    </InvalidFalsableReturnType>
+  </file>
+  <file src="test/TestAsset/CallTimesAbstractFactory.php">
+    <InvalidReturnType occurrences="1">
+      <code>__invoke</code>
+    </InvalidReturnType>
+    <MissingPropertyType occurrences="1">
+      <code>$callTimes</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="1">
+      <code>setCallTimes</code>
+    </MissingReturnType>
+    <MixedAssignment occurrences="1">
+      <code>self::$callTimes</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="1">
+      <code>int</code>
+    </MixedInferredReturnType>
+    <MixedOperand occurrences="1">
+      <code>self::$callTimes</code>
+    </MixedOperand>
+    <MixedReturnStatement occurrences="1">
+      <code>self::$callTimes</code>
+    </MixedReturnStatement>
+    <ParamNameMismatch occurrences="1">
+      <code>$name</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="test/TestAsset/FactoryObject.php">
+    <MissingParamType occurrences="1">
+      <code>$dependency</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="1">
+      <code>$dependency</code>
+    </MissingPropertyType>
+  </file>
+  <file src="test/TestAsset/FailingAbstractFactory.php">
+    <InvalidReturnType occurrences="1">
+      <code>__invoke</code>
+    </InvalidReturnType>
+    <ParamNameMismatch occurrences="1">
+      <code>$name</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="test/TestAsset/Foo.php">
+    <MissingParamType occurrences="1">
+      <code>$options</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="1">
+      <code>$options</code>
+    </MissingPropertyType>
+  </file>
+  <file src="test/TestAsset/ObjectWithScalarDependency.php">
+    <MissingParamType occurrences="2">
+      <code>$aName</code>
+      <code>$aValue</code>
+    </MissingParamType>
+  </file>
+  <file src="test/TestAsset/PassthroughDelegatorFactory.php">
+    <MixedInferredReturnType occurrences="1">
+      <code>__invoke</code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement occurrences="1">
+      <code>$callback()</code>
+    </MixedReturnStatement>
+  </file>
+  <file src="test/TestAsset/PreDelegator.php">
+    <MixedAssignment occurrences="4">
+      <code>$config</code>
+      <code>$instance</code>
+      <code>$key</code>
+      <code>$value</code>
+    </MixedAssignment>
+    <MixedInferredReturnType occurrences="1">
+      <code>__invoke</code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement occurrences="2">
+      <code>$callback()</code>
+      <code>$instance</code>
+    </MixedReturnStatement>
+  </file>
+  <file src="test/TestAsset/SimpleAbstractFactory.php">
+    <InvalidStringClass occurrences="2">
+      <code>new $className($options)</code>
+      <code>new $className()</code>
+    </InvalidStringClass>
+    <ParamNameMismatch occurrences="1">
+      <code>$name</code>
+    </ParamNameMismatch>
+  </file>
+  <file src="test/TestAsset/V2ValidationPluginManager.php">
+    <MissingParamType occurrences="1">
+      <code>$plugin</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="2">
+      <code>$assertion</code>
+      <code>$this-&gt;assertion</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="1">
+      <code>validatePlugin</code>
+    </MissingReturnType>
+  </file>
+  <file src="test/TestAsset/V2v3PluginManager.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>$e-&gt;getCode()</code>
+    </InvalidScalarArgument>
+    <MissingParamType occurrences="1">
+      <code>$plugin</code>
+    </MissingParamType>
+    <MissingPropertyType occurrences="1">
+      <code>$shareByDefault</code>
+    </MissingPropertyType>
+    <MissingReturnType occurrences="1">
+      <code>validatePlugin</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="2">
+      <code>$plugin</code>
+      <code>$this-&gt;instanceOf</code>
+    </MixedArgument>
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;instanceOf</code>
+    </PossiblyNullArgument>
+    <UndefinedClass occurrences="1">
+      <code>\ZendTest\ServiceManager\TestAsset\InvokableObject</code>
+    </UndefinedClass>
+  </file>
+  <file src="test/TestAsset/factories/ComplexDependencyObject.php">
+    <MixedArgument occurrences="2">
+      <code>$container-&gt;get(\LaminasTest\ServiceManager\TestAsset\SecondComplexDependencyObject::class)</code>
+      <code>$container-&gt;get(\LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject::class)</code>
+    </MixedArgument>
+  </file>
+  <file src="test/TestAsset/factories/SimpleDependencyObject.php">
+    <MixedArgument occurrences="1">
+      <code>$container-&gt;get(\LaminasTest\ServiceManager\TestAsset\InvokableObject::class)</code>
+    </MixedArgument>
+  </file>
+  <file src="test/Tool/ConfigDumperCommandTest.php">
+    <MissingParamType occurrences="4">
+      <code>$argument</code>
+      <code>$argument</code>
+      <code>$message</code>
+      <code>$stream</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="14">
+      <code>assertErrorRaised</code>
+      <code>assertHelp</code>
+      <code>helpArguments</code>
+      <code>ignoreUnresolvedArguments</code>
+      <code>testEmitsConfigFileToStdoutWhenSuccessful</code>
+      <code>testEmitsErrorWhenClassDoesNotExist</code>
+      <code>testEmitsErrorWhenConfigurationFileDoesNotReturnArray</code>
+      <code>testEmitsErrorWhenTooFewArgumentsPresent</code>
+      <code>testEmitsErrorWhenUnableToCreateConfiguration</code>
+      <code>testEmitsHelpWhenHelpArgumentProvidedAsFirstArgument</code>
+      <code>testEmitsHelpWhenNoArgumentsProvided</code>
+      <code>testGeneratesConfigFileIgnoringUnresolved</code>
+      <code>testGeneratesConfigFileWhenProvidedConfigurationFileNotFound</code>
+      <code>testRaisesExceptionIfConfigFileNotFoundAndDirectoryNotWritable</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="13">
+      <code>$factoryConfig[ObjectWithObjectScalarDependency::class]</code>
+      <code>$factoryConfig[ObjectWithObjectScalarDependency::class]</code>
+      <code>$factoryConfig[SimpleDependencyObject::class]</code>
+      <code>$factoryConfig[SimpleDependencyObject::class]</code>
+      <code>$factoryConfig[SimpleDependencyObject::class]</code>
+      <code>$message</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="10">
+      <code>$command</code>
+      <code>$command</code>
+      <code>$command</code>
+      <code>$command</code>
+      <code>$command</code>
+      <code>$command</code>
+      <code>$command</code>
+      <code>$command</code>
+      <code>$command</code>
+      <code>$command</code>
+    </MixedAssignment>
+    <MixedFunctionCall occurrences="10">
+      <code>$command([$argument, $config, ObjectWithObjectScalarDependency::class])</code>
+      <code>$command([$argument])</code>
+      <code>$command([$config, 'Not\A\Real\Class'])</code>
+      <code>$command([$config, 'Not\A\Real\Class'])</code>
+      <code>$command([$config, 'Not\A\Real\Class'])</code>
+      <code>$command([$config, ObjectWithScalarDependency::class])</code>
+      <code>$command([$config, SimpleDependencyObject::class])</code>
+      <code>$command([$config, SimpleDependencyObject::class])</code>
+      <code>$command(['foo'])</code>
+      <code>$command([])</code>
+    </MixedFunctionCall>
+    <MixedMethodCall occurrences="10">
+      <code>shouldBeCalled</code>
+      <code>shouldBeCalled</code>
+      <code>shouldBeCalled</code>
+      <code>shouldBeCalled</code>
+      <code>shouldBeCalled</code>
+      <code>writeErrorMessage</code>
+      <code>writeLine</code>
+      <code>writeLine</code>
+      <code>writeLine</code>
+      <code>writeLine</code>
+    </MixedMethodCall>
+    <UndefinedThisPropertyAssignment occurrences="3">
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;helper</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="22">
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;command</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;configDir</code>
+      <code>$this-&gt;helper</code>
+      <code>$this-&gt;helper</code>
+      <code>$this-&gt;helper</code>
+      <code>$this-&gt;helper</code>
+      <code>$this-&gt;helper</code>
+    </UndefinedThisPropertyFetch>
+    <UnresolvableInclude occurrences="3">
+      <code>include $config</code>
+      <code>include $config</code>
+      <code>include $config</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="test/Tool/ConfigDumperTest.php">
+    <InvalidScalarArgument occurrences="2">
+      <code>42</code>
+      <code>42</code>
+    </InvalidScalarArgument>
+    <MissingReturnType occurrences="21">
+      <code>testCreateDependencyConfigClassWithoutConstructorHandlesAsInvokable</code>
+      <code>testCreateDependencyConfigExceptsIfClassDoesNotExist</code>
+      <code>testCreateDependencyConfigExceptsIfClassNameIsNotString</code>
+      <code>testCreateDependencyConfigInvokableObjectReturnsEmptyArray</code>
+      <code>testCreateDependencyConfigSimpleDependencyReturnsCorrectly</code>
+      <code>testCreateDependencyConfigWithContainerAndNoServiceWithoutTypeHintedParameterExcepts</code>
+      <code>testCreateDependencyConfigWithContainerWithoutTypeHintedParameter</code>
+      <code>testCreateDependencyConfigWithoutTypeHintedParameterExcepts</code>
+      <code>testCreateDependencyConfigWithoutTypeHintedParameterIgnoringUnresolved</code>
+      <code>testCreateDependencyConfigWorksWithExistingConfig</code>
+      <code>testCreateDependencyConfigWorksWithMultipleDependenciesOfSameType</code>
+      <code>testCreateFactoryMappingsAddsClassIfNotExists</code>
+      <code>testCreateFactoryMappingsExceptsIfClassDoesNotExist</code>
+      <code>testCreateFactoryMappingsExceptsIfClassNameIsNotString</code>
+      <code>testCreateFactoryMappingsFromConfigExceptsWhenConfigNotArray</code>
+      <code>testCreateFactoryMappingsFromConfigReturnsIfNoConfigKey</code>
+      <code>testCreateFactoryMappingsFromConfigWithWorkingConfig</code>
+      <code>testCreateFactoryMappingsIgnoresExistingsMappings</code>
+      <code>testCreateFactoryMappingsReturnsUnmodifiedArrayIfMappingExists</code>
+      <code>testDumpConfigFileReturnsContentsForConfigFileUsingUsingClassNotationAndShortArrays</code>
+      <code>testWillDumpConfigForClassDependingOnInterfaceButOmitInterfaceConfig</code>
+    </MissingReturnType>
+    <MixedAssignment occurrences="1">
+      <code>$test</code>
+    </MixedAssignment>
+    <UnresolvableInclude occurrences="1">
+      <code>include $file</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="test/Tool/FactoryCreatorCommandTest.php">
+    <ImplicitToStringCast occurrences="2">
+      <code>Argument::containingString($message)</code>
+      <code>Argument::containingString('&lt;info&gt;Usage:&lt;/info&gt;')</code>
+    </ImplicitToStringCast>
+    <MissingParamType occurrences="4">
+      <code>$argument</code>
+      <code>$argument</code>
+      <code>$message</code>
+      <code>$stream</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="9">
+      <code>assertErrorRaised</code>
+      <code>assertHelp</code>
+      <code>helpArguments</code>
+      <code>invalidArguments</code>
+      <code>testEmitsErrorMessageIfArgumentIsNotAClass</code>
+      <code>testEmitsErrorWhenUnableToCreateFactory</code>
+      <code>testEmitsFactoryFileToStdoutWhenSuccessful</code>
+      <code>testEmitsHelpWhenHelpArgumentProvidedAsFirstArgument</code>
+      <code>testEmitsHelpWhenNoArgumentsProvided</code>
+    </MissingReturnType>
+    <MixedArgument occurrences="4">
+      <code>$argument</code>
+      <code>$message</code>
+      <code>$stream</code>
+      <code>ConfigDumperCommand::class</code>
+    </MixedArgument>
+    <PossiblyNullReference occurrences="3">
+      <code>shouldBeCalled</code>
+      <code>shouldBeCalled</code>
+      <code>shouldBeCalled</code>
+    </PossiblyNullReference>
+    <UndefinedClass occurrences="1">
+      <code>ConfigDumperCommand</code>
+    </UndefinedClass>
+  </file>
+  <file src="test/Tool/FactoryCreatorTest.php">
+    <MissingReturnType occurrences="3">
+      <code>testCreateFactoryCreatesForComplexDependencies</code>
+      <code>testCreateFactoryCreatesForInvokable</code>
+      <code>testCreateFactoryCreatesForSimpleDependencies</code>
+    </MissingReturnType>
+  </file>
+</files>

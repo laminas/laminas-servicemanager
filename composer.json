@@ -36,7 +36,9 @@
         "ocramius/proxy-manager": "^2.8",
         "phpbench/phpbench": "^0.17",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.4"
+        "phpunit/phpunit": "^9.4",
+        "psalm/plugin-phpunit": "^0.15.1",
+        "vimeo/psalm": "^4.7"
     },
     "provide": {
         "psr/container-implementation": "^1.0"
