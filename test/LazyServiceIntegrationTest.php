@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable Generic.Files.LineLength.TooLong
 
 declare(strict_types=1);
 
@@ -38,6 +38,7 @@ use function unlink;
  */
 class LazyServiceIntegrationTest extends TestCase
 {
+    /** @var string */
     public $proxyDir;
 
     public function setUp(): void
@@ -60,7 +61,7 @@ class LazyServiceIntegrationTest extends TestCase
         }
     }
 
-    public function removeDir($directory)
+    public function removeDir(string $directory): void
     {
         $handle = opendir($directory);
         while (false !== ($item = readdir($handle))) {
@@ -82,21 +83,21 @@ class LazyServiceIntegrationTest extends TestCase
         rmdir($directory);
     }
 
-    public function listProxyFiles()
+    public function listProxyFiles(): RegexIterator
     {
         $rdi = new RecursiveDirectoryIterator($this->proxyDir);
         $rii = new RecursiveIteratorIterator($rdi);
         return new RegexIterator($rii, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
     }
 
-    public function assertProxyDirEmpty($message = '')
+    public function assertProxyDirEmpty(string $message = ''): void
     {
         $message = $message ?: 'Expected empty proxy directory; found files';
         // AssertEquals instead AssertEmpty because the first one prints the list of files.
         $this->assertEquals([], iterator_to_array($this->listProxyFiles()), $message);
     }
 
-    public function assertProxyFileWritten($message = '')
+    public function assertProxyFileWritten(string $message = ''): void
     {
         $message = $message ?: 'Expected ProxyManager to write at least one class file; none found';
         // AssertNotEquals instead AssertNotEmpty because the first one prints the list of files.
@@ -106,21 +107,21 @@ class LazyServiceIntegrationTest extends TestCase
     /**
      * @covers \Laminas\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
      */
-    public function testCanUseLazyServiceFactoryFactoryToCreateLazyServiceFactoryToActAsDelegatorToCreateLazyService()
+    public function testCanUseLazyServiceFactoryFactoryToCreateLazyServiceFactoryToActAsDelegatorToCreateLazyService(): void
     {
         $config = [
             'lazy_services' => [
-                'class_map' => [
+                'class_map'          => [
                     InvokableObject::class => InvokableObject::class,
                 ],
                 'proxies_namespace'  => 'TestAssetProxy',
                 'proxies_target_dir' => $this->proxyDir,
                 'write_proxy_files'  => true,
             ],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
             ],
         ];
@@ -159,14 +160,14 @@ class LazyServiceIntegrationTest extends TestCase
     /**
      * @covers \Laminas\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
      */
-    public function testMissingClassMapRaisesExceptionOnAttemptToRetrieveLazyService()
+    public function testMissingClassMapRaisesExceptionOnAttemptToRetrieveLazyService(): void
     {
         $config = [
             'lazy_services' => [],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
             ],
         ];
@@ -180,19 +181,19 @@ class LazyServiceIntegrationTest extends TestCase
     /**
      * @covers \Laminas\ServiceManager\ServiceManager::createLazyServiceDelegatorFactory
      */
-    public function testWillNotGenerateProxyClassFilesByDefault()
+    public function testWillNotGenerateProxyClassFilesByDefault(): void
     {
         $config = [
             'lazy_services' => [
-                'class_map' => [
+                'class_map'         => [
                     InvokableObject::class => InvokableObject::class,
                 ],
-                'proxies_namespace'  => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy',
             ],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
             ],
         ];
@@ -229,22 +230,22 @@ class LazyServiceIntegrationTest extends TestCase
         $this->assertCount(1, $proxyAutoloadFunctions, 'Only 1 proxy autoloader should be registered');
     }
 
-    public function testOnlyOneProxyAutoloaderItsRegisteredOnSubsequentCalls()
+    public function testOnlyOneProxyAutoloaderItsRegisteredOnSubsequentCalls(): void
     {
         $config = [
             'lazy_services' => [
-                'class_map' => [
+                'class_map'         => [
                     InvokableObject::class => InvokableObject::class,
-                    stdClass::class => stdClass::class,
+                    stdClass::class        => stdClass::class,
                 ],
-                'proxies_namespace'  => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy',
             ],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
-                stdClass::class => [LazyServiceFactory::class],
+                stdClass::class        => [LazyServiceFactory::class],
             ],
         ];
 
@@ -255,7 +256,7 @@ class LazyServiceIntegrationTest extends TestCase
             $instance,
             'Service returned does not extend ' . InvokableObject::class
         );
-        $instance  = $container->build(stdClass::class, ['foo' => 'bar']);
+        $instance = $container->build(stdClass::class, ['foo' => 'bar']);
         $this->assertInstanceOf(
             stdClass::class,
             $instance,
@@ -266,19 +267,19 @@ class LazyServiceIntegrationTest extends TestCase
         $this->assertCount(1, $proxyAutoloadFunctions, 'Only 1 proxy autoloader should be registered');
     }
 
-    public function testRaisesServiceNotFoundExceptionIfRequestedLazyServiceIsNotInClassMap()
+    public function testRaisesServiceNotFoundExceptionIfRequestedLazyServiceIsNotInClassMap(): void
     {
         $config = [
             'lazy_services' => [
-                'class_map' => [
+                'class_map'         => [
                     stdClass::class => stdClass::class,
                 ],
-                'proxies_namespace'  => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy',
             ],
-            'factories' => [
+            'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],
             ],
         ];
@@ -298,7 +299,7 @@ class LazyServiceIntegrationTest extends TestCase
     protected function getRegisteredProxyAutoloadFunctions()
     {
         $filter = function ($autoload) {
-            return ($autoload instanceof AutoloaderInterface);
+            return $autoload instanceof AutoloaderInterface;
         };
 
         return array_filter(spl_autoload_functions(), $filter);

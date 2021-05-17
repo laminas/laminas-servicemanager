@@ -19,14 +19,10 @@ use ProxyManager\Proxy\VirtualProxyInterface;
  */
 class LazyServiceFactoryTest extends TestCase
 {
-    /**
-     * @var LazyServiceFactory
-     */
+    /** @var LazyServiceFactory */
     private $factory;
 
-    /**
-     * @var LazyLoadingValueHolderFactory|MockObject
-     */
+    /** @var LazyLoadingValueHolderFactory|MockObject */
     private $proxyFactory;
 
     /**
@@ -36,19 +32,19 @@ class LazyServiceFactoryTest extends TestCase
     {
         $this->proxyFactory = $this->getMockBuilder(LazyLoadingValueHolderFactory::class)
             ->getMock();
-        $servicesMap = [
+        $servicesMap        = [
             'fooService' => 'FooClass',
         ];
 
         $this->factory = new LazyServiceFactory($this->proxyFactory, $servicesMap);
     }
 
-    public function testImplementsDelegatorFactoryInterface()
+    public function testImplementsDelegatorFactoryInterface(): void
     {
         $this->assertInstanceOf(DelegatorFactoryInterface::class, $this->factory);
     }
 
-    public function testThrowExceptionWhenServiceNotExists()
+    public function testThrowExceptionWhenServiceNotExists(): void
     {
         $callback = $this->getMockBuilder('stdClass')
             ->setMethods(['callback'])
@@ -66,7 +62,7 @@ class LazyServiceFactoryTest extends TestCase
         $this->factory->__invoke($container, 'not_exists', [$callback, 'callback']);
     }
 
-    public function testCreates()
+    public function testCreates(): void
     {
         $callback = $this->getMockBuilder('stdClass')
             ->setMethods(['callback'])
@@ -74,7 +70,7 @@ class LazyServiceFactoryTest extends TestCase
         $callback->expects($this->once())
             ->method('callback')
             ->willReturn('fooValue');
-        $container = $this->createContainerMock();
+        $container       = $this->createContainerMock();
         $expectedService = $this->getMockBuilder(VirtualProxyInterface::class)
             ->getMock();
 
@@ -85,7 +81,7 @@ class LazyServiceFactoryTest extends TestCase
                     $this->assertEquals('FooClass', $className, 'class name not match');
 
                     $wrappedInstance = null;
-                    $result = $initializer(
+                    $result          = $initializer(
                         $wrappedInstance,
                         $this->getMockBuilder(LazyLoadingInterface::class)->getMock()
                     );

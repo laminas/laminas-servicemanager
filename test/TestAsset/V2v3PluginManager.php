@@ -7,12 +7,14 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Factory\InvokableFactory;
+use RuntimeException;
 
 use function get_class;
 use function sprintf;
 
 class V2v3PluginManager extends AbstractPluginManager
 {
+    /** @var array<string,string> */
     protected $aliases = [
         'foo' => InvokableObject::class,
 
@@ -23,19 +25,27 @@ class V2v3PluginManager extends AbstractPluginManager
         'zendtestservicemanagertestassetinvokableobject' => InvokableObject::class,
     ];
 
+    /** @var array<string,string> */
     protected $factories = [
-        InvokableObject::class                           => InvokableFactory::class,
+        InvokableObject::class => InvokableFactory::class,
         // Legacy (v2) due to alias resolution
         'laminastestservicemanagertestassetinvokableobject' => InvokableFactory::class,
     ];
 
+    /** @var string */
     protected $instanceOf = InvokableObject::class;
 
+    /** @var bool */
     protected $shareByDefault = false;
 
+    /** @var bool */
     protected $sharedByDefault = false;
 
-
+    /**
+     * @param mixed $plugin
+     * @return void
+     * @throws InvalidServiceException
+     */
     public function validate($plugin)
     {
         if ($plugin instanceof $this->instanceOf) {
@@ -50,14 +60,16 @@ class V2v3PluginManager extends AbstractPluginManager
     }
 
     /**
-     * {@inheritDoc}
+     * @param mixed $plugin
+     * @return void
+     * @throws RuntimeException
      */
     public function validatePlugin($plugin)
     {
         try {
             $this->validate($plugin);
         } catch (InvalidServiceException $e) {
-            throw new \RuntimeException($e->getMessage(), $e->getCode(), $e);
+            throw new RuntimeException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

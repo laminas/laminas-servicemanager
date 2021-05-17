@@ -25,7 +25,7 @@ interface ServiceLocatorInterface extends
      *     factory could be found to create the instance.
      * @throws Exception\ServiceNotCreatedException If factory/delegator fails
      *     to create the instance.
-     * @throws ContainerExceptionInterface if any other error occurs
+     * @throws ContainerExceptionInterface If any other error occurs.
      */
-    public function build($name, array $options = null);
+    public function build($name, ?array $options = null);
 }

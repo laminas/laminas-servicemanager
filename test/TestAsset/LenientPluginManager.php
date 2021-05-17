@@ -11,10 +11,11 @@ class LenientPluginManager extends AbstractPluginManager
 {
     /**
      * Allow anything to be considered valid.
+     *
+     * @param mixed $instance
      */
-    public function validate($instance)
+    public function validate($instance): void
     {
-        return;
     }
 
     public function getCreationContext(): ContainerInterface

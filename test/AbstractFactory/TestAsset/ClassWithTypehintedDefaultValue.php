@@ -8,9 +8,10 @@ use ArrayAccess;
 
 class ClassWithTypehintedDefaultValue
 {
+    /** @var ArrayAccess|null */
     public $value;
 
-    public function __construct(ArrayAccess $value = null)
+    public function __construct(?ArrayAccess $value = null)
     {
         $this->value = null;
     }

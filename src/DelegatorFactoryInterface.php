@@ -35,7 +35,6 @@ interface DelegatorFactoryInterface extends Factory\DelegatorFactoryInterface
      * @param string                  $name           the normalized service name
      * @param string                  $requestedName  the requested service name
      * @param callable                $callback       the callback that is responsible for creating the service
-     *
      * @return mixed
      */
     public function createDelegatorWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName, $callback);

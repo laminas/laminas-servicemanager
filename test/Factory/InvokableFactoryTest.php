@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class InvokableFactoryTest extends TestCase
 {
-    public function testCanCreateObject()
+    public function testCanCreateObject(): void
     {
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();

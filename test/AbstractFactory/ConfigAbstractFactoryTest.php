@@ -16,11 +16,10 @@ use PHPUnit\Framework\TestCase;
 
 class ConfigAbstractFactoryTest extends TestCase
 {
-
-    public function testCanCreateReturnsTrueIfDependencyNotArrays()
+    public function testCanCreateReturnsTrueIfDependencyNotArrays(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
@@ -36,7 +35,7 @@ class ConfigAbstractFactoryTest extends TestCase
             [
                 ConfigAbstractFactory::class => [
                     InvokableObject::class => 42,
-                ]
+                ],
             ]
         );
         $this->assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
@@ -50,24 +49,24 @@ class ConfigAbstractFactoryTest extends TestCase
                         'Jabba',
                         'Gandalf',
                         'Blofeld',
-                        42
+                        42,
                     ],
-                ]
+                ],
             ]
         );
         $this->assertTrue($abstractFactory->canCreate($serviceManager, InvokableObject::class));
     }
 
-    public function testCanCreate()
+    public function testCanCreate(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
                 ConfigAbstractFactory::class => [
                     InvokableObject::class => [],
-                ]
+                ],
             ]
         );
 
@@ -75,16 +74,16 @@ class ConfigAbstractFactoryTest extends TestCase
         $this->assertFalse($abstractFactory->canCreate($serviceManager, ServiceManager::class));
     }
 
-    public function testCanCreateReturnsTrueWhenConfigIsAnArrayObject()
+    public function testCanCreateReturnsTrueWhenConfigIsAnArrayObject(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             new ArrayObject([
                 ConfigAbstractFactory::class => [
                     InvokableObject::class => [],
-                ]
+                ],
             ])
         );
 
@@ -92,51 +91,51 @@ class ConfigAbstractFactoryTest extends TestCase
         $this->assertFalse($abstractFactory->canCreate($serviceManager, ServiceManager::class));
     }
 
-    public function testFactoryCanCreateInstancesWhenConfigIsAnArrayObject()
+    public function testFactoryCanCreateInstancesWhenConfigIsAnArrayObject(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             new ArrayObject([
                 ConfigAbstractFactory::class => [
                     InvokableObject::class => [],
-                ]
+                ],
             ])
         );
 
         $this->assertInstanceOf(InvokableObject::class, $abstractFactory($serviceManager, InvokableObject::class));
     }
 
-    public function testInvokeWithInvokableClass()
+    public function testInvokeWithInvokableClass(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
                 ConfigAbstractFactory::class => [
                     InvokableObject::class => [],
-                ]
+                ],
             ]
         );
 
         $this->assertInstanceOf(InvokableObject::class, $abstractFactory($serviceManager, InvokableObject::class));
     }
 
-    public function testInvokeWithSimpleArguments()
+    public function testInvokeWithSimpleArguments(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
                 ConfigAbstractFactory::class => [
-                    InvokableObject::class => [],
+                    InvokableObject::class        => [],
                     SimpleDependencyObject::class => [
                         InvokableObject::class,
                     ],
-                ]
+                ],
             ]
         );
         $serviceManager->addAbstractFactory($abstractFactory);
@@ -147,26 +146,26 @@ class ConfigAbstractFactoryTest extends TestCase
         );
     }
 
-    public function testInvokeWithComplexArguments()
+    public function testInvokeWithComplexArguments(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
                 ConfigAbstractFactory::class => [
-                    InvokableObject::class => [],
-                    SimpleDependencyObject::class => [
+                    InvokableObject::class               => [],
+                    SimpleDependencyObject::class        => [
                         InvokableObject::class,
                     ],
-                    ComplexDependencyObject::class => [
+                    ComplexDependencyObject::class       => [
                         SimpleDependencyObject::class,
                         SecondComplexDependencyObject::class,
                     ],
                     SecondComplexDependencyObject::class => [
                         InvokableObject::class,
                     ],
-                ]
+                ],
             ]
         );
         $serviceManager->addAbstractFactory($abstractFactory);
@@ -177,20 +176,20 @@ class ConfigAbstractFactoryTest extends TestCase
         );
     }
 
-    public function testExceptsWhenConfigNotSet()
+    public function testExceptsWhenConfigNotSet(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $this->expectException(ServiceNotCreatedException::class);
         $this->expectExceptionMessage('Cannot find a config array in the container');
 
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
 
-    public function testExceptsWhenConfigKeyNotSet()
+    public function testExceptsWhenConfigKeyNotSet(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService('config', []);
         $this->expectException(ServiceNotCreatedException::class);
         $this->expectExceptionMessage('Cannot find a `' . ConfigAbstractFactory::class . '` key in the config array');
@@ -198,10 +197,10 @@ class ConfigAbstractFactoryTest extends TestCase
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
 
-    public function testExceptsWhenConfigIsNotArray()
+    public function testExceptsWhenConfigIsNotArray(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService('config', 'Holistic');
         $this->expectException(ServiceNotCreatedException::class);
         $this->expectExceptionMessage('Config must be an array');
@@ -209,14 +208,14 @@ class ConfigAbstractFactoryTest extends TestCase
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
 
-    public function testExceptsWhenServiceConfigIsNotArray()
+    public function testExceptsWhenServiceConfigIsNotArray(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
-                ConfigAbstractFactory::class => 'Detective_Agency'
+                ConfigAbstractFactory::class => 'Detective_Agency',
             ]
         );
         $this->expectException(ServiceNotCreatedException::class);
@@ -225,10 +224,10 @@ class ConfigAbstractFactoryTest extends TestCase
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
 
-    public function testExceptsWhenServiceConfigDoesNotExist()
+    public function testExceptsWhenServiceConfigDoesNotExist(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
@@ -241,10 +240,10 @@ class ConfigAbstractFactoryTest extends TestCase
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
 
-    public function testExceptsWhenServiceConfigForRequestedNameIsNotArray()
+    public function testExceptsWhenServiceConfigForRequestedNameIsNotArray(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
@@ -259,10 +258,10 @@ class ConfigAbstractFactoryTest extends TestCase
         $abstractFactory($serviceManager, 'Dirk_Gently');
     }
 
-    public function testExceptsWhenServiceConfigForRequestedNameIsNotArrayOfStrings()
+    public function testExceptsWhenServiceConfigForRequestedNameIsNotArrayOfStrings(): void
     {
         $abstractFactory = new ConfigAbstractFactory();
-        $serviceManager = new ServiceManager();
+        $serviceManager  = new ServiceManager();
         $serviceManager->setService(
             'config',
             [
@@ -271,7 +270,7 @@ class ConfigAbstractFactoryTest extends TestCase
                         'Holistic',
                         'Detective',
                         'Agency',
-                        42
+                        42,
                     ],
                 ],
             ]

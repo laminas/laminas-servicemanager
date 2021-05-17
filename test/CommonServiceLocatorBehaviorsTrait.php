@@ -15,6 +15,7 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\ServiceManager;
 use LaminasBench\ServiceManager\BenchAsset\AbstractFactoryFoo;
 use LaminasTest\ServiceManager\TestAsset\CallTimesAbstractFactory;
 use LaminasTest\ServiceManager\TestAsset\FailingAbstractFactory;
@@ -33,21 +34,29 @@ use function array_merge;
 use function restore_error_handler;
 use function set_error_handler;
 
+use const E_USER_DEPRECATED;
+
 trait CommonServiceLocatorBehaviorsTrait
 {
     /**
      * The creation context container; used in some mocks for comparisons; set during createContainer.
+     *
+     * @var ServiceManager
      */
     protected $creationContext;
 
+    /**
+     * @param array<string,mixed> $config
+     * @return ServiceManager
+     */
     abstract public function createContainer(array $config = []);
 
-    public function testIsSharedByDefault()
+    public function testIsSharedByDefault(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
-                stdClass::class => InvokableFactory::class
-            ]
+                stdClass::class => InvokableFactory::class,
+            ],
         ]);
 
         $object1 = $serviceManager->get(stdClass::class);
@@ -56,13 +65,13 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertSame($object1, $object2);
     }
 
-    public function testCanDisableSharedByDefault()
+    public function testCanDisableSharedByDefault(): void
     {
         $serviceManager = $this->createContainer([
-            'factories' => [
-                stdClass::class => InvokableFactory::class
+            'factories'         => [
+                stdClass::class => InvokableFactory::class,
             ],
-            'shared_by_default' => false
+            'shared_by_default' => false,
         ]);
 
         $object1 = $serviceManager->get(stdClass::class);
@@ -71,15 +80,15 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertNotSame($object1, $object2);
     }
 
-    public function testCanDisableSharedForSingleService()
+    public function testCanDisableSharedForSingleService(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
-                stdClass::class => InvokableFactory::class
+                stdClass::class => InvokableFactory::class,
             ],
-            'shared' => [
-                stdClass::class => false
-            ]
+            'shared'    => [
+                stdClass::class => false,
+            ],
         ]);
 
         $object1 = $serviceManager->get(stdClass::class);
@@ -88,16 +97,16 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertNotSame($object1, $object2);
     }
 
-    public function testCanEnableSharedForSingleService()
+    public function testCanEnableSharedForSingleService(): void
     {
         $serviceManager = $this->createContainer([
-            'factories' => [
-                stdClass::class => InvokableFactory::class
+            'factories'         => [
+                stdClass::class => InvokableFactory::class,
             ],
             'shared_by_default' => false,
             'shared'            => [
-                stdClass::class => true
-            ]
+                stdClass::class => true,
+            ],
         ]);
 
         $object1 = $serviceManager->get(stdClass::class);
@@ -106,12 +115,12 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertSame($object1, $object2);
     }
 
-    public function testCanBuildObjectWithInvokableFactory()
+    public function testCanBuildObjectWithInvokableFactory(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
-                InvokableObject::class => InvokableFactory::class
-            ]
+                InvokableObject::class => InvokableFactory::class,
+            ],
         ]);
 
         $object = $serviceManager->build(InvokableObject::class, ['foo' => 'bar']);
@@ -120,33 +129,33 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertEquals(['foo' => 'bar'], $object->options);
     }
 
-    public function testCanCreateObjectWithClosureFactory()
+    public function testCanCreateObjectWithClosureFactory(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
                 stdClass::class => function (ServiceLocatorInterface $serviceLocator, $className) {
                     $this->assertEquals(stdClass::class, $className);
                     return new stdClass();
-                }
-            ]
+                },
+            ],
         ]);
 
         $object = $serviceManager->get(stdClass::class);
         $this->assertInstanceOf(stdClass::class, $object);
     }
 
-    public function testCanCreateServiceWithAbstractFactory()
+    public function testCanCreateServiceWithAbstractFactory(): void
     {
         $serviceManager = $this->createContainer([
             'abstract_factories' => [
-                new SimpleAbstractFactory()
-            ]
+                new SimpleAbstractFactory(),
+            ],
         ]);
 
         $this->assertInstanceOf(DateTime::class, $serviceManager->get(DateTime::class));
     }
 
-    public function testAllowsMultipleInstancesOfTheSameAbstractFactory()
+    public function testAllowsMultipleInstancesOfTheSameAbstractFactory(): void
     {
         CallTimesAbstractFactory::setCallTimes(0);
 
@@ -157,7 +166,7 @@ trait CommonServiceLocatorBehaviorsTrait
             'abstract_factories' => [
                 $obj1,
                 $obj2,
-            ]
+            ],
         ]);
         $serviceManager->addAbstractFactory($obj1);
         $serviceManager->addAbstractFactory($obj2);
@@ -166,7 +175,7 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertEquals(2, CallTimesAbstractFactory::getCallTimes());
     }
 
-    public function testWillReUseAnExistingNamedAbstractFactoryInstance()
+    public function testWillReUseAnExistingNamedAbstractFactoryInstance(): void
     {
         CallTimesAbstractFactory::setCallTimes(0);
 
@@ -174,7 +183,7 @@ trait CommonServiceLocatorBehaviorsTrait
             'abstract_factories' => [
                 CallTimesAbstractFactory::class,
                 CallTimesAbstractFactory::class,
-            ]
+            ],
         ]);
         $serviceManager->addAbstractFactory(CallTimesAbstractFactory::class);
         $serviceManager->has(stdClass::class);
@@ -182,16 +191,16 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertEquals(1, CallTimesAbstractFactory::getCallTimes());
     }
 
-    public function testCanCreateServiceWithAlias()
+    public function testCanCreateServiceWithAlias(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
-                InvokableObject::class => InvokableFactory::class
+                InvokableObject::class => InvokableFactory::class,
             ],
-            'aliases' => [
+            'aliases'   => [
                 'foo' => InvokableObject::class,
-                'bar' => 'foo'
-            ]
+                'bar' => 'foo',
+            ],
         ]);
 
         $object = $serviceManager->get('bar');
@@ -201,30 +210,30 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertFalse($serviceManager->has('baz'));
     }
 
-    public function testCheckingServiceExistenceWithChecksAgainstAbstractFactories()
+    public function testCheckingServiceExistenceWithChecksAgainstAbstractFactories(): void
     {
         $serviceManager = $this->createContainer([
-            'factories' => [
-                stdClass::class => InvokableFactory::class
+            'factories'          => [
+                stdClass::class => InvokableFactory::class,
             ],
             'abstract_factories' => [
-                new SimpleAbstractFactory() // This one always return true
-            ]
+                new SimpleAbstractFactory(), // This one always return true
+            ],
         ]);
 
         $this->assertTrue($serviceManager->has(stdClass::class));
         $this->assertTrue($serviceManager->has(DateTime::class));
     }
 
-    public function testBuildNeverSharesInstances()
+    public function testBuildNeverSharesInstances(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
-                stdClass::class => InvokableFactory::class
+                stdClass::class => InvokableFactory::class,
             ],
-            'shared' => [
-                stdClass::class => true
-            ]
+            'shared'    => [
+                stdClass::class => true,
+            ],
         ]);
 
         $object1 = $serviceManager->build(stdClass::class);
@@ -233,18 +242,18 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertNotSame($object1, $object2);
     }
 
-    public function testInitializersAreRunAfterCreation()
+    public function testInitializersAreRunAfterCreation(): void
     {
         $initializer = $this->getMockBuilder(InitializerInterface::class)
             ->getMock();
 
         $serviceManager = $this->createContainer([
-            'factories' => [
-                stdClass::class => InvokableFactory::class
+            'factories'    => [
+                stdClass::class => InvokableFactory::class,
             ],
             'initializers' => [
-                $initializer
-            ]
+                $initializer,
+            ],
         ]);
 
         $initializer->expects($this->once())
@@ -257,12 +266,12 @@ trait CommonServiceLocatorBehaviorsTrait
         $serviceManager->get(stdClass::class);
     }
 
-    public function testThrowExceptionIfServiceCannotBeCreated()
+    public function testThrowExceptionIfServiceCannotBeCreated(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
-                stdClass::class => FailingFactory::class
-            ]
+                stdClass::class => FailingFactory::class,
+            ],
         ]);
 
         $this->expectException(ServiceNotCreatedException::class);
@@ -270,12 +279,12 @@ trait CommonServiceLocatorBehaviorsTrait
         $serviceManager->get(stdClass::class);
     }
 
-    public function testThrowExceptionWithStringAsCodeIfServiceCannotBeCreated()
+    public function testThrowExceptionWithStringAsCodeIfServiceCannotBeCreated(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
-                stdClass::class => FailingExceptionWithStringAsCodeFactory::class
-            ]
+                stdClass::class => FailingExceptionWithStringAsCodeFactory::class,
+            ],
         ]);
 
         $this->expectException(ServiceNotCreatedException::class);
@@ -283,12 +292,12 @@ trait CommonServiceLocatorBehaviorsTrait
         $serviceManager->get(stdClass::class);
     }
 
-    public function testConfigureCanAddNewServices()
+    public function testConfigureCanAddNewServices(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
-                DateTime::class => InvokableFactory::class
-            ]
+                DateTime::class => InvokableFactory::class,
+            ],
         ]);
 
         $this->assertTrue($serviceManager->has(DateTime::class));
@@ -296,8 +305,8 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $newServiceManager = $serviceManager->configure([
             'factories' => [
-                stdClass::class => InvokableFactory::class
-            ]
+                stdClass::class => InvokableFactory::class,
+            ],
         ]);
 
         $this->assertSame($serviceManager, $newServiceManager);
@@ -306,7 +315,7 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertTrue($newServiceManager->has(stdClass::class));
     }
 
-    public function testConfigureCanOverridePreviousSettings()
+    public function testConfigureCanOverridePreviousSettings(): void
     {
         $firstFactory  = $this->getMockBuilder(FactoryInterface::class)
             ->getMock();
@@ -315,14 +324,14 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $serviceManager = $this->createContainer([
             'factories' => [
-                DateTime::class => $firstFactory
-            ]
+                DateTime::class => $firstFactory,
+            ],
         ]);
 
         $newServiceManager = $serviceManager->configure([
             'factories' => [
-                DateTime::class => $secondFactory
-            ]
+                DateTime::class => $secondFactory,
+            ],
         ]);
 
         $this->assertSame($serviceManager, $newServiceManager);
@@ -333,16 +342,16 @@ trait CommonServiceLocatorBehaviorsTrait
         $newServiceManager->get(DateTime::class);
     }
 
-    public function testConfigureInvokablesTakePrecedenceOverFactories()
+    public function testConfigureInvokablesTakePrecedenceOverFactories(): void
     {
-        $firstFactory  = $this->getMockBuilder(FactoryInterface::class)
+        $firstFactory = $this->getMockBuilder(FactoryInterface::class)
             ->getMock();
 
         $serviceManager = $this->createContainer([
-            'aliases' => [
+            'aliases'    => [
                 'custom_alias' => DateTime::class,
             ],
-            'factories' => [
+            'factories'  => [
                 DateTime::class => $firstFactory,
             ],
             'invokables' => [
@@ -359,7 +368,7 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @group has
      */
-    public function testHasReturnsFalseIfServiceNotConfigured()
+    public function testHasReturnsFalseIfServiceNotConfigured(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
@@ -372,11 +381,11 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @group has
      */
-    public function testHasReturnsTrueIfServiceIsConfigured()
+    public function testHasReturnsTrueIfServiceIsConfigured(): void
     {
         $serviceManager = $this->createContainer([
             'services' => [
-                stdClass::class => new stdClass,
+                stdClass::class => new stdClass(),
             ],
         ]);
         $this->assertTrue($serviceManager->has(stdClass::class));
@@ -385,7 +394,7 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @group has
      */
-    public function testHasReturnsTrueIfFactoryIsConfigured()
+    public function testHasReturnsTrueIfFactoryIsConfigured(): void
     {
         $serviceManager = $this->createContainer([
             'factories' => [
@@ -395,7 +404,7 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertTrue($serviceManager->has(stdClass::class));
     }
 
-    public function abstractFactories()
+    public function abstractFactories(): array
     {
         return [
             'simple'  => [new SimpleAbstractFactory(), true],
@@ -406,8 +415,9 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @group has
      * @dataProvider abstractFactories
+     * @param mixed $abstractFactory
      */
-    public function testHasChecksAgainstAbstractFactories($abstractFactory, $expected)
+    public function testHasChecksAgainstAbstractFactories($abstractFactory, bool $expected): void
     {
         $serviceManager = $this->createContainer([
             'abstract_factories' => [
@@ -421,36 +431,36 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @covers \Laminas\ServiceManager\ServiceManager::configure
      */
-    public function testCanConfigureAllServiceTypes()
+    public function testCanConfigureAllServiceTypes(): void
     {
         $serviceManager = $this->createContainer([
-            'services' => [
+            'services'           => [
                 'config' => ['foo' => 'bar'],
             ],
-            'factories' => [
+            'factories'          => [
                 stdClass::class => InvokableFactory::class,
             ],
-            'delegators' => [
+            'delegators'         => [
                 stdClass::class => [
                     function ($container, $name, $callback) {
-                        $instance = $callback();
+                        $instance      = $callback();
                         $instance->foo = 'bar';
                         return $instance;
                     },
                 ],
             ],
-            'shared' => [
+            'shared'             => [
                 'config'        => true,
                 stdClass::class => true,
             ],
-            'aliases' => [
+            'aliases'            => [
                 'Aliased' => stdClass::class,
             ],
-            'shared_by_default' => false,
+            'shared_by_default'  => false,
             'abstract_factories' => [
                 new SimpleAbstractFactory(),
             ],
-            'initializers' => [
+            'initializers'       => [
                 function ($container, $instance) {
                     if (! $instance instanceof stdClass) {
                         return;
@@ -500,7 +510,7 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @covers \Laminas\ServiceManager\ServiceManager::configure
      */
-    public function testCanSpecifyAbstractFactoryUsingStringViaConfiguration()
+    public function testCanSpecifyAbstractFactoryUsingStringViaConfiguration(): void
     {
         $serviceManager = $this->createContainer([
             'abstract_factories' => [
@@ -512,7 +522,7 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertInstanceOf(DateTime::class, $dateTime);
     }
 
-    public function invalidFactories()
+    public function invalidFactories(): array
     {
         return [
             'null'                 => [null],
@@ -527,20 +537,21 @@ trait CommonServiceLocatorBehaviorsTrait
         ];
     }
 
-    public function invalidAbstractFactories()
+    public function invalidAbstractFactories(): array
     {
-        $factories = $this->invalidFactories();
+        $factories                     = $this->invalidFactories();
         $factories['non-class-string'] = ['non-callable-string', 'valid class name'];
         return $factories;
     }
 
     /**
      * @dataProvider invalidAbstractFactories
+     * @param mixed $factory
      * @covers \Laminas\ServiceManager\ServiceManager::configure
      */
     public function testPassingInvalidAbstractFactoryTypeViaConfigurationRaisesException(
         $factory,
-        $contains = 'invalid abstract factory'
+        string $contains = 'invalid abstract factory'
     ) {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($contains);
@@ -551,10 +562,10 @@ trait CommonServiceLocatorBehaviorsTrait
         ]);
     }
 
-    public function testCanSpecifyInitializerUsingStringViaConfiguration()
+    public function testCanSpecifyInitializerUsingStringViaConfiguration(): void
     {
         $serviceManager = $this->createContainer([
-            'factories' => [
+            'factories'    => [
                 stdClass::class => InvokableFactory::class,
             ],
             'initializers' => [
@@ -568,20 +579,21 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertEquals('bar', $instance->foo, '"foo" property was not properly injected');
     }
 
-    public function invalidInitializers()
+    public function invalidInitializers(): array
     {
-        $factories = $this->invalidFactories();
+        $factories                     = $this->invalidFactories();
         $factories['non-class-string'] = ['non-callable-string', 'callable or an instance of'];
         return $factories;
     }
 
     /**
      * @dataProvider invalidInitializers
+     * @param mixed $initializer
      * @covers \Laminas\ServiceManager\ServiceManager::configure
      */
     public function testPassingInvalidInitializerTypeViaConfigurationRaisesException(
         $initializer,
-        $contains = 'invalid initializer'
+        string $contains = 'invalid initializer'
     ) {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($contains);
@@ -595,7 +607,7 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @covers \Laminas\ServiceManager\ServiceManager::getFactory
      */
-    public function testGetRaisesExceptionWhenNoFactoryIsResolved()
+    public function testGetRaisesExceptionWhenNoFactoryIsResolved(): void
     {
         $serviceManager = $this->createContainer();
         $this->expectException(ContainerException::class);
@@ -603,9 +615,9 @@ trait CommonServiceLocatorBehaviorsTrait
         $serviceManager->get('Some\Unknown\Service');
     }
 
-    public function invalidDelegators()
+    public function invalidDelegators(): array
     {
-        $invalidDelegators = $this->invalidFactories();
+        $invalidDelegators                        = $this->invalidFactories();
         $invalidDelegators['invalid-classname']   = ['not-a-class-name', 'invalid delegator'];
         $invalidDelegators['non-invokable-class'] = [stdClass::class];
         return $invalidDelegators;
@@ -613,14 +625,15 @@ trait CommonServiceLocatorBehaviorsTrait
 
     /**
      * @dataProvider invalidDelegators
+     * @param mixed $delegator
      * @covers \Laminas\ServiceManager\ServiceManager::createDelegatorFromName
      */
     public function testInvalidDelegatorShouldRaiseExceptionDuringCreation(
         $delegator,
-        $contains = 'non-callable delegator'
+        string $contains = 'non-callable delegator'
     ) {
         $serviceManager = $this->createContainer([
-            'factories' => [
+            'factories'  => [
                 stdClass::class => InvokableFactory::class,
             ],
             'delegators' => [
@@ -639,13 +652,13 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::setAlias
      */
-    public function testCanInjectAliases()
+    public function testCanInjectAliases(): void
     {
         $container = $this->createContainer([
             'factories' => [
                 'foo' => function () {
-                    return new stdClass;
-                }
+                    return new stdClass();
+                },
             ],
         ]);
 
@@ -662,7 +675,7 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::setInvokableClass
      */
-    public function testCanInjectInvokables()
+    public function testCanInjectInvokables(): void
     {
         $container = $this->createContainer();
         $container->setInvokableClass('foo', stdClass::class);
@@ -676,9 +689,9 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::setFactory
      */
-    public function testCanInjectFactories()
+    public function testCanInjectFactories(): void
     {
-        $instance  = new stdClass;
+        $instance  = new stdClass();
         $container = $this->createContainer();
 
         $container->setFactory('foo', function () use ($instance) {
@@ -693,26 +706,26 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::mapLazyService
      */
-    public function testCanMapLazyServices()
+    public function testCanMapLazyServices(): void
     {
         $container = $this->createContainer();
-        $container->mapLazyService('foo', __CLASS__);
+        $container->mapLazyService('foo', self::class);
         $r = new ReflectionProperty($container, 'lazyServices');
         $r->setAccessible(true);
         $lazyServices = $r->getValue($container);
         $this->assertArrayHasKey('class_map', $lazyServices);
         $this->assertArrayHasKey('foo', $lazyServices['class_map']);
-        $this->assertEquals(__CLASS__, $lazyServices['class_map']['foo']);
+        $this->assertEquals(self::class, $lazyServices['class_map']['foo']);
     }
 
     /**
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::addAbstractFactory
      */
-    public function testCanInjectAbstractFactories()
+    public function testCanInjectAbstractFactories(): void
     {
         $container = $this->createContainer();
-        $container->addAbstractFactory(TestAsset\SimpleAbstractFactory::class);
+        $container->addAbstractFactory(SimpleAbstractFactory::class);
         // @todo Remove "true" flag once #49 is merged
         $this->assertTrue($container->has(stdClass::class, true));
         $instance = $container->get(stdClass::class);
@@ -723,18 +736,18 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::addDelegator
      */
-    public function testCanInjectDelegators()
+    public function testCanInjectDelegators(): void
     {
         $container = $this->createContainer([
             'factories' => [
                 'foo' => function () {
-                    return new stdClass;
-                }
+                    return new stdClass();
+                },
             ],
         ]);
 
         $container->addDelegator('foo', function ($container, $name, $callback) {
-            $instance = $callback();
+            $instance       = $callback();
             $instance->name = $name;
             return $instance;
         });
@@ -748,13 +761,13 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::addInitializer
      */
-    public function testCanInjectInitializers()
+    public function testCanInjectInitializers(): void
     {
         $container = $this->createContainer([
             'factories' => [
                 'foo' => function () {
-                    return new stdClass;
-                }
+                    return new stdClass();
+                },
             ],
         ]);
         $container->addInitializer(function ($container, $instance) {
@@ -774,7 +787,7 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::setService
      */
-    public function testCanInjectServices()
+    public function testCanInjectServices(): void
     {
         $container = $this->createContainer();
         $container->setService('foo', $this);
@@ -785,13 +798,13 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @covers \Laminas\ServiceManager\ServiceManager::setShared
      */
-    public function testCanInjectSharingRules()
+    public function testCanInjectSharingRules(): void
     {
         $container = $this->createContainer([
             'factories' => [
                 'foo' => function () {
-                    return new stdClass;
-                }
+                    return new stdClass();
+                },
             ],
         ]);
         $container->setShared('foo', false);
@@ -800,37 +813,59 @@ trait CommonServiceLocatorBehaviorsTrait
         $this->assertNotSame($first, $second);
     }
 
-    public function methodsAffectedByOverrideSettings()
+    public function methodsAffectedByOverrideSettings(): array
     {
-        // @codingStandardsIgnoreStart
         //  name                        => [ 'method to invoke',  [arguments for invocation]]
         return [
-            'setAlias'                  => ['setAlias',           ['foo', 'bar']],
-            'setInvokableClass'         => ['setInvokableClass',  ['foo', __CLASS__]],
-            'setFactory'                => ['setFactory',         ['foo', function () {
-            }]],
-            'setService'                => ['setService',         ['foo', $this]],
-            'setShared'                 => ['setShared',          ['foo', false]],
-            'mapLazyService'            => ['mapLazyService',     ['foo', __CLASS__]],
-            'addDelegator'              => ['addDelegator',       ['foo', function () {
-            }]],
-            'configure-alias'           => ['configure',          [['aliases'       => ['foo' => 'bar']]]],
-            'configure-invokable'       => ['configure',          [['invokables'    => ['foo' => 'foo']]]],
-            'configure-invokable-alias' => ['configure',          [['invokables'    => ['foo' => 'bar']]]],
-            'configure-factory'         => ['configure',          [['factories'     => ['foo' => function () {
-            }]]]],
-            'configure-service'         => ['configure',          [['services'      => ['foo' => $this]]]],
-            'configure-shared'          => ['configure',          [['shared'        => ['foo' => false]]]],
-            'configure-lazy-service'    => ['configure',          [['lazy_services' => ['class_map' => ['foo' => __CLASS__]]]]],
+            'setAlias'                  => ['setAlias', ['foo', 'bar']],
+            'setInvokableClass'         => ['setInvokableClass', ['foo', self::class]],
+            'setFactory'                => [
+                'setFactory',
+                [
+                    'foo',
+                    function () {
+                    },
+                ],
+            ],
+            'setService'                => ['setService', ['foo', $this]],
+            'setShared'                 => ['setShared', ['foo', false]],
+            'mapLazyService'            => ['mapLazyService', ['foo', self::class]],
+            'addDelegator'              => [
+                'addDelegator',
+                [
+                    'foo',
+                    function () {
+                    },
+                ],
+            ],
+            'configure-alias'           => ['configure', [['aliases' => ['foo' => 'bar']]]],
+            'configure-invokable'       => ['configure', [['invokables' => ['foo' => 'foo']]]],
+            'configure-invokable-alias' => ['configure', [['invokables' => ['foo' => 'bar']]]],
+            'configure-factory'         => [
+                'configure',
+                [
+                    [
+                        'factories' => [
+                            'foo' => function () {
+                            },
+                        ],
+                    ],
+                ],
+            ],
+            'configure-service'         => ['configure', [['services' => ['foo' => $this]]]],
+            'configure-shared'          => ['configure', [['shared' => ['foo' => false]]]],
+            'configure-lazy-service'    => [
+                'configure',
+                [['lazy_services' => ['class_map' => ['foo' => self::class]]]],
+            ],
         ];
-        // @codingStandardsIgnoreEnd
     }
 
     /**
      * @dataProvider methodsAffectedByOverrideSettings
      * @group mutation
      */
-    public function testConfiguringInstanceRaisesExceptionIfAllowOverrideIsFalse($method, $args)
+    public function testConfiguringInstanceRaisesExceptionIfAllowOverrideIsFalse(string $method, array $args): void
     {
         $container = $this->createContainer(['services' => ['foo' => $this]]);
         $container->setAllowOverride(false);
@@ -841,7 +876,7 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @group mutation
      */
-    public function testAllowOverrideFlagIsFalseByDefault()
+    public function testAllowOverrideFlagIsFalseByDefault(): ContainerInterface
     {
         $container = $this->createContainer();
         $this->assertFalse($container->getAllowOverride());
@@ -852,7 +887,7 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group mutation
      * @depends testAllowOverrideFlagIsFalseByDefault
      */
-    public function testAllowOverrideFlagIsMutable($container)
+    public function testAllowOverrideFlagIsMutable(ServiceManager $container): void
     {
         $container->setAllowOverride(true);
         $this->assertTrue($container->getAllowOverride());
@@ -861,7 +896,7 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @group migration
      */
-    public function testCanRetrieveParentContainerViaGetServiceLocatorWithDeprecationNotice()
+    public function testCanRetrieveParentContainerViaGetServiceLocatorWithDeprecationNotice(): void
     {
         $container = $this->createContainer();
         set_error_handler(function ($errno, $errstr) {
@@ -874,7 +909,7 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @group zendframework/zend-servicemanager#83
      */
-    public function testCrashesOnCyclicAliases()
+    public function testCrashesOnCyclicAliases(): void
     {
         $this->expectException(CyclicAliasException::class);
 
@@ -886,7 +921,7 @@ trait CommonServiceLocatorBehaviorsTrait
         ]);
     }
 
-    public function testMinimalCyclicAliasDefinitionShouldThrow()
+    public function testMinimalCyclicAliasDefinitionShouldThrow(): void
     {
         $sm = $this->createContainer([]);
 
@@ -894,13 +929,13 @@ trait CommonServiceLocatorBehaviorsTrait
         $sm->setAlias('alias', 'alias');
     }
 
-    public function testCoverageDepthFirstTaggingOnRecursiveAliasDefinitions()
+    public function testCoverageDepthFirstTaggingOnRecursiveAliasDefinitions(): void
     {
         $sm = $this->createContainer([
             'factories' => [
                 stdClass::class => InvokableFactory::class,
             ],
-            'aliases' => [
+            'aliases'   => [
                 'alias1' => 'alias2',
                 'alias2' => 'alias3',
                 'alias3' => stdClass::class,
@@ -922,22 +957,22 @@ trait CommonServiceLocatorBehaviorsTrait
      * remain stable through the internal states.
      *
      * @dataProvider provideConsistencyOverInternalStatesTests
-     *
-     * @param ContainerInterface $smTemplate
-     * @param string $name
-     * @param array[] string $test
      */
-    public function testConsistencyOverInternalStates($smTemplate, $name, $test, $shared)
-    {
-        $sm = clone $smTemplate;
-        $object['get'] = [];
+    public function testConsistencyOverInternalStates(
+        ContainerInterface $smTemplate,
+        string $name,
+        array $test,
+        bool $shared
+    ): void {
+        $sm              = clone $smTemplate;
+        $object['get']   = [];
         $object['build'] = [];
 
         // call get()/build() and store the retrieved
         // objects in $object['get'] or $object['build']
         // respectively
         foreach ($test as $method) {
-            $obj = $sm->$method($name);
+            $obj                                   = $sm->$method($name);
             $object[$shared ? $method : 'build'][] = $obj;
             $this->assertNotNull($obj);
             $this->assertTrue($sm->has($name));
@@ -963,45 +998,41 @@ trait CommonServiceLocatorBehaviorsTrait
      * Data provider
      *
      * @see testConsistencyOverInternalStates above
-     *
-     * @param ContainerInterface $smTemplate
-     * @param string $name
-     * @param string[] $test
      */
-    public function provideConsistencyOverInternalStatesTests()
+    public function provideConsistencyOverInternalStatesTests(): array
     {
         $config1 = [
-            'factories' => [
+            'factories'          => [
                 // to allow build('service')
-                'service' => function ($container, $requestedName, array $options = null) {
+                'service'   => function ($container, $requestedName, ?array $options = null) {
                     return new stdClass();
                 },
-                'factory' => SampleFactory::class,
+                'factory'   => SampleFactory::class,
                 'delegator' => SampleFactory::class,
             ],
-            'delegators' => [
+            'delegators'         => [
                 'delegator' => [
-                    PassthroughDelegatorFactory::class
+                    PassthroughDelegatorFactory::class,
                 ],
             ],
-            'invokables' => [
+            'invokables'         => [
                 'invokable' => InvokableObject::class,
             ],
-            'services' => [
+            'services'           => [
                 'service' => new stdClass(),
             ],
-            'aliases' => [
-                'serviceAlias'          => 'service',
-                'invokableAlias'        => 'invokable',
-                'factoryAlias'          => 'factory',
-                'abstractFactoryAlias'  => 'foo',
-                'delegatorAlias'        => 'delegator',
+            'aliases'            => [
+                'serviceAlias'         => 'service',
+                'invokableAlias'       => 'invokable',
+                'factoryAlias'         => 'factory',
+                'abstractFactoryAlias' => 'foo',
+                'delegatorAlias'       => 'delegator',
             ],
             'abstract_factories' => [
-                AbstractFactoryFoo::class
-            ]
+                AbstractFactoryFoo::class,
+            ],
         ];
-        $config2 = $config1;
+        $config2                      = $config1;
         $config2['shared_by_default'] = false;
 
         $configs = [$config1, $config2];
@@ -1014,7 +1045,6 @@ trait CommonServiceLocatorBehaviorsTrait
         //
         // [['get', 'get', 'get'], ['get', 'get', 'build'], ...
         // ['build', 'build', 'build']]
-        //
         $methods = ['get', 'build'];
         foreach ($methods as $method1) {
             foreach ($methods as $method2) {
@@ -1052,7 +1082,7 @@ trait CommonServiceLocatorBehaviorsTrait
 
             foreach ($names as $name => $shared) {
                 foreach ($callSequences as $callSequence) {
-                    $sm = clone $smTemplate;
+                    $sm      = clone $smTemplate;
                     $tests[] = [$smTemplate, $name, $callSequence, $shared];
                 }
             }

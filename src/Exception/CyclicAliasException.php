@@ -22,11 +22,11 @@ class CyclicAliasException extends InvalidArgumentException
      */
     public static function fromCyclicAlias(string $alias, array $aliases): self
     {
-        $cycle = $alias;
+        $cycle  = $alias;
         $cursor = $alias;
         while (isset($aliases[$cursor]) && $aliases[$cursor] !== $alias) {
             $cursor = $aliases[$cursor];
-            $cycle .= ' -> '. $cursor;
+            $cycle .= ' -> ' . $cursor;
         }
         $cycle .= ' -> ' . $alias . "\n";
 
@@ -82,7 +82,7 @@ class CyclicAliasException extends InvalidArgumentException
             }
 
             $cycleCandidate[$targetName] = true;
-            $targetName = $aliases[$targetName];
+            $targetName                  = $aliases[$targetName];
         }
 
         return null;
@@ -109,12 +109,13 @@ class CyclicAliasException extends InvalidArgumentException
      */
     private static function printCycles(array $detectedCycles)
     {
-        return "[\n" . implode("\n", array_map([__CLASS__, 'printCycle'], $detectedCycles)) . "\n]";
+        return "[\n" . implode("\n", array_map([self::class, 'printCycle'], $detectedCycles)) . "\n]";
     }
 
     /**
      * @param string[] $detectedCycle
      * @return string
+     * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedMethod
      */
     private static function printCycle(array $detectedCycle)
     {
@@ -147,9 +148,7 @@ class CyclicAliasException extends InvalidArgumentException
 
             $hash = serialize(array_values($cycleAliases));
 
-            $detectedCyclesByHash[$hash] = isset($detectedCyclesByHash[$hash])
-                ? $detectedCyclesByHash[$hash]
-                : $detectedCycle;
+            $detectedCyclesByHash[$hash] = $detectedCyclesByHash[$hash] ?? $detectedCycle;
         }
 
         return array_values($detectedCyclesByHash);

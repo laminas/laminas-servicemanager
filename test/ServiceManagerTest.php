@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager;
 
 use DateTime;
+use Interop\Container\ContainerInterface as InteropContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use Laminas\ServiceManager\ServiceManager;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleServiceManager;
-use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
-
 
 use function get_class;
 
@@ -26,24 +26,24 @@ class ServiceManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
 
-    public function createContainer(array $config = [])
+    public function createContainer(array $config = []): ServiceManager
     {
         $this->creationContext = new ServiceManager($config);
         return $this->creationContext;
     }
 
-    public function testServiceManagerIsAPsr11Container()
+    public function testServiceManagerIsAPsr11Container(): void
     {
         $container = $this->createContainer();
         $this->assertInstanceOf(ContainerInterface::class, $container);
     }
 
-    public function testConfigurationCanBeMerged()
+    public function testConfigurationCanBeMerged(): void
     {
         $serviceManager = new SimpleServiceManager([
             'factories' => [
-                DateTime::class => InvokableFactory::class
-            ]
+                DateTime::class => InvokableFactory::class,
+            ],
         ]);
 
         $this->assertTrue($serviceManager->has(DateTime::class));
@@ -51,7 +51,7 @@ class ServiceManagerTest extends TestCase
         $this->assertTrue($serviceManager->has(stdClass::class));
     }
 
-    public function testConfigurationTakesPrecedenceWhenMerged()
+    public function testConfigurationTakesPrecedenceWhenMerged(): void
     {
         $factory = $this->getMockBuilder(FactoryInterface::class)
             ->getMock();
@@ -60,8 +60,8 @@ class ServiceManagerTest extends TestCase
 
         $serviceManager = new SimpleServiceManager([
             'factories' => [
-                stdClass::class => $factory
-            ]
+                stdClass::class => $factory,
+            ],
         ]);
 
         $serviceManager->get(stdClass::class);
@@ -71,23 +71,23 @@ class ServiceManagerTest extends TestCase
      * @covers \Laminas\ServiceManager\ServiceManager::doCreate
      * @covers \Laminas\ServiceManager\ServiceManager::createDelegatorFromName
      */
-    public function testCanWrapCreationInDelegators()
+    public function testCanWrapCreationInDelegators(): void
     {
-        $config = [
+        $config         = [
             'option' => 'OPTIONED',
         ];
         $serviceManager = new ServiceManager([
-            'services'  => [
+            'services'   => [
                 'config' => $config,
             ],
-            'factories' => [
+            'factories'  => [
                 stdClass::class => InvokableFactory::class,
             ],
             'delegators' => [
                 stdClass::class => [
                     TestAsset\PreDelegator::class,
                     function ($container, $name, $callback) {
-                        $instance = $callback();
+                        $instance      = $callback();
                         $instance->foo = 'bar';
                         return $instance;
                     },
@@ -105,43 +105,85 @@ class ServiceManagerTest extends TestCase
         $this->assertEquals('bar', $instance->foo);
     }
 
-    public function shareProvider()
+    public function shareProvider(): array
     {
         $sharedByDefault          = true;
         $serviceShared            = true;
         $serviceDefined           = true;
         $shouldReturnSameInstance = true;
 
-        // @codingStandardsIgnoreStart
         return [
             // Description => [$sharedByDefault, $serviceShared, $serviceDefined, $expectedInstance]
-            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [$sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [$sharedByDefault,  $serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [$sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
-            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [$sharedByDefault, !$serviceShared, !$serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [!$sharedByDefault,  $serviceShared,  $serviceDefined,  $shouldReturnSameInstance],
-            'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [!$sharedByDefault,  $serviceShared, !$serviceDefined, !$shouldReturnSameInstance],
-            'SharedByDefault: F, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [!$sharedByDefault, !$serviceShared,  $serviceDefined, !$shouldReturnSameInstance],
-            'SharedByDefault: F, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [!$sharedByDefault, !$serviceShared, !$serviceDefined, !$shouldReturnSameInstance],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [
+                $sharedByDefault,
+                $serviceShared,
+                $serviceDefined,
+                $shouldReturnSameInstance,
+            ],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [
+                $sharedByDefault,
+                $serviceShared,
+                ! $serviceDefined,
+                $shouldReturnSameInstance,
+            ],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [
+                $sharedByDefault,
+                ! $serviceShared,
+                $serviceDefined,
+                ! $shouldReturnSameInstance,
+            ],
+            'SharedByDefault: T, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [
+                $sharedByDefault,
+                ! $serviceShared,
+                ! $serviceDefined,
+                $shouldReturnSameInstance,
+            ],
+            'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: T' => [
+                ! $sharedByDefault,
+                $serviceShared,
+                $serviceDefined,
+                $shouldReturnSameInstance,
+            ],
+            'SharedByDefault: F, ServiceIsExplicitlyShared: T, ServiceIsDefined: F' => [
+                ! $sharedByDefault,
+                $serviceShared,
+                ! $serviceDefined,
+                ! $shouldReturnSameInstance,
+            ],
+            'SharedByDefault: F, ServiceIsExplicitlyShared: F, ServiceIsDefined: T' => [
+                ! $sharedByDefault,
+                ! $serviceShared,
+                $serviceDefined,
+                ! $shouldReturnSameInstance,
+            ],
+            'SharedByDefault: F, ServiceIsExplicitlyShared: F, ServiceIsDefined: F' => [
+                ! $sharedByDefault,
+                ! $serviceShared,
+                ! $serviceDefined,
+                ! $shouldReturnSameInstance,
+            ],
         ];
-        // @codingStandardsIgnoreEnd
     }
 
     /**
      * @dataProvider shareProvider
      */
-    public function testShareability($sharedByDefault, $serviceShared, $serviceDefined, $shouldBeSameInstance)
-    {
+    public function testShareability(
+        bool $sharedByDefault,
+        bool $serviceShared,
+        bool $serviceDefined,
+        bool $shouldBeSameInstance
+    ): void {
         $config = [
             'shared_by_default' => $sharedByDefault,
             'factories'         => [
                 stdClass::class => InvokableFactory::class,
-            ]
+            ],
         ];
 
         if ($serviceDefined) {
             $config['shared'] = [
-                stdClass::class => $serviceShared
+                stdClass::class => $serviceShared,
             ];
         }
 
@@ -153,7 +195,7 @@ class ServiceManagerTest extends TestCase
         $this->assertEquals($shouldBeSameInstance, $a === $b);
     }
 
-    public function testMapsOneToOneInvokablesAsInvokableFactoriesInternally()
+    public function testMapsOneToOneInvokablesAsInvokableFactoriesInternally(): void
     {
         $config = [
             'invokables' => [
@@ -178,7 +220,7 @@ class ServiceManagerTest extends TestCase
         );
     }
 
-    public function testMapsNonSymmetricInvokablesAsAliasPlusInvokableFactory()
+    public function testMapsNonSymmetricInvokablesAsAliasPlusInvokableFactory(): void
     {
         $config = [
             'invokables' => [
@@ -218,49 +260,49 @@ class ServiceManagerTest extends TestCase
     /**
      * @depends testMapsNonSymmetricInvokablesAsAliasPlusInvokableFactory
      */
-    public function testSharedServicesReferencingInvokableAliasShouldBeHonored()
+    public function testSharedServicesReferencingInvokableAliasShouldBeHonored(): void
     {
         $config = [
             'invokables' => [
                 'Invokable' => InvokableObject::class,
             ],
-            'shared' => [
+            'shared'     => [
                 'Invokable' => false,
             ],
         ];
 
         $serviceManager = new ServiceManager($config);
-        $instance1 = $serviceManager->get('Invokable');
-        $instance2 = $serviceManager->get('Invokable');
+        $instance1      = $serviceManager->get('Invokable');
+        $instance2      = $serviceManager->get('Invokable');
 
         $this->assertNotSame($instance1, $instance2);
     }
 
-    public function testSharedServicesReferencingAliasShouldBeHonored()
+    public function testSharedServicesReferencingAliasShouldBeHonored(): void
     {
         $config = [
-            'aliases' => [
+            'aliases'   => [
                 'Invokable' => InvokableObject::class,
             ],
             'factories' => [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            'shared' => [
+            'shared'    => [
                 'Invokable' => false,
             ],
         ];
 
         $serviceManager = new ServiceManager($config);
-        $instance1 = $serviceManager->get('Invokable');
-        $instance2 = $serviceManager->get('Invokable');
+        $instance1      = $serviceManager->get('Invokable');
+        $instance2      = $serviceManager->get('Invokable');
 
         $this->assertNotSame($instance1, $instance2);
     }
 
-    public function testAliasToAnExplicitServiceShouldWork()
+    public function testAliasToAnExplicitServiceShouldWork(): void
     {
         $config = [
-            'aliases' => [
+            'aliases'  => [
                 'Invokable' => InvokableObject::class,
             ],
             'services' => [
@@ -279,10 +321,10 @@ class ServiceManagerTest extends TestCase
     /**
      * @depends testAliasToAnExplicitServiceShouldWork
      */
-    public function testSetAliasShouldWorkWithRecursiveAlias()
+    public function testSetAliasShouldWorkWithRecursiveAlias(): void
     {
-        $config = [
-            'aliases' => [
+        $config         = [
+            'aliases'  => [
                 'Alias' => 'TailInvokable',
             ],
             'services' => [
@@ -301,12 +343,12 @@ class ServiceManagerTest extends TestCase
         $this->assertSame($service, $headAlias);
     }
 
-    public function testAbstractFactoryShouldBeCheckedForResolvedAliasesInsteadOfAliasName()
+    public function testAbstractFactoryShouldBeCheckedForResolvedAliasesInsteadOfAliasName(): void
     {
         $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
 
         $serviceManager = new SimpleServiceManager([
-            'aliases' => [
+            'aliases'            => [
                 'Alias' => 'ServiceName',
             ],
             'abstract_factories' => [
@@ -326,28 +368,28 @@ class ServiceManagerTest extends TestCase
         $this->assertTrue($serviceManager->has('Alias'));
     }
 
-    public static function sampleFactory()
+    public static function sampleFactory(): object
     {
         return new stdClass();
     }
 
-    public function testFactoryMayBeStaticMethodDescribedByCallableString()
+    public function testFactoryMayBeStaticMethodDescribedByCallableString(): void
     {
-        $config = [
+        $config         = [
             'factories' => [
                 stdClass::class => 'LaminasTest\ServiceManager\ServiceManagerTest::sampleFactory',
-            ]
+            ],
         ];
         $serviceManager = new SimpleServiceManager($config);
         $this->assertEquals(stdClass::class, get_class($serviceManager->get(stdClass::class)));
     }
 
-    public function testResolvedAliasFromAbstractFactory()
+    public function testResolvedAliasFromAbstractFactory(): void
     {
         $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
 
         $serviceManager = new SimpleServiceManager([
-            'aliases' => [
+            'aliases'            => [
                 'Alias' => 'ServiceName',
             ],
             'abstract_factories' => [
@@ -369,12 +411,12 @@ class ServiceManagerTest extends TestCase
         $this->assertTrue($serviceManager->has('Alias'));
     }
 
-    public function testResolvedAliasNoMatchingAbstractFactoryReturnsFalse()
+    public function testResolvedAliasNoMatchingAbstractFactoryReturnsFalse(): void
     {
         $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
 
         $serviceManager = new SimpleServiceManager([
-            'aliases' => [
+            'aliases'            => [
                 'Alias' => 'ServiceName',
             ],
             'abstract_factories' => [
@@ -396,9 +438,10 @@ class ServiceManagerTest extends TestCase
 
     /**
      * Hotfix #3
+     *
      * @see https://github.com/laminas/laminas-servicemanager/issues/3
      */
-    public function testConfigureMultipleTimesAvoidsDuplicates()
+    public function testConfigureMultipleTimesAvoidsDuplicates(): void
     {
         $delegatorFactory = function (
             ContainerInterface $container,
@@ -407,18 +450,18 @@ class ServiceManagerTest extends TestCase
         ) {
             /** @var InvokableObject $instance */
             $instance = $callback();
-            $options = $instance->getOptions();
-            $inc = $options['inc'] ?? 0;
+            $options  = $instance->getOptions();
+            $inc      = $options['inc'] ?? 0;
             return new InvokableObject(['inc' => ++$inc]);
         };
 
         $config = [
-            'factories' => [
+            'factories'     => [
                 'Foo' => function () {
                     return new InvokableObject();
                 },
             ],
-            'delegators' => [
+            'delegators'    => [
                 'Foo' => [
                     $delegatorFactory,
                     LazyServiceFactory::class,
@@ -447,19 +490,19 @@ class ServiceManagerTest extends TestCase
     public function testWillApplyAllInitializersAfterServiceCreation(): void
     {
         $initializerOneCalled = $initializerTwoCalled = false;
-        $initializers = [
-        static function (object $service) use (&$initializerOneCalled): object {
-            $initializerOneCalled = true;
-            return $service;
-        },
-        static function (object $service) use (&$initializerTwoCalled): object {
-            $initializerTwoCalled = true;
-            return $service;
-        },
+        $initializers         = [
+            static function (object $service) use (&$initializerOneCalled): object {
+                $initializerOneCalled = true;
+                return $service;
+            },
+            static function (object $service) use (&$initializerTwoCalled): object {
+                $initializerTwoCalled = true;
+                return $service;
+            },
         ];
 
         $serviceManager = new ServiceManager([
-            'invokables' => [
+            'invokables'   => [
                 stdClass::class => stdClass::class,
             ],
             'initializers' => $initializers,
@@ -479,9 +522,9 @@ class ServiceManagerTest extends TestCase
      */
     public function testWontShareServiceWhenRequestedByAlias(array $config, string $serviceName, string $alias): void
     {
-        $serviceManager = new ServiceManager($config);
-        $service = $serviceManager->get($serviceName);
-        $serviceFromAlias = $serviceManager->get($alias);
+        $serviceManager                        = new ServiceManager($config);
+        $service                               = $serviceManager->get($serviceName);
+        $serviceFromAlias                      = $serviceManager->get($alias);
         $serviceFromServiceNameAfterUsingAlias = $serviceManager->get($serviceName);
 
         self::assertNotSame($service, $serviceFromAlias);
@@ -495,32 +538,32 @@ class ServiceManagerTest extends TestCase
     public function aliasedServices(): array
     {
         return [
-            'invokables' => [
+            'invokables'         => [
                 [
                     'invokables' => [
                         stdClass::class => stdClass::class,
                     ],
-                    'aliases' => [
+                    'aliases'    => [
                         'object' => stdClass::class,
                     ],
-                    'shared' => [
+                    'shared'     => [
                         stdClass::class => false,
                     ],
                 ],
                 stdClass::class,
                 'object',
             ],
-            'factories' => [
+            'factories'          => [
                 [
                     'factories' => [
                         stdClass::class => static function (): stdClass {
                             return new stdClass();
                         },
                     ],
-                    'aliases' => [
+                    'aliases'   => [
                         'object' => stdClass::class,
                     ],
-                    'shared' => [
+                    'shared'    => [
                         stdClass::class => false,
                     ],
                 ],
@@ -531,25 +574,31 @@ class ServiceManagerTest extends TestCase
                 [
                     'abstract_factories' => [
                         new class implements AbstractFactoryInterface {
-
-                            public function canCreate(\Interop\Container\ContainerInterface $container, $requestedName)
+                            /**
+                             * @param string $requestedName
+                             */
+                            public function canCreate(InteropContainerInterface $container, $requestedName): bool
                             {
                                 return $requestedName === stdClass::class;
                             }
 
+                            /**
+                             * @param string                   $requestedName
+                             * @param array<string,mixed>|null $options
+                             */
                             public function __invoke(
-                                \Interop\Container\ContainerInterface $container,
+                                InteropContainerInterface $container,
                                 $requestedName,
-                                array $options = null
-                            ) {
+                                ?array $options = null
+                            ): object {
                                 return new stdClass();
                             }
-                        }
+                        },
                     ],
-                    'aliases' => [
+                    'aliases'            => [
                         'object' => stdClass::class,
                     ],
-                    'shared' => [
+                    'shared'             => [
                         stdClass::class => false,
                     ],
                 ],
@@ -570,10 +619,10 @@ class ServiceManagerTest extends TestCase
             ->method('canCreate');
 
         $serviceManager = new ServiceManager([
-            'services' => [
+            'services'           => [
                 'Config' => [],
             ],
-            'aliases' => [
+            'aliases'            => [
                 'config' => 'Config',
             ],
             'abstract_factories' => [
