@@ -152,3 +152,38 @@ around the instantiation logic of that particular service.
 
 This latter point is the primary use case for delegators: *decorating the
 instantiation logic for a service*.
+
+## Delegator Factories and Service Aliases
+
+In typical [service manager configurations](./configuring-the-service-manager.md) you have the opportunity to alias services. The following configuration would enable you to retrieve a `Buzzer` instance by its concrete implementation name and by the name of an interface that it implements, in this case, `BuzzerInterface`.
+
+```php
+$serviceManager = new Laminas\ServiceManager\ServiceManager([
+    'factories' => [
+        Buzzer::class => InvokableFactory::class,
+    ],
+    'aliases' => [
+        BuzzerInterface::class => Buzzer::class,
+    ],
+]);
+```
+
+Currently, a delegator factory that targets an alias will not execute. Delegators must be configured using the resolved name of the service.
+
+For example, given the following configuration, **no delegation would occur**:
+
+```php
+$serviceManager = new Laminas\ServiceManager\ServiceManager([
+    'factories' => [
+        Buzzer::class => InvokableFactory::class,
+    ],
+    'aliases' => [
+        BuzzerInterface::class => Buzzer::class,
+    ],
+    'delegators' => [
+        BuzzerInterface::class => [
+            BuzzerDelegatorFactory::class,
+        ],
+    ],
+]);
+```
