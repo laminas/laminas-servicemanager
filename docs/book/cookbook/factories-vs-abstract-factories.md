@@ -49,14 +49,14 @@ The service manager is optimized to locate *factories*, as it can do an
 immediate hash table lookup; abstract factories involve:
 
 - Looping through each abstract factory
-    - invoking its method for service location
-    - if the service is located, using the factory
+  - invoking its method for service location
+  - if the service is located, using the factory
 
 This means, internally:
 
 - a hash table lookup (for the abstract factory)
 - invocation of 1:N methods for discovery
-    - which may contain additional lookups and/or retrievals in the container
+  - which may contain additional lookups and/or retrievals in the container
 - invocation of a factory method (assuming successful lookup)
 
 As such, having an explicit map can aid performance dramatically.
