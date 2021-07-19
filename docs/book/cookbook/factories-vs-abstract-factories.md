@@ -9,9 +9,9 @@ As an example:
 
 ```php
 return [
-	'factories' => [
-		SomeService::class => AnAbstractFactory::class,
-	],
+    'factories' => [
+        SomeService::class => AnAbstractFactory::class,
+    ],
 ];
 ```
 
