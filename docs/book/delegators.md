@@ -187,3 +187,23 @@ $serviceManager = new Laminas\ServiceManager\ServiceManager([
     ],
 ]);
 ```
+
+In order for delegation to occur, the above configuration would need to be modified to target the resolved service name:
+
+```php
+$serviceManager = new Laminas\ServiceManager\ServiceManager([
+    'factories' => [
+        Buzzer::class => Laminas\ServiceManager\Factory\InvokableFactory::class,
+    ],
+    'aliases' => [
+        BuzzerInterface::class => Buzzer::class,
+    ],
+    'delegators' => [
+        Buzzer::class => [
+            BuzzerDelegatorFactory::class, // will now execute as expected
+        ],
+    ],
+]);
+```
+
+Retrieving the `Buzzer` using its resolved name "`Buzzer::class`" or its alias "`BuzzerInterface::class`" will now both yield delegated instances.
