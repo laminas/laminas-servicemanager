@@ -160,7 +160,7 @@ In typical [service manager configurations](./configuring-the-service-manager.md
 ```php
 $serviceManager = new Laminas\ServiceManager\ServiceManager([
     'factories' => [
-        Buzzer::class => InvokableFactory::class,
+        Buzzer::class => Laminas\ServiceManager\Factory\InvokableFactory::class,
     ],
     'aliases' => [
         BuzzerInterface::class => Buzzer::class,
@@ -175,14 +175,14 @@ For example, given the following configuration, **no delegation would occur**:
 ```php
 $serviceManager = new Laminas\ServiceManager\ServiceManager([
     'factories' => [
-        Buzzer::class => InvokableFactory::class,
+        Buzzer::class => Laminas\ServiceManager\Factory\InvokableFactory::class,
     ],
     'aliases' => [
         BuzzerInterface::class => Buzzer::class,
     ],
     'delegators' => [
         BuzzerInterface::class => [
-            BuzzerDelegatorFactory::class,
+            BuzzerDelegatorFactory::class, // will not be executed
         ],
     ],
 ]);
