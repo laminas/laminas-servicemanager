@@ -246,16 +246,11 @@ class ServiceManager implements ServiceLocatorInterface
      */
     public function has($name)
     {
-        $strategies = $this->createServiceDetectionStrategies();
-        return (static function (string $name) use ($strategies): bool {
-            foreach ($strategies as $strategy) {
-                if ($strategy($name)) {
-                    return true;
-                }
-            }
-
-            return false;
-        })($name);
+        // Check static services and factories first to speedup the most common requests.
+        return (
+            $this->staticServiceOrFactoryCanCreate($name) ||
+            $this->abstractFactoryCanCreate($name)
+        );
     }
 
     /**
@@ -952,52 +947,38 @@ class ServiceManager implements ServiceLocatorInterface
     }
 
     /**
-     * @return array<int,callable>
-     * @psalm-return list<Closure(string):bool>
+     * Check if a static service or factory exists for the given name.
      */
-    private function createServiceDetectionStrategies(): array
+    private function staticServiceOrFactoryCanCreate(string $name): bool
     {
-        $staticServiceOrFactoryCanCreate = function (string $name): bool {
-            return isset($this->services[$name]) || isset($this->factories[$name]);
-        };
+        if (isset($this->services[$name]) || isset($this->factories[$name])) {
+            return true;
+        }
 
-        $abstractFactoriesCanCreate = function (string $name): bool {
-            foreach ($this->abstractFactories as $abstractFactory) {
-                if ($abstractFactory->canCreate($this->creationContext, $name)) {
-                    return true;
-                }
+        $resolvedName = $this->aliases[$name] ?? $name;
+        if ($resolvedName !== $name) {
+            return $this->staticServiceOrFactoryCanCreate($resolvedName);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if an abstract factory exists that can create a service for the given name.
+     */
+    private function abstractFactoryCanCreate(string $name): bool
+    {
+        foreach ($this->abstractFactories as $abstractFactory) {
+            if ($abstractFactory->canCreate($this->creationContext, $name)) {
+                return true;
             }
+        }
 
-            return false;
-        };
+        $resolvedName = $this->aliases[$name] ?? $name;
+        if ($resolvedName !== $name) {
+            return $this->abstractFactoryCanCreate($resolvedName);
+        }
 
-        return [
-            // Check services and factories first to speedup the most common requests.
-            function (string $name) use ($staticServiceOrFactoryCanCreate): bool {
-                if ($staticServiceOrFactoryCanCreate($name)) {
-                    return true;
-                }
-
-                $resolvedName = $this->aliases[$name] ?? $name;
-                if ($resolvedName === $name) {
-                    return false;
-                }
-
-                return $staticServiceOrFactoryCanCreate($resolvedName);
-            },
-            // Check if abstract factories can create the service
-            function (string $name) use ($abstractFactoriesCanCreate): bool {
-                if ($abstractFactoriesCanCreate($name)) {
-                    return true;
-                }
-
-                $resolvedName = $this->aliases[$name] ?? $name;
-                if ($resolvedName === $name) {
-                    return false;
-                }
-
-                return $abstractFactoriesCanCreate($resolvedName);
-            },
-        ];
+        return false;
     }
 }
