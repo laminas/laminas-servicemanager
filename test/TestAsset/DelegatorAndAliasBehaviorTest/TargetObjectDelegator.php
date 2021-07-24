@@ -12,7 +12,7 @@ final class TargetObjectDelegator
 {
     public const DELEGATED_VALUE = 'Delegated Value';
 
-    public function __invoke(ContainerInterface $container, string $serviceName, callable $callback)
+    public function __invoke(ContainerInterface $container, string $serviceName, callable $callback): TargetObject
     {
         $service = $callback();
         assert($service instanceof TargetObject);

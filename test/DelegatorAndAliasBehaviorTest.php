@@ -15,7 +15,7 @@ final class DelegatorAndAliasBehaviorTest extends TestCase
     public function testThatADelegatorTargetingAServiceWillExecute(): void
     {
         $serviceManager = new ServiceManager([
-            'factories' => [
+            'factories'  => [
                 TargetObject::class => InvokableFactory::class,
             ],
             'delegators' => [
@@ -33,10 +33,10 @@ final class DelegatorAndAliasBehaviorTest extends TestCase
     public function testThatADelegatorWillNotExecuteWhenItTargetsAnAlias(): void
     {
         $serviceManager = new ServiceManager([
-            'factories' => [
+            'factories'  => [
                 TargetObject::class => InvokableFactory::class,
             ],
-            'aliases' => [
+            'aliases'    => [
                 'Some Alias' => TargetObject::class,
             ],
             'delegators' => [
