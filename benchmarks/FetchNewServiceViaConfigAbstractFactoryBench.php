@@ -15,19 +15,17 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class FetchNewServiceViaConfigAbstractFactoryBench
 {
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     private $sm;
 
     public function __construct()
     {
         $this->sm = new ServiceManager([
-            'services' => [
+            'services'           => [
                 'config' => [
                     ConfigAbstractFactory::class => [
-                        BenchAsset\Dependency::class => [],
-                        BenchAsset\ServiceWithDependency::class => [
+                        BenchAsset\Dependency::class               => [],
+                        BenchAsset\ServiceWithDependency::class    => [
                             BenchAsset\Dependency::class,
                         ],
                         BenchAsset\ServiceDependingOnConfig::class => [
@@ -42,42 +40,42 @@ class FetchNewServiceViaConfigAbstractFactoryBench
         ]);
     }
 
-    public function benchFetchServiceWithNoDependencies()
+    public function benchFetchServiceWithNoDependencies(): void
     {
         $sm = clone $this->sm;
 
         $sm->get(BenchAsset\Dependency::class);
     }
 
-    public function benchBuildServiceWithNoDependencies()
+    public function benchBuildServiceWithNoDependencies(): void
     {
         $sm = clone $this->sm;
 
         $sm->build(BenchAsset\Dependency::class);
     }
 
-    public function benchFetchServiceDependingOnConfig()
+    public function benchFetchServiceDependingOnConfig(): void
     {
         $sm = clone $this->sm;
 
         $sm->get(BenchAsset\ServiceDependingOnConfig::class);
     }
 
-    public function benchBuildServiceDependingOnConfig()
+    public function benchBuildServiceDependingOnConfig(): void
     {
         $sm = clone $this->sm;
 
         $sm->build(BenchAsset\ServiceDependingOnConfig::class);
     }
 
-    public function benchFetchServiceWithDependency()
+    public function benchFetchServiceWithDependency(): void
     {
         $sm = clone $this->sm;
 
         $sm->get(BenchAsset\ServiceWithDependency::class);
     }
 
-    public function benchBuildServiceWithDependency()
+    public function benchBuildServiceWithDependency(): void
     {
         $sm = clone $this->sm;
 

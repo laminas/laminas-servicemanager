@@ -4,14 +4,9 @@ namespace LaminasBench\ServiceManager\BenchAsset;
 
 class ServiceWithDependency
 {
-    /**
-     * @var Dependency
-     */
-    private $dependency;
+    /** @var Dependency */
+    protected $dependency;
 
-    /**
-     * @param Dependency $dependency
-     */
     public function __construct(Dependency $dependency)
     {
         $this->dependency = $dependency;

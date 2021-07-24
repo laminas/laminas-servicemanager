@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasBench\ServiceManager;
 
 use Laminas\ServiceManager\ServiceManager;
@@ -13,7 +15,7 @@ use stdClass;
  * @Iterations(20)
  * @Warmup(2)
  */
-class FetchCachedServicesBench
+class HasCachedServicesBench
 {
     /** @var ServiceManager */
     private $sm;
@@ -49,59 +51,67 @@ class FetchCachedServicesBench
         $this->sm->get('recursiveAlias2');
     }
 
-    public function benchFetchFactory1(): void
+    public function benchHasFactory1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->get('factory1');
+        $sm->has('factory1');
     }
 
-    public function benchFetchInvokable1(): void
+    public function benchHasInvokable1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->get('invokable1');
+        $sm->has('invokable1');
     }
 
-    public function benchFetchService1(): void
+    public function benchHasService1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->get('service1');
+        $sm->has('service1');
     }
 
-    public function benchFetchAlias1(): void
+    public function benchHasAlias1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->get('alias1');
+        $sm->has('alias1');
     }
 
-    public function benchFetchRecursiveAlias1(): void
+    public function benchHasRecursiveAlias1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->get('recursiveAlias1');
+        $sm->has('recursiveAlias1');
     }
 
-    public function benchFetchRecursiveAlias2(): void
+    public function benchHasRecursiveAlias2(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->get('recursiveAlias2');
+        $sm->has('recursiveAlias2');
     }
 
-    public function benchFetchAbstractFactoryService(): void
+    public function benchHasAbstractFactoryService(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->get('foo');
+        $sm->has('foo');
+    }
+
+    public function benchNonExistingService(): void
+    {
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('non-existing');
     }
 }

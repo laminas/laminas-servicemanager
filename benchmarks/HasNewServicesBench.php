@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasBench\ServiceManager;
 
 use Laminas\ServiceManager\ServiceManager;
@@ -13,16 +15,14 @@ use stdClass;
  * @Iterations(10)
  * @Warmup(2)
  */
-class SetNewServicesBench
+class HasNewServicesBench
 {
-    private const NUM_SERVICES = 100;
-
     /** @var ServiceManager */
     private $sm;
 
     public function __construct()
     {
-        $config = [
+        $this->sm = new ServiceManager([
             'factories'          => [
                 'factory1' => BenchAsset\FactoryFoo::class,
             ],
@@ -31,6 +31,7 @@ class SetNewServicesBench
             ],
             'services'           => [
                 'service1' => new stdClass(),
+                'config'   => [],
             ],
             'aliases'            => [
                 'factoryAlias1'          => 'factory1',
@@ -40,45 +41,70 @@ class SetNewServicesBench
             'abstract_factories' => [
                 BenchAsset\AbstractFactoryFoo::class,
             ],
-        ];
-
-        for ($i = 0; $i <= self::NUM_SERVICES; $i++) {
-            $config['factories']["factory_$i"] = BenchAsset\FactoryFoo::class;
-            $config['aliases']["alias_$i"]     = "service_$i";
-        }
-
-        $this->sm = new ServiceManager($config);
+        ]);
     }
 
-    public function benchSetService(): void
+    public function benchHasFactory1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->setService('service2', new stdClass());
+        $sm->has('factory1');
     }
 
-    public function benchSetFactory(): void
+    public function benchHasInvokable1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->setFactory('factory2', BenchAsset\FactoryFoo::class);
+        $sm->has('invokable1');
     }
 
-    public function benchSetAlias(): void
+    public function benchHasService1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->setAlias('factoryAlias2', 'factory1');
+        $sm->has('service1');
     }
 
-    public function benchSetAliasOverrided(): void
+    public function benchFetchFactoryAlias1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
 
-        $sm->setAlias('recursiveFactoryAlias1', 'factory1');
+        $sm->has('factoryAlias1');
+    }
+
+    public function benchHasRecursiveFactoryAlias1(): void
+    {
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('recursiveFactoryAlias1');
+    }
+
+    public function benchFetchRecursiveFactoryAlias2(): void
+    {
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('recursiveFactoryAlias2');
+    }
+
+    public function benchFetchAbstractFactoryFoo(): void
+    {
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('foo');
+    }
+
+    public function benchNonExistingService(): void
+    {
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('non-existing');
     }
 }
