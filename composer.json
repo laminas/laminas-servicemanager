@@ -40,8 +40,8 @@
         "phpbench/phpbench": "^1.0.0-alpha3",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.4",
-        "psalm/plugin-phpunit": "^0.15.0",
-        "vimeo/psalm": "^4.3.1"
+        "psalm/plugin-phpunit": "^0.16.1",
+        "vimeo/psalm": "^4.8"
     },
     "provide": {
         "container-interop/container-interop-implementation": "^1.2",
