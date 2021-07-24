@@ -37,7 +37,7 @@
         "laminas/laminas-dependency-plugin": "^2.1.2",
         "mikey179/vfsstream": "^1.6.8",
         "ocramius/proxy-manager": "^2.2.3",
-        "phpbench/phpbench": "^1.0.0-alpha3",
+        "phpbench/phpbench": "^1.0.4",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.4",
         "psalm/plugin-phpunit": "^0.16.1",
