@@ -53,41 +53,65 @@ class HasCachedServicesBench
 
     public function benchHasFactory1(): void
     {
-        $this->sm->has('factory1');
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('factory1');
     }
 
     public function benchHasInvokable1(): void
     {
-        $this->sm->has('invokable1');
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('invokable1');
     }
 
     public function benchHasService1(): void
     {
-        $this->sm->has('service1');
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('service1');
     }
 
     public function benchHasAlias1(): void
     {
-        $this->sm->has('alias1');
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('alias1');
     }
 
     public function benchHasRecursiveAlias1(): void
     {
-        $this->sm->has('recursiveAlias1');
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('recursiveAlias1');
     }
 
     public function benchHasRecursiveAlias2(): void
     {
-        $this->sm->has('recursiveAlias2');
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('recursiveAlias2');
     }
 
     public function benchHasAbstractFactoryService(): void
     {
-        $this->sm->has('foo');
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('foo');
     }
 
     public function benchNonExistingService(): void
     {
-        $this->sm->has('non-existing');
+        // @todo @link https://github.com/phpbench/phpbench/issues/304
+        $sm = clone $this->sm;
+
+        $sm->has('non-existing');
     }
 }
