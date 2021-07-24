@@ -247,10 +247,7 @@ class ServiceManager implements ServiceLocatorInterface
     public function has($name)
     {
         // Check static services and factories first to speedup the most common requests.
-        return (
-            $this->staticServiceOrFactoryCanCreate($name) ||
-            $this->abstractFactoryCanCreate($name)
-        );
+        return $this->staticServiceOrFactoryCanCreate($name) || $this->abstractFactoryCanCreate($name);
     }
 
     /**
