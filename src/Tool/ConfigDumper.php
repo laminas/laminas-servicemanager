@@ -15,13 +15,11 @@ use function array_filter;
 use function array_key_exists;
 use function class_exists;
 use function date;
-use function get_class;
 use function gettype;
 use function implode;
 use function interface_exists;
 use function is_array;
 use function is_int;
-use function is_null;
 use function is_string;
 use function sprintf;
 use function str_repeat;
@@ -29,7 +27,7 @@ use function var_export;
 
 class ConfigDumper
 {
-    const CONFIG_TEMPLATE = <<<EOC
+    public const CONFIG_TEMPLATE = <<<EOC
 <?php
 
 /**
@@ -40,15 +38,10 @@ class ConfigDumper
 return %s;
 EOC;
 
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     private $container;
 
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container = null)
+    public function __construct(?ContainerInterface $container = null)
     {
         $this->container = $container;
     }
@@ -58,7 +51,7 @@ EOC;
      * @param string $className
      * @param bool $ignoreUnresolved
      * @return array
-     * @throws InvalidArgumentException for invalid $className
+     * @throws InvalidArgumentException For invalid $className.
      */
     public function createDependencyConfig(array $config, $className, $ignoreUnresolved = false)
     {
@@ -92,10 +85,10 @@ EOC;
         $classConfig = [];
 
         foreach ($constructorArguments as $constructorArgument) {
-            $type = $constructorArgument->getType();
+            $type         = $constructorArgument->getType();
             $argumentType = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
 
-            if (is_null($argumentType)) {
+            if ($argumentType === null) {
                 if ($ignoreUnresolved) {
                     // don't throw an exception, just return the previous config
                     return $config;
@@ -110,7 +103,7 @@ EOC;
                     $constructorArgument->getName()
                 ));
             }
-            $config = $this->createDependencyConfig($config, $argumentType, $ignoreUnresolved);
+            $config        = $this->createDependencyConfig($config, $argumentType, $ignoreUnresolved);
             $classConfig[] = $argumentType;
         }
 
@@ -120,8 +113,8 @@ EOC;
     }
 
     /**
-     * @param $className
-     * @throws InvalidArgumentException if class name is not a string or does
+     * @param string $className
+     * @throws InvalidArgumentException If class name is not a string or does
      *     not exist.
      */
     private function validateClassName($className)
@@ -149,7 +142,7 @@ EOC;
     /**
      * @param array $config
      * @return array
-     * @throws InvalidArgumentException if ConfigAbstractFactory configuration
+     * @throws InvalidArgumentException If ConfigAbstractFactory configuration
      *     value is not an array.
      */
     public function createFactoryMappingsFromConfig(array $config)
@@ -181,7 +174,8 @@ EOC;
     {
         $this->validateClassName($className);
 
-        if (array_key_exists('service_manager', $config)
+        if (
+            array_key_exists('service_manager', $config)
             && array_key_exists('factories', $config['service_manager'])
             && array_key_exists($className, $config['service_manager']['factories'])
         ) {
@@ -201,7 +195,7 @@ EOC;
         $prepared = $this->prepareConfig($config);
         return sprintf(
             self::CONFIG_TEMPLATE,
-            get_class($this),
+            static::class,
             date('Y-m-d H:i:s'),
             $prepared
         );
@@ -214,10 +208,10 @@ EOC;
      */
     private function prepareConfig($config, $indentLevel = 1)
     {
-        $indent = str_repeat(' ', $indentLevel * 4);
+        $indent  = str_repeat(' ', $indentLevel * 4);
         $entries = [];
         foreach ($config as $key => $value) {
-            $key = $this->createConfigKey($key);
+            $key       = $this->createConfigKey($key);
             $entries[] = sprintf(
                 '%s%s%s,',
                 $indent,

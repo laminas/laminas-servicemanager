@@ -14,9 +14,7 @@ use function file_get_contents;
 
 class FactoryCreatorTest extends TestCase
 {
-    /**
-     * @var FactoryCreator
-     */
+    /** @var FactoryCreator */
     private $factoryCreator;
 
     /**
@@ -27,26 +25,26 @@ class FactoryCreatorTest extends TestCase
         $this->factoryCreator = new FactoryCreator();
     }
 
-    public function testCreateFactoryCreatesForInvokable()
+    public function testCreateFactoryCreatesForInvokable(): void
     {
         $className = InvokableObject::class;
-        $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/InvokableObject.php');
+        $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/InvokableObject.php');
 
         $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
     }
 
-    public function testCreateFactoryCreatesForSimpleDependencies()
+    public function testCreateFactoryCreatesForSimpleDependencies(): void
     {
         $className = SimpleDependencyObject::class;
-        $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
+        $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
 
         $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
     }
 
-    public function testCreateFactoryCreatesForComplexDependencies()
+    public function testCreateFactoryCreatesForComplexDependencies(): void
     {
         $className = ComplexDependencyObject::class;
-        $factory = file_get_contents(__DIR__ . '/../TestAsset/factories/ComplexDependencyObject.php');
+        $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/ComplexDependencyObject.php');
 
         $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
     }

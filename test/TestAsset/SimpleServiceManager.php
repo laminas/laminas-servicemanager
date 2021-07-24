@@ -10,7 +10,8 @@ use stdClass;
 
 class SimpleServiceManager extends ServiceManager
 {
+    /** @var array<string,string> */
     protected $factories = [
-        stdClass::class => InvokableFactory::class
+        stdClass::class => InvokableFactory::class,
     ];
 }

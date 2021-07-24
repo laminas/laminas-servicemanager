@@ -12,7 +12,7 @@ use stdClass;
  */
 class PsrContainerDecoratorTest extends TestCase
 {
-    public function testProxiesHasToDecoratedContainer()
+    public function testProxiesHasToDecoratedContainer(): void
     {
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
@@ -25,9 +25,9 @@ class PsrContainerDecoratorTest extends TestCase
         $this->assertFalse($decorator->has('string key'));
     }
 
-    public function testProxiesGetToDecoratedContainer()
+    public function testProxiesGetToDecoratedContainer(): void
     {
-        $service = new stdClass();
+        $service      = new stdClass();
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
         $psrContainer->expects($this->once())
@@ -38,11 +38,11 @@ class PsrContainerDecoratorTest extends TestCase
         $this->assertSame($service, $decorator->get('string key'));
     }
 
-    public function testGetterReturnsDecoratedContainer()
+    public function testGetterReturnsDecoratedContainer(): void
     {
         $psrContainer = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
-        $decorator = new PsrContainerDecorator($psrContainer);
+        $decorator    = new PsrContainerDecorator($psrContainer);
         $this->assertSame($psrContainer, $decorator->getContainer());
     }
 }

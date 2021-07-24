@@ -17,7 +17,6 @@ interface InitializerInterface
     /**
      * Initialize the given instance
      *
-     * @param  ContainerInterface $container
      * @param  object             $instance
      * @return void
      */

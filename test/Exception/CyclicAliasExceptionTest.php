@@ -12,10 +12,8 @@ use PHPUnit\Framework\TestCase;
  */
 class CyclicAliasExceptionTest extends TestCase
 {
-
     /**
      * @dataProvider cyclicAliasProvider
-     *
      * @param string               $alias, conflicting alias key
      * @param array<string,string> $aliases
      */
@@ -38,7 +36,7 @@ class CyclicAliasExceptionTest extends TestCase
     public function cyclicAliasProvider(): array
     {
         return [
-            'a -> a' => [
+            'a -> a'           => [
                 'a',
                 [
                     'a' => 'a',
@@ -46,7 +44,7 @@ class CyclicAliasExceptionTest extends TestCase
                 "A cycle was detected within the aliases definitions:\n"
                 . "a -> a\n",
             ],
-            'a -> b -> a' => [
+            'a -> b -> a'      => [
                 'a',
                 [
                     'a' => 'b',
@@ -55,7 +53,7 @@ class CyclicAliasExceptionTest extends TestCase
                 "A cycle was detected within the aliases definitions:\n"
                 . "a -> b -> a\n",
             ],
-            'b -> a -> b'  => [
+            'b -> a -> b'      => [
                 'b',
                 [
                     'a' => 'b',
@@ -99,7 +97,6 @@ class CyclicAliasExceptionTest extends TestCase
 
     /**
      * @dataProvider aliasesProvider
-     *
      * @param string[] $aliases
      * @param string   $expectedMessage
      */
@@ -117,15 +114,15 @@ class CyclicAliasExceptionTest extends TestCase
     public function aliasesProvider()
     {
         return [
-            'empty set' => [
+            'empty set'                            => [
                 [],
                 'A cycle was detected within the following aliases map:
 
 [
 
-]'
+]',
             ],
-            'acyclic set' => [
+            'acyclic set'                          => [
                 [
                     'b' => 'a',
                     'd' => 'c',
@@ -135,9 +132,9 @@ class CyclicAliasExceptionTest extends TestCase
 [
 "b" => "a"
 "d" => "c"
-]'
+]',
             ],
-            'acyclic self-referencing set' => [
+            'acyclic self-referencing set'         => [
                 [
                     'b' => 'a',
                     'c' => 'b',
@@ -149,9 +146,9 @@ class CyclicAliasExceptionTest extends TestCase
 "b" => "a"
 "c" => "b"
 "d" => "c"
-]'
+]',
             ],
-            'cyclic set' => [
+            'cyclic set'                           => [
                 [
                     'b' => 'a',
                     'a' => 'b',
@@ -167,9 +164,9 @@ The cycle was detected in the following alias map:
 [
 "b" => "a"
 "a" => "b"
-]'
+]',
             ],
-            'cyclic set (indirect)' => [
+            'cyclic set (indirect)'                => [
                 [
                     'b' => 'a',
                     'c' => 'b',
@@ -187,9 +184,9 @@ The cycle was detected in the following alias map:
 "b" => "a"
 "c" => "b"
 "a" => "c"
-]'
+]',
             ],
-            'cyclic set + acyclic set' => [
+            'cyclic set + acyclic set'             => [
                 [
                     'b' => 'a',
                     'a' => 'b',
@@ -207,7 +204,7 @@ The cycle was detected in the following alias map:
 "b" => "a"
 "a" => "b"
 "d" => "c"
-]'
+]',
             ],
             'cyclic set + reference to cyclic set' => [
                 [
@@ -228,7 +225,7 @@ The cycle was detected in the following alias map:
 "b" => "a"
 "a" => "b"
 "c" => "a"
-]'
+]',
             ],
         ];
     }

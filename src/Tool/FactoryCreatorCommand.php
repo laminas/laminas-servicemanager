@@ -6,21 +6,25 @@ namespace Laminas\ServiceManager\Tool;
 
 use Laminas\ServiceManager\Exception;
 use Laminas\Stdlib\ConsoleHelper;
+use stdClass;
 
 use function array_shift;
 use function class_exists;
 use function in_array;
 use function sprintf;
 
+use const STDERR;
+use const STDOUT;
+
 class FactoryCreatorCommand
 {
-    const COMMAND_DUMP = 'dump';
-    const COMMAND_ERROR = 'error';
-    const COMMAND_HELP = 'help';
+    public const COMMAND_DUMP  = 'dump';
+    public const COMMAND_ERROR = 'error';
+    public const COMMAND_HELP  = 'help';
 
-    const DEFAULT_SCRIPT_NAME = __CLASS__;
+    public const DEFAULT_SCRIPT_NAME = self::class;
 
-    const HELP_TEMPLATE = <<< EOH
+    public const HELP_TEMPLATE = <<<EOH
 <info>Usage:</info>
 
   %s [-h|--help|help] <className>
@@ -35,24 +39,19 @@ Generates to STDOUT a factory for creating the specified class; this may then
 be added to your application, and configured as a factory for the class.
 EOH;
 
-    /**
-     * @var ConsoleHelper
-     */
+    /** @var ConsoleHelper */
     private $helper;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $scriptName;
 
     /**
      * @param string $scriptName
-     * @param ConsoleHelper $helper
      */
-    public function __construct($scriptName = self::DEFAULT_SCRIPT_NAME, ConsoleHelper $helper = null)
+    public function __construct($scriptName = self::DEFAULT_SCRIPT_NAME, ?ConsoleHelper $helper = null)
     {
         $this->scriptName = $scriptName;
-        $this->helper = $helper ?: new ConsoleHelper();
+        $this->helper     = $helper ?: new ConsoleHelper();
     }
 
     /**
@@ -96,7 +95,7 @@ EOH;
 
     /**
      * @param array $args
-     * @return \stdClass
+     * @return stdClass
      */
     private function parseArgs(array $args)
     {
@@ -138,7 +137,7 @@ EOH;
      * @param string $command
      * @param string|null $class Name of class to reflect.
      * @param string|null $error Error message, if any.
-     * @return \stdClass
+     * @return stdClass
      */
     private function createArguments($command, $class = null, $error = null)
     {

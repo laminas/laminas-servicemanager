@@ -21,7 +21,6 @@ interface AbstractFactoryInterface extends FactoryInterface
     /**
      * Can the factory create an instance for the service?
      *
-     * @param  ContainerInterface $container
      * @param  string $requestedName
      * @return bool
      */

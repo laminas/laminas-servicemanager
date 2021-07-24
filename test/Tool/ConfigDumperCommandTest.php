@@ -12,27 +12,43 @@ use LaminasTest\ServiceManager\TestAsset\ObjectWithObjectScalarDependency;
 use LaminasTest\ServiceManager\TestAsset\ObjectWithScalarDependency;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 
 use function file_get_contents;
-use function PHPUnit\Framework\assertIsArray;
 use function realpath;
 use function sprintf;
+
+use const STDERR;
+use const STDOUT;
 
 class ConfigDumperCommandTest extends TestCase
 {
     use ProphecyTrait;
 
+    /** @var vfsStreamDirectory */
+    private $configDir;
+
+    /** @var ObjectProphecy<ConsoleHelper> */
+    private $helper;
+
+    /** @var ConfigDumperCommand */
+    private $command;
+
     public function setUp(): void
     {
         $this->configDir = vfsStream::setup('project');
-        $this->helper = $this->prophesize(ConsoleHelper::class);
-        $this->command = new ConfigDumperCommand(ConfigDumperCommand::class, $this->helper->reveal());
+        $this->helper    = $this->prophesize(ConsoleHelper::class);
+        $this->command   = new ConfigDumperCommand(ConfigDumperCommand::class, $this->helper->reveal());
     }
 
-    public function assertHelp($stream = STDOUT)
+    /**
+     * @param resource $stream
+     */
+    public function assertHelp($stream = STDOUT): void
     {
         $this->helper->writeLine(
             Argument::containingString('<info>Usage:</info>'),
@@ -41,21 +57,21 @@ class ConfigDumperCommandTest extends TestCase
         )->shouldBeCalled();
     }
 
-    public function assertErrorRaised($message)
+    public function assertErrorRaised(string $message): void
     {
         $this->helper->writeErrorMessage(
             Argument::containingString($message)
         )->shouldBeCalled();
     }
 
-    public function testEmitsHelpWhenNoArgumentsProvided()
+    public function testEmitsHelpWhenNoArgumentsProvided(): void
     {
         $command = $this->command;
         $this->assertHelp();
         $this->assertEquals(0, $command([]));
     }
 
-    public function helpArguments()
+    public function helpArguments(): array
     {
         return [
             'short'   => ['-h'],
@@ -64,7 +80,7 @@ class ConfigDumperCommandTest extends TestCase
         ];
     }
 
-    public function ignoreUnresolvedArguments()
+    public function ignoreUnresolvedArguments(): array
     {
         return [
             'short' => ['-i'],
@@ -75,14 +91,14 @@ class ConfigDumperCommandTest extends TestCase
     /**
      * @dataProvider helpArguments
      */
-    public function testEmitsHelpWhenHelpArgumentProvidedAsFirstArgument($argument)
+    public function testEmitsHelpWhenHelpArgumentProvidedAsFirstArgument(string $argument): void
     {
         $command = $this->command;
         $this->assertHelp();
         $this->assertEquals(0, $command([$argument]));
     }
 
-    public function testEmitsErrorWhenTooFewArgumentsPresent()
+    public function testEmitsErrorWhenTooFewArgumentsPresent(): void
     {
         $command = $this->command;
         $this->assertErrorRaised('Missing class name');
@@ -90,7 +106,7 @@ class ConfigDumperCommandTest extends TestCase
         $this->assertEquals(1, $command(['foo']));
     }
 
-    public function testRaisesExceptionIfConfigFileNotFoundAndDirectoryNotWritable()
+    public function testRaisesExceptionIfConfigFileNotFoundAndDirectoryNotWritable(): void
     {
         $command = $this->command;
         vfsStream::newDirectory('config', 0550)
@@ -101,7 +117,7 @@ class ConfigDumperCommandTest extends TestCase
         $this->assertEquals(1, $command([$config, 'Not\A\Real\Class']));
     }
 
-    public function testGeneratesConfigFileWhenProvidedConfigurationFileNotFound()
+    public function testGeneratesConfigFileWhenProvidedConfigurationFileNotFound(): void
     {
         $command = $this->command;
         vfsStream::newDirectory('config', 0775)
@@ -126,7 +142,7 @@ class ConfigDumperCommandTest extends TestCase
     /**
      * @dataProvider ignoreUnresolvedArguments
      */
-    public function testGeneratesConfigFileIgnoringUnresolved($argument)
+    public function testGeneratesConfigFileIgnoringUnresolved(string $argument): void
     {
         $command = $this->command;
         vfsStream::newDirectory('config', 0775)
@@ -158,7 +174,7 @@ class ConfigDumperCommandTest extends TestCase
         );
     }
 
-    public function testEmitsErrorWhenConfigurationFileDoesNotReturnArray()
+    public function testEmitsErrorWhenConfigurationFileDoesNotReturnArray(): void
     {
         $command = $this->command;
         vfsStream::newFile('config/invalid.config.php')
@@ -170,7 +186,7 @@ class ConfigDumperCommandTest extends TestCase
         $this->assertEquals(1, $command([$config, 'Not\A\Real\Class']));
     }
 
-    public function testEmitsErrorWhenClassDoesNotExist()
+    public function testEmitsErrorWhenClassDoesNotExist(): void
     {
         $command = $this->command;
         vfsStream::newFile('config/test.config.php')
@@ -182,7 +198,7 @@ class ConfigDumperCommandTest extends TestCase
         $this->assertEquals(1, $command([$config, 'Not\A\Real\Class']));
     }
 
-    public function testEmitsErrorWhenUnableToCreateConfiguration()
+    public function testEmitsErrorWhenUnableToCreateConfiguration(): void
     {
         $command = $this->command;
         vfsStream::newFile('config/test.config.php')
@@ -194,7 +210,7 @@ class ConfigDumperCommandTest extends TestCase
         $this->assertEquals(1, $command([$config, ObjectWithScalarDependency::class]));
     }
 
-    public function testEmitsConfigFileToStdoutWhenSuccessful()
+    public function testEmitsConfigFileToStdoutWhenSuccessful(): void
     {
         $command = $this->command;
         vfsStream::newFile('config/test.config.php')

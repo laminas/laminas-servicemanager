@@ -20,7 +20,7 @@ class FailingAbstractFactory implements AbstractFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(ContainerInterface $container, $className, array $options = null)
+    public function __invoke(ContainerInterface $container, $className, ?array $options = null)
     {
     }
 }

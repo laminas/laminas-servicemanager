@@ -29,9 +29,7 @@ class ConfigDumperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /**
-     * @var ConfigDumper
-     */
+    /** @var ConfigDumper */
     private $dumper;
 
     public function setUp(): void
@@ -39,14 +37,14 @@ class ConfigDumperTest extends TestCase
         $this->dumper = new ConfigDumper();
     }
 
-    public function testCreateDependencyConfigExceptsIfClassNameIsNotString()
+    public function testCreateDependencyConfigExceptsIfClassNameIsNotString(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Class name must be a string, integer given');
         $this->dumper->createDependencyConfig([], 42);
     }
 
-    public function testCreateDependencyConfigExceptsIfClassDoesNotExist()
+    public function testCreateDependencyConfigExceptsIfClassDoesNotExist(): void
     {
         $className = 'Dirk\Gentley\Holistic\Detective\Agency';
         $this->expectException(InvalidArgumentException::class);
@@ -54,20 +52,20 @@ class ConfigDumperTest extends TestCase
         $this->dumper->createDependencyConfig([], $className);
     }
 
-    public function testCreateDependencyConfigInvokableObjectReturnsEmptyArray()
+    public function testCreateDependencyConfigInvokableObjectReturnsEmptyArray(): void
     {
         $config = $this->dumper->createDependencyConfig([], InvokableObject::class);
         $this->assertEquals(
             [
                 ConfigAbstractFactory::class => [
-                    InvokableObject::class => []
-                ]
+                    InvokableObject::class => [],
+                ],
             ],
             $config
         );
     }
 
-    public function testCreateDependencyConfigSimpleDependencyReturnsCorrectly()
+    public function testCreateDependencyConfigSimpleDependencyReturnsCorrectly(): array
     {
         $config = $this->dumper->createDependencyConfig([], SimpleDependencyObject::class);
         $this->assertEquals(
@@ -76,26 +74,29 @@ class ConfigDumperTest extends TestCase
                     SimpleDependencyObject::class => [
                         InvokableObject::class,
                     ],
-                    InvokableObject::class => [],
-                ]
+                    InvokableObject::class        => [],
+                ],
             ],
             $config
         );
         return $config;
     }
 
-    public function testCreateDependencyConfigClassWithoutConstructorHandlesAsInvokable()
+    public function testCreateDependencyConfigClassWithoutConstructorHandlesAsInvokable(): void
     {
         $expectedConfig = [
             ConfigAbstractFactory::class => [
                 FailingFactory::class => [],
             ],
         ];
-        $config = $this->dumper->createDependencyConfig([ConfigAbstractFactory::class => []], FailingFactory::class);
+        $config         = $this->dumper->createDependencyConfig(
+            [ConfigAbstractFactory::class => []],
+            FailingFactory::class
+        );
         $this->assertEquals($expectedConfig, $config);
     }
 
-    public function testCreateDependencyConfigWithoutTypeHintedParameterExcepts()
+    public function testCreateDependencyConfigWithoutTypeHintedParameterExcepts(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -108,7 +109,7 @@ class ConfigDumperTest extends TestCase
         );
     }
 
-    public function testCreateDependencyConfigWithContainerAndNoServiceWithoutTypeHintedParameterExcepts()
+    public function testCreateDependencyConfigWithContainerAndNoServiceWithoutTypeHintedParameterExcepts(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -128,7 +129,7 @@ class ConfigDumperTest extends TestCase
         );
     }
 
-    public function testCreateDependencyConfigWithContainerWithoutTypeHintedParameter()
+    public function testCreateDependencyConfigWithContainerWithoutTypeHintedParameter(): void
     {
         $container = $this->prophesize(ContainerInterface::class);
         $container->has(ObjectWithScalarDependency::class)
@@ -145,21 +146,21 @@ class ConfigDumperTest extends TestCase
         $this->assertEquals(
             [
                 ConfigAbstractFactory::class => [
-                    SimpleDependencyObject::class => [
+                    SimpleDependencyObject::class           => [
                         InvokableObject::class,
                     ],
-                    InvokableObject::class => [],
+                    InvokableObject::class                  => [],
                     ObjectWithObjectScalarDependency::class => [
                         SimpleDependencyObject::class,
                         ObjectWithScalarDependency::class,
                     ],
-                ]
+                ],
             ],
             $config
         );
     }
 
-    public function testCreateDependencyConfigWithoutTypeHintedParameterIgnoringUnresolved()
+    public function testCreateDependencyConfigWithoutTypeHintedParameterIgnoringUnresolved(): void
     {
         $config = $this->dumper->createDependencyConfig(
             [ConfigAbstractFactory::class => []],
@@ -169,25 +170,25 @@ class ConfigDumperTest extends TestCase
         $this->assertEquals(
             [
                 ConfigAbstractFactory::class => [
-                    SimpleDependencyObject::class => [
+                    SimpleDependencyObject::class           => [
                         InvokableObject::class,
                     ],
-                    InvokableObject::class => [],
+                    InvokableObject::class                  => [],
                     ObjectWithObjectScalarDependency::class => [
                         SimpleDependencyObject::class,
                         ObjectWithScalarDependency::class,
                     ],
-                ]
+                ],
             ],
             $config
         );
     }
 
-    public function testCreateDependencyConfigWorksWithExistingConfig()
+    public function testCreateDependencyConfigWorksWithExistingConfig(): void
     {
         $config = [
             ConfigAbstractFactory::class => [
-                InvokableObject::class => [],
+                InvokableObject::class        => [],
                 SimpleDependencyObject::class => [
                     InvokableObject::class,
                 ],
@@ -197,7 +198,7 @@ class ConfigDumperTest extends TestCase
         $this->assertEquals($config, $this->dumper->createDependencyConfig($config, SimpleDependencyObject::class));
     }
 
-    public function testCreateDependencyConfigWorksWithMultipleDependenciesOfSameType()
+    public function testCreateDependencyConfigWorksWithMultipleDependenciesOfSameType(): void
     {
         $expectedConfig = [
             ConfigAbstractFactory::class => [
@@ -205,21 +206,21 @@ class ConfigDumperTest extends TestCase
                     InvokableObject::class,
                     InvokableObject::class,
                 ],
-                InvokableObject::class => [],
+                InvokableObject::class        => [],
             ],
         ];
 
         $this->assertEquals($expectedConfig, $this->dumper->createDependencyConfig([], DoubleDependencyObject::class));
     }
 
-    public function testCreateFactoryMappingsExceptsIfClassNameIsNotString()
+    public function testCreateFactoryMappingsExceptsIfClassNameIsNotString(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Class name must be a string, integer given');
         $this->dumper->createFactoryMappings([], 42);
     }
 
-    public function testCreateFactoryMappingsExceptsIfClassDoesNotExist()
+    public function testCreateFactoryMappingsExceptsIfClassDoesNotExist(): void
     {
         $className = 'Dirk\Gentley\Holistic\Detective\Agency';
         $this->expectException(InvalidArgumentException::class);
@@ -227,7 +228,7 @@ class ConfigDumperTest extends TestCase
         $this->dumper->createFactoryMappings([], $className);
     }
 
-    public function testCreateFactoryMappingsReturnsUnmodifiedArrayIfMappingExists()
+    public function testCreateFactoryMappingsReturnsUnmodifiedArrayIfMappingExists(): void
     {
         $config = [
             'service_manager' => [
@@ -239,7 +240,7 @@ class ConfigDumperTest extends TestCase
         $this->assertEquals($config, $this->dumper->createFactoryMappings($config, InvokableObject::class));
     }
 
-    public function testCreateFactoryMappingsAddsClassIfNotExists()
+    public function testCreateFactoryMappingsAddsClassIfNotExists(): void
     {
         $expectedConfig = [
             'service_manager' => [
@@ -251,7 +252,7 @@ class ConfigDumperTest extends TestCase
         $this->assertEquals($expectedConfig, $this->dumper->createFactoryMappings([], InvokableObject::class));
     }
 
-    public function testCreateFactoryMappingsIgnoresExistingsMappings()
+    public function testCreateFactoryMappingsIgnoresExistingsMappings(): void
     {
         $config = [
             'service_manager' => [
@@ -263,12 +264,12 @@ class ConfigDumperTest extends TestCase
         $this->assertEquals($config, $this->dumper->createFactoryMappings($config, InvokableObject::class));
     }
 
-    public function testCreateFactoryMappingsFromConfigReturnsIfNoConfigKey()
+    public function testCreateFactoryMappingsFromConfigReturnsIfNoConfigKey(): void
     {
         $this->assertEquals([], $this->dumper->createFactoryMappingsFromConfig([]));
     }
 
-    public function testCreateFactoryMappingsFromConfigExceptsWhenConfigNotArray()
+    public function testCreateFactoryMappingsFromConfigExceptsWhenConfigNotArray(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -282,12 +283,12 @@ class ConfigDumperTest extends TestCase
         );
     }
 
-    public function testCreateFactoryMappingsFromConfigWithWorkingConfig()
+    public function testCreateFactoryMappingsFromConfigWithWorkingConfig(): void
     {
         $config = [
             ConfigAbstractFactory::class => [
-                InvokableObject::class => [],
-                SimpleDependencyObject::class => [
+                InvokableObject::class               => [],
+                SimpleDependencyObject::class        => [
                     InvokableObject::class,
                 ],
                 SecondComplexDependencyObject::class => [
@@ -298,18 +299,18 @@ class ConfigDumperTest extends TestCase
 
         $expectedConfig = [
             ConfigAbstractFactory::class => [
-                InvokableObject::class => [],
-                SimpleDependencyObject::class => [
+                InvokableObject::class               => [],
+                SimpleDependencyObject::class        => [
                     InvokableObject::class,
                 ],
                 SecondComplexDependencyObject::class => [
                     InvokableObject::class,
                 ],
             ],
-            'service_manager' => [
+            'service_manager'            => [
                 'factories' => [
-                    InvokableObject::class => ConfigAbstractFactory::class,
-                    SimpleDependencyObject::class => ConfigAbstractFactory::class,
+                    InvokableObject::class               => ConfigAbstractFactory::class,
+                    SimpleDependencyObject::class        => ConfigAbstractFactory::class,
                     SecondComplexDependencyObject::class => ConfigAbstractFactory::class,
                 ],
             ],
@@ -321,8 +322,9 @@ class ConfigDumperTest extends TestCase
     /**
      * @depends testCreateDependencyConfigSimpleDependencyReturnsCorrectly
      */
-    public function testDumpConfigFileReturnsContentsForConfigFileUsingUsingClassNotationAndShortArrays(array $config)
-    {
+    public function testDumpConfigFileReturnsContentsForConfigFileUsingUsingClassNotationAndShortArrays(
+        array $config
+    ): void {
         $formatted = $this->dumper->dumpConfigFile($config);
         $this->assertStringContainsString(
             '<' . "?php\n\n/**\n * This file generated by Laminas\ServiceManager\Tool\ConfigDumper.\n",
@@ -340,7 +342,7 @@ class ConfigDumperTest extends TestCase
         $this->assertEquals($test, $config);
     }
 
-    public function testWillDumpConfigForClassDependingOnInterfaceButOmitInterfaceConfig()
+    public function testWillDumpConfigForClassDependingOnInterfaceButOmitInterfaceConfig(): void
     {
         $config = $this->dumper->createDependencyConfig([], ClassDependingOnAnInterface::class);
         $this->assertEquals(

@@ -12,10 +12,13 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-
 use Prophecy\Prophecy\ObjectProphecy;
+
 use function file_get_contents;
 use function sprintf;
+
+use const STDERR;
+use const STDOUT;
 
 class FactoryCreatorCommandTest extends TestCase
 {
@@ -29,18 +32,21 @@ class FactoryCreatorCommandTest extends TestCase
 
     public function setUp(): void
     {
-        $this->helper = $this->prophesize(ConsoleHelper::class);
+        $this->helper  = $this->prophesize(ConsoleHelper::class);
         $this->command = new FactoryCreatorCommand(ConfigDumperCommand::class, $this->helper->reveal());
     }
 
-    public function testEmitsHelpWhenNoArgumentsProvided()
+    public function testEmitsHelpWhenNoArgumentsProvided(): void
     {
         $command = $this->command;
         $this->assertHelp();
         $this->assertEquals(0, $command([]));
     }
 
-    public function assertHelp($stream = STDOUT)
+    /**
+     * @param resource $stream
+     */
+    public function assertHelp($stream = STDOUT): void
     {
         $this->helper->writeLine(
             Argument::containingString('<info>Usage:</info>'),
@@ -49,11 +55,11 @@ class FactoryCreatorCommandTest extends TestCase
         )->shouldBeCalled();
     }
 
-    public function helpArguments()
+    public function helpArguments(): array
     {
         return [
-            'short' => ['-h'],
-            'long' => ['--help'],
+            'short'   => ['-h'],
+            'long'    => ['--help'],
             'literal' => ['help'],
         ];
     }
@@ -61,17 +67,17 @@ class FactoryCreatorCommandTest extends TestCase
     /**
      * @dataProvider helpArguments
      */
-    public function testEmitsHelpWhenHelpArgumentProvidedAsFirstArgument($argument)
+    public function testEmitsHelpWhenHelpArgumentProvidedAsFirstArgument(string $argument): void
     {
         $command = $this->command;
         $this->assertHelp();
         $this->assertEquals(0, $command([$argument]));
     }
 
-    public function invalidArguments()
+    public function invalidArguments(): array
     {
         return [
-            'string' => ['string'],
+            'string'    => ['string'],
             'interface' => [FactoryInterface::class],
         ];
     }
@@ -79,7 +85,7 @@ class FactoryCreatorCommandTest extends TestCase
     /**
      * @dataProvider invalidArguments
      */
-    public function testEmitsErrorMessageIfArgumentIsNotAClass($argument)
+    public function testEmitsErrorMessageIfArgumentIsNotAClass(string $argument): void
     {
         $command = $this->command;
         $this->assertErrorRaised(sprintf('Class "%s" does not exist', $argument));
@@ -87,14 +93,14 @@ class FactoryCreatorCommandTest extends TestCase
         $this->assertEquals(1, $command([$argument]));
     }
 
-    public function assertErrorRaised($message)
+    public function assertErrorRaised(string $message): void
     {
         $this->helper->writeErrorMessage(
             Argument::containingString($message)
         )->shouldBeCalled();
     }
 
-    public function testEmitsErrorWhenUnableToCreateFactory()
+    public function testEmitsErrorWhenUnableToCreateFactory(): void
     {
         $command = $this->command;
         $this->assertErrorRaised('Unable to create factory for "' . ObjectWithScalarDependency::class . '":');
@@ -102,9 +108,9 @@ class FactoryCreatorCommandTest extends TestCase
         $this->assertEquals(1, $command([ObjectWithScalarDependency::class]));
     }
 
-    public function testEmitsFactoryFileToStdoutWhenSuccessful()
+    public function testEmitsFactoryFileToStdoutWhenSuccessful(): void
     {
-        $command = $this->command;
+        $command  = $this->command;
         $expected = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
 
         $this->helper->write($expected, false)->shouldBeCalled();

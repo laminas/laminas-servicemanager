@@ -15,7 +15,6 @@ class ContainerModificationsNotAllowedException extends DomainException implemen
 {
     /**
      * @param string $service Name of service that already exists.
-     * @return self
      */
     public static function fromExistingService(string $service): self
     {

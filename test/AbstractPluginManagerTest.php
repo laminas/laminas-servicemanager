@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:disable Generic.Files.LineLength.TooLong
 
 declare(strict_types=1);
 
@@ -19,13 +19,15 @@ use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimplePluginManager;
 use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 use stdClass;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 use function get_class;
 use function restore_error_handler;
 use function set_error_handler;
+
+use const E_USER_DEPRECATED;
 
 /**
  * @covers \Laminas\ServiceManager\AbstractPluginManager
@@ -35,13 +37,13 @@ class AbstractPluginManagerTest extends TestCase
     use CommonServiceLocatorBehaviorsTrait;
     use ProphecyTrait;
 
-    public function createContainer(array $config = [])
+    public function createContainer(array $config = []): ServiceManager
     {
         $this->creationContext = new ServiceManager();
         return new TestAsset\LenientPluginManager($this->creationContext, $config);
     }
 
-    public function testInjectCreationContextInFactories()
+    public function testInjectCreationContextInFactories(): void
     {
         $invokableFactory = $this->getMockBuilder(FactoryInterface::class)
             ->getMock();
@@ -66,7 +68,7 @@ class AbstractPluginManagerTest extends TestCase
         $this->assertInstanceOf(InvokableObject::class, $object);
     }
 
-    public function testTransparentlyDecoratesNonInteropPsrContainerAsInteropContainer()
+    public function testTransparentlyDecoratesNonInteropPsrContainerAsInteropContainer(): void
     {
         $invokableFactory = $this->getMockBuilder(FactoryInterface::class)
             ->getMock();
@@ -92,7 +94,7 @@ class AbstractPluginManagerTest extends TestCase
         $this->assertSame($container, $object->getContainer());
     }
 
-    public function testValidateInstance()
+    public function testValidateInstance(): void
     {
         $config = [
             'factories' => [
@@ -113,7 +115,7 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager->get(stdClass::class);
     }
 
-    public function testCachesInstanceByDefaultIfNoOptionsArePassed()
+    public function testCachesInstanceByDefaultIfNoOptionsArePassed(): void
     {
         $config = [
             'factories' => [
@@ -132,7 +134,7 @@ class AbstractPluginManagerTest extends TestCase
         $this->assertSame($first, $second);
     }
 
-    public function shareByDefaultSettings()
+    public function shareByDefaultSettings(): array
     {
         return [
             'true'  => [true],
@@ -143,10 +145,11 @@ class AbstractPluginManagerTest extends TestCase
     /**
      * @dataProvider shareByDefaultSettings
      */
-    public function testReturnsDiscreteInstancesIfOptionsAreProvidedRegardlessOfShareByDefaultSetting($shareByDefault)
-    {
-        $config = [
-            'factories' => [
+    public function testReturnsDiscreteInstancesIfOptionsAreProvidedRegardlessOfShareByDefaultSetting(
+        bool $shareByDefault
+    ): void {
+        $config  = [
+            'factories'        => [
                 InvokableObject::class => new InvokableFactory(),
             ],
             'share_by_default' => $shareByDefault,
@@ -169,25 +172,25 @@ class AbstractPluginManagerTest extends TestCase
      * creation context; we need to configure the parent container, as
      * the delegator factory will be receiving that.
      */
-    public function testCanWrapCreationInDelegators()
+    public function testCanWrapCreationInDelegators(): void
     {
-        $config = [
+        $config         = [
             'option' => 'OPTIONED',
         ];
         $serviceManager = new ServiceManager([
-            'services'  => [
+            'services' => [
                 'config' => $config,
             ],
         ]);
-        $pluginManager = new TestAsset\LenientPluginManager($serviceManager, [
-            'factories' => [
+        $pluginManager  = new TestAsset\LenientPluginManager($serviceManager, [
+            'factories'  => [
                 stdClass::class => InvokableFactory::class,
             ],
             'delegators' => [
                 stdClass::class => [
                     TestAsset\PreDelegator::class,
                     function ($container, $name, $callback) {
-                        $instance = $callback();
+                        $instance      = $callback();
                         $instance->foo = 'bar';
                         return $instance;
                     },
@@ -210,7 +213,7 @@ class AbstractPluginManagerTest extends TestCase
      *
      * @covers \Laminas\ServiceManager\AbstractPluginManager::get
      */
-    public function testGetRaisesExceptionWhenNoFactoryIsResolved()
+    public function testGetRaisesExceptionWhenNoFactoryIsResolved(): void
     {
         $pluginManager = $this->createContainer();
         $this->expectException(ServiceNotFoundException::class);
@@ -221,7 +224,7 @@ class AbstractPluginManagerTest extends TestCase
     /**
      * @group migration
      */
-    public function testCallingSetServiceLocatorSetsCreationContextWithDeprecationNotice()
+    public function testCallingSetServiceLocatorSetsCreationContextWithDeprecationNotice(): void
     {
         set_error_handler(function ($errno, $errstr) {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
@@ -244,7 +247,7 @@ class AbstractPluginManagerTest extends TestCase
     /**
      * @group migration
      */
-    public function testPassingNoInitialConstructorArgumentSetsPluginManagerAsCreationContextWithDeprecationNotice()
+    public function testPassingNoInitialConstructorArgumentSetsPluginManagerAsCreationContextWithDeprecationNotice(): void
     {
         set_error_handler(function ($errno, $errstr) {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
@@ -257,7 +260,7 @@ class AbstractPluginManagerTest extends TestCase
     /**
      * @group migration
      */
-    public function testCanPassConfigInterfaceAsFirstConstructorArgumentWithDeprecationNotice()
+    public function testCanPassConfigInterfaceAsFirstConstructorArgumentWithDeprecationNotice(): void
     {
         $config = $this->prophesize(ConfigInterface::class);
         $config->toArray()->willReturn([]);
@@ -271,7 +274,7 @@ class AbstractPluginManagerTest extends TestCase
         $this->assertSame($pluginManager, $pluginManager->getCreationContext());
     }
 
-    public function invalidConstructorArguments()
+    public function invalidConstructorArguments(): array
     {
         return [
             'true'       => [true],
@@ -288,9 +291,10 @@ class AbstractPluginManagerTest extends TestCase
 
     /**
      * @group migration
+     * @param mixed $arg
      * @dataProvider invalidConstructorArguments
      */
-    public function testPassingNonContainerNonConfigNonNullFirstConstructorArgumentRaisesException($arg)
+    public function testPassingNonContainerNonConfigNonNullFirstConstructorArgumentRaisesException($arg): void
     {
         $this->expectException(InvalidArgumentException::class);
         new TestAsset\LenientPluginManager($arg);
@@ -299,65 +303,65 @@ class AbstractPluginManagerTest extends TestCase
     /**
      * @group migration
      */
-    public function testPassingConfigInstanceAsFirstConstructorArgumentSkipsSecondArgumentWithDeprecationNotice()
+    public function testPassingConfigInstanceAsFirstConstructorArgumentSkipsSecondArgumentWithDeprecationNotice(): void
     {
         $config = $this->prophesize(ConfigInterface::class);
-        $config->toArray()->willReturn(['services' => [__CLASS__ => $this]]);
+        $config->toArray()->willReturn(['services' => [self::class => $this]]);
 
         set_error_handler(function ($errno, $errstr) {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
         }, E_USER_DEPRECATED);
-        $pluginManager = new TestAsset\LenientPluginManager($config->reveal(), ['services' => [__CLASS__ => []]]);
+        $pluginManager = new TestAsset\LenientPluginManager($config->reveal(), ['services' => [self::class => []]]);
         restore_error_handler();
 
-        $this->assertSame($this, $pluginManager->get(__CLASS__));
+        $this->assertSame($this, $pluginManager->get(self::class));
     }
 
     /**
      * @group migration
      * @group autoinvokable
      */
-    public function testAutoInvokableServicesAreNotKnownBeforeRetrieval()
+    public function testAutoInvokableServicesAreNotKnownBeforeRetrieval(): void
     {
-        $pluginManager = new TestAsset\SimplePluginManager(new ServiceManager());
-        $this->assertFalse($pluginManager->has(TestAsset\InvokableObject::class));
+        $pluginManager = new SimplePluginManager(new ServiceManager());
+        $this->assertFalse($pluginManager->has(InvokableObject::class));
     }
 
     /**
      * @group migration
      * @group autoinvokable
      */
-    public function testSupportsRetrievingAutoInvokableServicesByDefault()
+    public function testSupportsRetrievingAutoInvokableServicesByDefault(): void
     {
-        $pluginManager = new TestAsset\SimplePluginManager(new ServiceManager());
-        $invokable = $pluginManager->get(TestAsset\InvokableObject::class);
-        $this->assertInstanceOf(TestAsset\InvokableObject::class, $invokable);
+        $pluginManager = new SimplePluginManager(new ServiceManager());
+        $invokable     = $pluginManager->get(InvokableObject::class);
+        $this->assertInstanceOf(InvokableObject::class, $invokable);
     }
 
     /**
      * @group migration
      * @group autoinvokable
      */
-    public function testPluginManagersMayOptOutOfSupportingAutoInvokableServices()
+    public function testPluginManagersMayOptOutOfSupportingAutoInvokableServices(): void
     {
         $pluginManager = new TestAsset\NonAutoInvokablePluginManager(new ServiceManager());
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage(TestAsset\NonAutoInvokablePluginManager::class);
-        $pluginManager->get(TestAsset\InvokableObject::class);
+        $pluginManager->get(InvokableObject::class);
     }
 
     /**
      * @group migration
      */
-    public function testValidateWillFallBackToValidatePluginWhenDefinedAndEmitDeprecationNotice()
+    public function testValidateWillFallBackToValidatePluginWhenDefinedAndEmitDeprecationNotice(): void
     {
-        $assertionCalled = false;
-        $instance = (object) [];
-        $assertion = function ($plugin) use ($instance, &$assertionCalled) {
+        $assertionCalled          = false;
+        $instance                 = (object) [];
+        $assertion                = function ($plugin) use ($instance, &$assertionCalled) {
             $this->assertSame($instance, $plugin);
             $assertionCalled = true;
         };
-        $pluginManager = new TestAsset\V2ValidationPluginManager(new ServiceManager());
+        $pluginManager            = new TestAsset\V2ValidationPluginManager(new ServiceManager());
         $pluginManager->assertion = $assertion;
 
         $errorHandlerCalled = false;
@@ -373,30 +377,32 @@ class AbstractPluginManagerTest extends TestCase
         $this->assertTrue($errorHandlerCalled, 'Error handler was not triggered by validatePlugin!');
     }
 
-    public function testSetServiceShouldRaiseExceptionForInvalidPlugin()
+    public function testSetServiceShouldRaiseExceptionForInvalidPlugin(): void
     {
-        $pluginManager = new TestAsset\SimplePluginManager(new ServiceManager());
+        $pluginManager = new SimplePluginManager(new ServiceManager());
         $this->expectException(InvalidServiceException::class);
         $pluginManager->setService(stdClass::class, new stdClass());
     }
 
-    public function testPassingServiceInstanceViaConfigureShouldRaiseExceptionForInvalidPlugin()
+    public function testPassingServiceInstanceViaConfigureShouldRaiseExceptionForInvalidPlugin(): void
     {
-        $pluginManager = new TestAsset\SimplePluginManager(new ServiceManager());
+        $pluginManager = new SimplePluginManager(new ServiceManager());
         $this->expectException(InvalidServiceException::class);
-        $pluginManager->configure(['services' => [
-            stdClass::class => new stdClass(),
-        ]]);
+        $pluginManager->configure([
+            'services' => [
+                stdClass::class => new stdClass(),
+            ],
+        ]);
     }
 
     /**
      * @group 79
      * @group 78
      */
-    public function testAbstractFactoryGetsCreationContext()
+    public function testAbstractFactoryGetsCreationContext(): void
     {
-        $serviceManager = new ServiceManager();
-        $pluginManager = new TestAsset\SimplePluginManager($serviceManager);
+        $serviceManager  = new ServiceManager();
+        $pluginManager   = new SimplePluginManager($serviceManager);
         $abstractFactory = $this->prophesize(AbstractFactoryInterface::class);
         $abstractFactory->canCreate($serviceManager, 'foo')
             ->willReturn(true);
@@ -406,7 +412,7 @@ class AbstractPluginManagerTest extends TestCase
         $this->assertInstanceOf(InvokableObject::class, $pluginManager->get('foo'));
     }
 
-    public function testAliasPropertyResolves()
+    public function testAliasPropertyResolves(): void
     {
         $pluginManager = new V2v3PluginManager(new ServiceManager());
         $this->assertInstanceOf(InvokableObject::class, $pluginManager->get('foo'));

@@ -9,6 +9,7 @@ use Laminas\ServiceManager\Exception;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
+use ProxyManager\Proxy\VirtualProxyInterface;
 
 use function sprintf;
 
@@ -20,18 +21,13 @@ use function sprintf;
  */
 final class LazyServiceFactory implements DelegatorFactoryInterface
 {
-    /**
-     * @var \ProxyManager\Factory\LazyLoadingValueHolderFactory
-     */
+    /** @var LazyLoadingValueHolderFactory */
     private $proxyFactory;
 
-    /**
-     * @var string[] map of service names to class names
-     */
+    /** @var string[] map of service names to class names */
     private $servicesMap;
 
     /**
-     * @param LazyLoadingValueHolderFactory $proxyFactory
      * @param string[]                      $servicesMap  a map of service names to class names of their
      *                                                    respective classes
      */
@@ -44,9 +40,9 @@ final class LazyServiceFactory implements DelegatorFactoryInterface
     /**
      * {@inheritDoc}
      *
-     * @return \ProxyManager\Proxy\VirtualProxyInterface
+     * @return VirtualProxyInterface
      */
-    public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null)
+    public function __invoke(ContainerInterface $container, $name, callable $callback, ?array $options = null)
     {
         if (isset($this->servicesMap[$name])) {
             $initializer = function (&$wrappedInstance, LazyLoadingInterface $proxy) use ($callback) {

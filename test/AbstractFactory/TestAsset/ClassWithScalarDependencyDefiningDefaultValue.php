@@ -6,6 +6,7 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 class ClassWithScalarDependencyDefiningDefaultValue
 {
+    /** @var string */
     public $foo;
 
     /**

@@ -29,24 +29,20 @@ use function is_int;
  */
 class Config implements ConfigInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $allowedKeys = [
         'abstract_factories' => true,
-        'aliases' => true,
-        'delegators' => true,
-        'factories' => true,
-        'initializers' => true,
-        'invokables' => true,
-        'lazy_services' => true,
-        'services' => true,
-        'shared' => true,
+        'aliases'            => true,
+        'delegators'         => true,
+        'factories'          => true,
+        'initializers'       => true,
+        'invokables'         => true,
+        'lazy_services'      => true,
+        'services'           => true,
+        'shared'             => true,
     ];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $config = [
         'abstract_factories' => [],
         'aliases'            => [],
@@ -74,7 +70,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function configureServiceManager(ServiceManager $serviceManager)
     {
@@ -82,7 +78,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function toArray()
     {
@@ -95,7 +91,7 @@ class Config implements ConfigInterface
      *
      * @link https://github.com/zendframework/zend-servicemanager/pull/68
      */
-    private function merge(array $a, array $b)
+    private function merge(array $a, array $b): array
     {
         foreach ($b as $key => $value) {
             if ($value instanceof MergeReplaceKeyInterface) {

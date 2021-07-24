@@ -12,14 +12,18 @@ use function sprintf;
 
 class V2ValidationPluginManager extends AbstractPluginManager
 {
+    /** @var (callable(mixed):void)|null */
     public $assertion;
 
-    public function validatePlugin($plugin)
+    /**
+     * @param mixed $plugin
+     */
+    public function validatePlugin($plugin): void
     {
         if (! is_callable($this->assertion)) {
             throw new RuntimeException(sprintf(
                 '%s requires a callable $assertion property; not currently set',
-                __CLASS__
+                self::class
             ));
         }
 

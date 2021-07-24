@@ -9,8 +9,11 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class SampleFactory implements FactoryInterface
 {
-
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    /**
+     * @param string                   $requestedName
+     * @param array<string,mixed>|null $options
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): InvokableObject
     {
         return new InvokableObject();
     }

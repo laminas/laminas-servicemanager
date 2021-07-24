@@ -13,7 +13,6 @@ interface ConfigInterface
      * local properties) and pass it to a ServiceManager's withConfig() method,
      * returning a new instance.
      *
-     * @param ServiceManager $serviceManager
      * @return ServiceManager
      */
     public function configureServiceManager(ServiceManager $serviceManager);

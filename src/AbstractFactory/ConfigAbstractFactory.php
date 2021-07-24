@@ -17,7 +17,6 @@ use function json_encode;
 
 final class ConfigAbstractFactory implements AbstractFactoryInterface
 {
-
     /**
      * Factory can create the service if there is a key for it in the config
      *
@@ -40,7 +39,7 @@ final class ConfigAbstractFactory implements AbstractFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         if (! $container->has('config')) {
             throw new ServiceNotCreatedException('Cannot find a config array in the container');
@@ -55,10 +54,10 @@ final class ConfigAbstractFactory implements AbstractFactoryInterface
             throw new ServiceNotCreatedException('Cannot find a `' . self::class . '` key in the config array');
         }
 
-
         $dependencies = $config[self::class];
 
-        if (! is_array($dependencies)
+        if (
+            ! is_array($dependencies)
             || ! array_key_exists($requestedName, $dependencies)
             || ! is_array($dependencies[$requestedName])
         ) {

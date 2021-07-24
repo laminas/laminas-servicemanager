@@ -10,9 +10,7 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
  */
 final class PsrContainerDecorator implements ContainerInterface
 {
-    /**
-     * @var PsrContainerInterface
-     */
+    /** @var PsrContainerInterface */
     private $container;
 
     public function __construct(PsrContainerInterface $container)
