@@ -85,4 +85,9 @@ class HasCachedServicesBench
     {
         $this->sm->has('foo');
     }
+
+    public function benchNonExistingService(): void
+    {
+        $this->sm->has('non-existing');
+    }
 }
