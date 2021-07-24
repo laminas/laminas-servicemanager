@@ -44,37 +44,37 @@ class HasNewServicesBench
         ]);
     }
 
-    public function benchHasFactory1()
+    public function benchHasFactory1(): void
     {
         $this->sm->has('factory1');
     }
 
-    public function benchHasInvokable1()
+    public function benchHasInvokable1(): void
     {
         $this->sm->has('invokable1');
     }
 
-    public function benchHasService1()
+    public function benchHasService1(): void
     {
         $this->sm->has('service1');
     }
 
-    public function benchFetchFactoryAlias1()
+    public function benchFetchFactoryAlias1(): void
     {
         $this->sm->has('factoryAlias1');
     }
 
-    public function benchHasRecursiveFactoryAlias1()
+    public function benchHasRecursiveFactoryAlias1(): void
     {
         $this->sm->has('recursiveFactoryAlias1');
     }
 
-    public function benchFetchRecursiveFactoryAlias2()
+    public function benchFetchRecursiveFactoryAlias2(): void
     {
         $this->sm->has('recursiveFactoryAlias2');
     }
 
-    public function benchFetchAbstractFactoryFoo()
+    public function benchFetchAbstractFactoryFoo(): void
     {
         $this->sm->has('foo');
     }

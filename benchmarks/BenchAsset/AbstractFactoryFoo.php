@@ -7,7 +7,8 @@ use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 class AbstractFactoryFoo implements AbstractFactoryInterface
 {
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    /** {@inheritDoc} */
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
         if ($requestedName === 'foo') {
             return new Foo($options);
@@ -15,8 +16,9 @@ class AbstractFactoryFoo implements AbstractFactoryInterface
         return false;
     }
 
+    /** {@inheritDoc} */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
-        return ($requestedName === 'foo');
+        return $requestedName === 'foo';
     }
 }

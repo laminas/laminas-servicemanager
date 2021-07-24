@@ -12,6 +12,7 @@
     <arg value="p"/>
 
     <!-- Paths to check -->
+    <file>benchmarks</file>
     <file>bin</file>
     <file>src</file>
     <file>test</file>

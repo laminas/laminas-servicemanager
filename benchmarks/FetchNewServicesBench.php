@@ -6,6 +6,7 @@ use Laminas\ServiceManager\ServiceManager;
 use PhpBench\Benchmark\Metadata\Annotations\Iterations;
 use PhpBench\Benchmark\Metadata\Annotations\Revs;
 use PhpBench\Benchmark\Metadata\Annotations\Warmup;
+use stdClass;
 
 /**
  * @Revs(1000)
@@ -14,25 +15,23 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class FetchNewServicesBench
 {
-    /**
-     * @var ServiceManager
-     */
+    /** @var ServiceManager */
     private $sm;
 
     public function __construct()
     {
         $this->sm = new ServiceManager([
-            'factories' => [
+            'factories'          => [
                 'factory1' => BenchAsset\FactoryFoo::class,
             ],
-            'invokables' => [
+            'invokables'         => [
                 'invokable1' => BenchAsset\Foo::class,
             ],
-            'services' => [
-                'service1' => new \stdClass(),
-                'config' => [],
+            'services'           => [
+                'service1' => new stdClass(),
+                'config'   => [],
             ],
-            'aliases' => [
+            'aliases'            => [
                 'factoryAlias1'          => 'factory1',
                 'recursiveFactoryAlias1' => 'factoryAlias1',
                 'recursiveFactoryAlias2' => 'recursiveFactoryAlias1',
@@ -43,7 +42,7 @@ class FetchNewServicesBench
         ]);
     }
 
-    public function benchFetchFactory1()
+    public function benchFetchFactory1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -51,7 +50,7 @@ class FetchNewServicesBench
         $sm->get('factory1');
     }
 
-    public function benchBuildFactory1()
+    public function benchBuildFactory1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -59,7 +58,7 @@ class FetchNewServicesBench
         $sm->build('factory1');
     }
 
-    public function benchFetchInvokable1()
+    public function benchFetchInvokable1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -67,7 +66,7 @@ class FetchNewServicesBench
         $sm->get('invokable1');
     }
 
-    public function benchBuildInvokable1()
+    public function benchBuildInvokable1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -75,7 +74,7 @@ class FetchNewServicesBench
         $sm->build('invokable1');
     }
 
-    public function benchFetchService1()
+    public function benchFetchService1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -83,7 +82,7 @@ class FetchNewServicesBench
         $sm->get('service1');
     }
 
-    public function benchFetchFactoryAlias1()
+    public function benchFetchFactoryAlias1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -91,7 +90,7 @@ class FetchNewServicesBench
         $sm->build('factoryAlias1');
     }
 
-    public function benchBuildFactoryAlias1()
+    public function benchBuildFactoryAlias1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -99,7 +98,7 @@ class FetchNewServicesBench
         $sm->build('factoryAlias1');
     }
 
-    public function benchFetchRecursiveFactoryAlias1()
+    public function benchFetchRecursiveFactoryAlias1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -107,7 +106,7 @@ class FetchNewServicesBench
         $sm->build('recursiveFactoryAlias1');
     }
 
-    public function benchBuildRecursiveFactoryAlias1()
+    public function benchBuildRecursiveFactoryAlias1(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -115,7 +114,7 @@ class FetchNewServicesBench
         $sm->build('recursiveFactoryAlias1');
     }
 
-    public function benchFetchRecursiveFactoryAlias2()
+    public function benchFetchRecursiveFactoryAlias2(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -123,7 +122,7 @@ class FetchNewServicesBench
         $sm->build('recursiveFactoryAlias2');
     }
 
-    public function benchBuildRecursiveFactoryAlias2()
+    public function benchBuildRecursiveFactoryAlias2(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -131,7 +130,7 @@ class FetchNewServicesBench
         $sm->build('recursiveFactoryAlias2');
     }
 
-    public function benchFetchAbstractFactoryFoo()
+    public function benchFetchAbstractFactoryFoo(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
@@ -139,7 +138,7 @@ class FetchNewServicesBench
         $sm->get('foo');
     }
 
-    public function benchBuildAbstractFactoryFoo()
+    public function benchBuildAbstractFactoryFoo(): void
     {
         // @todo @link https://github.com/phpbench/phpbench/issues/304
         $sm = clone $this->sm;
