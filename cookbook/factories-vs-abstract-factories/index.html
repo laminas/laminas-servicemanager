@@ -421,19 +421,15 @@ longer, and increase based on the number of abstract factories in the system.
 The service manager is optimized to locate <em>factories</em>, as it can do an
 immediate hash table lookup; abstract factories involve:</p>
 <ul>
-<li>Looping through each abstract factory<ul>
+<li>Looping through each abstract factory</li>
 <li>invoking its method for service location</li>
 <li>if the service is located, using the factory</li>
-</ul>
-</li>
 </ul>
 <p>This means, internally:</p>
 <ul>
 <li>a hash table lookup (for the abstract factory)</li>
-<li>invocation of 1:N methods for discovery<ul>
+<li>invocation of 1:N methods for discovery</li>
 <li>which may contain additional lookups and/or retrievals in the container</li>
-</ul>
-</li>
 <li>invocation of a factory method (assuming successful lookup)</li>
 </ul>
 <p>As such, having an explicit map can aid performance dramatically.</p>
@@ -497,16 +493,6 @@ development evolution is:</p>
 </nav>
 
 
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-servicemanager/edit/master/docs/book/cookbook/factories-vs-abstract-factories.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
 
                 
             </div>

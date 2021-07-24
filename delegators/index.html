@@ -315,6 +315,10 @@
                         <a href="#a-delegator-factory-use-case" class="toc__link nav-link">A Delegator factory use case</a>
                     </li>
                 
+                    <li class="toc__entry">
+                        <a href="#delegator-factories-and-service-aliases" class="toc__link nav-link">Delegator Factories and Service Aliases</a>
+                    </li>
+                
             </ul>
         </div>
     
@@ -475,6 +479,46 @@ $buzzer-&gt;buzz(); // "Stare at the art!\nBuzz!"</code></pre>
 around the instantiation logic of that particular service.</p>
 <p>This latter point is the primary use case for delegators: <em>decorating the
 instantiation logic for a service</em>.</p>
+<h2 id="delegator-factories-and-service-aliases">Delegator Factories and Service Aliases</h2>
+<p>In typical <a href="../configuring-the-service-manager/">service manager configurations</a> you have the opportunity to alias services. The following configuration would enable you to retrieve a <code>Buzzer</code> instance by its concrete implementation name and by the name of an interface that it implements, in this case, <code>BuzzerInterface</code>.</p>
+<pre class="highlight"><code class="language-php">$serviceManager = new Laminas\ServiceManager\ServiceManager([
+    'factories' =&gt; [
+        Buzzer::class =&gt; Laminas\ServiceManager\Factory\InvokableFactory::class,
+    ],
+    'aliases' =&gt; [
+        BuzzerInterface::class =&gt; Buzzer::class,
+    ],
+]);</code></pre>
+<p>Currently, a delegator factory that targets an alias will not execute. Delegators must be configured using the resolved name of the service.</p>
+<p>For example, given the following configuration, <strong>no delegation would occur</strong>:</p>
+<pre class="highlight"><code class="language-php">$serviceManager = new Laminas\ServiceManager\ServiceManager([
+    'factories' =&gt; [
+        Buzzer::class =&gt; Laminas\ServiceManager\Factory\InvokableFactory::class,
+    ],
+    'aliases' =&gt; [
+        BuzzerInterface::class =&gt; Buzzer::class,
+    ],
+    'delegators' =&gt; [
+        BuzzerInterface::class =&gt; [
+            BuzzerDelegatorFactory::class, // will not be executed
+        ],
+    ],
+]);</code></pre>
+<p>In order for delegation to occur, the above configuration would need to be modified to target the resolved service name:</p>
+<pre class="highlight"><code class="language-php">$serviceManager = new Laminas\ServiceManager\ServiceManager([
+    'factories' =&gt; [
+        Buzzer::class =&gt; Laminas\ServiceManager\Factory\InvokableFactory::class,
+    ],
+    'aliases' =&gt; [
+        BuzzerInterface::class =&gt; Buzzer::class,
+    ],
+    'delegators' =&gt; [
+        Buzzer::class =&gt; [
+            BuzzerDelegatorFactory::class, // will now execute as expected
+        ],
+    ],
+]);</code></pre>
+<p>Retrieving the <code>Buzzer</code> using its resolved name "<code>Buzzer::class</code>" or its alias "<code>BuzzerInterface::class</code>" will now both yield delegated instances.</p>
 
 
 
@@ -503,16 +547,6 @@ instantiation logic for a service</em>.</p>
 </nav>
 
 
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-servicemanager/edit/master/docs/book/delegators.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
 
                 
             </div>

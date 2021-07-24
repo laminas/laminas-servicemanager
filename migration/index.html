@@ -408,7 +408,7 @@ managers:</p>
 <li>Minor changes in configuration arrays may impact your usage.</li>
 <li><code>ConfigInterface</code> implementations and consumers will need updating.</li>
 </ul>
-<h3>Configuration arrays</h3>
+<h3 id="configuration-arrays">Configuration arrays</h3>
 <p>Configuration for v2 consisted of the following:</p>
 <pre class="highlight"><code class="language-php">[
     'services' =&gt; [
@@ -452,12 +452,12 @@ managers:</p>
 ]</code></pre>
 <p>The main change is the addition of integrated lazy service configuration is now
 integrated.</p>
-<h3>ConfigInterface</h3>
+<h3 id="configinterface">ConfigInterface</h3>
 <p>The principal change to the <code>ConfigInterface</code> is the addition of the
 <code>toArray()</code> method. This method is intended to return a configuration array in
 the format listed above, for passing to either the constructor or the
 <code>configure()</code> method of the <code>ServiceManager</code>..</p>
-<h3>Config class</h3>
+<h3 id="config-class">Config class</h3>
 <p><code>Laminas\ServiceManager\Config</code> has been updated to follow the changes to the
 <code>ConfigInterface</code> and <code>ServiceManager</code>. This essentially means that it removes
 the various getter methods, and adds the <code>toArray()</code> method.</p>
@@ -477,7 +477,7 @@ version 2 in version 3. However, we recommend starting to update your
 configuration to remove <code>invokables</code> entries in favor of factories (and aliases,
 if needed).</p>
 <blockquote>
-<h4>Invokables and plugin managers</h4>
+<h4 id="invokables-and-plugin-managers">Invokables and plugin managers</h4>
 <p>If you are creating a plugin manager and in-lining invokables into the class
 definition, you will need to make some changes.</p>
 <p><code>$invokableClasses</code> will need to become <code>$factories</code> entries, and you will
@@ -608,7 +608,7 @@ developers will interact. It has the following changes in v3:</p>
   <code>Config</code> can be used, but is not needed.</li>
 <li>It adds a new method, <code>build()</code>, for creating discrete service instances.</li>
 </ul>
-<h3>Methods Removed</h3>
+<h3 id="methods-removed">Methods Removed</h3>
 <p><em>The following methods are removed</em> in v3:</p>
 <ul>
 <li><code>setShareByDefault()</code>/<code>shareByDefault()</code>; this can be passed during
@@ -618,10 +618,10 @@ developers will interact. It has the following changes in v3:</p>
 <li><code>setRetrieveFromPeeringManagerFirst()</code>/<code>retrieveFromPeeringManagerFirst()</code>;
   peering is no longer supported.</li>
 </ul>
-<h3>Constructor</h3>
+<h3 id="constructor">Constructor</h3>
 <p>The constructor now accepts an array of service configuration, not a
 <code>Laminas\ServiceManager\Config</code> instance.</p>
-<h3>Use <code>build()</code> for discrete instances</h3>
+<h3 id="use-build-for-discrete-instances">Use <code>build()</code> for discrete instances</h3>
 <p>The new method <code>build()</code> acts as a factory method for configured services, and
 will <em>always</em> return a new instance, never a shared one.</p>
 <p>Additionally, it provides factory capabilities; you may pass an additional,
@@ -654,7 +654,7 @@ from the new interfaces. This provides a migration path; you can add the methods
 defined in the new interfaces to your existing factories targeting v2, and
 safely upgrade. (Typically, you will then have the version 2 methods proxy to
 those defined in version 3.)</p>
-<h3>Interfaces and relations to version 2</h3>
+<h3 id="interfaces-and-relations-to-version-2">Interfaces and relations to version 2</h3>
 <div class="table-responsive"><table>
 <thead>
 <tr>
@@ -680,7 +680,7 @@ those defined in version 3.)</p>
 <p>The version 2 interfaces now extend those in version 3, but are marked
 <strong>deprecated</strong>. You can continue to use them, but will be required to update
 your code to use the new interfaces in the future.</p>
-<h3>AbstractFactoryInterface</h3>
+<h3 id="abstractfactoryinterface">AbstractFactoryInterface</h3>
 <p>The previous signature of the <code>AbstractFactoryInterface</code> was:</p>
 <pre class="highlight"><code class="language-php">interface AbstractFactoryInterface
 {
@@ -797,7 +797,7 @@ class LenientAbstractFactory implements AbstractFactoryInterface
         return new $requestedName();
     }
 }</code></pre>
-<h3>DelegatorFactoryInterface</h3>
+<h3 id="delegatorfactoryinterface">DelegatorFactoryInterface</h3>
 <p>The previous signature of the <code>DelegatorFactoryInterface</code> was:</p>
 <pre class="highlight"><code class="language-php">interface DelegatorFactoryInterface
 {
@@ -889,7 +889,7 @@ class ObserverAttachmentDelegator implements DelegatorFactoryInterface
         return $subject;
     }
 }</code></pre>
-<h3>FactoryInterface</h3>
+<h3 id="factoryinterface">FactoryInterface</h3>
 <p>The previous signature of the <code>FactoryInterface</code> was:</p>
 <pre class="highlight"><code class="language-php">interface FactoryInterface
 {
@@ -979,19 +979,19 @@ class FooFactory implements FactoryInterface
     }
 }</code></pre>
 <blockquote>
-<h4>Many factories already work with v3!</h4>
+<h4 id="many-factories-already-work-with-v3">Many factories already work with v3!</h4>
 <p>Within the skeleton application, tutorial, and even in commonly shipped
 modules such as those in Laminas API Tools, we have typically suggested building your
 factories as invokable classes. If you were doing this already, your factories
 will already work with version 3!</p>
-<h4>Version 2 factories can accept the requested name already</h4>
+<h4 id="version-2-factories-can-accept-the-requested-name-already">Version 2 factories can accept the requested name already</h4>
 <p>Since 2.2, factories have been passed two additional parameters, the
 "canonical" name (a mis-nomer, as it is actually the normalized name), and the
 "requested" name (the actual string passed to <code>get()</code>). As such, you can
 already write factories that accept the requested name, and have them
 change behavior based on that information!</p>
 </blockquote>
-<h3>New InvokableFactory Class</h3>
+<h3 id="new-invokablefactory-class">New InvokableFactory Class</h3>
 <p><code>Laminas\ServiceManager\Factory\InvokableFactory</code> is a new <code>FactoryInterface</code>
 implementation that provides the capabilities of the "invokable classes" present
 in version 2. It essentially instantiates and returns the requested class name;
@@ -1087,7 +1087,7 @@ class FooInitializer implements InitializerInterface
     }
 }</code></pre>
 <blockquote>
-<h3>Update your callables!</h3>
+<h3 id="update-your-callables">Update your callables!</h3>
 <p>Version 2 allows you to provide initializers as PHP callables. However, this
 means that the signature of those callables is incorrect for version 3!</p>
 <p>To make your code forwards compatible, you have two paths:</p>
@@ -1137,7 +1137,7 @@ manager, if composed, in order to resolve application-level dependencies.</p>
   dependency on the application-level service manager instance, which is passed
   to all factories, abstract factories, etc. (More on this below.)</li>
 </ul>
-<h3>PluginManagerInterface</h3>
+<h3 id="pluginmanagerinterface">PluginManagerInterface</h3>
 <p><code>Laminas\ServiceManager\PluginInterface</code> is a new interface for version 3,
 extending <code>ServiceLocatorInterface</code> and adding one method:</p>
 <pre class="highlight"><code class="language-php">/**
@@ -1153,12 +1153,12 @@ public function validate($instance);</code></pre>
 purposes, <code>AbstractPluginManager</code> will check for the <code>validatePlugin()</code> method
 (defined as abstract in v2), and, on discovery, trigger an <code>E_USER_DEPRECATED</code>
 notice, followed by invocation of that method.</p>
-<h3>AbstractPluginManager</h3>
+<h3 id="abstractpluginmanager">AbstractPluginManager</h3>
 <p>As it did in version 2, <code>AbstractPluginManager</code> extends <code>ServiceManager</code>. <strong>That
 means that all changes made to the <code>ServiceManager</code> for v3 also apply to the
 <code>AbstractPluginManager</code>.</strong></p>
 <p>In addition, review the following changes.</p>
-<h4>Constructor</h4>
+<h4 id="constructor_1">Constructor</h4>
 <ul>
 <li>The constructor now accepts the following arguments, in the following order:</li>
 <li>The parent container instance; this is usually the application-level
@@ -1183,7 +1183,7 @@ following for the initial argument:</p>
   return value as the configuration to pass to the parent constructor. As with
   the <code>null</code> value, the plugin manager will be set as its own creation context.</li>
 </ul>
-<h4>Validation</h4>
+<h4 id="validation">Validation</h4>
 <p>The <code>validate()</code> method is defined as follows:</p>
 <pre class="highlight"><code class="language-php">public function validate($instance)
 {
@@ -1219,14 +1219,14 @@ following for the initial argument:</p>
   make no further changes to the abstract plugin manager:</li>
 </ul>
 <pre class="highlight"><code class="language-php">protected $instanceOf = ValidatorInterface::class;</code></pre>
-<h4>get()</h4>
+<h4 id="get">get()</h4>
 <p>The <code>get()</code> signature changes from:</p>
 <pre class="highlight"><code class="language-php">public function get($name, $options = [], $usePeeringServiceManagers = true)</code></pre>
 <p>to:</p>
 <pre class="highlight"><code class="language-php">public function get($name, array $options = null)</code></pre>
 <p>Essentially: <code>$options</code> now <em>must</em> be an array if passed, and peering is no
 longer supported.</p>
-<h4>Deprecated methods</h4>
+<h4 id="deprecated-methods">Deprecated methods</h4>
 <p>Finally, the following methods from v2's <code>ServiceLocatorAwareInterface</code> are
 retained (without implementing the interface), but marked as deprecated:</p>
 <ul>
@@ -1281,7 +1281,7 @@ container. As an example, given this:</p>
     $anotherPlugin = $plugins-&gt;get('AnotherPlugin');
     return new Plugin($anotherPlugin);
 }</code></pre>
-<h3>Plugin Service Creation</h3>
+<h3 id="plugin-service-creation">Plugin Service Creation</h3>
 <p>The <code>get()</code> method has new behavior:</p>
 <ul>
 <li>When non-empty <code>$options</code> are passed, it <em>always</em> delegates to <code>build()</code>, and
@@ -1293,7 +1293,7 @@ container. As an example, given this:</p>
   <code>$sharedByDefault</code> class property to <code>false</code>, or pass a boolean <code>false</code> value
   via the <code>shared_by_default</code> configuration key.</li>
 </ul>
-<h3>Migration example</h3>
+<h3 id="migration-example">Migration example</h3>
 <p>Let's consider the following plugin manager geared towards version 2:</p>
 <pre class="highlight"><code class="language-php">use RuntimeException;
 use Laminas\ServiceManager\AbstractPluginManager;
@@ -1394,7 +1394,7 @@ class ObserverPluginManager extends AbstractPluginManager
 <li><code>validatePlugin()</code> continues to throw the old exception</li>
 </ul>
 <p>The above will now work in both version 2 and version 3.</p>
-<h3>Migration testing</h3>
+<h3 id="migration-testing">Migration testing</h3>
 <p>To test your changes, create a new <code>MigrationTest</code> case that uses
 <code>Laminas\ServiceManager\Test\CommonPluginManagerTrait</code>. Override
 <code>getPluginManager()</code> to return an instance of your plugin manager, and override
@@ -1433,7 +1433,7 @@ class MigrationTest extends TestCase
 <li>That requesting an invalid plugin throws the right exception.</li>
 <li>That all your aliases resolve.</li>
 </ul>
-<h3>Post migration</h3>
+<h3 id="post-migration">Post migration</h3>
 <p>After you migrate to version 3, you can clean up your plugin manager:</p>
 <ul>
 <li>Remove the <code>validatePlugin()</code> method.</li>
@@ -1523,16 +1523,6 @@ container should never be composed by objects.</p>
 </nav>
 
 
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-servicemanager/edit/master/docs/book/migration.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
 
                 
             </div>

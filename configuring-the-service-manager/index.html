@@ -487,7 +487,7 @@ $serviceManager = new ServiceManager([
 In the above example, this means that the <code>MyObjectFactory</code> object won't be
 created until <code>MyObject</code> is requested.</p>
 </blockquote>
-<h3>Mapping multiple service to the same factory</h3>
+<h3 id="mapping-multiple-service-to-the-same-factory">Mapping multiple service to the same factory</h3>
 <p>Unlike version 2 implementations of the component, in the version 3
 implementation, the <code>$requestedName</code> is guaranteed to be passed as the second
 parameter of a factory. This is useful when you need to create multiple
@@ -582,7 +582,7 @@ $object = $serviceManager-&gt;get(A::class);</code></pre>
    create the object. Otherwise, it will continue iterating the abstract
    factories, until one matches, or the queue is exhausted.</li>
 </ol>
-<h3>Best practices</h3>
+<h3 id="best-practices">Best practices</h3>
 <p>While convenient, we recommend you to limit the number of abstract factories.
 Because the service manager needs to iterate through all registered abstract
 factories to resolve services, it can be costly when multiple abstract
@@ -612,7 +612,7 @@ $object = $serviceManager-&gt;get('B');</code></pre>
 <p>In this example, asking <code>B</code> will be resolved to <code>A</code>, which will be itself
 resolved to <code>stdClass::class</code>, which will finally be constructed using the
 provided factory.</p>
-<h3>Best practices</h3>
+<h3 id="best-practices_1">Best practices</h3>
 <p>We recommend you minimal use of aliases, and instead using the <code>::class</code>
 language construct to map using a FQCN (Fully-Qualified-Class-Name). This
 provides both better discoverability within your code, and allows simpler
@@ -671,7 +671,7 @@ $serviceManager = new ServiceManager([
 <p>Note that initializers are automatically created when the service manager is
 initialized, even if you pass a class name.</p>
 </blockquote>
-<h3>Best practices</h3>
+<h3 id="best-practices_2">Best practices</h3>
 <p>While convenient, initializer usage is also problematic. They are provided
 primarily for backwards compatibility, but we highly discourage their usage.</p>
 <p>The primary issues with initializers are:</p>
@@ -909,16 +909,6 @@ $serviceManager-&gt;setShared(DateTime::class, false);</code></pre>
 </nav>
 
 
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/laminas/laminas-servicemanager/edit/master/docs/book/configuring-the-service-manager.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
 
                 
             </div>
