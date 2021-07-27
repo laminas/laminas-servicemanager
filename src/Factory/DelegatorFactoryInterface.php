@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Factory;
 
-use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Delegator factory interface.
@@ -28,7 +28,7 @@ interface DelegatorFactoryInterface
      * @return object
      * @throws ServiceNotFoundException If unable to resolve the service.
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
-     * @throws ContainerException If any other error occurs.
+     * @throws ContainerExceptionInterface If any other error occurs.
      */
     public function __invoke(ContainerInterface $container, $name, callable $callback, ?array $options = null);
 }

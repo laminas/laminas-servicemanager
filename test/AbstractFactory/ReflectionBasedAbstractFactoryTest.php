@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager\AbstractFactory;
 
 use ArrayAccess;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
+use Psr\Container\ContainerInterface;
 
 use function sprintf;
 
@@ -18,6 +18,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
+    /** @var ObjectProphecy<ContainerInterface> */
     private ObjectProphecy $container;
 
     public function setUp(): void

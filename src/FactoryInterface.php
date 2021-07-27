@@ -13,7 +13,7 @@ namespace Laminas\ServiceManager;
  *
  * - rename the method `createService()` to `__invoke()`, and:
  *   - rename the `$serviceLocator` argument to `$container`, and change the
- *     typehint to `Interop\Container\ContainerInterface`
+ *     typehint to `Psr\Container\ContainerInterface`
  *   - add the `$requestedName` as a second argument
  *   - add the optional `array $options = null` argument as a final argument
  * - create a `createService()` method as defined in this interface, and have it

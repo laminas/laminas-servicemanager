@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager;
 
 use DateTime;
-use Interop\Container\ContainerInterface as InteropContainerInterface;
 use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -97,7 +96,7 @@ class ServiceManagerTest extends TestCase
             'delegators' => [
                 stdClass::class => [
                     TestAsset\PreDelegator::class,
-                    function (InteropContainerInterface $container, string $name, callable $callback): object {
+                    function (ContainerInterface $container, string $name, callable $callback): object {
                         $instance = $callback();
                         self::assertInstanceOf(stdClass::class, $instance);
                         $instance->foo = 'bar';
@@ -594,7 +593,7 @@ class ServiceManagerTest extends TestCase
                             /**
                              * @param string $requestedName
                              */
-                            public function canCreate(InteropContainerInterface $container, $requestedName): bool
+                            public function canCreate(ContainerInterface $container, $requestedName): bool
                             {
                                 return $requestedName === stdClass::class;
                             }
@@ -603,7 +602,7 @@ class ServiceManagerTest extends TestCase
                              * @param string $requestedName
                              */
                             public function __invoke(
-                                InteropContainerInterface $container,
+                                ContainerInterface $container,
                                 $requestedName,
                                 ?array $options = null
                             ): object {

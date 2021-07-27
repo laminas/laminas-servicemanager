@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use Interop\Container\ContainerInterface;
 use LaminasTest\ServiceManager\TestAsset\ComplexDependencyObject;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 
 class ComplexDependencyObjectFactory implements FactoryInterface
 {

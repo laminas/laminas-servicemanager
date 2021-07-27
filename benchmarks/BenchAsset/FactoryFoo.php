@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace LaminasBench\ServiceManager\BenchAsset;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Psr\Container\ContainerInterface;
 
 class FactoryFoo implements FactoryInterface
 {

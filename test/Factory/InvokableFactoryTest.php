@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Factory;
 
-use Interop\Container\ContainerInterface;
+use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +16,7 @@ class InvokableFactoryTest extends TestCase
 {
     public function testCanCreateObject(): void
     {
-        $container = $this->getMockBuilder(ContainerInterface::class)
+        $container = $this->getMockBuilder(containerinterface::class)
             ->getMock();
         $factory   = new InvokableFactory();
 

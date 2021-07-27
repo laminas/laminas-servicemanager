@@ -5,8 +5,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
-use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\AbstractPluginManager;
+use interop\container\containerinterface;
 use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
@@ -14,14 +13,12 @@ use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
-use Laminas\ServiceManager\PsrContainerDecorator;
 use Laminas\ServiceManager\ServiceManager;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimplePluginManager;
 use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Psr\Container\ContainerInterface as PsrContainerInterface;
 use stdClass;
 
 use function get_class;
@@ -55,7 +52,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(ContainerInterface::class)
+        $container     = $this->getMockBuilder(containerinterface::class)
             ->getMock();
         $pluginManager = new SimplePluginManager($container, $config);
 
@@ -69,32 +66,6 @@ class AbstractPluginManagerTest extends TestCase
         $this->assertInstanceOf(InvokableObject::class, $object);
     }
 
-    public function testTransparentlyDecoratesNonInteropPsrContainerAsInteropContainer(): void
-    {
-        $invokableFactory = $this->getMockBuilder(FactoryInterface::class)
-            ->getMock();
-        $invokableFactory->method('__invoke')
-            ->will($this->returnArgument(0));
-
-        $config = [
-            'factories' => [
-                'creation context container' => $invokableFactory,
-            ],
-        ];
-
-        $container     = $this->getMockBuilder(PsrContainerInterface::class)
-            ->getMock();
-        $pluginManager = $this->getMockForAbstractClass(
-            AbstractPluginManager::class,
-            [$container, $config]
-        );
-
-        $object = $pluginManager->get('creation context container');
-
-        $this->assertInstanceOf(PsrContainerDecorator::class, $object);
-        $this->assertSame($container, $object->getContainer());
-    }
-
     public function testValidateInstance(): void
     {
         $config = [
@@ -104,7 +75,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(ContainerInterface::class)
+        $container     = $this->getMockBuilder(containerinterface::class)
             ->getMock();
         $pluginManager = new SimplePluginManager($container, $config);
 
@@ -124,7 +95,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(ContainerInterface::class)
+        $container     = $this->getMockBuilder(containerinterface::class)
             ->getMock();
         $pluginManager = new SimplePluginManager($container, $config);
 
@@ -157,7 +128,7 @@ class AbstractPluginManagerTest extends TestCase
         ];
         $options = ['foo' => 'bar'];
 
-        $container     = $this->getMockBuilder(ContainerInterface::class)
+        $container     = $this->getMockBuilder(containerinterface::class)
             ->getMock();
         $pluginManager = new SimplePluginManager($container, $config);
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
+use Psr\Container\ContainerInterface;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 
 use function class_exists;
@@ -64,17 +64,6 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      */
     public function __construct($configInstanceOrParentLocator = null, array $config = [])
     {
-        if (
-            $configInstanceOrParentLocator instanceof PsrContainerInterface
-            && ! $configInstanceOrParentLocator instanceof ContainerInterface
-        ) {
-            /**
-             * {@see \Laminas\ServiceManager\Factory\FactoryInterface} typehints
-             * against interop container and as such cannot accept non-interop
-             * psr container. Decorate it as interop.
-             */
-            $configInstanceOrParentLocator = new PsrContainerDecorator($configInstanceOrParentLocator);
-        }
         if (
             null !== $configInstanceOrParentLocator
             && ! $configInstanceOrParentLocator instanceof ConfigInterface

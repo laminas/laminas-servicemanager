@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager;
 
 use Exception;
-use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
@@ -19,6 +17,8 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\FileLocator\FileLocator;
 use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 
 use function array_intersect;
 use function array_key_exists;
@@ -601,7 +601,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @return object
      * @throws ServiceNotFoundException If unable to resolve the service.
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
-     * @throws ContainerException If any other error occurs.
+     * @throws ContainerExceptionInterface If any other error occurs.
      */
     private function doCreate(string $resolvedName, ?array $options = null)
     {
@@ -613,7 +613,7 @@ class ServiceManager implements ServiceLocatorInterface
             } else {
                 $object = $this->createDelegatorFromName($resolvedName, $options);
             }
-        } catch (ContainerException $exception) {
+        } catch (ContainerExceptionInterface $exception) {
             throw $exception;
         } catch (Exception $exception) {
             throw new ServiceNotCreatedException(sprintf(

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use Interop\Container\ContainerInterface;
+use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 class CallTimesAbstractFactory implements AbstractFactoryInterface
@@ -15,7 +15,7 @@ class CallTimesAbstractFactory implements AbstractFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function canCreate(ContainerInterface $container, $name)
+    public function canCreate(containerinterface $container, $name)
     {
         self::$callTimes++;
 
@@ -25,7 +25,7 @@ class CallTimesAbstractFactory implements AbstractFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(ContainerInterface $container, $className, ?array $options = null)
+    public function __invoke(containerinterface $container, $className, ?array $options = null)
     {
     }
 
