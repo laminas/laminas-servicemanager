@@ -1,11 +1,7 @@
 # laminas-servicemanager
 
-Master:
-[![Build Status](https://travis-ci.com/laminas/laminas-servicemanager.svg?branch=master)](https://travis-ci.com/laminas/laminas-servicemanager)
-[![Coverage Status](https://coveralls.io/repos/github/laminas/laminas-servicemanager/badge.svg?branch=master)](https://coveralls.io/github/laminas/laminas-servicemanager?branch=master)
-Develop:
-[![Build Status](https://travis-ci.com/laminas/laminas-servicemanager.svg?branch=develop)](https://travis-ci.com/laminas/laminas-servicemanager)
-[![Coverage Status](https://coveralls.io/repos/github/laminas/laminas-servicemanager/badge.svg?branch=develop)](https://coveralls.io/github/laminas/laminas-servicemanager?branch=develop)
+[![Build Status](https://github.com/laminas/laminas-servicemanager/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/laminas/laminas-servicemanager/actions/workflows/continuous-integration.yml)
+[![Psalm coverage](https://shepherd.dev/github/laminas/laminas-servicemanager/coverage.svg?)](https://shepherd.dev/github/laminas/laminas-servicemanager)
 
 The Service Locator design pattern is implemented by the `Laminas\ServiceManager`
 component. The Service Locator is a service/object locator, tasked with
