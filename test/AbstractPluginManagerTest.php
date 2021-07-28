@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
-use interop\container\containerinterface;
 use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
@@ -19,6 +18,7 @@ use LaminasTest\ServiceManager\TestAsset\SimplePluginManager;
 use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Psr\Container\ContainerInterface;
 use stdClass;
 
 use function get_class;
@@ -52,7 +52,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(containerinterface::class)
+        $container     = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
         $pluginManager = new SimplePluginManager($container, $config);
 
@@ -75,7 +75,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(containerinterface::class)
+        $container     = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
         $pluginManager = new SimplePluginManager($container, $config);
 
@@ -95,7 +95,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(containerinterface::class)
+        $container     = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
         $pluginManager = new SimplePluginManager($container, $config);
 
@@ -128,7 +128,7 @@ class AbstractPluginManagerTest extends TestCase
         ];
         $options = ['foo' => 'bar'];
 
-        $container     = $this->getMockBuilder(containerinterface::class)
+        $container     = $this->getMockBuilder(ContainerInterface::class)
             ->getMock();
         $pluginManager = new SimplePluginManager($container, $config);
 

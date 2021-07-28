@@ -7,7 +7,6 @@ namespace Laminas\ServiceManager;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Psr\Container\ContainerInterface;
-use Psr\Container\ContainerInterface as PsrContainerInterface;
 
 use function class_exists;
 use function get_class;
@@ -58,12 +57,13 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * factories; for $config, {@see \Laminas\ServiceManager\ServiceManager::configure()}
      * for details on its accepted structure.
      *
-     * @param null|ConfigInterface|ContainerInterface|PsrContainerInterface $configInstanceOrParentLocator
+     * @param null|ConfigInterface|ContainerInterface $configInstanceOrParentLocator
      * @param array $config
      * @psalm-param ServiceManagerConfiguration $config
      */
     public function __construct($configInstanceOrParentLocator = null, array $config = [])
     {
+        /** @psalm-suppress DocblockTypeContradiction */
         if (
             null !== $configInstanceOrParentLocator
             && ! $configInstanceOrParentLocator instanceof ConfigInterface

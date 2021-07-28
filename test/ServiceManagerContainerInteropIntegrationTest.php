@@ -29,7 +29,6 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
      */
     public function testUpstreamCanCatchNotFoundException(): void
     {
-        /** @psalm-suppress InvalidCatch PSR container exception does not implement Throwable in v1.x */
         try {
             $this->container->get('unexisting service');
             $this->fail('No exception was thrown.');
@@ -48,7 +47,6 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
      */
     public function testUpstreamCanCatchContainerException(): void
     {
-        /** @psalm-suppress InvalidCatch PSR container exception does not implement Throwable in v1.x */
         try {
             $this->container->get('unexisting service');
             $this->fail('No exception was thrown.');

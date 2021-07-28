@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.20.0@f82a70e7edfc6cf2705e9374c8a0b6a974a779ed">
+<files psalm-version="4.22.0@fc2c6ab4d5fa5d644d8617089f012f3bb84b8703">
   <file src="src/AbstractFactory/ConfigAbstractFactory.php">
     <InvalidStringClass occurrences="1">
       <code>new $requestedName(...$arguments)</code>
@@ -53,9 +53,6 @@
     </UndefinedDocblockClass>
   </file>
   <file src="src/AbstractPluginManager.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>gettype($configInstanceOrParentLocator)</code>
-    </DocblockTypeContradiction>
     <MissingReturnType occurrences="1">
       <code>setService</code>
     </MissingReturnType>
@@ -304,21 +301,6 @@
       <code>assertInstanceOf</code>
       <code>assertInstanceOf</code>
     </DocblockTypeContradiction>
-    <MixedArgument occurrences="13">
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-      <code>$this-&gt;container-&gt;reveal()</code>
-    </MixedArgument>
     <MixedInferredReturnType occurrences="1">
       <code>array</code>
     </MixedInferredReturnType>
@@ -327,9 +309,6 @@
     <DeprecatedMethod occurrences="1">
       <code>setServiceLocator</code>
     </DeprecatedMethod>
-    <InternalMethod occurrences="1">
-      <code>getContainer</code>
-    </InternalMethod>
     <InvalidArgument occurrences="5"/>
     <MissingClosureParamType occurrences="4">
       <code>$callback</code>
@@ -549,45 +528,9 @@
       <code>$initializer</code>
     </MissingClosureParamType>
     <MixedFunctionCall occurrences="1"/>
-    <MixedMethodCall occurrences="3">
-      <code>method</code>
-      <code>method</code>
-      <code>willReturnCallback</code>
-    </MixedMethodCall>
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$container</code>
-      <code>$container</code>
-    </PossiblyInvalidArgument>
-    <UndefinedDocblockClass occurrences="5">
-      <code>$container</code>
-      <code>$this-&gt;proxyFactory</code>
-      <code>$this-&gt;proxyFactory</code>
-      <code>ContainerInterface|MockObject</code>
-      <code>LazyLoadingValueHolderFactory|MockObject</code>
-    </UndefinedDocblockClass>
-    <UndefinedMethod occurrences="2">
-      <code>expects</code>
-      <code>expects</code>
-    </UndefinedMethod>
     <UnusedVariable occurrences="1">
       <code>$wrappedInstance</code>
     </UnusedVariable>
-  </file>
-  <file src="test/PsrContainerDecoratorTest.php">
-    <InternalClass occurrences="3">
-      <code>new PsrContainerDecorator($psrContainer)</code>
-      <code>new PsrContainerDecorator($psrContainer)</code>
-      <code>new PsrContainerDecorator($psrContainer)</code>
-    </InternalClass>
-    <InternalMethod occurrences="7">
-      <code>get</code>
-      <code>getContainer</code>
-      <code>has</code>
-      <code>has</code>
-      <code>new PsrContainerDecorator($psrContainer)</code>
-      <code>new PsrContainerDecorator($psrContainer)</code>
-      <code>new PsrContainerDecorator($psrContainer)</code>
-    </InternalMethod>
   </file>
   <file src="test/ServiceManagerTest.php">
     <MissingClosureParamType occurrences="5">
