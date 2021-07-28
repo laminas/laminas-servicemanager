@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
+use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Interop\Container\Exception\NotFoundException;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class ServiceManagerContainerInteropIntegrationTest extends TestCase
 {
@@ -26,6 +29,7 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
      */
     public function testUpstreamCanCatchNotFoundException(): void
     {
+        /** @psalm-suppress InvalidCatch PSR container exception does not implement Throwable in v1.x */
         try {
             $this->container->get('unexisting service');
             $this->fail('No exception was thrown.');
@@ -44,6 +48,7 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
      */
     public function testUpstreamCanCatchContainerException(): void
     {
+        /** @psalm-suppress InvalidCatch PSR container exception does not implement Throwable in v1.x */
         try {
             $this->container->get('unexisting service');
             $this->fail('No exception was thrown.');
@@ -53,5 +58,19 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
                 $exception->getMessage()
             );
         }
+    }
+
+    public function testUpstreamCanUseInteropContainerForMethodSignature(): void
+    {
+        $factory = new class implements FactoryInterface {
+            /** @param string $requestedName */
+            public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): stdClass
+            {
+                return new stdClass();
+            }
+        };
+
+        $instance = $factory($this->container, stdClass::class);
+        self::assertInstanceOf(stdClass::class, $instance);
     }
 }
