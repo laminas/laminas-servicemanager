@@ -23,7 +23,7 @@ interface FactoryInterface
      * Create an object
      *
      * @param  string             $requestedName
-     * @param  null|array         $options
+     * @param  null|array<mixed>  $options
      * @return object
      * @throws ServiceNotFoundException If unable to resolve the service.
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
