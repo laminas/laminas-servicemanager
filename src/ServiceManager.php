@@ -23,7 +23,6 @@ use function array_intersect;
 use function array_key_exists;
 use function array_keys;
 use function class_exists;
-use function explode;
 use function get_class;
 use function gettype;
 use function in_array;
@@ -33,11 +32,9 @@ use function is_string;
 use function spl_autoload_register;
 use function spl_object_hash;
 use function sprintf;
-use function strpos;
 use function trigger_error;
 
 use const E_USER_DEPRECATED;
-use const PHP_MAJOR_VERSION;
 
 /**
  * Service Manager.
@@ -548,13 +545,6 @@ class ServiceManager implements ServiceLocatorInterface
         if (is_callable($factory)) {
             if ($lazyLoaded) {
                 $this->factories[$name] = $factory;
-            }
-            // PHP 5.6 fails on 'class::method' callables unless we explode them:
-            if (
-                PHP_MAJOR_VERSION < 7
-                && is_string($factory) && strpos($factory, '::') !== false
-            ) {
-                $factory = explode('::', $factory);
             }
             return $factory;
         }
