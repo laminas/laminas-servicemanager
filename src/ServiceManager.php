@@ -37,7 +37,6 @@ use function strpos;
 use function trigger_error;
 
 use const E_USER_DEPRECATED;
-use const PHP_MAJOR_VERSION;
 
 /**
  * Service Manager.
@@ -548,13 +547,6 @@ class ServiceManager implements ServiceLocatorInterface
         if (is_callable($factory)) {
             if ($lazyLoaded) {
                 $this->factories[$name] = $factory;
-            }
-            // PHP 5.6 fails on 'class::method' callables unless we explode them:
-            if (
-                PHP_MAJOR_VERSION < 7
-                && is_string($factory) && strpos($factory, '::') !== false
-            ) {
-                $factory = explode('::', $factory);
             }
             return $factory;
         }
