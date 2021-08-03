@@ -23,7 +23,6 @@ use function array_intersect;
 use function array_key_exists;
 use function array_keys;
 use function class_exists;
-use function explode;
 use function get_class;
 use function gettype;
 use function in_array;
@@ -33,7 +32,6 @@ use function is_string;
 use function spl_autoload_register;
 use function spl_object_hash;
 use function sprintf;
-use function strpos;
 use function trigger_error;
 
 use const E_USER_DEPRECATED;
