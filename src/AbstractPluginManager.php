@@ -54,7 +54,6 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * for details on its accepted structure.
      *
      * @param null|ConfigInterface|ContainerInterface|PsrContainerInterface $configInstanceOrParentLocator
-     * @param array $config
      */
     public function __construct($configInstanceOrParentLocator = null, array $config = [])
     {

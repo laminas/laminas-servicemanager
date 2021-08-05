@@ -142,8 +142,6 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * See {@see \Laminas\ServiceManager\ServiceManager::configure()} for details
      * on what $config accepts.
-     *
-     * @param array $config
      */
     public function __construct(array $config = [])
     {
@@ -304,7 +302,6 @@ class ServiceManager implements ServiceLocatorInterface
      * - shared_by_default: boolean, indicating if services in this instance
      *   should be shared by default.
      *
-     * @param  array $config
      * @return self
      * @throws ContainerModificationsNotAllowedException If the allow
      *     override flag has been toggled off, and a service instance
@@ -574,7 +571,6 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * @param  string     $name
-     * @param  null|array $options
      * @return object
      */
     private function createDelegatorFromName($name, ?array $options = null)
@@ -630,7 +626,6 @@ class ServiceManager implements ServiceLocatorInterface
      * This is a highly performance sensitive method, do not modify if you have not benchmarked it carefully
      *
      * @param  string     $resolvedName
-     * @param  null|array $options
      * @return mixed
      * @throws ServiceNotFoundException If unable to resolve the service.
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.

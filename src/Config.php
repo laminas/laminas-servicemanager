@@ -55,9 +55,6 @@ class Config implements ConfigInterface
         'shared'             => [],
     ];
 
-    /**
-     * @param array $config
-     */
     public function __construct(array $config = [])
     {
         // Only merge keys we're interested in

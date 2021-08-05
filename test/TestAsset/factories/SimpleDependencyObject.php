@@ -11,7 +11,6 @@ use Laminas\ServiceManager\Factory\FactoryInterface;
 class SimpleDependencyObjectFactory implements FactoryInterface
 {
     /**
-     * @param ContainerInterface $container
      * @param string $requestedName
      * @param null|array $options
      * @return SimpleDependencyObject

@@ -94,7 +94,6 @@ EOH;
     }
 
     /**
-     * @param array $args
      * @return stdClass
      */
     private function parseArgs(array $args)
