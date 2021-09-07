@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e863f57b10eeea7b14f6dc59266c5c12",
+    "content-hash": "668d6037ade48003d8c5b662e14471a8",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1336,16 +1336,16 @@
         },
         {
             "name": "mikey179/vfsstream",
-            "version": "v1.6.9",
+            "version": "v1.6.10-alpha.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/vfsStream.git",
-                "reference": "2257e326dc3d0f50e55d0a90f71e37899f029718"
+                "reference": "78cda242630dfdcc3e3b551107c7868347ec642c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/2257e326dc3d0f50e55d0a90f71e37899f029718",
-                "reference": "2257e326dc3d0f50e55d0a90f71e37899f029718",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/78cda242630dfdcc3e3b551107c7868347ec642c",
+                "reference": "78cda242630dfdcc3e3b551107c7868347ec642c",
                 "shasum": ""
             },
             "require": {
@@ -1383,7 +1383,7 @@
                 "source": "https://github.com/bovigo/vfsStream/tree/master",
                 "wiki": "https://github.com/bovigo/vfsStream/wiki"
             },
-            "time": "2021-07-16T08:08:02+00:00"
+            "time": "2021-08-02T03:15:02+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5425,7 +5425,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mikey179/vfsstream": 15
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
