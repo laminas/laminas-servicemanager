@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.8.1@f73f2299dbc59a3e6c4d66cff4605176e728ee69">
+<files psalm-version="4.10.0@916b098b008f6de4543892b1e0651c1c3b92cbfa">
   <file src="src/AbstractFactory/ConfigAbstractFactory.php">
     <InvalidStringClass occurrences="1">
       <code>new $requestedName(...$arguments)</code>
@@ -242,10 +242,6 @@
     <MixedReturnStatement occurrences="1">
       <code>$creationCallback($this-&gt;creationContext, $name, $creationCallback, $options)</code>
     </MixedReturnStatement>
-    <MixedReturnTypeCoercion occurrences="2">
-      <code>$factory</code>
-      <code>callable</code>
-    </MixedReturnTypeCoercion>
     <ParamNameMismatch occurrences="2">
       <code>$name</code>
       <code>$name</code>
@@ -941,6 +937,8 @@
     <MixedArgument occurrences="1">
       <code>$plugin</code>
     </MixedArgument>
+    <MixedArrayOffset occurrences="1"/>
+    <MixedPropertyTypeCoercion occurrences="1"/>
     <NonInvariantDocblockPropertyType occurrences="3">
       <code>$aliases</code>
       <code>$factories</code>
