@@ -13,6 +13,12 @@ use function file_exists;
 use function implode;
 use function strstr;
 
+/**
+ * This is a temporary shim to allow testing against PHP 8.1.
+ *
+ * @todo Remove once laminas-code has a release that supports PHP 8.1.
+ * @internal
+ */
 class ClassReflection extends ReflectionClass implements ReflectionInterface
 {
     /** @var DocBlockReflection|null */

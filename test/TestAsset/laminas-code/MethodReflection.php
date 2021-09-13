@@ -22,6 +22,12 @@ use function var_export;
 
 use const FILE_IGNORE_NEW_LINES;
 
+/**
+ * This is a temporary shim to allow testing against PHP 8.1.
+ *
+ * @todo Remove once laminas-code has a release that supports PHP 8.1.
+ * @internal
+ */
 class MethodReflection extends PhpReflectionMethod implements ReflectionInterface
 {
     /**

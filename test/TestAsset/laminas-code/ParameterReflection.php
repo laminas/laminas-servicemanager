@@ -9,6 +9,12 @@ use ReturnTypeWillChange;
 
 use function method_exists;
 
+/**
+ * This is a temporary shim to allow testing against PHP 8.1.
+ *
+ * @todo Remove once laminas-code has a release that supports PHP 8.1.
+ * @internal
+ */
 class ParameterReflection extends ReflectionParameter implements ReflectionInterface
 {
     /** @var bool */
