@@ -24,12 +24,12 @@ final class LazyServiceFactory implements DelegatorFactoryInterface
     /** @var LazyLoadingValueHolderFactory */
     private $proxyFactory;
 
-    /** @var string[] map of service names to class names */
+    /** @var array<string, class-string> map of service names to class names */
     private $servicesMap;
 
     /**
-     * @param string[]                      $servicesMap  a map of service names to class names of their
-     *                                                    respective classes
+     * @param array<string, class-string> $servicesMap A map of service names to
+     *     class names of their respective classes
      */
     public function __construct(LazyLoadingValueHolderFactory $proxyFactory, array $servicesMap)
     {
@@ -40,6 +40,7 @@ final class LazyServiceFactory implements DelegatorFactoryInterface
     /**
      * {@inheritDoc}
      *
+     * @param string $name
      * @return VirtualProxyInterface
      */
     public function __invoke(ContainerInterface $container, $name, callable $callback, ?array $options = null)

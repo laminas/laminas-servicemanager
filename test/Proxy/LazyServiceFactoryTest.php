@@ -36,6 +36,7 @@ class LazyServiceFactoryTest extends TestCase
             'fooService' => 'FooClass',
         ];
 
+        /** @psalm-suppress ArgumentTypeCoercion */
         $this->factory = new LazyServiceFactory($this->proxyFactory, $servicesMap);
     }
 
