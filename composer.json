@@ -60,6 +60,9 @@
         }
     },
     "autoload-dev": {
+        "files": [
+            "test/autoload.php"
+        ],
         "psr-4": {
             "LaminasTest\\ServiceManager\\": "test/",
             "LaminasBench\\ServiceManager\\": "benchmarks/"
