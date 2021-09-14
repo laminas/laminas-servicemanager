@@ -964,26 +964,25 @@ class ServiceManager implements ServiceLocatorInterface
      */
     private function assertCallableDelegatorFactory($delegatorFactory): void
     {
-        if ($delegatorFactory instanceof Factory\DelegatorFactoryInterface) {
+        if (
+            $delegatorFactory instanceof Factory\DelegatorFactoryInterface
+            || is_callable($delegatorFactory)
+        ) {
             return;
         }
-
-        if (! is_callable($delegatorFactory)) {
-            if (is_string($delegatorFactory)) {
-                throw new ServiceNotCreatedException(sprintf(
-                    'An invalid delegator factory was registered; resolved to class or function "%s"'
-                    . ' which does not exist; please provide a valid function name or class name resolving'
-                    . ' to an implementation of %s',
-                    $delegatorFactory,
-                    DelegatorFactoryInterface::class
-                ));
-            }
-
+        if (is_string($delegatorFactory)) {
             throw new ServiceNotCreatedException(sprintf(
-                'A non-callable delegator, "%s", was provided; expected a callable or instance of "%s"',
-                is_object($delegatorFactory) ? get_class($delegatorFactory) : gettype($delegatorFactory),
+                'An invalid delegator factory was registered; resolved to class or function "%s"'
+                . ' which does not exist; please provide a valid function name or class name resolving'
+                . ' to an implementation of %s',
+                $delegatorFactory,
                 DelegatorFactoryInterface::class
             ));
         }
+        throw new ServiceNotCreatedException(sprintf(
+            'A non-callable delegator, "%s", was provided; expected a callable or instance of "%s"',
+            is_object($delegatorFactory) ? get_class($delegatorFactory) : gettype($delegatorFactory),
+            DelegatorFactoryInterface::class
+        ));
     }
 }
