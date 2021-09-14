@@ -24,22 +24,21 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^7.3 || ~8.0.0",
+        "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
         "container-interop/container-interop": "^1.2",
         "laminas/laminas-stdlib": "^3.2.1",
-        "laminas/laminas-zendframework-bridge": "^1.0",
         "psr/container": "^1.0"
     },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.0",
-        "laminas/laminas-coding-standard": "~2.2.0",
+        "laminas/laminas-coding-standard": "~2.2.1",
         "laminas/laminas-container-config-test": "^0.3",
         "laminas/laminas-dependency-plugin": "^2.1.2",
-        "mikey179/vfsstream": "^1.6.8",
-        "ocramius/proxy-manager": "^2.2.3",
-        "phpbench/phpbench": "^1.0.4",
+        "mikey179/vfsstream": "^1.6.10@alpha",
+        "ocramius/proxy-manager": "^2.11",
+        "phpbench/phpbench": "^1.1",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.4",
+        "phpunit/phpunit": "^9.5.5",
         "psalm/plugin-phpunit": "^0.16.1",
         "vimeo/psalm": "^4.8"
     },
@@ -49,6 +48,7 @@
     },
     "conflict": {
         "zendframework/zend-code": "<3.3.1",
+        "zendframework/zend-servicemanager": "*",
         "laminas/laminas-code": "<3.3.1"
     },
     "suggest": {
@@ -60,6 +60,9 @@
         }
     },
     "autoload-dev": {
+        "files": [
+            "test/autoload.php"
+        ],
         "psr-4": {
             "LaminasTest\\ServiceManager\\": "test/",
             "LaminasBench\\ServiceManager\\": "benchmarks/"
@@ -80,8 +83,5 @@
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
         "static-analysis" : "psalm --shepherd --stats"
-    },
-    "replace": {
-        "zendframework/zend-servicemanager": "^3.4.0"
     }
 }
