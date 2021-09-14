@@ -114,6 +114,8 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
     }
 
     /**
+     * Override configure() to validate service instances.
+     *
      * @param  array $config
      * @psalm-param ServiceManagerConfiguration $config
      * @return self
