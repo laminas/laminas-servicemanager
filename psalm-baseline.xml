@@ -400,7 +400,7 @@
     <InternalMethod occurrences="1">
       <code>getContainer</code>
     </InternalMethod>
-    <InvalidArgument occurrences="6"/>
+    <InvalidArgument occurrences="5"/>
     <MissingClosureParamType occurrences="14">
       <code>$callback</code>
       <code>$container</code>

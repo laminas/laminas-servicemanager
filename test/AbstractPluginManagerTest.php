@@ -366,10 +366,11 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager->assertion = $assertion;
 
         $errorHandlerCalled = false;
-        set_error_handler(function (int $errno, string $errmsg) use (&$errorHandlerCalled) {
+        set_error_handler(function (int $errno, string $errmsg) use (&$errorHandlerCalled): bool {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
             $this->assertStringContainsString('3.0', $errmsg);
             $errorHandlerCalled = true;
+            return true;
         }, E_USER_DEPRECATED);
 
         $pluginManager->validate($instance);

@@ -459,7 +459,7 @@ trait CommonServiceLocatorBehaviorsTrait
             ],
             'delegators'         => [
                 stdClass::class => [
-                    function (ContainerInterface $container, string $name, callable $callback) {
+                    function (ContainerInterface $container, string $name, callable $callback): object {
                         $instance = $callback();
                         self::assertInstanceOf(stdClass::class, $instance);
                         $instance->foo = 'bar';
@@ -921,9 +921,9 @@ trait CommonServiceLocatorBehaviorsTrait
     public function testCanRetrieveParentContainerViaGetServiceLocatorWithDeprecationNotice(): void
     {
         $container = $this->createContainer();
-        /** @psalm-suppress InvalidArgument */
-        set_error_handler(function (int $errno) {
+        set_error_handler(function (int $errno): bool {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
+            return true;
         }, E_USER_DEPRECATED);
         $this->assertSame($this->creationContext, $container->getServiceLocator());
         restore_error_handler();
