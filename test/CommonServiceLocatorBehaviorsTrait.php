@@ -26,6 +26,7 @@ use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\PassthroughDelegatorFactory;
 use LaminasTest\ServiceManager\TestAsset\SampleFactory;
 use LaminasTest\ServiceManager\TestAsset\SimpleAbstractFactory;
+use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use stdClass;
 
@@ -39,8 +40,10 @@ use const E_USER_DEPRECATED;
 
 /**
  * @see ConfigInterface
+ * @see TestCase
  *
  * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ * @psalm-require-extends TestCase
  */
 trait CommonServiceLocatorBehaviorsTrait
 {
