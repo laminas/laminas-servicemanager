@@ -130,15 +130,12 @@
       <code>$alias</code>
       <code>$alias</code>
     </MixedArgumentTypeCoercion>
-    <MixedAssignment occurrences="11">
+    <MixedAssignment occurrences="9">
       <code>$abstractFactories</code>
       <code>$abstractFactory</code>
       <code>$abstractFactory</code>
       <code>$config['aliases']</code>
       <code>$key</code>
-      <code>$object</code>
-      <code>$object</code>
-      <code>$object</code>
       <code>$this-&gt;aliases</code>
       <code>$this-&gt;factories</code>
       <code>$this-&gt;services</code>

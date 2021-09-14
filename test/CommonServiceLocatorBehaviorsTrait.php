@@ -342,10 +342,18 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $this->assertSame($serviceManager, $newServiceManager);
 
-        $firstFactory->expects($this->never())->method('__invoke');
-        $secondFactory->expects($this->once())->method('__invoke');
+        $firstFactory
+            ->expects($this->never())
+            ->method($this->anything());
 
-        $newServiceManager->get(DateTime::class);
+        $date = new DateTime();
+        $secondFactory
+            ->expects($this->once())
+            ->method('__invoke')
+            ->willReturn($date);
+
+        $dateFromServiceManager = $newServiceManager->get(DateTime::class);
+        $this->assertSame($date, $dateFromServiceManager);
     }
 
     public function testConfigureInvokablesTakePrecedenceOverFactories(): void

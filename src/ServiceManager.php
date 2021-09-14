@@ -118,7 +118,7 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * A list of already loaded services (this act as a local cache)
      *
-     * @var array<string,mixed>
+     * @var array<string,array|object>
      */
     protected $services = [];
 
@@ -607,12 +607,11 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * This is a highly performance sensitive method, do not modify if you have not benchmarked it carefully
      *
-     * @return mixed
      * @throws ServiceNotFoundException If unable to resolve the service.
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
      * @throws ContainerException If any other error occurs.
      */
-    private function doCreate(string $resolvedName, ?array $options = null)
+    private function doCreate(string $resolvedName, ?array $options = null): object
     {
         try {
             if (! isset($this->delegators[$resolvedName])) {
