@@ -50,7 +50,7 @@ use Interop\Container\ContainerInterface;
  *     initializers?: InitializersConfigurationType,
  *     invokables?: array<string,string>,
  *     lazy_services?: LazyServicesConfigurationType,
- *     services?:array<string,object|array>,
+ *     services?: array<string,object|array>,
  *     shared?:array<string,bool>
  * }
  */
