@@ -52,7 +52,7 @@ class V2v3PluginManager extends AbstractPluginManager
         throw new InvalidServiceException(sprintf(
             "'%s' is not an instance of '%s'",
             get_class($plugin),
-            $this->instanceOf
+            (string) $this->instanceOf
         ));
     }
 
