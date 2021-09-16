@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
+use LaminasTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface;
+use LaminasTest\ServiceManager\AbstractFactory\TestAsset\ValidatorPluginManager;
+
 class ClassWithMixedConstructorParameters
 {
     public array $config;
 
     public ?array $options;
 
-    public \LaminasTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface $sample;
+    public SampleInterface $sample;
 
-    public \LaminasTest\ServiceManager\AbstractFactory\TestAsset\ValidatorPluginManager $validators;
+    public ValidatorPluginManager $validators;
 
     public function __construct(
         SampleInterface $sample,

@@ -12,7 +12,6 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 use function file_get_contents;
 use function sprintf;
@@ -24,9 +23,9 @@ class FactoryCreatorCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    private \Prophecy\Prophecy\ObjectProphecy $helper;
+    private ObjectProphecy $helper;
 
-    private \Laminas\ServiceManager\Tool\FactoryCreatorCommand $command;
+    private FactoryCreatorCommand $command;
 
     public function setUp(): void
     {

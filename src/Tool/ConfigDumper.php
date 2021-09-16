@@ -38,7 +38,7 @@ class ConfigDumper
 return %s;
 EOC;
 
-    private ?\Interop\Container\ContainerInterface $container;
+    private ?ContainerInterface $container;
 
     public function __construct(?ContainerInterface $container = null)
     {

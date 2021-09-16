@@ -19,7 +19,7 @@ use ProxyManager\Proxy\VirtualProxyInterface;
  */
 class LazyServiceFactoryTest extends TestCase
 {
-    private \Laminas\ServiceManager\Proxy\LazyServiceFactory $factory;
+    private LazyServiceFactory $factory;
 
     /** @var LazyLoadingValueHolderFactory|MockObject */
     private $proxyFactory;

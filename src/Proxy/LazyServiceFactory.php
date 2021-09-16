@@ -21,7 +21,7 @@ use function sprintf;
  */
 final class LazyServiceFactory implements DelegatorFactoryInterface
 {
-    private \ProxyManager\Factory\LazyLoadingValueHolderFactory $proxyFactory;
+    private LazyLoadingValueHolderFactory $proxyFactory;
 
     /** @var array<string, class-string> map of service names to class names */
     private array $servicesMap;

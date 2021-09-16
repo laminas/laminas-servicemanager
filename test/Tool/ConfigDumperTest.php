@@ -29,7 +29,7 @@ class ConfigDumperTest extends TestCase
 {
     use ProphecyTrait;
 
-    private \Laminas\ServiceManager\Tool\ConfigDumper $dumper;
+    private ConfigDumper $dumper;
 
     public function setUp(): void
     {

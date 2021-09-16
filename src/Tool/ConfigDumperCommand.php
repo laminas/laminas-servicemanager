@@ -51,7 +51,7 @@ and injects it with ConfigAbstractFactory dependency configuration for
 the provided class name, writing the changes back to the file.
 EOH;
 
-    private \Laminas\Stdlib\ConsoleHelper $helper;
+    private ConsoleHelper $helper;
 
     private string $scriptName;
 

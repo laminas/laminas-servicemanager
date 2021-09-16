@@ -12,7 +12,6 @@ use LaminasTest\ServiceManager\TestAsset\ObjectWithObjectScalarDependency;
 use LaminasTest\ServiceManager\TestAsset\ObjectWithScalarDependency;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -29,12 +28,12 @@ class ConfigDumperCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    private \org\bovigo\vfs\vfsStreamDirectory $configDir;
+    private vfsStreamDirectory $configDir;
 
     /** @var ObjectProphecy<ConsoleHelper> */
-    private \Prophecy\Prophecy\ObjectProphecy $helper;
+    private ObjectProphecy $helper;
 
-    private \Laminas\ServiceManager\Tool\ConfigDumperCommand $command;
+    private ConfigDumperCommand $command;
 
     public function setUp(): void
     {

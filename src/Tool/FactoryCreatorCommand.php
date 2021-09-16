@@ -39,7 +39,7 @@ Generates to STDOUT a factory for creating the specified class; this may then
 be added to your application, and configured as a factory for the class.
 EOH;
 
-    private \Laminas\Stdlib\ConsoleHelper $helper;
+    private ConsoleHelper $helper;
 
     private string $scriptName;
 

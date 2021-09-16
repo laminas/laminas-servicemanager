@@ -10,7 +10,6 @@ use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 use function sprintf;
 
@@ -18,7 +17,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    private \Prophecy\Prophecy\ObjectProphecy $container;
+    private ObjectProphecy $container;
 
     public function setUp(): void
     {

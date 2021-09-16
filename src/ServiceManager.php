@@ -12,6 +12,7 @@ use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use Laminas\Stdlib\ArrayUtils;
 use ProxyManager\Configuration as ProxyConfiguration;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
@@ -87,7 +88,7 @@ class ServiceManager implements ServiceLocatorInterface
 
     protected array $lazyServices = [];
 
-    private ?\Laminas\ServiceManager\Proxy\LazyServiceFactory $lazyServicesDelegator = null;
+    private ?LazyServiceFactory $lazyServicesDelegator = null;
 
     /**
      * A list of already loaded services (this act as a local cache)
@@ -567,7 +568,7 @@ class ServiceManager implements ServiceLocatorInterface
         foreach ($this->delegators[$name] as $index => $delegatorFactory) {
             $delegatorFactory = $this->delegators[$name][$index];
 
-            if ($delegatorFactory === Proxy\LazyServiceFactory::class) {
+            if ($delegatorFactory === LazyServiceFactory::class) {
                 $delegatorFactory = $this->createLazyServiceDelegatorFactory();
             }
 
@@ -648,7 +649,7 @@ class ServiceManager implements ServiceLocatorInterface
      * Creates the lazy services delegator factory based on the lazy_services
      * configuration present.
      *
-     * @return Proxy\LazyServiceFactory
+     * @return LazyServiceFactory
      * @throws ServiceNotCreatedException When the lazy service class_map configuration is missing.
      */
     private function createLazyServiceDelegatorFactory()
@@ -681,7 +682,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         spl_autoload_register($factoryConfig->getProxyAutoloader());
 
-        $this->lazyServicesDelegator = new Proxy\LazyServiceFactory(
+        $this->lazyServicesDelegator = new LazyServiceFactory(
             new LazyLoadingValueHolderFactory($factoryConfig),
             $this->lazyServices['class_map']
         );
