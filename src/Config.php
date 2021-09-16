@@ -29,8 +29,7 @@ use function is_int;
  */
 class Config implements ConfigInterface
 {
-    /** @var array */
-    private $allowedKeys = [
+    private array $allowedKeys = [
         'abstract_factories' => true,
         'aliases'            => true,
         'delegators'         => true,
@@ -42,8 +41,7 @@ class Config implements ConfigInterface
         'shared'             => true,
     ];
 
-    /** @var array */
-    protected $config = [
+    protected array $config = [
         'abstract_factories' => [],
         'aliases'            => [],
         'delegators'         => [],

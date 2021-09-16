@@ -6,8 +6,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 class Foo
 {
-    /** @var array<string,mixed>|null */
-    protected $options;
+    protected ?array $options;
 
     /**
      * @param array<string,mixed>|null $options

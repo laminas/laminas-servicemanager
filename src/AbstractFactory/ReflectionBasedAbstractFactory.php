@@ -87,7 +87,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      *
      * @var string[]
      */
-    protected $aliases = [];
+    protected array $aliases = [];
 
     /**
      * Allows overriding the internal list of aliases. These should be of the

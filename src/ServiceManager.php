@@ -54,7 +54,7 @@ use const E_USER_DEPRECATED;
 class ServiceManager implements ServiceLocatorInterface
 {
     /** @var Factory\AbstractFactoryInterface[] */
-    protected $abstractFactories = [];
+    protected array $abstractFactories = [];
 
     /**
      * A list of aliases
@@ -67,16 +67,13 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * Whether or not changes may be made to this instance.
-     *
-     * @var bool
      */
-    protected $allowOverride = false;
+    protected bool $allowOverride = false;
 
-    /** @var ContainerInterface */
-    protected $creationContext;
+    protected ContainerInterface $creationContext;
 
     /** @var string[][]|Factory\DelegatorFactoryInterface[][] */
-    protected $delegators = [];
+    protected array $delegators = [];
 
     /**
      * A list of factories (either as string name or callable)
@@ -86,13 +83,11 @@ class ServiceManager implements ServiceLocatorInterface
     protected $factories = [];
 
     /** @var Initializer\InitializerInterface[]|callable[] */
-    protected $initializers = [];
+    protected array $initializers = [];
 
-    /** @var array */
-    protected $lazyServices = [];
+    protected array $lazyServices = [];
 
-    /** @var null|Proxy\LazyServiceFactory */
-    private $lazyServicesDelegator;
+    private ?\Laminas\ServiceManager\Proxy\LazyServiceFactory $lazyServicesDelegator = null;
 
     /**
      * A list of already loaded services (this act as a local cache)
@@ -117,24 +112,18 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * Should the services be shared by default?
-     *
-     * @var bool
      */
-    protected $sharedByDefault = true;
+    protected bool $sharedByDefault = true;
 
     /**
      * Service manager was already configured?
-     *
-     * @var bool
      */
-    protected $configured = false;
+    protected bool $configured = false;
 
     /**
      * Cached abstract factories from string.
-     *
-     * @var array
      */
-    private $cachedAbstractFactories = [];
+    private array $cachedAbstractFactories = [];
 
     /**
      * See {@see \Laminas\ServiceManager\ServiceManager::configure()} for details

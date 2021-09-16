@@ -18,8 +18,7 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ContainerInterface|ObjectProphecy */
-    private $container;
+    private \Prophecy\Prophecy\ObjectProphecy $container;
 
     public function setUp(): void
     {

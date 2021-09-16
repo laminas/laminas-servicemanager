@@ -32,14 +32,11 @@ class V2v3PluginManager extends AbstractPluginManager
         'laminastestservicemanagertestassetinvokableobject' => InvokableFactory::class,
     ];
 
-    /** @var string */
-    protected $instanceOf = InvokableObject::class;
+    protected ?string $instanceOf = InvokableObject::class;
 
-    /** @var bool */
-    protected $shareByDefault = false;
+    protected bool $shareByDefault = false;
 
-    /** @var bool */
-    protected $sharedByDefault = false;
+    protected bool $sharedByDefault = false;
 
     /**
      * @param mixed $plugin

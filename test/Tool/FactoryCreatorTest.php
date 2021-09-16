@@ -14,8 +14,7 @@ use function file_get_contents;
 
 class FactoryCreatorTest extends TestCase
 {
-    /** @var FactoryCreator */
-    private $factoryCreator;
+    private \Laminas\ServiceManager\Tool\FactoryCreator $factoryCreator;
 
     /**
      * @internal param FactoryCreator $factoryCreator

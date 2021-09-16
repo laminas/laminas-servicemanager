@@ -6,17 +6,13 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 class ClassWithMixedConstructorParameters
 {
-    /** @var array */
-    public $config;
+    public array $config;
 
-    /** @var array|null */
-    public $options;
+    public ?array $options;
 
-    /** @var SampleInterface */
-    public $sample;
+    public \LaminasTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface $sample;
 
-    /** @var ValidatorPluginManager */
-    public $validators;
+    public \LaminasTest\ServiceManager\AbstractFactory\TestAsset\ValidatorPluginManager $validators;
 
     public function __construct(
         SampleInterface $sample,

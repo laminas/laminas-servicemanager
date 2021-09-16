@@ -9,8 +9,7 @@ use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 class CallTimesAbstractFactory implements AbstractFactoryInterface
 {
-    /** @var int */
-    protected static $callTimes = 0;
+    protected static int $callTimes = 0;
 
     /**
      * {@inheritDoc}

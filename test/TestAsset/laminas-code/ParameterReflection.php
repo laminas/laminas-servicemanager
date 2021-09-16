@@ -17,8 +17,7 @@ use function method_exists;
  */
 class ParameterReflection extends ReflectionParameter implements ReflectionInterface
 {
-    /** @var bool */
-    protected $isFromMethod = false;
+    protected bool $isFromMethod = false;
 
     /**
      * Get declaring class reflection object

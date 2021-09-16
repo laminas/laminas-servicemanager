@@ -6,8 +6,7 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 class ClassWithTypeHintedConstructorParameter
 {
-    /** @var SampleInterface */
-    public $sample;
+    public \LaminasTest\ServiceManager\AbstractFactory\TestAsset\SampleInterface $sample;
 
     public function __construct(SampleInterface $sample)
     {

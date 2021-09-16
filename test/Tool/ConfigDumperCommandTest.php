@@ -29,14 +29,12 @@ class ConfigDumperCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var vfsStreamDirectory */
-    private $configDir;
+    private \org\bovigo\vfs\vfsStreamDirectory $configDir;
 
     /** @var ObjectProphecy<ConsoleHelper> */
-    private $helper;
+    private \Prophecy\Prophecy\ObjectProphecy $helper;
 
-    /** @var ConfigDumperCommand */
-    private $command;
+    private \Laminas\ServiceManager\Tool\ConfigDumperCommand $command;
 
     public function setUp(): void
     {

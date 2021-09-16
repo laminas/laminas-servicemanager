@@ -8,8 +8,7 @@ use Laminas\ServiceManager\Config;
 
 class ExtendedConfig extends Config
 {
-    /** @var array */
-    protected $config = [
+    protected array $config = [
         'invokables' => [
             InvokableObject::class => InvokableObject::class,
         ],

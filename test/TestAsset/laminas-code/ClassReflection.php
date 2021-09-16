@@ -21,8 +21,7 @@ use function strstr;
  */
 class ClassReflection extends ReflectionClass implements ReflectionInterface
 {
-    /** @var DocBlockReflection|null */
-    protected $docBlock;
+    protected ?\Laminas\Code\Reflection\DocBlockReflection $docBlock = null;
 
     /**
      * Return the classes DocBlock reflection object

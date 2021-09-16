@@ -24,11 +24,9 @@ class FactoryCreatorCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|ConsoleHelper */
-    private $helper;
+    private \Prophecy\Prophecy\ObjectProphecy $helper;
 
-    /** @var FactoryCreatorCommand */
-    private $command;
+    private \Laminas\ServiceManager\Tool\FactoryCreatorCommand $command;
 
     public function setUp(): void
     {

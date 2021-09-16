@@ -6,8 +6,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 class InvokableObject
 {
-    /** @var array */
-    public $options;
+    public array $options;
 
     /**
      * @param array $options

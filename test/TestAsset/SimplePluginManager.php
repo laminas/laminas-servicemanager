@@ -8,6 +8,5 @@ use Laminas\ServiceManager\AbstractPluginManager;
 
 class SimplePluginManager extends AbstractPluginManager
 {
-    /** @var string */
-    protected $instanceOf = InvokableObject::class;
+    protected ?string $instanceOf = InvokableObject::class;
 }

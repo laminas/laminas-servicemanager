@@ -6,11 +6,9 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 class ClassWithScalarParameters
 {
-    /** @var string */
-    public $foo = 'foo';
+    public string $foo = 'foo';
 
-    /** @var string */
-    public $bar = 'bar';
+    public string $bar = 'bar';
 
     public function __construct(string $foo, string $bar)
     {

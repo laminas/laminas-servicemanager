@@ -36,17 +36,13 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
 {
     /**
      * Whether or not to auto-add a FQCN as an invokable if it exists.
-     *
-     * @var bool
      */
-    protected $autoAddInvokableClass = true;
+    protected bool $autoAddInvokableClass = true;
 
     /**
      * An object type that the created instance must be instanced of
-     *
-     * @var null|string
      */
-    protected $instanceOf;
+    protected ?string $instanceOf = null;
 
     /**
      * Sets the provided $parentLocator as the creation context for all
