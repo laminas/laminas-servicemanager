@@ -12,6 +12,7 @@ use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Prophecy\Prophecy\ObjectProphecy;
 
 use function file_get_contents;
 use function sprintf;
