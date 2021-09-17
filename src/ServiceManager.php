@@ -451,7 +451,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @param string|callable|Factory\DelegatorFactoryInterface $factory Delegator
      *     factory to assign.
      * @psalm-param class-string<Factory\DelegatorFactoryInterface>
-     *     |callable(ContainerInterface,string,callable,array<mixed>) $factory
+     *     |callable(ContainerInterface,string,callable,array<mixed>|null) $factory
      */
     public function addDelegator($name, $factory)
     {
