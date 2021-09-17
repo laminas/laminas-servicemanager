@@ -585,9 +585,6 @@ class ServiceManager implements ServiceLocatorInterface
 
             $this->assertCallableDelegatorFactory($delegatorFactory);
 
-            /**
-             * @psalm-var callable(ContainerInterface,string,callable,array<mixed>|null):object $delegatorFactory
-             */
             $this->delegators[$name][$index] = $delegatorFactory;
 
             $creationCallback = function () use ($delegatorFactory, $name, $creationCallback, $options) {
@@ -956,7 +953,7 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * @psalm-param mixed $delegatorFactory
-     * @psalm-assert callable(ContainerInterface,string,callable,array<mixed>):object $delegatorFactory
+     * @psalm-assert callable(ContainerInterface,string,callable():object,array<mixed>|null):object $delegatorFactory
      */
     private function assertCallableDelegatorFactory($delegatorFactory): void
     {
