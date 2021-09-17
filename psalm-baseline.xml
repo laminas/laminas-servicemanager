@@ -141,10 +141,6 @@
       <code>$this-&gt;services</code>
       <code>$this-&gt;shared</code>
     </MixedAssignment>
-    <MixedMethodCall occurrences="2">
-      <code>new $delegatorFactory()</code>
-      <code>new $factory()</code>
-    </MixedMethodCall>
     <MixedOperand occurrences="5">
       <code>$config['aliases']</code>
       <code>$config['aliases'] ?? []</code>

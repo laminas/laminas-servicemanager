@@ -20,7 +20,6 @@ use Interop\Container\ContainerInterface;
  *      array<
  *          array-key,
  *          (class-string<Factory\DelegatorFactoryInterface>|Factory\DelegatorFactoryInterface)
- *          |class-string
  *          |callable(ContainerInterface,string,callable():object,array<mixed>):object
  *          |(class-string<DelegatorFactoryInterface>|DelegatorFactoryInterface)
  *      >
@@ -28,7 +27,6 @@ use Interop\Container\ContainerInterface;
  * @psalm-type FactoriesConfigurationType = array<
  *      string,
  *      (class-string<Factory\FactoryInterface>|Factory\FactoryInterface)
- *      |class-string
  *      |callable(ContainerInterface,string,array<mixed>)
  * >
  * @psalm-type InitializersConfigurationType = array<
