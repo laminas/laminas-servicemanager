@@ -20,14 +20,14 @@ use Interop\Container\ContainerInterface;
  *      array<
  *          array-key,
  *          (class-string<Factory\DelegatorFactoryInterface>|Factory\DelegatorFactoryInterface)
- *          |callable(ContainerInterface,string,callable():object,array<mixed>):object
+ *          |callable(ContainerInterface,string,callable():object,array<mixed>|null):object
  *          |(class-string<DelegatorFactoryInterface>|DelegatorFactoryInterface)
  *      >
  * >
  * @psalm-type FactoriesConfigurationType = array<
  *      string,
  *      (class-string<Factory\FactoryInterface>|Factory\FactoryInterface)
- *      |callable(ContainerInterface,string,array<mixed>)
+ *      |callable(ContainerInterface,string,array<mixed>|null)
  * >
  * @psalm-type InitializersConfigurationType = array<
  *      array-key,
