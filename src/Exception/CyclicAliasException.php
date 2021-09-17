@@ -123,7 +123,7 @@ class CyclicAliasException extends InvalidArgumentException
         return implode(
             ' => ',
             array_map(
-                fn($cycle) => '"' . $cycle . '"',
+                fn($cycle): string => '"' . $cycle . '"',
                 $fullCycle
             )
         );
