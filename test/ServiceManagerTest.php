@@ -487,6 +487,7 @@ class ServiceManagerTest extends TestCase
         ];
 
         $serviceManager = new ServiceManager($config);
+        $serviceManager->configure($config);
 
         /** @var InvokableObject $instance */
         $instance = $serviceManager->get('Foo');
