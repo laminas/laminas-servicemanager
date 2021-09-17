@@ -591,15 +591,7 @@ class ServiceManager implements ServiceLocatorInterface
 
             $creationCallback =
                 /** @return object */
-                static function () use (
-                    $initialCreationContext,
-                    $delegatorFactory,
-                    $name,
-                    $creationCallback,
-                    $options
-                ) {
-                    return $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
-                };
+                static fn() => $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
         }
 
         return $creationCallback();

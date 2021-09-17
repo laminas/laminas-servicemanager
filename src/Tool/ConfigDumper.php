@@ -72,9 +72,7 @@ EOC;
         $constructorArguments = $reflectionClass->getConstructor()->getParameters();
         $constructorArguments = array_filter(
             $constructorArguments,
-            function (ReflectionParameter $argument) {
-                return ! $argument->isOptional();
-            }
+            fn(ReflectionParameter $argument) => ! $argument->isOptional()
         );
 
         // has no required parameters, treat it as an invokable

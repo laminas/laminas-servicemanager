@@ -163,9 +163,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
          * @throws ServiceNotFoundException If type-hinted parameter cannot be
          *   resolved to a service in the container.
          */
-        return function (ReflectionParameter $parameter) use ($container, $requestedName) {
-            return $this->resolveParameter($parameter, $container, $requestedName);
-        };
+        return fn(ReflectionParameter $parameter) => $this->resolveParameter($parameter, $container, $requestedName);
     }
 
     /**
