@@ -589,9 +589,17 @@ class ServiceManager implements ServiceLocatorInterface
 
             $this->delegators[$name][$index] = $delegatorFactory;
 
-            $creationCallback = static function () use ($initialCreationContext, $delegatorFactory, $name, $creationCallback, $options) {
-                return $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
-            };
+            $creationCallback =
+                /** @return object */
+                static function () use (
+                    $initialCreationContext,
+                    $delegatorFactory,
+                    $name,
+                    $creationCallback,
+                    $options
+                ) {
+                    return $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
+                };
         }
 
         return $creationCallback();
@@ -602,11 +610,12 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * This is a highly performance sensitive method, do not modify if you have not benchmarked it carefully
      *
+     * @return object
      * @throws ServiceNotFoundException If unable to resolve the service.
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
      * @throws ContainerException If any other error occurs.
      */
-    private function doCreate(string $resolvedName, ?array $options = null): object
+    private function doCreate(string $resolvedName, ?array $options = null)
     {
         try {
             if (! isset($this->delegators[$resolvedName])) {
