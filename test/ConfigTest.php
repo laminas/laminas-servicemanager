@@ -106,7 +106,7 @@ class ConfigTest extends TestCase
         $services = $this->prophesize(ServiceManager::class);
         $services->configure($expected)->willReturn('CALLED');
 
-        /** @psalm-suppress InvalidArgument */
+        /** @psalm-suppress InvalidArgument Keeping this invalid configuration to ensure BC compatibility. */
         $configuration = new Config($config);
         $this->assertEquals('CALLED', $configuration->configureServiceManager($services->reveal()));
 
