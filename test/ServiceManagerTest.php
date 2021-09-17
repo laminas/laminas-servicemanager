@@ -6,6 +6,7 @@ namespace LaminasTest\ServiceManager;
 
 use DateTime;
 use Interop\Container\ContainerInterface as InteropContainerInterface;
+use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -20,16 +21,23 @@ use stdClass;
 use function get_class;
 
 /**
+ * @see ConfigInterface
+ *
  * @covers \Laminas\ServiceManager\ServiceManager
+ * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
 class ServiceManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
 
+    /**
+     * @psalm-param ServiceManagerConfigurationType $config
+     */
     public function createContainer(array $config = []): ServiceManager
     {
-        $this->creationContext = new ServiceManager($config);
-        return $this->creationContext;
+        $container             = new ServiceManager($config);
+        $this->creationContext = $container;
+        return $container;
     }
 
     public function testServiceManagerIsAPsr11Container(): void
@@ -86,8 +94,9 @@ class ServiceManagerTest extends TestCase
             'delegators' => [
                 stdClass::class => [
                     TestAsset\PreDelegator::class,
-                    function ($container, $name, $callback) {
-                        $instance      = $callback();
+                    function (InteropContainerInterface $container, string $name, callable $callback): object {
+                        $instance = $callback();
+                        self::assertInstanceOf(stdClass::class, $instance);
                         $instance->foo = 'bar';
                         return $instance;
                     },
@@ -475,7 +484,6 @@ class ServiceManagerTest extends TestCase
         ];
 
         $serviceManager = new ServiceManager($config);
-        $serviceManager->configure($config);
 
         /** @var InvokableObject $instance */
         $instance = $serviceManager->get('Foo');
@@ -516,6 +524,7 @@ class ServiceManagerTest extends TestCase
 
     /**
      * @param array<string,mixed>  $config
+     * @psalm-param ServiceManagerConfigurationType $config
      * @param non-empty-string $serviceName
      * @param non-empty-string $alias
      * @dataProvider aliasedServices
@@ -533,7 +542,11 @@ class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @return array<non-empty-string,array{0:array<string,mixed>,1:non-empty-string,2:non-empty-string}>
+     * @psalm-return array<non-empty-string,array{
+     *     0:ServiceManagerConfigurationType,
+     *     1:non-empty-string,
+     *     2:non-empty-string
+     * }>
      */
     public function aliasedServices(): array
     {
@@ -583,8 +596,7 @@ class ServiceManagerTest extends TestCase
                             }
 
                             /**
-                             * @param string                   $requestedName
-                             * @param array<string,mixed>|null $options
+                             * @param string $requestedName
                              */
                             public function __invoke(
                                 InteropContainerInterface $container,

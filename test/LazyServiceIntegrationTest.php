@@ -38,7 +38,10 @@ use function unlink;
  */
 class LazyServiceIntegrationTest extends TestCase
 {
-    /** @var string */
+    /**
+     * @var string
+     * @psalm-var non-empty-string
+     */
     public $proxyDir;
 
     public function setUp(): void

@@ -199,6 +199,7 @@ class AbstractPluginManagerTest extends TestCase
         ]);
 
         $instance = $pluginManager->get(stdClass::class);
+        $this->assertInstanceOf(stdClass::class, $instance);
         $this->assertTrue(isset($instance->option), 'Delegator-injected option was not found');
         $this->assertEquals(
             $config['option'],
@@ -365,11 +366,12 @@ class AbstractPluginManagerTest extends TestCase
         $pluginManager->assertion = $assertion;
 
         $errorHandlerCalled = false;
-        set_error_handler(function ($errno, $errmsg) use (&$errorHandlerCalled) {
+        set_error_handler(function (int $errno, string $errmsg) use (&$errorHandlerCalled) {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
             $this->assertStringContainsString('3.0', $errmsg);
             $errorHandlerCalled = true;
         }, E_USER_DEPRECATED);
+
         $pluginManager->validate($instance);
         restore_error_handler();
 

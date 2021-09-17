@@ -7,6 +7,7 @@ namespace LaminasTest\ServiceManager;
 use DateTime;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
+use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
@@ -36,6 +37,11 @@ use function set_error_handler;
 
 use const E_USER_DEPRECATED;
 
+/**
+ * @see ConfigInterface
+ *
+ * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ */
 trait CommonServiceLocatorBehaviorsTrait
 {
     /**
@@ -46,7 +52,7 @@ trait CommonServiceLocatorBehaviorsTrait
     protected $creationContext;
 
     /**
-     * @param array<string,mixed> $config
+     * @psalm-param ServiceManagerConfigurationType $config
      * @return ServiceManager
      */
     abstract public function createContainer(array $config = []);
@@ -442,8 +448,9 @@ trait CommonServiceLocatorBehaviorsTrait
             ],
             'delegators'         => [
                 stdClass::class => [
-                    function ($container, $name, $callback) {
-                        $instance      = $callback();
+                    function (ContainerInterface $container, string $name, callable $callback) {
+                        $instance = $callback();
+                        self::assertInstanceOf(stdClass::class, $instance);
                         $instance->foo = 'bar';
                         return $instance;
                     },
@@ -555,6 +562,7 @@ trait CommonServiceLocatorBehaviorsTrait
     ) {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($contains);
+        /** @psalm-suppress InvalidArgument */
         $this->createContainer([
             'abstract_factories' => [
                 $factory,
@@ -597,6 +605,7 @@ trait CommonServiceLocatorBehaviorsTrait
     ) {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($contains);
+        /** @psalm-suppress InvalidArgument */
         $this->createContainer([
             'initializers' => [
                 $initializer,
@@ -610,6 +619,7 @@ trait CommonServiceLocatorBehaviorsTrait
     public function testGetRaisesExceptionWhenNoFactoryIsResolved(): void
     {
         $serviceManager = $this->createContainer();
+        /** @psalm-suppress InvalidArgument */
         $this->expectException(ContainerException::class);
         $this->expectExceptionMessage('Unable to resolve');
         $serviceManager->get('Some\Unknown\Service');
@@ -624,14 +634,15 @@ trait CommonServiceLocatorBehaviorsTrait
     }
 
     /**
-     * @dataProvider invalidDelegators
      * @param mixed $delegator
+     * @dataProvider invalidDelegators
      * @covers \Laminas\ServiceManager\ServiceManager::createDelegatorFromName
      */
     public function testInvalidDelegatorShouldRaiseExceptionDuringCreation(
         $delegator,
         string $contains = 'non-callable delegator'
     ) {
+        /** @psalm-suppress InvalidArgument */
         $serviceManager = $this->createContainer([
             'factories'  => [
                 stdClass::class => InvokableFactory::class,
@@ -899,7 +910,8 @@ trait CommonServiceLocatorBehaviorsTrait
     public function testCanRetrieveParentContainerViaGetServiceLocatorWithDeprecationNotice(): void
     {
         $container = $this->createContainer();
-        set_error_handler(function ($errno, $errstr) {
+        /** @psalm-suppress InvalidArgument */
+        set_error_handler(function (int $errno) {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
         }, E_USER_DEPRECATED);
         $this->assertSame($this->creationContext, $container->getServiceLocator());

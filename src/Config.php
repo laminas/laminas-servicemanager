@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
-use Laminas\Stdlib\ArrayUtils\MergeRemoveKey;
-use Laminas\Stdlib\ArrayUtils\MergeReplaceKeyInterface;
+use Laminas\Stdlib\ArrayUtils;
 
-use function array_key_exists;
 use function array_keys;
-use function is_array;
-use function is_int;
 
 /**
  * Object for defining configuration and configuring an existing service manager instance.
@@ -26,10 +22,12 @@ use function is_int;
  *
  * These features are advanced, and not typically used. If you wish to use them,
  * you will need to require the laminas-stdlib package in your application.
+ *
+ * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
 class Config implements ConfigInterface
 {
-    /** @var array */
+    /** @var array<string,bool> */
     private $allowedKeys = [
         'abstract_factories' => true,
         'aliases'            => true,
@@ -42,7 +40,10 @@ class Config implements ConfigInterface
         'shared'             => true,
     ];
 
-    /** @var array */
+    /**
+     * @var array<string,array>
+     * @psalm-var ServiceManagerConfigurationType
+     */
     protected $config = [
         'abstract_factories' => [],
         'aliases'            => [],
@@ -56,7 +57,7 @@ class Config implements ConfigInterface
     ];
 
     /**
-     * @param array $config
+     * @psalm-param ServiceManagerConfigurationType $config
      */
     public function __construct(array $config = [])
     {
@@ -66,6 +67,8 @@ class Config implements ConfigInterface
                 unset($config[$key]);
             }
         }
+
+        /** @psalm-suppress ArgumentTypeCoercion */
         $this->config = $this->merge($this->config, $config);
     }
 
@@ -86,32 +89,14 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Copy paste from https://github.com/laminas/laminas-stdlib/commit/26fcc32a358aa08de35625736095cb2fdaced090
-     * to keep compatibility with previous version
-     *
-     * @link https://github.com/zendframework/zend-servicemanager/pull/68
+     * @psalm-param ServiceManagerConfigurationType $a
+     * @psalm-param ServiceManagerConfigurationType $b
+     * @psalm-return ServiceManagerConfigurationType
+     * @psalm-suppress MixedReturnTypeCoercion
      */
-    private function merge(array $a, array $b): array
+    private function merge(array $a, array $b)
     {
-        foreach ($b as $key => $value) {
-            if ($value instanceof MergeReplaceKeyInterface) {
-                $a[$key] = $value->getData();
-            } elseif (isset($a[$key]) || array_key_exists($key, $a)) {
-                if ($value instanceof MergeRemoveKey) {
-                    unset($a[$key]);
-                } elseif (is_int($key)) {
-                    $a[] = $value;
-                } elseif (is_array($value) && is_array($a[$key])) {
-                    $a[$key] = $this->merge($a[$key], $value);
-                } else {
-                    $a[$key] = $value;
-                }
-            } else {
-                if (! $value instanceof MergeRemoveKey) {
-                    $a[$key] = $value;
-                }
-            }
-        }
-        return $a;
+        /** @psalm-suppress MixedReturnTypeCoercion */
+        return ArrayUtils::merge($a, $b);
     }
 }
