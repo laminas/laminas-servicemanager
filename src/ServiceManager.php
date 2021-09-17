@@ -507,10 +507,7 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Instantiate initializers for to avoid checks during service construction.
      *
-     * @psalm-param array<
-     *     array-key,
-     *     class-string<Initializer\InitializerInterface>|Initializer\InitializerInterface|callable
-     * > $initializers
+     * @psalm-param InitializersConfigurationType $initializers
      */
     private function resolveInitializers(array $initializers): void
     {
@@ -520,7 +517,6 @@ class ServiceManager implements ServiceLocatorInterface
             }
 
             if (is_callable($initializer)) {
-                /** @psalm-var callable(ContainerInterface,object):void */
                 $this->initializers[] = $initializer;
                 continue;
             }
