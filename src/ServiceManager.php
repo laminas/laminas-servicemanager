@@ -574,6 +574,8 @@ class ServiceManager implements ServiceLocatorInterface
             return $factory($this->creationContext, $name, $options);
         };
 
+        $initialCreationContext = $this->creationContext;
+
         foreach ($this->delegators[$name] as $index => $delegatorFactory) {
             $delegatorFactory = $this->delegators[$name][$index];
 
@@ -587,8 +589,8 @@ class ServiceManager implements ServiceLocatorInterface
 
             $this->delegators[$name][$index] = $delegatorFactory;
 
-            $creationCallback = function () use ($delegatorFactory, $name, $creationCallback, $options) {
-                return $delegatorFactory($this->creationContext, $name, $creationCallback, $options);
+            $creationCallback = static function () use ($initialCreationContext, $delegatorFactory, $name, $creationCallback, $options) {
+                return $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
             };
         }
 
