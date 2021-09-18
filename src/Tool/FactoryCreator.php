@@ -159,6 +159,6 @@ class FactoryCreator
     {
         $imports = array_merge(self::IMPORT_ALWAYS, [$className]);
         sort($imports);
-        return implode("\n", array_map(fn(string $import): string => sprintf('use %s;', $import), $imports));
+        return implode("\n", array_map(static fn(string $import): string => sprintf('use %s;', $import), $imports));
     }
 }
