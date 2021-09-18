@@ -173,9 +173,8 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
             $this->setFactory($name, Factory\InvokableFactory::class);
         }
 
-        $options = $options ?? [];
         /** @psalm-suppress MixedAssignment */
-        $instance = $options === [] ? parent::get($name) : $this->build($name, $options);
+        $instance = ! $options ? parent::get($name) : $this->build($name, $options);
         $this->validate($instance);
         return $instance;
     }
