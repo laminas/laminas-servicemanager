@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager;
 
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Psr\Container\ContainerInterface as PsrContainerInterface;
 
@@ -31,6 +32,9 @@ use const E_USER_DEPRECATED;
  *
  * The implementation extends `ServiceManager`, thus providing the same set
  * of capabilities as found in that implementation.
+ *
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 abstract class AbstractPluginManager extends ServiceManager implements PluginManagerInterface
 {
@@ -45,6 +49,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * An object type that the created instance must be instanced of
      *
      * @var null|string
+     * @psalm-var null|class-string
      */
     protected $instanceOf;
 
@@ -55,6 +60,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      *
      * @param null|ConfigInterface|ContainerInterface|PsrContainerInterface $configInstanceOrParentLocator
      * @param array $config
+     * @psalm-param ServiceManagerConfiguration $config
      */
     public function __construct($configInstanceOrParentLocator = null, array $config = [])
     {
@@ -110,16 +116,18 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
     /**
      * Override configure() to validate service instances.
      *
-     * If an instance passed in the `services` configuration is invalid for the
-     * plugin manager, this method will raise an InvalidServiceException.
-     *
-     * {@inheritDoc}
-     *
-     * @throws InvalidServiceException
+     * @param  array $config
+     * @psalm-param ServiceManagerConfiguration $config
+     * @return self
+     * @throws InvalidServiceException If an instance passed in the `services` configuration is invalid for the
+     *                                 plugin manager.
+     * @throws ContainerModificationsNotAllowedException If the allow override flag has been toggled off, and a
+     *                                                   service instanceexists for a given service.
      */
     public function configure(array $config)
     {
         if (isset($config['services'])) {
+            /** @psalm-suppress MixedAssignment */
             foreach ($config['services'] as $service) {
                 $this->validate($service);
             }
@@ -142,10 +150,8 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @param string $name Service name of plugin to retrieve.
-     * @param null|array $options Options to use when creating the instance.
+     * @param null|array<mixed> $options Options to use when creating the instance.
      * @return mixed
      * @throws Exception\ServiceNotFoundException If the manager does not have
      *     a service definition for the instance, and the service is not
@@ -167,7 +173,8 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
             $this->setFactory($name, Factory\InvokableFactory::class);
         }
 
-        $instance = empty($options) ? parent::get($name) : $this->build($name, $options);
+        /** @psalm-suppress MixedAssignment */
+        $instance = ! $options ? parent::get($name) : $this->build($name, $options);
         $this->validate($instance);
         return $instance;
     }

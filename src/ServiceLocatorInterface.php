@@ -19,7 +19,7 @@ interface ServiceLocatorInterface extends
      * Build a service by its name, using optional options (such services are NEVER cached).
      *
      * @param  string $name
-     * @param  null|array  $options
+     * @param  null|array<mixed>  $options
      * @return mixed
      * @throws Exception\ServiceNotFoundException If no factory/abstract
      *     factory could be found to create the instance.

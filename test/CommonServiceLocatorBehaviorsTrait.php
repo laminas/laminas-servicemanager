@@ -7,6 +7,7 @@ namespace LaminasTest\ServiceManager;
 use DateTime;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
+use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
@@ -25,6 +26,7 @@ use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\PassthroughDelegatorFactory;
 use LaminasTest\ServiceManager\TestAsset\SampleFactory;
 use LaminasTest\ServiceManager\TestAsset\SimpleAbstractFactory;
+use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use stdClass;
 
@@ -36,6 +38,13 @@ use function set_error_handler;
 
 use const E_USER_DEPRECATED;
 
+/**
+ * @see ConfigInterface
+ * @see TestCase
+ *
+ * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ * @psalm-require-extends TestCase
+ */
 trait CommonServiceLocatorBehaviorsTrait
 {
     /**
@@ -46,7 +55,7 @@ trait CommonServiceLocatorBehaviorsTrait
     protected $creationContext;
 
     /**
-     * @param array<string,mixed> $config
+     * @psalm-param ServiceManagerConfigurationType $config
      * @return ServiceManager
      */
     abstract public function createContainer(array $config = []);
@@ -336,10 +345,18 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $this->assertSame($serviceManager, $newServiceManager);
 
-        $firstFactory->expects($this->never())->method('__invoke');
-        $secondFactory->expects($this->once())->method('__invoke');
+        $firstFactory
+            ->expects($this->never())
+            ->method($this->anything());
 
-        $newServiceManager->get(DateTime::class);
+        $date = new DateTime();
+        $secondFactory
+            ->expects($this->once())
+            ->method('__invoke')
+            ->willReturn($date);
+
+        $dateFromServiceManager = $newServiceManager->get(DateTime::class);
+        $this->assertSame($date, $dateFromServiceManager);
     }
 
     public function testConfigureInvokablesTakePrecedenceOverFactories(): void
@@ -442,8 +459,9 @@ trait CommonServiceLocatorBehaviorsTrait
             ],
             'delegators'         => [
                 stdClass::class => [
-                    function ($container, $name, $callback) {
-                        $instance      = $callback();
+                    function (ContainerInterface $container, string $name, callable $callback): object {
+                        $instance = $callback();
+                        self::assertInstanceOf(stdClass::class, $instance);
                         $instance->foo = 'bar';
                         return $instance;
                     },
@@ -555,6 +573,7 @@ trait CommonServiceLocatorBehaviorsTrait
     ) {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($contains);
+        /** @psalm-suppress InvalidArgument */
         $this->createContainer([
             'abstract_factories' => [
                 $factory,
@@ -597,6 +616,7 @@ trait CommonServiceLocatorBehaviorsTrait
     ) {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($contains);
+        /** @psalm-suppress InvalidArgument */
         $this->createContainer([
             'initializers' => [
                 $initializer,
@@ -610,6 +630,7 @@ trait CommonServiceLocatorBehaviorsTrait
     public function testGetRaisesExceptionWhenNoFactoryIsResolved(): void
     {
         $serviceManager = $this->createContainer();
+        /** @psalm-suppress InvalidArgument */
         $this->expectException(ContainerException::class);
         $this->expectExceptionMessage('Unable to resolve');
         $serviceManager->get('Some\Unknown\Service');
@@ -624,14 +645,15 @@ trait CommonServiceLocatorBehaviorsTrait
     }
 
     /**
-     * @dataProvider invalidDelegators
      * @param mixed $delegator
+     * @dataProvider invalidDelegators
      * @covers \Laminas\ServiceManager\ServiceManager::createDelegatorFromName
      */
     public function testInvalidDelegatorShouldRaiseExceptionDuringCreation(
         $delegator,
         string $contains = 'non-callable delegator'
     ) {
+        /** @psalm-suppress InvalidArgument */
         $serviceManager = $this->createContainer([
             'factories'  => [
                 stdClass::class => InvokableFactory::class,
@@ -899,8 +921,9 @@ trait CommonServiceLocatorBehaviorsTrait
     public function testCanRetrieveParentContainerViaGetServiceLocatorWithDeprecationNotice(): void
     {
         $container = $this->createContainer();
-        set_error_handler(function ($errno, $errstr) {
+        set_error_handler(function (int $errno): bool {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
+            return true;
         }, E_USER_DEPRECATED);
         $this->assertSame($this->creationContext, $container->getServiceLocator());
         restore_error_handler();
