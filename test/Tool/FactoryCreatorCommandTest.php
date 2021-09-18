@@ -24,11 +24,9 @@ class FactoryCreatorCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ObjectProphecy|ConsoleHelper */
-    private $helper;
+    private ObjectProphecy $helper;
 
-    /** @var FactoryCreatorCommand */
-    private $command;
+    private FactoryCreatorCommand $command;
 
     public function setUp(): void
     {

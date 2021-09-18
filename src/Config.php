@@ -28,7 +28,7 @@ use function array_keys;
 class Config implements ConfigInterface
 {
     /** @var array<string,bool> */
-    private $allowedKeys = [
+    private array $allowedKeys = [
         'abstract_factories' => true,
         'aliases'            => true,
         'delegators'         => true,

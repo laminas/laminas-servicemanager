@@ -29,8 +29,7 @@ class ConfigDumperTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var ConfigDumper */
-    private $dumper;
+    private ConfigDumper $dumper;
 
     public function setUp(): void
     {

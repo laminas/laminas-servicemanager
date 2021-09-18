@@ -17,8 +17,7 @@ class FetchNewServiceManagerBench
 {
     private const NUM_SERVICES = 1000;
 
-    /** @var array */
-    private $config = [];
+    private array $config = [];
 
     public function __construct()
     {

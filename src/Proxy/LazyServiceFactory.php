@@ -21,11 +21,10 @@ use function sprintf;
  */
 final class LazyServiceFactory implements DelegatorFactoryInterface
 {
-    /** @var LazyLoadingValueHolderFactory */
-    private $proxyFactory;
+    private LazyLoadingValueHolderFactory $proxyFactory;
 
     /** @var array<string, class-string> map of service names to class names */
-    private $servicesMap;
+    private array $servicesMap;
 
     /**
      * @param array<string, class-string> $servicesMap A map of service names to
