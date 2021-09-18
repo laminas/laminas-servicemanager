@@ -43,9 +43,7 @@ class CyclicAliasException extends InvalidArgumentException
     public static function fromAliasesMap(array $aliases)
     {
         $detectedCycles = array_filter(array_map(
-            function ($alias) use ($aliases) {
-                return self::getCycleFor($aliases, $alias);
-            },
+            static fn($alias) => self::getCycleFor($aliases, $alias),
             array_keys($aliases)
         ));
 
@@ -125,9 +123,7 @@ class CyclicAliasException extends InvalidArgumentException
         return implode(
             ' => ',
             array_map(
-                function ($cycle) {
-                    return '"' . $cycle . '"';
-                },
+                static fn($cycle): string => '"' . $cycle . '"',
                 $fullCycle
             )
         );
@@ -148,7 +144,7 @@ class CyclicAliasException extends InvalidArgumentException
 
             $hash = serialize(array_values($cycleAliases));
 
-            $detectedCyclesByHash[$hash] = $detectedCyclesByHash[$hash] ?? $detectedCycle;
+            $detectedCyclesByHash[$hash] ??= $detectedCycle;
         }
 
         return array_values($detectedCyclesByHash);

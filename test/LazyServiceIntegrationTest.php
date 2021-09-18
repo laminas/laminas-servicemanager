@@ -301,9 +301,7 @@ class LazyServiceIntegrationTest extends TestCase
      */
     protected function getRegisteredProxyAutoloadFunctions()
     {
-        $filter = function ($autoload) {
-            return $autoload instanceof AutoloaderInterface;
-        };
+        $filter = static fn($autoload): bool => $autoload instanceof AutoloaderInterface;
 
         return array_filter(spl_autoload_functions(), $filter);
     }
