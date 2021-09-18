@@ -29,14 +29,12 @@ class ConfigDumperCommandTest extends TestCase
 {
     use ProphecyTrait;
 
-    /** @var vfsStreamDirectory */
-    private $configDir;
+    private vfsStreamDirectory $configDir;
 
     /** @var ObjectProphecy<ConsoleHelper> */
-    private $helper;
+    private ObjectProphecy $helper;
 
-    /** @var ConfigDumperCommand */
-    private $command;
+    private ConfigDumperCommand $command;
 
     public function setUp(): void
     {

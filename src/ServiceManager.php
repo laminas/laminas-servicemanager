@@ -112,8 +112,7 @@ class ServiceManager implements ServiceLocatorInterface
      */
     protected $lazyServices = [];
 
-    /** @var null|LazyServiceFactory */
-    private $lazyServicesDelegator;
+    private ?LazyServiceFactory $lazyServicesDelegator = null;
 
     /**
      * A list of already loaded services (this act as a local cache)
@@ -152,10 +151,8 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * Cached abstract factories from string.
-     *
-     * @var array
      */
-    private $cachedAbstractFactories = [];
+    private array $cachedAbstractFactories = [];
 
     /**
      * See {@see \Laminas\ServiceManager\ServiceManager::configure()} for details

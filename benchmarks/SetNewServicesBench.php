@@ -17,8 +17,7 @@ class SetNewServicesBench
 {
     private const NUM_SERVICES = 100;
 
-    /** @var ServiceManager */
-    private $sm;
+    private ServiceManager $sm;
 
     public function __construct()
     {

@@ -15,8 +15,7 @@ use stdClass;
  */
 class FetchCachedServicesBench
 {
-    /** @var ServiceManager */
-    private $sm;
+    private ServiceManager $sm;
 
     public function __construct()
     {

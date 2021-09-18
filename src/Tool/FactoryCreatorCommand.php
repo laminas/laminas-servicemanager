@@ -39,11 +39,9 @@ Generates to STDOUT a factory for creating the specified class; this may then
 be added to your application, and configured as a factory for the class.
 EOH;
 
-    /** @var ConsoleHelper */
-    private $helper;
+    private ConsoleHelper $helper;
 
-    /** @var string */
-    private $scriptName;
+    private string $scriptName;
 
     /**
      * @param string $scriptName
