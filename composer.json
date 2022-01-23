@@ -21,7 +21,15 @@
         "forum": "https://discourse.laminas.dev"
     },
     "config": {
-        "sort-packages": true
+        "platform": {
+            "php": "7.4.27"
+        },
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "composer/package-versions-deprecated": true,
+            "laminas/laminas-dependency-plugin": true
+        }
     },
     "require": {
         "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
