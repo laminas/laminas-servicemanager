@@ -87,7 +87,7 @@ class FactoryCreator
     {
         $reflectionClass = new ReflectionClass($className);
 
-        if (! $reflectionClass || ! $reflectionClass->getConstructor()) {
+        if (! $reflectionClass->getConstructor()) {
             return [];
         }
 
