@@ -750,7 +750,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         if (isset($config['services'])) {
             foreach (array_keys($config['services']) as $service) {
-                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                if (isset($this->services[$service])) {
                     throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
             }
@@ -758,7 +758,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         if (isset($config['aliases'])) {
             foreach (array_keys($config['aliases']) as $service) {
-                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                if (isset($this->services[$service])) {
                     throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
             }
@@ -766,7 +766,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         if (isset($config['invokables'])) {
             foreach (array_keys($config['invokables']) as $service) {
-                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                if (isset($this->services[$service])) {
                     throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
             }
@@ -774,7 +774,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         if (isset($config['factories'])) {
             foreach (array_keys($config['factories']) as $service) {
-                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                if (isset($this->services[$service])) {
                     throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
             }
@@ -782,7 +782,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         if (isset($config['delegators'])) {
             foreach (array_keys($config['delegators']) as $service) {
-                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                if (isset($this->services[$service])) {
                     throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
             }
@@ -790,7 +790,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         if (isset($config['shared'])) {
             foreach (array_keys($config['shared']) as $service) {
-                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                if (isset($this->services[$service])) {
                     throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
             }
@@ -798,7 +798,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         if (isset($config['lazy_services']['class_map'])) {
             foreach (array_keys($config['lazy_services']['class_map']) as $service) {
-                if (isset($this->services[$service]) && ! $this->allowOverride) {
+                if (isset($this->services[$service])) {
                     throw ContainerModificationsNotAllowedException::fromExistingService($service);
                 }
             }

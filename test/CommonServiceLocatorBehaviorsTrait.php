@@ -630,7 +630,6 @@ trait CommonServiceLocatorBehaviorsTrait
     public function testGetRaisesExceptionWhenNoFactoryIsResolved(): void
     {
         $serviceManager = $this->createContainer();
-        /** @psalm-suppress InvalidArgument */
         $this->expectException(ContainerException::class);
         $this->expectExceptionMessage('Unable to resolve');
         $serviceManager->get('Some\Unknown\Service');
@@ -1024,7 +1023,7 @@ trait CommonServiceLocatorBehaviorsTrait
      */
     public function provideConsistencyOverInternalStatesTests(): array
     {
-        $config1 = [
+        $config1                      = [
             'factories'          => [
                 // to allow build('service')
                 'service'   => function ($container, $requestedName, ?array $options = null) {
