@@ -15,7 +15,7 @@ class ContainerTest extends AbstractMezzioContainerConfigTest
 
     protected function createContainer(array $config): ContainerInterface
     {
-        /** @psalm-suppress MixedArgumentTypeCoercion */
+        /** @psalm-var array{shared_by_default?: bool}&array<string, mixed> $config */
         return new ServiceManager($config);
     }
 }
