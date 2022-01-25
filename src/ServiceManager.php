@@ -402,7 +402,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @param string $name Service name
      * @param string|callable|Factory\FactoryInterface $factory  Factory to which to map.
      * phpcs:disable Generic.Files.LineLength.TooLong
-     * @psalm-param class-string<Factory\FactoryInterface>|callable(ContainerInterface,string,array<mixed>|null)|Factory\FactoryInterface $factory
+     * @psalm-param class-string<Factory\FactoryInterface>|callable(ContainerInterface,string,array<mixed>|null):object|Factory\FactoryInterface $factory
      * phpcs:enable Generic.Files.LineLength.TooLong
      * @return void
      * @throws ContainerModificationsNotAllowedException If $name already
@@ -539,7 +539,6 @@ class ServiceManager implements ServiceLocatorInterface
         }
 
         if (is_callable($factory)) {
-            /** @psalm-var callable(ContainerInterface,string,array<mixed>|null):object $factory */
             if ($lazyLoaded) {
                 $this->factories[$name] = $factory;
             }

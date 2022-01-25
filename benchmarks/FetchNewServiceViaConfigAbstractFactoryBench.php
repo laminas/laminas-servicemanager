@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasBench\ServiceManager;
 
 use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;

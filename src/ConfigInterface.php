@@ -26,7 +26,7 @@ use Interop\Container\ContainerInterface;
  * @psalm-type FactoriesConfigurationType = array<
  *      string,
  *      (class-string<Factory\FactoryInterface>|Factory\FactoryInterface)
- *      |callable(ContainerInterface,string,array<mixed>|null)
+ *      |callable(ContainerInterface,string,array<mixed>|null):object
  * >
  * @psalm-type InitializersConfigurationType = array<
  *      array-key,

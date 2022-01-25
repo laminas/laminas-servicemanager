@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasBench\ServiceManager\BenchAsset;
 
 use Interop\Container\ContainerInterface;
