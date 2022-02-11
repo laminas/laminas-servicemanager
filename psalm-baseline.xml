@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.10.0@916b098b008f6de4543892b1e0651c1c3b92cbfa">
+<files psalm-version="4.20.0@f82a70e7edfc6cf2705e9374c8a0b6a974a779ed">
   <file src="src/AbstractFactory/ConfigAbstractFactory.php">
     <InvalidStringClass occurrences="1">
       <code>new $requestedName(...$arguments)</code>
@@ -25,7 +25,7 @@
       <code>new $requestedName()</code>
       <code>new $requestedName(...$parameters)</code>
     </LessSpecificReturnStatement>
-    <MissingClosureReturnType occurrences="2">
+    <MissingClosureReturnType occurrences="1">
       <code>function (ReflectionParameter $parameter) use ($container, $requestedName) {</code>
       <code>function (ReflectionParameter $parameter) use ($container, $requestedName) {</code>
     </MissingClosureReturnType>
@@ -95,15 +95,8 @@
       <code>$wrappedInstance</code>
     </MixedAssignment>
   </file>
-  <file src="src/ServiceLocatorInterface.php">
-    <InvalidThrow occurrences="1">
-      <code>ContainerExceptionInterface</code>
-    </InvalidThrow>
-  </file>
   <file src="src/ServiceManager.php">
-    <InvalidCatch occurrences="1"/>
-    <MissingClosureReturnType occurrences="2">
-      <code>function () use ($delegatorFactory, $name, $creationCallback, $options) {</code>
+    <MissingClosureReturnType occurrences="1">
       <code>function () use ($name, $options) {</code>
     </MissingClosureReturnType>
     <MissingReturnType occurrences="9">
@@ -156,15 +149,6 @@
       <code>(bool) $flag</code>
       <code>(bool) $flag</code>
     </RedundantCastGivenDocblockType>
-    <RedundantConditionGivenDocblockType occurrences="7">
-      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
-      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
-      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
-      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
-      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
-      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
-      <code>isset($this-&gt;services[$service]) &amp;&amp; ! $this-&gt;allowOverride</code>
-    </RedundantConditionGivenDocblockType>
     <TypeDoesNotContainType occurrences="1">
       <code>$sharedAlias</code>
     </TypeDoesNotContainType>
@@ -207,9 +191,6 @@
     <DocblockTypeContradiction occurrences="1">
       <code>is_string($className)</code>
     </DocblockTypeContradiction>
-    <InvalidArgument occurrences="1">
-      <code>$value</code>
-    </InvalidArgument>
     <MissingReturnType occurrences="1">
       <code>validateClassName</code>
     </MissingReturnType>
@@ -235,15 +216,9 @@
     <PossiblyNullArgument occurrences="1">
       <code>$key</code>
     </PossiblyNullArgument>
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>$container</code>
-    </PossiblyNullPropertyAssignmentValue>
     <PossiblyNullReference occurrences="1">
       <code>getParameters</code>
     </PossiblyNullReference>
-    <RedundantConditionGivenDocblockType occurrences="1">
-      <code>$this-&gt;container</code>
-    </RedundantConditionGivenDocblockType>
     <UndefinedMethod occurrences="1">
       <code>getName</code>
     </UndefinedMethod>
@@ -296,9 +271,6 @@
     <PossiblyNullReference occurrences="1">
       <code>getParameters</code>
     </PossiblyNullReference>
-    <TypeDoesNotContainType occurrences="1">
-      <code>! $reflectionClass</code>
-    </TypeDoesNotContainType>
     <UndefinedMethod occurrences="2">
       <code>getName</code>
       <code>getName</code>
@@ -350,44 +322,6 @@
     <MixedInferredReturnType occurrences="1">
       <code>array</code>
     </MixedInferredReturnType>
-    <MixedMethodCall occurrences="6">
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-    </MixedMethodCall>
-    <PossiblyInvalidMethodCall occurrences="13">
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-      <code>willReturn</code>
-    </PossiblyInvalidMethodCall>
-    <PossiblyUndefinedMethod occurrences="13">
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-      <code>reveal</code>
-    </PossiblyUndefinedMethod>
   </file>
   <file src="test/AbstractPluginManagerTest.php">
     <DeprecatedMethod occurrences="1">
@@ -397,20 +331,9 @@
       <code>getContainer</code>
     </InternalMethod>
     <InvalidArgument occurrences="5"/>
-    <MissingClosureParamType occurrences="14">
+    <MissingClosureParamType occurrences="4">
       <code>$callback</code>
       <code>$container</code>
-      <code>$errno</code>
-      <code>$errno</code>
-      <code>$errno</code>
-      <code>$errno</code>
-      <code>$errno</code>
-      <code>$errno</code>
-      <code>$errstr</code>
-      <code>$errstr</code>
-      <code>$errstr</code>
-      <code>$errstr</code>
-      <code>$errstr</code>
       <code>$name</code>
       <code>$plugin</code>
     </MissingClosureParamType>
@@ -600,9 +523,6 @@
     <MissingClosureParamType occurrences="1">
       <code>$autoload</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>function ($autoload) {</code>
-    </MissingClosureReturnType>
     <MixedAssignment occurrences="1">
       <code>$instance</code>
     </MixedAssignment>
@@ -758,10 +678,6 @@
     </UnresolvableInclude>
   </file>
   <file src="test/Tool/FactoryCreatorCommandTest.php">
-    <ImplicitToStringCast occurrences="2">
-      <code>Argument::containingString($message)</code>
-      <code>Argument::containingString('&lt;info&gt;Usage:&lt;/info&gt;')</code>
-    </ImplicitToStringCast>
     <MixedArgument occurrences="1">
       <code>ConfigDumperCommand::class</code>
     </MixedArgument>
@@ -769,11 +685,6 @@
       <code>array</code>
       <code>array</code>
     </MixedInferredReturnType>
-    <PossiblyNullReference occurrences="3">
-      <code>shouldBeCalled</code>
-      <code>shouldBeCalled</code>
-      <code>shouldBeCalled</code>
-    </PossiblyNullReference>
     <UndefinedClass occurrences="1">
       <code>ConfigDumperCommand</code>
     </UndefinedClass>
