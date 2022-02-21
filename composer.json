@@ -22,7 +22,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.4.27"
+            "php": "7.4.99"
         },
         "sort-packages": true,
         "allow-plugins": {
