@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8a699156142b74a758beb6f2dfeacdd",
+    "content-hash": "edff791a0ad1df1964d2cf41c687ea69",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -184,13 +184,13 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Amp\\": "lib"
-                },
                 "files": [
                     "lib/functions.php",
                     "lib/Internal/functions.php"
-                ]
+                ],
+                "psr-4": {
+                    "Amp\\": "lib"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5464,7 +5464,7 @@
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "7.4.27"
+        "php": "7.4.99"
     },
     "plugin-api-version": "2.2.0"
 }
