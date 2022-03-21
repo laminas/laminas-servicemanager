@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "edff791a0ad1df1964d2cf41c687ea69",
+    "content-hash": "0bbcf4fcb5f33eae8ebd29d4d8686df0",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1160,21 +1160,21 @@
         },
         {
             "name": "laminas/laminas-container-config-test",
-            "version": "0.5.0",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-container-config-test.git",
-                "reference": "21afa7f1247bca0333651106c80cb5240445bc1d"
+                "reference": "c0622b971da858b7bdea3fc6635642f7096bc29a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-container-config-test/zipball/21afa7f1247bca0333651106c80cb5240445bc1d",
-                "reference": "21afa7f1247bca0333651106c80cb5240445bc1d",
+                "url": "https://api.github.com/repos/laminas/laminas-container-config-test/zipball/c0622b971da858b7bdea3fc6635642f7096bc29a",
+                "reference": "c0622b971da858b7bdea3fc6635642f7096bc29a",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ~8.0.0 || ~8.1.0",
-                "psr/container": "^1.0"
+                "psr/container": "^1.0 || ^2.0"
             },
             "conflict": {
                 "zendframework/zend-container-config-test": "*"
@@ -1223,7 +1223,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-12-16T20:44:36+00:00"
+            "time": "2022-03-21T11:08:05+00:00"
         },
         {
             "name": "laminas/laminas-dependency-plugin",
