@@ -2,27 +2,26 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.11.1 - TBD
+## 3.11.1 - 2022-04-04
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
+### Release Notes for [3.11.1](https://github.com/laminas/laminas-servicemanager/milestone/22)
 
 ### Fixed
 
-- Nothing.
+This release fixes package validation warnings that prevented the 3.11 series from being listed on Packagist.
+
+### 3.11.1
+
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
+
+#### Bug
+
+ - [122: Fix issues with Composer package validation](https://github.com/laminas/laminas-servicemanager/pull/122) thanks to @weierophinney
 
 ## 3.11.0 - 2022-04-04
 
