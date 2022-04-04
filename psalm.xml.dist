@@ -17,6 +17,22 @@
             <directory name="test/**/TestAsset"/>
         </ignoreFiles>
     </projectFiles>
+    
+    <issueHandlers>
+        <InvalidCatch>
+            <errorLevel type="suppress">
+                <!-- PSR does not implement Throwable in 1.x version -->
+                <referencedClass name="Psr\Container\ContainerExceptionInterface"/>
+                <referencedClass name="Psr\Container\NotFoundExceptionInterface"/>
+            </errorLevel>
+        </InvalidCatch>
+        <InvalidThrow>
+            <errorLevel type="suppress">
+                <!-- PSR does not implement Throwable in 1.x version -->
+                <referencedClass name="Psr\Container\ContainerExceptionInterface"/>
+            </errorLevel>
+        </InvalidThrow>
+    </issueHandlers>
 
     <issueHandlers>
         <DeprecatedClass>

@@ -51,13 +51,13 @@
         "vimeo/psalm": "^4.8"
     },
     "provide": {
-        "container-interop/container-interop-implementation": "^1.2",
         "psr/container-implementation": "^1.0"
     },
     "conflict": {
+        "container-interop/container-interop": "<1.2.0",
+        "laminas/laminas-code": "<3.3.1",
         "zendframework/zend-code": "<3.3.1",
-        "zendframework/zend-servicemanager": "*",
-        "laminas/laminas-code": "<3.3.1"
+        "zendframework/zend-servicemanager": "*"
     },
     "suggest": {
         "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
@@ -65,7 +65,8 @@
     "autoload": {
         "psr-4": {
             "Laminas\\ServiceManager\\": "src/"
-        }
+        },
+        "files": ["src/autoload.php"]
     },
     "autoload-dev": {
         "files": [
@@ -91,5 +92,8 @@
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
         "static-analysis" : "psalm --shepherd --stats"
+    },
+    "replace": {
+        "container-interop/container-interop": "^1.2.0"
     }
 }

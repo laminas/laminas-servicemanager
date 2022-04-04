@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use Interop\Container\ContainerInterface;
+use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 class AbstractFactoryFoo implements AbstractFactoryInterface
@@ -14,7 +14,7 @@ class AbstractFactoryFoo implements AbstractFactoryInterface
      * @param array<string,mixed>|null $options
      * @return Foo|false
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
+    public function __invoke(containerinterface $container, $requestedName, ?array $options = null)
     {
         if ($requestedName === 'foo') {
             return new Foo($options);
@@ -25,7 +25,7 @@ class AbstractFactoryFoo implements AbstractFactoryInterface
     /**
      * @param string $requestedName
      */
-    public function canCreate(ContainerInterface $container, $requestedName): bool
+    public function canCreate(containerinterface $container, $requestedName): bool
     {
         return $requestedName === 'foo';
     }

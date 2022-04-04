@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager;
 
 use DateTime;
-use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
 use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
@@ -27,6 +25,8 @@ use LaminasTest\ServiceManager\TestAsset\PassthroughDelegatorFactory;
 use LaminasTest\ServiceManager\TestAsset\SampleFactory;
 use LaminasTest\ServiceManager\TestAsset\SimpleAbstractFactory;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 use ReflectionProperty;
 use stdClass;
 
@@ -630,7 +630,7 @@ trait CommonServiceLocatorBehaviorsTrait
     public function testGetRaisesExceptionWhenNoFactoryIsResolved(): void
     {
         $serviceManager = $this->createContainer();
-        $this->expectException(ContainerException::class);
+        $this->expectException(ContainerExceptionInterface::class);
         $this->expectExceptionMessage('Unable to resolve');
         $serviceManager->get('Some\Unknown\Service');
     }

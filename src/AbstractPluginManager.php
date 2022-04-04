@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
-use Psr\Container\ContainerInterface as PsrContainerInterface;
+use Psr\Container\ContainerInterface;
 
 use function class_exists;
 use function get_class;
@@ -58,23 +57,13 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * factories; for $config, {@see \Laminas\ServiceManager\ServiceManager::configure()}
      * for details on its accepted structure.
      *
-     * @param null|ConfigInterface|ContainerInterface|PsrContainerInterface $configInstanceOrParentLocator
+     * @param null|ConfigInterface|ContainerInterface $configInstanceOrParentLocator
      * @param array $config
      * @psalm-param ServiceManagerConfiguration $config
      */
     public function __construct($configInstanceOrParentLocator = null, array $config = [])
     {
-        if (
-            $configInstanceOrParentLocator instanceof PsrContainerInterface
-            && ! $configInstanceOrParentLocator instanceof ContainerInterface
-        ) {
-            /**
-             * {@see \Laminas\ServiceManager\Factory\FactoryInterface} typehints
-             * against interop container and as such cannot accept non-interop
-             * psr container. Decorate it as interop.
-             */
-            $configInstanceOrParentLocator = new PsrContainerDecorator($configInstanceOrParentLocator);
-        }
+        /** @psalm-suppress DocblockTypeContradiction */
         if (
             null !== $configInstanceOrParentLocator
             && ! $configInstanceOrParentLocator instanceof ConfigInterface

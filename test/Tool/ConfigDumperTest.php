@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Tool;
 
-use Interop\Container\ContainerInterface;
+use interop\container\containerinterface;
 use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -115,7 +115,7 @@ class ConfigDumperTest extends TestCase
             'Cannot create config for constructor argument "aName", '
                 . 'it has no type hint, or non-class/interface type hint'
         );
-        $container = $this->prophesize(ContainerInterface::class);
+        $container = $this->prophesize(containerinterface::class);
         $container->has(ObjectWithScalarDependency::class)
             ->shouldBeCalled()
             ->willReturn(false);
@@ -130,7 +130,7 @@ class ConfigDumperTest extends TestCase
 
     public function testCreateDependencyConfigWithContainerWithoutTypeHintedParameter(): void
     {
-        $container = $this->prophesize(ContainerInterface::class);
+        $container = $this->prophesize(containerinterface::class);
         $container->has(ObjectWithScalarDependency::class)
             ->shouldBeCalled()
             ->willReturn(true);

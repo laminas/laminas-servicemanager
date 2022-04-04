@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Proxy;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use Laminas\ServiceManager\Proxy\LazyServiceFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @covers \Laminas\ServiceManager\Proxy\LazyServiceFactory
@@ -21,7 +21,7 @@ class LazyServiceFactoryTest extends TestCase
 {
     private LazyServiceFactory $factory;
 
-    /** @var LazyLoadingValueHolderFactory|MockObject */
+    /** @var LazyLoadingValueHolderFactory&MockObject */
     private $proxyFactory;
 
     /**
@@ -99,14 +99,10 @@ class LazyServiceFactoryTest extends TestCase
     }
 
     /**
-     * @return ContainerInterface|MockObject
+     * @return ContainerInterface&MockObject
      */
-    private function createContainerMock()
+    private function createContainerMock(): ContainerInterface
     {
-        /** @var ContainerInterface|MockObject $container */
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->getMock();
-
-        return $container;
+        return $this->createMock(ContainerInterface::class);
     }
 }

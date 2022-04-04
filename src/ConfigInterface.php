@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager;
 
 use ArrayAccess;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * @see ContainerInterface

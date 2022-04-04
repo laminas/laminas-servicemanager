@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Proxy;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
+use Psr\Container\ContainerInterface;
 
 use function sprintf;
 
