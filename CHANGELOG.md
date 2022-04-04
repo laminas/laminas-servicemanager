@@ -2,27 +2,51 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.11.0 - TBD
+## 3.11.0 - 2022-04-04
 
-### Added
 
-- Nothing.
+-----
+
+### Release Notes for [3.11.0](https://github.com/laminas/laminas-servicemanager/milestone/21)
 
 ### Changed
 
-- Nothing.
+This release makes a significant change, but one that is currently fully backwards-compatible.
 
-### Deprecated
+The package now **replaces** the `container-interop/container-interop` package (versions 1.2.0 and later), and makes all container-interop interfaces aliases of PSR-11 interfaces via an autoloader rule. The net effect is that all typehints in laminas-servicemanager classes (both for parameter typehints as well as implementations) are now against PSR-11 interfaces, while still retaining backwards compatibility with container-interop.
 
-- Nothing.
+We will provide tooling in an upcoming release to allow end-users to update any classes they have that typehint against or implement container-interop interfaces to switch to PSR-11 interfaces instead. After that tooling is available, we will do another release that drops the interface aliases entirely.
 
-### Removed
+### 3.11.0
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **10**
+- Total contributors: **5**
 
-### Fixed
+#### Enhancement
 
-- Nothing.
+ - [121: Prepare for Renovate with reusable workflows](https://github.com/laminas/laminas-servicemanager/pull/121) thanks to @ghostwriter
+ - [120: Ran `psalm --update-baseline` to update current `psalm-baseline.xml` based off recent type improvements](https://github.com/laminas/laminas-servicemanager/pull/120) thanks to @sasezaki
+ - [118: Update laminas/laminas-container-config-test to ^0.5](https://github.com/laminas/laminas-servicemanager/pull/118) thanks to @internalsystemerror
+ - [117: Update laminas/laminas-coding-standard to ~2.3.0](https://github.com/laminas/laminas-servicemanager/pull/117) thanks to @internalsystemerror
+ - [113: Lock file maintenance](https://github.com/laminas/laminas-servicemanager/pull/113) thanks to @renovate[bot]
+ - [96: feature: replace `container-interop/container-interop`](https://github.com/laminas/laminas-servicemanager/pull/96) thanks to @boesing
+
+#### Duplicate,renovate
+
+ - [115: Update Laminas packages - autoclosed](https://github.com/laminas/laminas-servicemanager/pull/115) thanks to @renovate[bot]
+
+#### renovate
+
+ - [114: Lock file maintenance](https://github.com/laminas/laminas-servicemanager/pull/114) thanks to @renovate[bot]
+
+#### Enhancement,renovate
+
+ - [112: Add compatibility with renovatebot](https://github.com/laminas/laminas-servicemanager/pull/112) thanks to @internalsystemerror
+
+#### Enhancement,Help Wanted,renovate
+
+ - [110: Configure Renovate](https://github.com/laminas/laminas-servicemanager/pull/110) thanks to @renovate[bot]
 
 ## 3.10.0 - 2021-09-18
 
