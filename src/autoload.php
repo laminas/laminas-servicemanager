@@ -1,5 +1,6 @@
 <?php // phpcs:disable WebimpressCodingStandard.PHP.CorrectClassNameCase.Invalid
 
+
 declare(strict_types=1);
 
 use Interop\Container\Containerinterface as InteropContainerInterface;

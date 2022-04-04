@@ -1,4 +1,6 @@
 <?php // phpcs:disable WebimpressCodingStandard.PHP.CorrectClassNameCase.Invalid
+
+
 declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
