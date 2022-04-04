@@ -33,7 +33,6 @@
     },
     "require": {
         "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
-        "container-interop/container-interop": "^1.2",
         "laminas/laminas-stdlib": "^3.2.1",
         "psr/container": "^1.0"
     },
@@ -54,7 +53,6 @@
         "psr/container-implementation": "^1.0"
     },
     "conflict": {
-        "container-interop/container-interop": "<1.2.0",
         "laminas/laminas-code": "<3.3.1",
         "zendframework/zend-code": "<3.3.1",
         "zendframework/zend-servicemanager": "*"
