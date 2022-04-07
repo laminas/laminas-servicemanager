@@ -2,27 +2,24 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.11.2 - TBD
+## 3.11.2 - 2022-04-07
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [3.11.2](https://github.com/laminas/laminas-servicemanager/milestone/24)
 
-- Nothing.
+3.11.x bugfix release (patch)
 
-### Deprecated
+### 3.11.2
 
-- Nothing.
+- Total issues resolved: **1**
+- Total pull requests resolved: **1**
+- Total contributors: **2**
 
-### Removed
+#### Bug
 
-- Nothing.
-
-### Fixed
-
-- Nothing.
+ - [125: Conflict with `ext-psr`](https://github.com/laminas/laminas-servicemanager/pull/125) thanks to @boesing and @remicollet
 
 ## 3.11.1 - 2022-04-04
 
