@@ -53,6 +53,7 @@
         "psr/container-implementation": "^1.0"
     },
     "conflict": {
+        "ext-psr": "*",
         "laminas/laminas-code": "<3.3.1",
         "zendframework/zend-code": "<3.3.1",
         "zendframework/zend-servicemanager": "*"
