@@ -36,7 +36,7 @@ assert(
 );
 
 if (version_compare($installedContainerVersion, '2', '<')) {
-    class_alias(UntypedAbstractContainerImplementation::class, AbstractContainerImplementation::class);
+    class_alias(AbstractUntypedContainerImplementation::class, AbstractContainerImplementation::class);
 } else {
-    class_alias(TypedAbstractContainerImplementation::class, AbstractContainerImplementation::class);
+    class_alias(AbstractTypedContainerImplementation::class, AbstractContainerImplementation::class);
 }

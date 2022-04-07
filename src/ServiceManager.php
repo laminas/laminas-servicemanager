@@ -61,6 +61,7 @@ use const E_USER_DEPRECATED;
  * @psalm-import-type InitializersConfigurationType from ConfigInterface
  * @psalm-import-type LazyServicesConfigurationType from ConfigInterface
  * @psalm-type ServiceManagerConfiguration = array{shared_by_default?:bool}&ServiceManagerConfigurationType
+ * phpcs:disable WebimpressCodingStandard.PHP.CorrectClassNameCase.Invalid
  */
 class ServiceManager extends AbstractContainerImplementation implements ServiceLocatorInterface
 {
@@ -197,6 +198,7 @@ class ServiceManager extends AbstractContainerImplementation implements ServiceL
 
     /**
      * @internal
+     *
      * @return mixed
      */
     protected function getService(string $name)
