@@ -62,7 +62,7 @@ use const E_USER_DEPRECATED;
  * @psalm-import-type LazyServicesConfigurationType from ConfigInterface
  * @psalm-type ServiceManagerConfiguration = array{shared_by_default?:bool}&ServiceManagerConfigurationType
  */
-class ServiceManager implements ServiceLocatorInterface
+class ServiceManager extends AbstractContainerImplementation implements ServiceLocatorInterface
 {
     /** @var Factory\AbstractFactoryInterface[] */
     protected $abstractFactories = [];
@@ -187,9 +187,19 @@ class ServiceManager implements ServiceLocatorInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @internal
      */
-    public function get($name)
+    protected function hasService(string $name): bool
+    {
+        // Check static services and factories first to speedup the most common requests.
+        return $this->staticServiceOrFactoryCanCreate($name) || $this->abstractFactoryCanCreate($name);
+    }
+
+    /**
+     * @internal
+     * @return mixed
+     */
+    protected function getService(string $name)
     {
         // We start by checking if we have cached the requested service;
         // this is the fastest method.
@@ -255,18 +265,6 @@ class ServiceManager implements ServiceLocatorInterface
         // We never cache when using "build".
         $name = $this->aliases[$name] ?? $name;
         return $this->doCreate($name, $options);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param string|class-string $name
-     * @return bool
-     */
-    public function has($name)
-    {
-        // Check static services and factories first to speedup the most common requests.
-        return $this->staticServiceOrFactoryCanCreate($name) || $this->abstractFactoryCanCreate($name);
     }
 
     /**

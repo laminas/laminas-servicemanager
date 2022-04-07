@@ -47,6 +47,22 @@
                 <referencedClass name="Interop\Container\Exception\ContainerException"/>
             </errorLevel>
         </InvalidThrow>
+        <MethodSignatureMismatch>
+            <errorLevel type="suppress">
+                <!-- <editor-fold desc="psr/container v2 hacks"> -->
+                <file name="src/TypedAbstractContainerImplementation.php"/>
+                <file name="src/UntypedAbstractContainerImplementation.php"/>
+                <!-- </editor-fold> -->
+            </errorLevel>
+        </MethodSignatureMismatch>
+        <TypeDoesNotContainType>
+            <errorLevel type="suppress">
+                <!-- <editor-fold desc="psr/container v2 hacks"> -->
+                <file name="src/TypedAbstractContainerImplementation.php"/>
+                <file name="src/UntypedAbstractContainerImplementation.php"/>
+                <!-- </editor-fold> -->
+            </errorLevel>
+        </TypeDoesNotContainType>
     </issueHandlers>
 
     <plugins>
