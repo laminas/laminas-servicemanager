@@ -6,10 +6,40 @@ Writing a factory class for each and every service that has dependencies
 can be tedious, particularly in early development as you are still sorting
 out dependencies.
 
-laminas-servicemanager ships with `Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory`,
-which provides a reflection-based approach to instantiation, resolving
-constructor dependencies to the relevant services. The factory may be used as
-either an abstract factory, or mapped to specific service names as a factory:
+To alleviate this issue during development, laminas-servicemanager ships with the [ReflectionBasedAbstractFactory](https://github.com/laminas/laminas-servicemanager/blob/3.12.x/src/AbstractFactory/ReflectionBasedAbstractFactory.php),
+which provides a [reflection-based approach](https://www.php.net/manual/en/intro.reflection.php) to instantiation, 
+resolving constructor dependencies to the relevant services. 
+The factory may be used as either an abstract factory or mapped to specific service names as a factory.
+
+TIP: Mapping services to the factory is more explicit and performant.
+
+The factory operates with the following constraints/features:
+
+- A parameter named `$config` type-hinted as an array will receive the
+  application "config" service (i.e., the merged configuration).
+- Parameters type-hinted against array, but not named `$config`, will
+  be injected with an empty array.
+- Scalar parameters will result in the factory raising an exception,
+  unless a default value is present; if it is, that value will be used.
+- If a service cannot be found for a given typehint, the factory will
+  raise an exception detailing this.
+
+WARNING: `$options` passed to the factory are ignored in all cases, as we cannot make assumptions about which 
+argument(s) they might replace.
+
+Once your dependencies have stabilized, we recommend writing a dedicated
+factory, as reflection can introduce performance overhead. For example, you could use the
+[generate-factory-for-class console tool](console-tools.md#generate-factory-for-class)
+to do so.
+
+## Usage Example
+
+### Using Laminas MVC
+
+When using [Laminas MVC](https://docs.laminas.dev/mvc/):
+
+- Add the factory in the service manager's list of abstract factories.
+- Use the `ReflectionBasedAbstractFactory` to instantiate the class.
 
 ```php
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
@@ -28,26 +58,30 @@ return [
 ];
 ```
 
-Mapping services to the factory is more explicit and performant.
 
-The factory operates with the following constraints/features:
+### Using Mezzio
 
-- A parameter named `$config` typehinted as an array will receive the
-  application "config" service (i.e., the merged configuration).
-- Parameters typehinted against array, but not named `$config`, will
-  be injected with an empty array.
-- Scalar parameters will result in the factory raising an exception,
-  unless a default value is present; if it is, that value will be used.
-- If a service cannot be found for a given typehint, the factory will
-  raise an exception detailing this.
+In a module's [ConfigProvider](https://docs.laminas.dev/laminas-config-aggregator/config-providers/) class:
 
-`$options` passed to the factory are ignored in all cases, as we cannot
-make assumptions about which argument(s) they might replace.
+- Add the `ReflectionBasedAbstractFactory` to the `abstract_factories` array returned from the `getDependencies()` method.
+- Use the `ReflectionBasedAbstractFactory` to instantiate the class, in the `factories` array returned from the `getDependencies()` method.
 
-Once your dependencies have stabilized, we recommend writing a dedicated
-factory, as reflection can introduce performance overhead; you may use the
-[generate-factory-for-class console tool](console-tools.md#generate-factory-for-class)
-to do so.
+```php
+use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
+
+public function getDependencies(): array
+{
+    return [
+        'abstract_factories' => [
+            ReflectionBasedAbstractFactory::class,
+        ],
+        'factories' => [
+            // Other factories...
+            Handler\HomePageHandler::class => ReflectionBasedAbstractFactory::class,
+        ],
+    ],
+}
+```
 
 ## Handling well-known services
 
