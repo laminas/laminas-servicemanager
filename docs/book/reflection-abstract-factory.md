@@ -18,7 +18,7 @@ The factory operates with the following constraints/features:
 
 WARNING: `$options` passed to the factory are ignored in all cases, as we cannot make assumptions about which argument(s) they might replace.
 
-Once your dependencies have stabilized, we recommend writing a dedicated factory, as reflection can introduce performance overhead. 
+Once your dependencies have stabilized and when performance is a requirement, we recommend writing a dedicated factory, as reflection can introduce performance overhead. 
 For example, you could use the [generate-factory-for-class console tool](console-tools.md#generate-factory-for-class) to do so.
 
 ## Usage Example
