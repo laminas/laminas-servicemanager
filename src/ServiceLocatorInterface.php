@@ -15,9 +15,11 @@ interface ServiceLocatorInterface extends ContainerInterface
     /**
      * Build a service by its name, using optional options (such services are NEVER cached).
      *
-     * @param  string $name
+     * @template T of object
+     * @param  string|class-string<T> $name
      * @param  null|array<mixed>  $options
      * @return mixed
+     * @psalm-return ($name is class-string ? T : mixed)
      * @throws Exception\ServiceNotFoundException If no factory/abstract
      *     factory could be found to create the instance.
      * @throws Exception\ServiceNotCreatedException If factory/delegator fails
