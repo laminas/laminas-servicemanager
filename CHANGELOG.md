@@ -2,27 +2,24 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 3.11.3 - TBD
+## 3.11.3 - 2022-06-13
 
-### Added
 
-- Nothing.
+-----
 
-### Changed
+### Release Notes for [3.11.3](https://github.com/laminas/laminas-servicemanager/milestone/25)
 
-- Nothing.
+3.11.x bugfix release (patch)
 
-### Deprecated
+### 3.11.3
 
-- Nothing.
+- Total issues resolved: **0**
+- Total pull requests resolved: **1**
+- Total contributors: **1**
 
-### Removed
+#### Bug
 
-- Nothing.
-
-### Fixed
-
-- Nothing.
+ - [133: Fixed namespace generation in `FactoryCreator` utility](https://github.com/laminas/laminas-servicemanager/pull/133) thanks to @adambalint-srg
 
 ## 3.11.2 - 2022-04-07
 
