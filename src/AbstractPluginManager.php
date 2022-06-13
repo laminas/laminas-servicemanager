@@ -32,6 +32,8 @@ use const E_USER_DEPRECATED;
  * The implementation extends `ServiceManager`, thus providing the same set
  * of capabilities as found in that implementation.
  *
+ * @template InstanceType of object
+ * @implements PluginManagerInterface<InstanceType>
  * @psalm-import-type ServiceManagerConfiguration from ServiceManager
  * @psalm-suppress PropertyNotSetInConstructor
  */
@@ -48,7 +50,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * An object type that the created instance must be instanced of
      *
      * @var null|string
-     * @psalm-var null|class-string
+     * @psalm-var null|class-string<InstanceType>
      */
     protected $instanceOf;
 
@@ -131,6 +133,10 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      * Override setService for additional plugin validation.
      *
      * {@inheritDoc}
+     *
+     * @param string|class-string<InstanceType> $name
+     * @param InstanceType $service
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function setService($name, $service)
     {
@@ -139,9 +145,10 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
     }
 
     /**
-     * @param string $name Service name of plugin to retrieve.
+     * @param class-string<InstanceType>|string $name Service name of plugin to retrieve.
      * @param null|array<mixed> $options Options to use when creating the instance.
      * @return mixed
+     * @psalm-return ($name is class-string ? InstanceType : mixed)
      * @throws Exception\ServiceNotFoundException If the manager does not have
      *     a service definition for the instance, and the service is not
      *     auto-invokable.
@@ -162,7 +169,6 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
             $this->setFactory($name, Factory\InvokableFactory::class);
         }
 
-        /** @psalm-suppress MixedAssignment */
         $instance = ! $options ? parent::get($name) : $this->build($name, $options);
         $this->validate($instance);
         return $instance;
@@ -170,6 +176,8 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
 
     /**
      * {@inheritDoc}
+     *
+     * @psalm-assert InstanceType $instance
      */
     public function validate($instance)
     {

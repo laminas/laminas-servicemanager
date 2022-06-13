@@ -259,6 +259,9 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * {@inheritDoc}
+     *
+     * @param string|class-string $name
+     * @return bool
      */
     public function has($name)
     {
