@@ -10,6 +10,12 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class_alias(ContainerInterface::class, InteropContainerInterface::class);
-class_alias(ContainerExceptionInterface::class, InteropContainerException::class);
-class_alias(NotFoundExceptionInterface::class, InteropNotFoundException::class);
+if (! interface_exists(InteropContainerInterface::class, false)) {
+    class_alias(ContainerInterface::class, InteropContainerInterface::class);
+}
+if (! interface_exists(InteropContainerException::class, false)) {
+    class_alias(ContainerExceptionInterface::class, InteropContainerException::class);
+}
+if (! interface_exists(InteropNotFoundException::class, false)) {
+    class_alias(NotFoundExceptionInterface::class, InteropNotFoundException::class);
+}
