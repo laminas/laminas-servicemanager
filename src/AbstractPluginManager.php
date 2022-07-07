@@ -32,7 +32,7 @@ use const E_USER_DEPRECATED;
  * The implementation extends `ServiceManager`, thus providing the same set
  * of capabilities as found in that implementation.
  *
- * @template InstanceType of object
+ * @template InstanceType
  * @implements PluginManagerInterface<InstanceType>
  * @psalm-import-type ServiceManagerConfiguration from ServiceManager
  * @psalm-suppress PropertyNotSetInConstructor
@@ -136,7 +136,6 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      *
      * @param string|class-string<InstanceType> $name
      * @param InstanceType $service
-     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function setService($name, $service)
     {
