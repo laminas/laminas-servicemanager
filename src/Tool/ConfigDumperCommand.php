@@ -6,7 +6,6 @@ namespace Laminas\ServiceManager\Tool;
 
 use Laminas\ServiceManager\Exception;
 use Laminas\Stdlib\ConsoleHelper;
-use stdClass;
 
 use function array_shift;
 use function class_exists;
@@ -21,6 +20,22 @@ use function sprintf;
 use const STDERR;
 use const STDOUT;
 
+/**
+ * @psalm-type HelpObject = object{
+ *     command: string
+ * }
+ * @psalm-type ErrorObject = object{
+ *     command: string,
+ *     message: string
+ * }
+ * @psalm-type ArgumentObject = object{
+ *     command: string,
+ *     configFile: string,
+ *     config: array<array-key, mixed>,
+ *     class: string,
+ *     ignoreUnresolved: bool
+ * }
+ */
 class ConfigDumperCommand
 {
     public const COMMAND_DUMP  = 'dump';
@@ -114,7 +129,7 @@ EOH;
 
     /**
      * @param array $args
-     * @return stdClass
+     * @return object
      */
     private function parseArgs(array $args)
     {
@@ -196,7 +211,7 @@ EOH;
      * @param array $config Parsed configuration.
      * @param string $class Name of class to reflect.
      * @param bool $ignoreUnresolved If to ignore classes with unresolved direct dependencies.
-     * @return stdClass
+     * @return ArgumentObject
      */
     private function createArguments($command, $configFile, $config, $class, $ignoreUnresolved)
     {
@@ -211,7 +226,7 @@ EOH;
 
     /**
      * @param string $message
-     * @return stdClass
+     * @return ErrorObject
      */
     private function createErrorArgument($message)
     {
@@ -222,7 +237,7 @@ EOH;
     }
 
     /**
-     * @return stdClass
+     * @return HelpObject
      */
     private function createHelpArgument()
     {
