@@ -19,6 +19,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 use function array_intersect;
 use function array_key_exists;
@@ -189,6 +190,8 @@ class ServiceManager extends AbstractContainerImplementation implements ServiceL
 
     /**
      * @internal
+     *
+     * @psalm-param string|class-string $name
      */
     protected function hasService(string $name): bool
     {
@@ -199,6 +202,9 @@ class ServiceManager extends AbstractContainerImplementation implements ServiceL
     /**
      * @internal
      *
+     * @psalm-param string|class-string $name
+     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+     * @throws ContainerExceptionInterface Error while retrieving the entry.
      * @return mixed
      */
     protected function getService(string $name)

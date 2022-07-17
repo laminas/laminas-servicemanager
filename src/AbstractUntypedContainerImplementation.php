@@ -29,8 +29,6 @@ abstract class AbstractUntypedContainerImplementation implements ContainerInterf
      */
     public function has($id)
     {
-        assert($this instanceof ServiceManager);
-        /** @psalm-suppress InaccessibleMethod We actually can access the method, but this is hacky code. */
         return $this->hasService($id);
     }
 
@@ -47,8 +45,23 @@ abstract class AbstractUntypedContainerImplementation implements ContainerInterf
      */
     public function get($id)
     {
-        assert($this instanceof ServiceManager);
-        /** @psalm-suppress InaccessibleMethod We actually can access the method, but this is hacky code. */
         return $this->getService($id);
     }
+
+    /**
+     * @internal
+     *
+     * @psalm-param string|class-string $name
+     */
+    abstract protected function hasService(string $name): bool;
+
+    /**
+     * @internal
+     *
+     * @psalm-param string|class-string $name
+     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     * @return mixed
+     */
+    abstract protected function getService(string $name);
 }
