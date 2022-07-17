@@ -26,8 +26,7 @@
         },
         "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "composer/package-versions-deprecated": true
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "require": {
@@ -37,7 +36,6 @@
         "psr/container": "^1.1 || ^2.0"
     },
     "require-dev": {
-        "composer/package-versions-deprecated": "^1.0",
         "laminas/laminas-coding-standard": "~2.3.0",
         "laminas/laminas-container-config-test": "^0.6",
         "mikey179/vfsstream": "^1.6.10@alpha",
