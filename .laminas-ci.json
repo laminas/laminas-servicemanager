@@ -8,7 +8,7 @@
             "job": {
                 "php": "@lowest",
                 "dependencies": "locked",
-                "command": "composer require psr/container:^2 && vendor/bin/psalm --stats --output-format=github --no-cache"
+                "command": "composer require -W psr/container:^2 && vendor/bin/psalm --stats --output-format=github --no-cache"
             }
         }
     ]
