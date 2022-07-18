@@ -9,6 +9,9 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
+ * This class is not meant to be used outside this component.
+ * We only provide this class to polyfill both `psr/container` v1 & v2.
+ *
  * @psalm-require-extends ServiceManager
  */
 abstract class AbstractTypedContainerImplementation implements ContainerInterface
