@@ -141,10 +141,6 @@
       <code>$config['services']</code>
       <code>$config['shared']</code>
     </MixedOperand>
-    <ParamNameMismatch occurrences="2">
-      <code>$name</code>
-      <code>$name</code>
-    </ParamNameMismatch>
     <RedundantCastGivenDocblockType occurrences="2">
       <code>(bool) $flag</code>
       <code>(bool) $flag</code>

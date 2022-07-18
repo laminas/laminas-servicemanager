@@ -17,7 +17,6 @@ use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimplePluginManager;
 use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Container\ContainerInterface;
 use stdClass;
 
@@ -33,7 +32,6 @@ use const E_USER_DEPRECATED;
 class AbstractPluginManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
-    use ProphecyTrait;
 
     public function createContainer(array $config = []): ServiceManager
     {
@@ -43,8 +41,7 @@ class AbstractPluginManagerTest extends TestCase
 
     public function testInjectCreationContextInFactories(): void
     {
-        $invokableFactory = $this->getMockBuilder(FactoryInterface::class)
-            ->getMock();
+        $invokableFactory = $this->createMock(FactoryInterface::class);
 
         $config = [
             'factories' => [
@@ -52,8 +49,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(ContainerInterface::class)
-            ->getMock();
+        $container     = $this->createStub(ContainerInterface::class);
         $pluginManager = new SimplePluginManager($container, $config);
 
         $invokableFactory->expects($this->once())
@@ -75,8 +71,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(ContainerInterface::class)
-            ->getMock();
+        $container     = $this->createStub(ContainerInterface::class);
         $pluginManager = new SimplePluginManager($container, $config);
 
         // Assert no exception is triggered because the plugin manager validate ObjectWithOptions
@@ -95,8 +90,7 @@ class AbstractPluginManagerTest extends TestCase
             ],
         ];
 
-        $container     = $this->getMockBuilder(ContainerInterface::class)
-            ->getMock();
+        $container     = $this->createStub(ContainerInterface::class);
         $pluginManager = new SimplePluginManager($container, $config);
 
         $first  = $pluginManager->get(InvokableObject::class);
@@ -128,8 +122,7 @@ class AbstractPluginManagerTest extends TestCase
         ];
         $options = ['foo' => 'bar'];
 
-        $container     = $this->getMockBuilder(ContainerInterface::class)
-            ->getMock();
+        $container     = $this->createStub(ContainerInterface::class);
         $pluginManager = new SimplePluginManager($container, $config);
 
         $first  = $pluginManager->get(InvokableObject::class, $options);
@@ -235,13 +228,13 @@ class AbstractPluginManagerTest extends TestCase
      */
     public function testCanPassConfigInterfaceAsFirstConstructorArgumentWithDeprecationNotice(): void
     {
-        $config = $this->prophesize(ConfigInterface::class);
-        $config->toArray()->willReturn([]);
+        $config = $this->createStub(ConfigInterface::class);
+        $config->method('toArray')->willReturn([]);
 
         set_error_handler(function ($errno, $errstr) {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
         }, E_USER_DEPRECATED);
-        $pluginManager = new TestAsset\LenientPluginManager($config->reveal());
+        $pluginManager = new TestAsset\LenientPluginManager($config);
         restore_error_handler();
 
         $this->assertSame($pluginManager, $pluginManager->getCreationContext());
@@ -278,13 +271,15 @@ class AbstractPluginManagerTest extends TestCase
      */
     public function testPassingConfigInstanceAsFirstConstructorArgumentSkipsSecondArgumentWithDeprecationNotice(): void
     {
-        $config = $this->prophesize(ConfigInterface::class);
-        $config->toArray()->willReturn(['services' => [self::class => $this]]);
+        $config = $this->createMock(ConfigInterface::class);
+        $config
+            ->method('toArray')
+            ->willReturn(['services' => [self::class => $this]]);
 
         set_error_handler(function ($errno, $errstr) {
             $this->assertEquals(E_USER_DEPRECATED, $errno);
         }, E_USER_DEPRECATED);
-        $pluginManager = new TestAsset\LenientPluginManager($config->reveal(), ['services' => [self::class => []]]);
+        $pluginManager = new TestAsset\LenientPluginManager($config, ['services' => [self::class => []]]);
         restore_error_handler();
 
         $this->assertSame($this, $pluginManager->get(self::class));
@@ -378,12 +373,18 @@ class AbstractPluginManagerTest extends TestCase
     {
         $serviceManager  = new ServiceManager();
         $pluginManager   = new SimplePluginManager($serviceManager);
-        $abstractFactory = $this->prophesize(AbstractFactoryInterface::class);
-        $abstractFactory->canCreate($serviceManager, 'foo')
+        $abstractFactory = $this->createMock(AbstractFactoryInterface::class);
+        $abstractFactory
+            ->method('canCreate')
+            ->with($serviceManager, 'foo')
             ->willReturn(true);
-        $abstractFactory->__invoke($serviceManager, 'foo', null)
+
+        $abstractFactory
+            ->method('__invoke')
+            ->with($serviceManager, 'foo', null)
             ->willReturn(new InvokableObject());
-        $pluginManager->addAbstractFactory($abstractFactory->reveal());
+
+        $pluginManager->addAbstractFactory($abstractFactory);
         $this->assertInstanceOf(InvokableObject::class, $pluginManager->get('foo'));
     }
 

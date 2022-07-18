@@ -19,6 +19,7 @@ use ProxyManager\GeneratorStrategy\EvaluatingGeneratorStrategy;
 use ProxyManager\GeneratorStrategy\FileWriterGeneratorStrategy;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 use function array_intersect;
 use function array_key_exists;
@@ -61,8 +62,9 @@ use const E_USER_DEPRECATED;
  * @psalm-import-type InitializersConfigurationType from ConfigInterface
  * @psalm-import-type LazyServicesConfigurationType from ConfigInterface
  * @psalm-type ServiceManagerConfiguration = array{shared_by_default?:bool}&ServiceManagerConfigurationType
+ * phpcs:disable WebimpressCodingStandard.PHP.CorrectClassNameCase.Invalid
  */
-class ServiceManager implements ServiceLocatorInterface
+class ServiceManager extends AbstractContainerImplementation implements ServiceLocatorInterface
 {
     /** @var Factory\AbstractFactoryInterface[] */
     protected $abstractFactories = [];
@@ -187,9 +189,25 @@ class ServiceManager implements ServiceLocatorInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @internal
+     *
+     * @psalm-param string|class-string $name
      */
-    public function get($name)
+    protected function hasService(string $name): bool
+    {
+        // Check static services and factories first to speedup the most common requests.
+        return $this->staticServiceOrFactoryCanCreate($name) || $this->abstractFactoryCanCreate($name);
+    }
+
+    /**
+     * @internal
+     *
+     * @psalm-param string|class-string $name
+     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     * @return mixed
+     */
+    protected function getService(string $name)
     {
         // We start by checking if we have cached the requested service;
         // this is the fastest method.
@@ -255,18 +273,6 @@ class ServiceManager implements ServiceLocatorInterface
         // We never cache when using "build".
         $name = $this->aliases[$name] ?? $name;
         return $this->doCreate($name, $options);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param string|class-string $name
-     * @return bool
-     */
-    public function has($name)
-    {
-        // Check static services and factories first to speedup the most common requests.
-        return $this->staticServiceOrFactoryCanCreate($name) || $this->abstractFactoryCanCreate($name);
     }
 
     /**

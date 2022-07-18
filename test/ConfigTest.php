@@ -7,15 +7,12 @@ namespace LaminasTest\ServiceManager;
 use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * @covers Laminas\ServiceManager\Config
  */
 class ConfigTest extends TestCase
 {
-    use ProphecyTrait;
-
     public function testMergeArrays(): void
     {
         $config = [
@@ -103,12 +100,12 @@ class ConfigTest extends TestCase
             'baz' => 'bat',
         ];
 
-        $services = $this->prophesize(ServiceManager::class);
-        $services->configure($expected)->willReturn('CALLED');
+        $services = $this->createMock(ServiceManager::class);
+        $services->method('configure')->with($expected)->willReturn('CALLED');
 
         /** @psalm-suppress InvalidArgument Keeping this invalid configuration to ensure BC compatibility. */
         $configuration = new Config($config);
-        $this->assertEquals('CALLED', $configuration->configureServiceManager($services->reveal()));
+        $this->assertEquals('CALLED', $configuration->configureServiceManager($services));
 
         return [
             'array'  => $expected,
