@@ -4,11 +4,11 @@
     },
     "additional_checks": [
         {
-            "name": "Psalm for psr/container v2",
+            "name": "Psalm for psr/container v1",
             "job": {
                 "php": "@lowest",
                 "dependencies": "locked",
-                "command": "composer require -W psr/container:^2 && vendor/bin/psalm --stats --output-format=github --no-cache"
+                "command": "composer require -W psr/container:^1 && vendor/bin/psalm --stats --output-format=github --no-cache"
             }
         }
     ]
