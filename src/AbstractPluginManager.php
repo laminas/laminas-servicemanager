@@ -174,7 +174,8 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
     }
 
     /**
-     * @param mixed $instance
+     * {@inheritDoc}
+     *
      * @psalm-assert InstanceType $instance
      */
     public function validate($instance)

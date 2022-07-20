@@ -1,15 +1,5 @@
 {
     "ignore_php_platform_requirements": {
         "8.1": true
-    },
-    "additional_checks": [
-        {
-            "name": "Psalm for psr/container v1",
-            "job": {
-                "php": "@lowest",
-                "dependencies": "locked",
-                "command": "composer require -W psr/container:^1 && vendor/bin/psalm --stats --output-format=github --no-cache"
-            }
-        }
-    ]
+    }
 }
