@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c3716ae3129e05fa4378e1889b98dbe",
+    "content-hash": "1eb3f9333785fbf2e89342f2052837c0",
     "packages": [
         {
             "name": "laminas/laminas-stdlib",
@@ -1125,16 +1125,16 @@
         },
         {
             "name": "laminas/laminas-container-config-test",
-            "version": "0.6.0",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-container-config-test.git",
-                "reference": "c0622b971da858b7bdea3fc6635642f7096bc29a"
+                "reference": "799bbd667c25bf5b88ff879be2ac0e33a5a15185"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-container-config-test/zipball/c0622b971da858b7bdea3fc6635642f7096bc29a",
-                "reference": "c0622b971da858b7bdea3fc6635642f7096bc29a",
+                "url": "https://api.github.com/repos/laminas/laminas-container-config-test/zipball/799bbd667c25bf5b88ff879be2ac0e33a5a15185",
+                "reference": "799bbd667c25bf5b88ff879be2ac0e33a5a15185",
                 "shasum": ""
             },
             "require": {
@@ -1146,9 +1146,9 @@
             },
             "require-dev": {
                 "laminas/laminas-coding-standard": "^2.3",
-                "phpunit/phpunit": "^9.5.5",
-                "psalm/plugin-phpunit": "^0.15.1",
-                "vimeo/psalm": "^4.7"
+                "phpunit/phpunit": "^9.5.21",
+                "psalm/plugin-phpunit": "^0.17.0",
+                "vimeo/psalm": "^4.24.0"
             },
             "type": "library",
             "autoload": {
@@ -1188,7 +1188,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-03-21T11:08:05+00:00"
+            "time": "2022-07-24T20:30:12+00:00"
         },
         {
             "name": "laminas/laminas-dependency-plugin",
