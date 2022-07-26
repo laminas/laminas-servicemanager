@@ -1245,7 +1245,7 @@
         },
         {
             "name": "mikey179/vfsstream",
-            "version": "v1.6.11-alpha.0",
+            "version": "v1.6.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/vfsStream.git",
