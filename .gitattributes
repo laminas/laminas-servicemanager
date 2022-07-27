@@ -2,11 +2,15 @@
 /.gitattributes export-ignore
 /.github/ export-ignore
 /.gitignore export-ignore
+/.laminas-ci.json export-ignore
 /.travis.yml export-ignore
 /benchmarks/ export-ignore
 /docs/ export-ignore
 /mkdocs.yml export-ignore
 /phpbench.json export-ignore
 /phpcs.xml export-ignore
+/phpcs.xml.dist export-ignore
 /phpunit.xml.dist export-ignore
+/psalm.xml.dist export-ignore
+/psalm-baseline.xml export-ignore
 /test/ export-ignore
