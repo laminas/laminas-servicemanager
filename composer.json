@@ -38,7 +38,7 @@
     },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.0",
-        "laminas/laminas-coding-standard": "~2.3.0",
+        "laminas/laminas-coding-standard": "~2.4.0",
         "laminas/laminas-container-config-test": "^0.7",
         "laminas/laminas-dependency-plugin": "^2.1.2",
         "mikey179/vfsstream": "^1.6.10@alpha",
