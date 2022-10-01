@@ -8,11 +8,9 @@ use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use RuntimeException;
 
-class FailingFactory implements FactoryInterface
+final class FailingFactory implements FactoryInterface
 {
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function __invoke(containerinterface $container, $requestedName, ?array $options = null)
     {
         throw new RuntimeException('There is an error');

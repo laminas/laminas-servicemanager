@@ -16,7 +16,7 @@ final class ServiceManagerConfiguration
 
         new ServiceManager([
             'factories' => [
-                'Foo' => fn (): bool => true,
+                'Foo' => static fn (): bool => true,
             ],
         ]);
     }

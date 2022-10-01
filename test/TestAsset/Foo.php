@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-class Foo
+final class Foo
 {
     /** @var array<string,mixed>|null */
-    protected $options;
+    protected array $options;
 
     /**
      * @param array<string,mixed>|null $options
      */
-    public function __construct($options = null)
+    public function __construct(?array $options = null)
     {
         $this->options = $options;
     }

@@ -13,25 +13,30 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use Psr\Container\ContainerInterface;
+use stdClass;
 
 /**
  * @covers \Laminas\ServiceManager\Proxy\LazyServiceFactory
  */
-class LazyServiceFactoryTest extends TestCase
+final class LazyServiceFactoryTest extends TestCase
 {
     private LazyServiceFactory $factory;
 
     /** @var LazyLoadingValueHolderFactory&MockObject */
-    private $proxyFactory;
+    private LazyLoadingValueHolderFactory $proxyFactory;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** @var ContainerInterface&MockObject */
+    private ContainerInterface $container;
+
+    /** {@inheritDoc} */
     protected function setUp(): void
     {
-        $this->proxyFactory = $this->getMockBuilder(LazyLoadingValueHolderFactory::class)
-            ->getMock();
-        $servicesMap        = [
+        parent::setUp();
+
+        $this->proxyFactory = $this->createMock(LazyLoadingValueHolderFactory::class);
+        $this->container    = $this->createMock(ContainerInterface::class);
+
+        $servicesMap = [
             'fooService' => 'FooClass',
         ];
 
@@ -41,68 +46,62 @@ class LazyServiceFactoryTest extends TestCase
 
     public function testImplementsDelegatorFactoryInterface(): void
     {
-        $this->assertInstanceOf(DelegatorFactoryInterface::class, $this->factory);
+        self::assertInstanceOf(DelegatorFactoryInterface::class, $this->factory);
     }
 
     public function testThrowExceptionWhenServiceNotExists(): void
     {
-        $callback = $this->getMockBuilder('stdClass')
-            ->setMethods(['callback'])
+        $callback = $this->getMockBuilder(stdClass::class)
+            ->addMethods(['callback'])
             ->getMock();
-        $callback->expects($this->never())
+
+        $callback
+            ->expects(self::never())
             ->method('callback');
 
-        $container = $this->createContainerMock();
-
-        $this->proxyFactory->expects($this->never())
+        $this->proxyFactory
+            ->expects($this->never())
             ->method('createProxy');
+
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage('The requested service "not_exists" was not found in the provided services map');
 
-        $this->factory->__invoke($container, 'not_exists', [$callback, 'callback']);
+        $this->factory->__invoke($this->container, 'not_exists', [$callback, 'callback']);
     }
 
     public function testCreates(): void
     {
-        $callback = $this->getMockBuilder('stdClass')
-            ->setMethods(['callback'])
+        $callback = $this->getMockBuilder(stdClass::class)
+            ->addMethods(['callback'])
             ->getMock();
-        $callback->expects($this->once())
+
+        $callback
+            ->expects(self::once())
             ->method('callback')
             ->willReturn('fooValue');
-        $container       = $this->createContainerMock();
-        $expectedService = $this->getMockBuilder(VirtualProxyInterface::class)
-            ->getMock();
 
-        $this->proxyFactory->expects($this->once())
+        $expectedService = $this->createMock(VirtualProxyInterface::class);
+        $proxy           = $this->createMock(LazyLoadingInterface::class);
+
+        $this->proxyFactory
+            ->expects(self::once())
             ->method('createProxy')
             ->willReturnCallback(
-                function ($className, $initializer) use ($expectedService) {
-                    $this->assertEquals('FooClass', $className, 'class name not match');
+                static function ($className, $initializer) use ($expectedService, $proxy) {
+                    self::assertEquals('FooClass', $className, 'class name not match');
 
                     $wrappedInstance = null;
-                    $result          = $initializer(
-                        $wrappedInstance,
-                        $this->getMockBuilder(LazyLoadingInterface::class)->getMock()
-                    );
+                    $result          = $initializer($wrappedInstance, $proxy);
 
-                    $this->assertEquals('fooValue', $wrappedInstance, 'expected callback return value');
-                    $this->assertTrue($result, 'initializer should return true');
+                    self::assertEquals('fooValue', $wrappedInstance, 'expected callback return value');
+                    self::assertTrue($result, 'initializer should return true');
 
                     return $expectedService;
                 }
             );
 
-        $result = $this->factory->__invoke($container, 'fooService', [$callback, 'callback']);
+        $result = $this->factory->__invoke($this->container, 'fooService', [$callback, 'callback']);
 
-        $this->assertSame($expectedService, $result, 'service created not match the expected');
-    }
-
-    /**
-     * @return ContainerInterface&MockObject
-     */
-    private function createContainerMock(): ContainerInterface
-    {
-        return $this->createMock(ContainerInterface::class);
+        self::assertSame($expectedService, $result, 'service created not match the expected');
     }
 }

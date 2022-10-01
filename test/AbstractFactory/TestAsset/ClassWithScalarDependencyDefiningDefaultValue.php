@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
-class ClassWithScalarDependencyDefiningDefaultValue
+final class ClassWithScalarDependencyDefiningDefaultValue
 {
-    /** @var string */
-    public $foo;
+    public string $foo;
 
-    /**
-     * @param string $foo
-     */
-    public function __construct($foo = 'bar')
+    public function __construct(string $foo = 'bar')
     {
         $this->foo = $foo;
     }

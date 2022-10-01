@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-class FactoryObject
+final class FactoryObject
 {
     /** @var mixed */
     public $dependency;

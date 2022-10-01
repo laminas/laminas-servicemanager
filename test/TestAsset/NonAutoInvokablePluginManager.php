@@ -6,7 +6,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 use Laminas\ServiceManager\AbstractPluginManager;
 
-class NonAutoInvokablePluginManager extends AbstractPluginManager
+final class NonAutoInvokablePluginManager extends AbstractPluginManager
 {
     /** @var bool */
     protected $autoAddInvokableClass = false;

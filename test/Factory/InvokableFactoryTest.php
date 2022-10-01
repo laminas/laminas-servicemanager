@@ -12,17 +12,16 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Laminas\ServiceManager\Factory\InvokableFactory
  */
-class InvokableFactoryTest extends TestCase
+final class InvokableFactoryTest extends TestCase
 {
     public function testCanCreateObject(): void
     {
-        $container = $this->getMockBuilder(containerinterface::class)
-            ->getMock();
+        $container = $this->createMock(containerinterface::class);
         $factory   = new InvokableFactory();
 
         $object = $factory($container, InvokableObject::class, ['foo' => 'bar']);
 
-        $this->assertInstanceOf(InvokableObject::class, $object);
-        $this->assertEquals(['foo' => 'bar'], $object->options);
+        self::assertInstanceOf(InvokableObject::class, $object);
+        self::assertEquals(['foo' => 'bar'], $object->options);
     }
 }

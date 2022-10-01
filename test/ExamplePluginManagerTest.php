@@ -14,7 +14,7 @@ use RuntimeException;
 /**
  * Example test of using CommonPluginManagerTrait
  */
-class ExamplePluginManagerTest extends TestCase
+final class ExamplePluginManagerTest extends TestCase
 {
     use CommonPluginManagerTrait;
 

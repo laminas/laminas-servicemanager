@@ -8,7 +8,7 @@ use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\ServiceManager;
 use stdClass;
 
-class SimpleServiceManager extends ServiceManager
+final class SimpleServiceManager extends ServiceManager
 {
     /** @var array<string,string> */
     protected $factories = [

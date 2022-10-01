@@ -7,23 +7,28 @@ namespace LaminasTest\ServiceManager\AbstractFactory;
 use ArrayAccess;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 
 use function sprintf;
 
-class ReflectionBasedAbstractFactoryTest extends TestCase
+/**
+ * @covers \Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory
+ */
+final class ReflectionBasedAbstractFactoryTest extends TestCase
 {
-    use ProphecyTrait;
+    /** @var ContainerInterface&MockObject */
+    private ContainerInterface $container;
 
-    /** @var ObjectProphecy<ContainerInterface> */
-    private ObjectProphecy $container;
+    private ReflectionBasedAbstractFactory $factory;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->container = $this->prophesize(ContainerInterface::class);
+        parent::setUp();
+
+        $this->container = $this->createMock(ContainerInterface::class);
+        $this->factory   = new ReflectionBasedAbstractFactory();
     }
 
     public function nonClassRequestedNames(): array
@@ -38,15 +43,14 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
      */
     public function testCanCreateReturnsFalseForNonClassRequestedNames(string $requestedName): void
     {
-        $factory = new ReflectionBasedAbstractFactory();
-        $this->assertFalse($factory->canCreate($this->container->reveal(), $requestedName));
+        self::assertFalse($this->factory->canCreate($this->container, $requestedName));
     }
 
     public function testCanCreateReturnsFalseWhenConstructorIsPrivate(): void
     {
-        $this->assertFalse(
-            (new ReflectionBasedAbstractFactory())->canCreate(
-                $this->container->reveal(),
+        self::assertFalse(
+            $this->factory->canCreate(
+                $this->container,
                 TestAsset\ClassWithPrivateConstructor::class
             ),
             'ReflectionBasedAbstractFactory should not be able to instantiate a class with a private constructor'
@@ -55,9 +59,9 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
 
     public function testCanCreateReturnsTrueWhenClassHasNoConstructor(): void
     {
-        $this->assertTrue(
-            (new ReflectionBasedAbstractFactory())->canCreate(
-                $this->container->reveal(),
+        self::assertTrue(
+            $this->factory->canCreate(
+                $this->container,
                 TestAsset\ClassWithNoConstructor::class
             ),
             'ReflectionBasedAbstractFactory should be able to instantiate a class without a constructor'
@@ -66,122 +70,183 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
 
     public function testFactoryInstantiatesClassDirectlyIfItHasNoConstructor(): void
     {
-        $factory  = new ReflectionBasedAbstractFactory();
-        $instance = $factory($this->container->reveal(), TestAsset\ClassWithNoConstructor::class);
-        $this->assertInstanceOf(TestAsset\ClassWithNoConstructor::class, $instance);
+        $instance = $this->factory->__invoke($this->container, TestAsset\ClassWithNoConstructor::class);
+
+        self::assertInstanceOf(TestAsset\ClassWithNoConstructor::class, $instance);
     }
 
     public function testFactoryInstantiatesClassDirectlyIfConstructorHasNoArguments(): void
     {
-        $factory  = new ReflectionBasedAbstractFactory();
-        $instance = $factory($this->container->reveal(), TestAsset\ClassWithEmptyConstructor::class);
-        $this->assertInstanceOf(TestAsset\ClassWithEmptyConstructor::class, $instance);
+        $instance = $this->factory->__invoke($this->container, TestAsset\ClassWithEmptyConstructor::class);
+
+        self::assertInstanceOf(TestAsset\ClassWithEmptyConstructor::class, $instance);
     }
 
     public function testFactoryRaisesExceptionWhenUnableToResolveATypeHintedService(): void
     {
-        $this->container->has(TestAsset\SampleInterface::class)->willReturn(false);
-        $this->container->has('config')->willReturn(false);
-        $factory = new ReflectionBasedAbstractFactory();
+        $this->container
+            ->expects(self::exactly(2))
+            ->method('has')
+            ->withConsecutive(
+                ['config'],
+                [TestAsset\SampleInterface::class],
+            )
+            ->willReturn(false, false);
+
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage(sprintf(
             'Unable to create service "%s"; unable to resolve parameter "sample" using type hint "%s"',
             TestAsset\ClassWithTypeHintedConstructorParameter::class,
             TestAsset\SampleInterface::class
         ));
-        $factory($this->container->reveal(), TestAsset\ClassWithTypeHintedConstructorParameter::class);
+
+        $this->factory->__invoke($this->container, TestAsset\ClassWithTypeHintedConstructorParameter::class);
     }
 
     public function testFactoryRaisesExceptionForScalarParameters(): void
     {
-        $factory = new ReflectionBasedAbstractFactory();
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage(sprintf(
             'Unable to create service "%s"; unable to resolve parameter "foo" to a class, interface, or array type',
             TestAsset\ClassWithScalarParameters::class
         ));
-        $factory($this->container->reveal(), TestAsset\ClassWithScalarParameters::class);
+
+        $this->factory->__invoke($this->container, TestAsset\ClassWithScalarParameters::class);
     }
 
     public function testFactoryInjectsConfigServiceForConfigArgumentsTypeHintedAsArray(): void
     {
         $config = ['foo' => 'bar'];
-        $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn($config);
 
-        $factory  = new ReflectionBasedAbstractFactory();
-        $instance = $factory($this->container->reveal(), TestAsset\ClassAcceptingConfigToConstructor::class);
-        $this->assertInstanceOf(TestAsset\ClassAcceptingConfigToConstructor::class, $instance);
-        $this->assertEquals($config, $instance->config);
+        $this->container
+            ->expects(self::once())
+            ->method('has')
+            ->with('config')
+            ->willReturn(true);
+
+        $this->container
+            ->expects(self::once())
+            ->method('get')
+            ->with('config')
+            ->willReturn($config);
+
+        $instance = $this->factory->__invoke($this->container, TestAsset\ClassAcceptingConfigToConstructor::class);
+
+        self::assertInstanceOf(TestAsset\ClassAcceptingConfigToConstructor::class, $instance);
+        self::assertSame($config, $instance->config);
     }
 
     public function testFactoryCanInjectKnownTypeHintedServices(): void
     {
-        $sample = $this->prophesize(TestAsset\SampleInterface::class)->reveal();
-        $this->container->has('config')->willReturn(false);
-        $this->container->has(TestAsset\SampleInterface::class)->willReturn(true);
-        $this->container->get(TestAsset\SampleInterface::class)->willReturn($sample);
+        $this->container
+            ->expects(self::exactly(2))
+            ->method('has')
+            ->withConsecutive(
+                ['config'],
+                [TestAsset\SampleInterface::class],
+            )
+            ->willReturn(false, true);
 
-        $factory  = new ReflectionBasedAbstractFactory();
-        $instance = $factory($this->container->reveal(), TestAsset\ClassWithTypeHintedConstructorParameter::class);
-        $this->assertInstanceOf(TestAsset\ClassWithTypeHintedConstructorParameter::class, $instance);
-        $this->assertSame($sample, $instance->sample);
+        $sample = $this->createMock(TestAsset\SampleInterface::class);
+
+        $this->container
+            ->expects(self::once())
+            ->method('get')
+            ->with(TestAsset\SampleInterface::class)
+            ->willReturn($sample);
+
+        $instance = $this->factory->__invoke(
+            $this->container,
+            TestAsset\ClassWithTypeHintedConstructorParameter::class,
+        );
+
+        self::assertInstanceOf(TestAsset\ClassWithTypeHintedConstructorParameter::class, $instance);
+        self::assertSame($sample, $instance->sample);
     }
 
     public function testFactoryResolvesTypeHintsForServicesToWellKnownServiceNames(): void
     {
-        $this->container->has('config')->willReturn(false);
+        $this->container
+            ->expects(self::exactly(2))
+            ->method('has')
+            ->withConsecutive(
+                ['config'],
+                ['ValidatorManager'],
+            )
+            ->willReturn(false, true);
 
-        $validators = $this->prophesize(TestAsset\ValidatorPluginManager::class)->reveal();
-        $this->container->has('ValidatorManager')->willReturn(true);
-        $this->container->get('ValidatorManager')->willReturn($validators);
+        $validators = $this->createMock(TestAsset\ValidatorPluginManager::class);
+
+        $this->container
+            ->expects(self::once())
+            ->method('get')
+            ->with('ValidatorManager')
+            ->willReturn($validators);
 
         $factory  = new ReflectionBasedAbstractFactory([TestAsset\ValidatorPluginManager::class => 'ValidatorManager']);
         $instance = $factory(
-            $this->container->reveal(),
+            $this->container,
             TestAsset\ClassAcceptingWellKnownServicesAsConstructorParameters::class
         );
-        $this->assertInstanceOf(
+
+        self::assertInstanceOf(
             TestAsset\ClassAcceptingWellKnownServicesAsConstructorParameters::class,
             $instance
         );
-        $this->assertSame($validators, $instance->validators);
+        self::assertSame($validators, $instance->validators);
     }
 
     public function testFactoryCanSupplyAMixOfParameterTypes(): void
     {
-        $validators = $this->prophesize(TestAsset\ValidatorPluginManager::class)->reveal();
-        $this->container->has('ValidatorManager')->willReturn(true);
-        $this->container->get('ValidatorManager')->willReturn($validators);
+        $this->container
+            ->expects(self::exactly(3))
+            ->method('has')
+            ->withConsecutive(
+                ['config'],
+                [TestAsset\SampleInterface::class],
+                ['ValidatorManager'],
+            )
+            ->willReturn(true, true, true);
 
-        $sample = $this->prophesize(TestAsset\SampleInterface::class)->reveal();
-        $this->container->has(TestAsset\SampleInterface::class)->willReturn(true);
-        $this->container->get(TestAsset\SampleInterface::class)->willReturn($sample);
+        $config     = ['foo' => 'bar'];
+        $sample     = $this->createMock(TestAsset\SampleInterface::class);
+        $validators = $this->createMock(TestAsset\ValidatorPluginManager::class);
 
-        $config = ['foo' => 'bar'];
-        $this->container->has('config')->willReturn(true);
-        $this->container->get('config')->willReturn($config);
+        $this->container
+            ->expects(self::exactly(3))
+            ->method('get')
+            ->withConsecutive(
+                ['config'],
+                [TestAsset\SampleInterface::class],
+                ['ValidatorManager'],
+            )
+            ->willReturn($config, $sample, $validators);
 
         $factory  = new ReflectionBasedAbstractFactory([TestAsset\ValidatorPluginManager::class => 'ValidatorManager']);
-        $instance = $factory($this->container->reveal(), TestAsset\ClassWithMixedConstructorParameters::class);
-        $this->assertInstanceOf(TestAsset\ClassWithMixedConstructorParameters::class, $instance);
+        $instance = $factory->__invoke($this->container, TestAsset\ClassWithMixedConstructorParameters::class);
 
-        $this->assertEquals($config, $instance->config);
-        $this->assertEquals([], $instance->options);
-        $this->assertSame($sample, $instance->sample);
-        $this->assertSame($validators, $instance->validators);
+        self::assertInstanceOf(TestAsset\ClassWithMixedConstructorParameters::class, $instance);
+        self::assertSame($config, $instance->config);
+        self::assertSame([], $instance->options);
+        self::assertSame($sample, $instance->sample);
+        self::assertSame($validators, $instance->validators);
     }
 
     public function testFactoryWillUseDefaultValueWhenPresentForScalarArgument(): void
     {
-        $this->container->has('config')->willReturn(false);
-        $factory  = new ReflectionBasedAbstractFactory();
-        $instance = $factory(
-            $this->container->reveal(),
+        $this->container
+            ->expects(self::once())
+            ->method('has')
+            ->with('config')
+            ->willReturn(false);
+
+        $instance = $this->factory->__invoke(
+            $this->container,
             TestAsset\ClassWithScalarDependencyDefiningDefaultValue::class
         );
-        $this->assertInstanceOf(TestAsset\ClassWithScalarDependencyDefiningDefaultValue::class, $instance);
-        $this->assertEquals('bar', $instance->foo);
+
+        self::assertInstanceOf(TestAsset\ClassWithScalarDependencyDefiningDefaultValue::class, $instance);
+        self::assertSame('bar', $instance->foo);
     }
 
     /**
@@ -189,14 +254,21 @@ class ReflectionBasedAbstractFactoryTest extends TestCase
      */
     public function testFactoryWillUseDefaultValueForTypeHintedArgument(): void
     {
-        $this->container->has('config')->willReturn(false);
-        $this->container->has(ArrayAccess::class)->willReturn(false);
-        $factory  = new ReflectionBasedAbstractFactory();
-        $instance = $factory(
-            $this->container->reveal(),
+        $this->container
+            ->expects(self::exactly(2))
+            ->method('has')
+            ->withConsecutive(
+                ['config'],
+                [ArrayAccess::class],
+            )
+            ->willReturn(false, false);
+
+        $instance = $this->factory->__invoke(
+            $this->container,
             TestAsset\ClassWithTypehintedDefaultValue::class
         );
-        $this->assertInstanceOf(TestAsset\ClassWithTypehintedDefaultValue::class, $instance);
-        $this->assertNull($instance->value);
+
+        self::assertInstanceOf(TestAsset\ClassWithTypehintedDefaultValue::class, $instance);
+        self::assertNull($instance->value);
     }
 }

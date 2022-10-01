@@ -25,7 +25,7 @@ use function get_class;
  * @covers \Laminas\ServiceManager\ServiceManager
  * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
-class ServiceManagerTest extends TestCase
+final class ServiceManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
 
@@ -36,13 +36,15 @@ class ServiceManagerTest extends TestCase
     {
         $container             = new ServiceManager($config);
         $this->creationContext = $container;
+
         return $container;
     }
 
     public function testServiceManagerIsAPsr11Container(): void
     {
         $container = $this->createContainer();
-        $this->assertInstanceOf(ContainerInterface::class, $container);
+
+        self::assertInstanceOf(ContainerInterface::class, $container);
     }
 
     public function testConfigurationCanBeMerged(): void
@@ -53,9 +55,9 @@ class ServiceManagerTest extends TestCase
             ],
         ]);
 
-        $this->assertTrue($serviceManager->has(DateTime::class));
+        self::assertTrue($serviceManager->has(DateTime::class));
         // stdClass service is inlined in SimpleServiceManager
-        $this->assertTrue($serviceManager->has(stdClass::class));
+        self::assertTrue($serviceManager->has(stdClass::class));
     }
 
     public function testConfigurationTakesPrecedenceWhenMerged(): void
@@ -63,7 +65,8 @@ class ServiceManagerTest extends TestCase
         $factory = $this->createMock(FactoryInterface::class);
 
         $service = new stdClass();
-        $factory->expects($this->once())
+        $factory
+            ->expects(self::once())
             ->method('__invoke')
             ->willReturn($service);
 
@@ -74,7 +77,8 @@ class ServiceManagerTest extends TestCase
         ]);
 
         $serviceFromServiceManager = $serviceManager->get(stdClass::class);
-        $this->assertSame($service, $serviceFromServiceManager);
+
+        self::assertSame($service, $serviceFromServiceManager);
     }
 
     /**
@@ -96,10 +100,11 @@ class ServiceManagerTest extends TestCase
             'delegators' => [
                 stdClass::class => [
                     TestAsset\PreDelegator::class,
-                    function (ContainerInterface $container, string $name, callable $callback): object {
+                    static function (ContainerInterface $container, string $name, callable $callback): object {
                         $instance = $callback();
                         self::assertInstanceOf(stdClass::class, $instance);
                         $instance->foo = 'bar';
+
                         return $instance;
                     },
                 ],
@@ -107,13 +112,14 @@ class ServiceManagerTest extends TestCase
         ]);
 
         $instance = $serviceManager->get(stdClass::class);
-        $this->assertTrue(isset($instance->option), 'Delegator-injected option was not found');
-        $this->assertEquals(
+
+        self::assertTrue(isset($instance->option), 'Delegator-injected option was not found');
+        self::assertEquals(
             $config['option'],
             $instance->option,
             'Delegator-injected option does not match configuration'
         );
-        $this->assertEquals('bar', $instance->foo);
+        self::assertEquals('bar', $instance->foo);
     }
 
     public function shareProvider(): array
@@ -203,7 +209,7 @@ class ServiceManagerTest extends TestCase
         $a = $serviceManager->get(stdClass::class);
         $b = $serviceManager->get(stdClass::class);
 
-        $this->assertEquals($shouldBeSameInstance, $a === $b);
+        self::assertEquals($shouldBeSameInstance, $a === $b);
     }
 
     public function testMapsOneToOneInvokablesAsInvokableFactoriesInternally(): void
@@ -222,7 +228,7 @@ class ServiceManagerTest extends TestCase
             }
         };
 
-        $this->assertSame(
+        self::assertSame(
             [
                 InvokableObject::class => InvokableFactory::class,
             ],
@@ -252,7 +258,7 @@ class ServiceManagerTest extends TestCase
             }
         };
 
-        $this->assertSame(
+        self::assertSame(
             [
                 'Invokable' => InvokableObject::class,
             ],
@@ -260,7 +266,7 @@ class ServiceManagerTest extends TestCase
             'Alias not found for non-symmetric invokable'
         );
 
-        $this->assertSame(
+        self::assertSame(
             [
                 InvokableObject::class => InvokableFactory::class,
             ],
@@ -286,7 +292,7 @@ class ServiceManagerTest extends TestCase
         $instance1      = $serviceManager->get('Invokable');
         $instance2      = $serviceManager->get('Invokable');
 
-        $this->assertNotSame($instance1, $instance2);
+        self::assertNotSame($instance1, $instance2);
     }
 
     public function testSharedServicesReferencingAliasShouldBeHonored(): void
@@ -307,7 +313,7 @@ class ServiceManagerTest extends TestCase
         $instance1      = $serviceManager->get('Invokable');
         $instance2      = $serviceManager->get('Invokable');
 
-        $this->assertNotSame($instance1, $instance2);
+        self::assertNotSame($instance1, $instance2);
     }
 
     public function testAliasToAnExplicitServiceShouldWork(): void
@@ -326,7 +332,7 @@ class ServiceManagerTest extends TestCase
         $service = $serviceManager->get(InvokableObject::class);
         $alias   = $serviceManager->get('Invokable');
 
-        $this->assertSame($service, $alias);
+        self::assertSame($service, $alias);
     }
 
     /**
@@ -350,8 +356,8 @@ class ServiceManagerTest extends TestCase
         $alias     = $serviceManager->get('Alias');
         $headAlias = $serviceManager->get('HeadAlias');
 
-        $this->assertSame($service, $alias);
-        $this->assertSame($service, $headAlias);
+        self::assertSame($service, $alias);
+        self::assertSame($service, $headAlias);
     }
 
     public function testAbstractFactoryShouldBeCheckedForResolvedAliasesInsteadOfAliasName(): void
@@ -368,15 +374,15 @@ class ServiceManagerTest extends TestCase
         ]);
 
         $abstractFactory
+            ->expects(self::once())
             ->method('canCreate')
             ->withConsecutive(
-                [$this->anything(), $this->equalTo('Alias')],
-                [$this->anything(), $this->equalTo('ServiceName')]
+                [self::anything(), self::equalTo('Alias')],
+                [self::anything(), self::equalTo('ServiceName')]
             )
-            ->willReturnCallback(function ($context, $name) {
-                return $name === 'Alias';
-            });
-        $this->assertTrue($serviceManager->has('Alias'));
+            ->willReturnCallback(static fn ($context, string $name): bool => $name === 'Alias');
+
+        self::assertTrue($serviceManager->has('Alias'));
     }
 
     public static function sampleFactory(): object
@@ -392,7 +398,8 @@ class ServiceManagerTest extends TestCase
             ],
         ];
         $serviceManager = new SimpleServiceManager($config);
-        $this->assertEquals(stdClass::class, get_class($serviceManager->get(stdClass::class)));
+
+        self::assertEquals(stdClass::class, get_class($serviceManager->get(stdClass::class)));
     }
 
     public function testResolvedAliasFromAbstractFactory(): void
@@ -409,17 +416,15 @@ class ServiceManagerTest extends TestCase
         ]);
 
         $abstractFactory
-            ->expects($this->any())
+            ->expects(self::exactly(2))
             ->method('canCreate')
             ->withConsecutive(
-                [$this->anything(), 'Alias'],
-                [$this->anything(), 'ServiceName']
+                [self::anything(), 'Alias'],
+                [self::anything(), 'ServiceName']
             )
-            ->will($this->returnCallback(function ($context, $name) {
-                return $name === 'ServiceName';
-            }));
+            ->willReturnCallback(static fn ($context, string $name): bool => $name === 'ServiceName');
 
-        $this->assertTrue($serviceManager->has('Alias'));
+        self::assertTrue($serviceManager->has('Alias'));
     }
 
     public function testResolvedAliasNoMatchingAbstractFactoryReturnsFalse(): void
@@ -436,15 +441,15 @@ class ServiceManagerTest extends TestCase
         ]);
 
         $abstractFactory
-            ->expects($this->any())
+            ->expects(self::exactly(2))
             ->method('canCreate')
             ->withConsecutive(
-                [$this->anything(), 'Alias'],
-                [$this->anything(), 'ServiceName']
+                [self::anything(), 'Alias'],
+                [self::anything(), 'ServiceName']
             )
             ->willReturn(false);
 
-        $this->assertFalse($serviceManager->has('Alias'));
+        self::assertFalse($serviceManager->has('Alias'));
     }
 
     /**
@@ -454,23 +459,22 @@ class ServiceManagerTest extends TestCase
      */
     public function testConfigureMultipleTimesAvoidsDuplicates(): void
     {
-        $delegatorFactory = function (
+        $delegatorFactory = static function (
             ContainerInterface $container,
             $name,
             callable $callback
-        ) {
+        ): InvokableObject {
             /** @var InvokableObject $instance */
             $instance = $callback();
             $options  = $instance->getOptions();
             $inc      = $options['inc'] ?? 0;
+
             return new InvokableObject(['inc' => ++$inc]);
         };
 
         $config = [
             'factories'     => [
-                'Foo' => function () {
-                    return new InvokableObject();
-                },
+                'Foo' => static fn (): InvokableObject => new InvokableObject(),
             ],
             'delegators'    => [
                 'Foo' => [
@@ -491,8 +495,8 @@ class ServiceManagerTest extends TestCase
         /** @var InvokableObject $instance */
         $instance = $serviceManager->get('Foo');
 
-        $this->assertInstanceOf(InvokableObject::class, $instance);
-        $this->assertSame(1, $instance->getOptions()['inc']);
+        self::assertInstanceOf(InvokableObject::class, $instance);
+        self::assertSame(1, $instance->getOptions()['inc']);
     }
 
     /**
@@ -504,10 +508,12 @@ class ServiceManagerTest extends TestCase
         $initializers         = [
             static function (object $service) use (&$initializerOneCalled): object {
                 $initializerOneCalled = true;
+
                 return $service;
             },
             static function (object $service) use (&$initializerTwoCalled): object {
                 $initializerTwoCalled = true;
+
                 return $service;
             },
         ];
@@ -572,9 +578,7 @@ class ServiceManagerTest extends TestCase
             'factories'          => [
                 [
                     'factories' => [
-                        stdClass::class => static function (): stdClass {
-                            return new stdClass();
-                        },
+                        stdClass::class => static fn (): stdClass => new stdClass(),
                     ],
                     'aliases'   => [
                         'object' => stdClass::class,

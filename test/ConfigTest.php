@@ -7,15 +7,12 @@ namespace LaminasTest\ServiceManager;
 use Laminas\ServiceManager\Config;
 use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
- * @covers Laminas\ServiceManager\Config
+ * @covers \Laminas\ServiceManager\Config
  */
-class ConfigTest extends TestCase
+final class ConfigTest extends TestCase
 {
-    use ProphecyTrait;
-
     public function testMergeArrays(): void
     {
         $config = [
@@ -51,7 +48,7 @@ class ConfigTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $result);
+        self::assertEquals($expected, $result);
     }
 
     public function testPassesKnownServiceConfigKeysToServiceManagerWithConfigMethod(): array
@@ -103,12 +100,16 @@ class ConfigTest extends TestCase
             'baz' => 'bat',
         ];
 
-        $services = $this->prophesize(ServiceManager::class);
-        $services->configure($expected)->willReturn('CALLED');
+        $services = $this->createMock(ServiceManager::class);
+        $services
+            ->expects(self::once())
+            ->method('configure')
+            ->with($expected)
+            ->willReturn('CALLED');
 
         /** @psalm-suppress InvalidArgument Keeping this invalid configuration to ensure BC compatibility. */
         $configuration = new Config($config);
-        $this->assertEquals('CALLED', $configuration->configureServiceManager($services->reveal()));
+        self::assertEquals('CALLED', $configuration->configureServiceManager($services));
 
         return [
             'array'  => $expected,
@@ -123,6 +124,7 @@ class ConfigTest extends TestCase
     {
         $configuration  = $dependencies['array'];
         $configInstance = $dependencies['config'];
-        $this->assertSame($configuration, $configInstance->toArray());
+
+        self::assertSame($configuration, $configInstance->toArray());
     }
 }

@@ -186,9 +186,7 @@ class ServiceManager implements ServiceLocatorInterface
         return $this->creationContext;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function get($name)
     {
         // We start by checking if we have cached the requested service;
@@ -247,9 +245,7 @@ class ServiceManager implements ServiceLocatorInterface
         return $object;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function build($name, ?array $options = null)
     {
         // We never cache when using "build".

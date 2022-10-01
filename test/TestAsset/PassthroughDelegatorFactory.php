@@ -7,7 +7,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
-class PassthroughDelegatorFactory implements DelegatorFactoryInterface
+final class PassthroughDelegatorFactory implements DelegatorFactoryInterface
 {
     /**
      * {@inheritDoc}

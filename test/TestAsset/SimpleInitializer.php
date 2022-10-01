@@ -8,16 +8,15 @@ use interop\container\containerinterface;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
 use stdClass;
 
-class SimpleInitializer implements InitializerInterface
+final class SimpleInitializer implements InitializerInterface
 {
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function __invoke(containerinterface $container, $instance)
     {
         if (! $instance instanceof stdClass) {
             return;
         }
+
         $instance->foo = 'bar';
     }
 }

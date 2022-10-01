@@ -7,7 +7,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Psr\Container\ContainerInterface;
 
-class LenientPluginManager extends AbstractPluginManager
+final class LenientPluginManager extends AbstractPluginManager
 {
     /**
      * Allow anything to be considered valid.
