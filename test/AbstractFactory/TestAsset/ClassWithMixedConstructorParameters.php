@@ -4,29 +4,25 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
-class ClassWithMixedConstructorParameters
+final class ClassWithMixedConstructorParameters
 {
-    /** @var array */
-    public $config;
+    public array $config;
 
-    /** @var array|null */
-    public $options;
+    public SampleInterface $sample;
 
-    /** @var SampleInterface */
-    public $sample;
+    public ValidatorPluginManager $validators;
 
-    /** @var ValidatorPluginManager */
-    public $validators;
+    public ?array $options;
 
     public function __construct(
+        array $config,
         SampleInterface $sample,
         ValidatorPluginManager $validators,
-        array $config,
         ?array $options = null
     ) {
+        $this->config     = $config;
         $this->sample     = $sample;
         $this->validators = $validators;
-        $this->config     = $config;
         $this->options    = $options;
     }
 }

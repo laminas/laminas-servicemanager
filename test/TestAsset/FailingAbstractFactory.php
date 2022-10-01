@@ -7,19 +7,15 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
-class FailingAbstractFactory implements AbstractFactoryInterface
+final class FailingAbstractFactory implements AbstractFactoryInterface
 {
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function canCreate(containerinterface $container, $name)
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function __invoke(containerinterface $container, $className, ?array $options = null)
     {
     }

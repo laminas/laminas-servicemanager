@@ -7,11 +7,9 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
-class PreDelegator implements DelegatorFactoryInterface
+final class PreDelegator implements DelegatorFactoryInterface
 {
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function __invoke(containerinterface $container, $name, callable $callback, ?array $options = null)
     {
         if (! $container->has('config')) {
@@ -20,6 +18,7 @@ class PreDelegator implements DelegatorFactoryInterface
 
         $config   = $container->get('config');
         $instance = $callback();
+
         foreach ($config as $key => $value) {
             $instance->{$key} = $value;
         }

@@ -15,15 +15,20 @@ use function class_alias;
 use function file_get_contents;
 use function preg_match;
 
-class FactoryCreatorTest extends TestCase
+/**
+ * @covers \Laminas\ServiceManager\Tool\FactoryCreator
+ */
+final class FactoryCreatorTest extends TestCase
 {
     private FactoryCreator $factoryCreator;
 
     /**
      * @internal param FactoryCreator $factoryCreator
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $this->factoryCreator = new FactoryCreator();
     }
 
@@ -32,7 +37,7 @@ class FactoryCreatorTest extends TestCase
         $className = InvokableObject::class;
         $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/InvokableObject.php');
 
-        $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
+        self::assertSame($factory, $this->factoryCreator->createFactory($className));
     }
 
     public function testCreateFactoryCreatesForSimpleDependencies(): void
@@ -40,7 +45,7 @@ class FactoryCreatorTest extends TestCase
         $className = SimpleDependencyObject::class;
         $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
 
-        $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
+        self::assertSame($factory, $this->factoryCreator->createFactory($className));
     }
 
     public function testCreateFactoryCreatesForComplexDependencies(): void
@@ -48,7 +53,7 @@ class FactoryCreatorTest extends TestCase
         $className = ComplexDependencyObject::class;
         $factory   = file_get_contents(__DIR__ . '/../TestAsset/factories/ComplexDependencyObject.php');
 
-        $this->assertEquals($factory, $this->factoryCreator->createFactory($className));
+        self::assertSame($factory, $this->factoryCreator->createFactory($className));
     }
 
     public function testNamespaceGeneration(): void
@@ -62,8 +67,8 @@ class FactoryCreatorTest extends TestCase
             $generatedFactory = $this->factoryCreator->createFactory($testFqcn);
             preg_match('/^namespace\s([^;]+)/m', $generatedFactory, $namespaceMatch);
 
-            $this->assertNotEmpty($namespaceMatch);
-            $this->assertEquals($expectedNamespace, $namespaceMatch[1]);
+            self::assertNotEmpty($namespaceMatch);
+            self::assertSame($expectedNamespace, $namespaceMatch[1]);
         }
     }
 }

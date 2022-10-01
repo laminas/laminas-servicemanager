@@ -12,7 +12,7 @@ use RuntimeException;
 use function get_class;
 use function sprintf;
 
-class V2v3PluginManager extends AbstractPluginManager
+final class V2v3PluginManager extends AbstractPluginManager
 {
     /** @var array<string,string> */
     protected $aliases = [

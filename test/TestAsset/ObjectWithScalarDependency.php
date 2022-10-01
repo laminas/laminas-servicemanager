@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-class ObjectWithScalarDependency
+final class ObjectWithScalarDependency
 {
     /**
      * @param mixed $aName

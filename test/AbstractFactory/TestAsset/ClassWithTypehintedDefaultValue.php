@@ -6,10 +6,9 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 use ArrayAccess;
 
-class ClassWithTypehintedDefaultValue
+final class ClassWithTypehintedDefaultValue
 {
-    /** @var ArrayAccess|null */
-    public $value;
+    public ?ArrayAccess $value;
 
     public function __construct(?ArrayAccess $value = null)
     {

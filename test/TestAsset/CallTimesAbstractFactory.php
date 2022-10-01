@@ -7,14 +7,11 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
-class CallTimesAbstractFactory implements AbstractFactoryInterface
+final class CallTimesAbstractFactory implements AbstractFactoryInterface
 {
-    /** @var int */
-    protected static $callTimes = 0;
+    protected static int $callTimes = 0;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function canCreate(containerinterface $container, $name)
     {
         self::$callTimes++;
@@ -22,25 +19,17 @@ class CallTimesAbstractFactory implements AbstractFactoryInterface
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public function __invoke(containerinterface $container, $className, ?array $options = null)
     {
     }
 
-    /**
-     * @return int
-     */
-    public static function getCallTimes()
+    public static function getCallTimes(): int
     {
         return self::$callTimes;
     }
 
-    /**
-     * @param int $callTimes
-     */
-    public static function setCallTimes($callTimes)
+    public static function setCallTimes(int $callTimes): void
     {
         self::$callTimes = $callTimes;
     }

@@ -6,7 +6,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 use Exception;
 
-class ExceptionWithStringAsCodeException extends Exception
+final class ExceptionWithStringAsCodeException extends Exception
 {
     /** @var string */
     protected $code = 'ExceptionString';

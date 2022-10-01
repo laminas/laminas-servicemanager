@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-class ComplexDependencyObject
+final class ComplexDependencyObject
 {
     public function __construct(
         SimpleDependencyObject $simpleDependencyObject,

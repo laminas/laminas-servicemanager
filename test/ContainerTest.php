@@ -9,7 +9,7 @@ use Laminas\ContainerConfigTest\SharedTestTrait;
 use Laminas\ServiceManager\ServiceManager;
 use Psr\Container\ContainerInterface;
 
-class ContainerTest extends AbstractMezzioContainerConfigTest
+final class ContainerTest extends AbstractMezzioContainerConfigTest
 {
     use SharedTestTrait;
 

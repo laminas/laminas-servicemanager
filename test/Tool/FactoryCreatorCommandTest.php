@@ -9,10 +9,8 @@ use Laminas\ServiceManager\Tool\FactoryCreatorCommand;
 use Laminas\Stdlib\ConsoleHelper;
 use LaminasTest\ServiceManager\TestAsset\ObjectWithScalarDependency;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 
 use function file_get_contents;
 use function sprintf;
@@ -20,25 +18,28 @@ use function sprintf;
 use const STDERR;
 use const STDOUT;
 
-class FactoryCreatorCommandTest extends TestCase
+/**
+ * @covers \Laminas\ServiceManager\Tool\FactoryCreatorCommand
+ */
+final class FactoryCreatorCommandTest extends TestCase
 {
-    use ProphecyTrait;
-
-    private ObjectProphecy $helper;
+    /** @var ConsoleHelper&MockObject */
+    private ConsoleHelper $helper;
 
     private FactoryCreatorCommand $command;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->helper  = $this->prophesize(ConsoleHelper::class);
-        $this->command = new FactoryCreatorCommand(ConfigDumperCommand::class, $this->helper->reveal());
+        parent::setUp();
+
+        $this->helper  = $this->createMock(ConsoleHelper::class);
+        $this->command = new FactoryCreatorCommand(ConfigDumperCommand::class, $this->helper);
     }
 
     public function testEmitsHelpWhenNoArgumentsProvided(): void
     {
-        $command = $this->command;
         $this->assertHelp();
-        $this->assertEquals(0, $command([]));
+        self::assertSame(0, $this->command->__invoke([]));
     }
 
     /**
@@ -46,11 +47,14 @@ class FactoryCreatorCommandTest extends TestCase
      */
     public function assertHelp($stream = STDOUT): void
     {
-        $this->helper->writeLine(
-            Argument::containingString('<info>Usage:</info>'),
-            true,
-            $stream
-        )->shouldBeCalled();
+        $this->helper
+            ->expects(self::once())
+            ->method('writeLine')
+            ->with(
+                self::stringContains('<info>Usage:</info>'),
+                true,
+                $stream
+            );
     }
 
     public function helpArguments(): array
@@ -67,9 +71,8 @@ class FactoryCreatorCommandTest extends TestCase
      */
     public function testEmitsHelpWhenHelpArgumentProvidedAsFirstArgument(string $argument): void
     {
-        $command = $this->command;
         $this->assertHelp();
-        $this->assertEquals(0, $command([$argument]));
+        self::assertSame(0, $this->command->__invoke([$argument]));
     }
 
     public function invalidArguments(): array
@@ -85,33 +88,35 @@ class FactoryCreatorCommandTest extends TestCase
      */
     public function testEmitsErrorMessageIfArgumentIsNotAClass(string $argument): void
     {
-        $command = $this->command;
         $this->assertErrorRaised(sprintf('Class "%s" does not exist', $argument));
         $this->assertHelp(STDERR);
-        $this->assertEquals(1, $command([$argument]));
+        self::assertSame(1, $this->command->__invoke([$argument]));
     }
 
     public function assertErrorRaised(string $message): void
     {
-        $this->helper->writeErrorMessage(
-            Argument::containingString($message)
-        )->shouldBeCalled();
+        $this->helper
+            ->expects(self::once())
+            ->method('writeErrorMessage')
+            ->with(self::stringContains($message));
     }
 
     public function testEmitsErrorWhenUnableToCreateFactory(): void
     {
-        $command = $this->command;
         $this->assertErrorRaised('Unable to create factory for "' . ObjectWithScalarDependency::class . '":');
         $this->assertHelp(STDERR);
-        $this->assertEquals(1, $command([ObjectWithScalarDependency::class]));
+        self::assertSame(1, $this->command->__invoke([ObjectWithScalarDependency::class]));
     }
 
     public function testEmitsFactoryFileToStdoutWhenSuccessful(): void
     {
-        $command  = $this->command;
         $expected = file_get_contents(__DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php');
 
-        $this->helper->write($expected, false)->shouldBeCalled();
-        $this->assertEquals(0, $command([SimpleDependencyObject::class]));
+        $this->helper
+            ->expects(self::once())
+            ->method('write')
+            ->with($expected, false);
+
+        $this->assertSame(0, $this->command->__invoke([SimpleDependencyObject::class]));
     }
 }

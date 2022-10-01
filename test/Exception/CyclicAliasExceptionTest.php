@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Laminas\ServiceManager\Exception\CyclicAliasException
  */
-class CyclicAliasExceptionTest extends TestCase
+final class CyclicAliasExceptionTest extends TestCase
 {
     /**
      * @dataProvider cyclicAliasProvider
@@ -21,8 +21,8 @@ class CyclicAliasExceptionTest extends TestCase
     {
         $exception = CyclicAliasException::fromCyclicAlias($alias, $aliases);
 
-        $this->assertInstanceOf(CyclicAliasException::class, $exception);
-        $this->assertSame($expectedMessage, $exception->getMessage());
+        self::assertInstanceOf(CyclicAliasException::class, $exception);
+        self::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**
@@ -100,18 +100,18 @@ class CyclicAliasExceptionTest extends TestCase
      * @param string[] $aliases
      * @param string   $expectedMessage
      */
-    public function testFromAliasesMap(array $aliases, $expectedMessage)
+    public function testFromAliasesMap(array $aliases, $expectedMessage): void
     {
         $exception = CyclicAliasException::fromAliasesMap($aliases);
 
-        $this->assertInstanceOf(CyclicAliasException::class, $exception);
-        $this->assertSame($expectedMessage, $exception->getMessage());
+        self::assertInstanceOf(CyclicAliasException::class, $exception);
+        self::assertSame($expectedMessage, $exception->getMessage());
     }
 
     /**
      * @return string[][]|string[][][]
      */
-    public function aliasesProvider()
+    public function aliasesProvider(): array
     {
         return [
             'empty set'                            => [

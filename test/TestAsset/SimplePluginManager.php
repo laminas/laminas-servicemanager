@@ -6,7 +6,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 use Laminas\ServiceManager\AbstractPluginManager;
 
-class SimplePluginManager extends AbstractPluginManager
+final class SimplePluginManager extends AbstractPluginManager
 {
     /** @var string */
     protected $instanceOf = InvokableObject::class;

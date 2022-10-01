@@ -7,7 +7,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-class SampleFactory implements FactoryInterface
+final class SampleFactory implements FactoryInterface
 {
     /**
      * @param string                   $requestedName

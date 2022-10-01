@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
-class ClassWithTypeHintedConstructorParameter
+final class ClassWithTypeHintedConstructorParameter
 {
-    /** @var SampleInterface */
-    public $sample;
+    public SampleInterface $sample;
 
     public function __construct(SampleInterface $sample)
     {

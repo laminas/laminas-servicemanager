@@ -10,7 +10,7 @@ use RuntimeException;
 use function is_callable;
 use function sprintf;
 
-class V2ValidationPluginManager extends AbstractPluginManager
+final class V2ValidationPluginManager extends AbstractPluginManager
 {
     /** @var (callable(mixed):void)|null */
     public $assertion;

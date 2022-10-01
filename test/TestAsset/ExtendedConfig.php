@@ -6,7 +6,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 use Laminas\ServiceManager\Config;
 
-class ExtendedConfig extends Config
+final class ExtendedConfig extends Config
 {
     /** @var array */
     protected $config = [

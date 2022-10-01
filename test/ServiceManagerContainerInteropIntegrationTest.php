@@ -21,6 +21,7 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->container = new ServiceManager([]);
     }
 
@@ -33,7 +34,7 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
     {
         try {
             $this->container->get('unexisting service');
-            $this->fail('No exception was thrown.');
+            self::fail('No exception was thrown.');
         } catch (NotFoundException $exception) {
             self::assertStringContainsString(
                 'Unable to resolve service "unexisting service" to a factory',
@@ -51,7 +52,7 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
     {
         try {
             $this->container->get('unexisting service');
-            $this->fail('No exception was thrown.');
+            self::fail('No exception was thrown.');
         } catch (ContainerException $exception) {
             self::assertStringContainsString(
                 'Unable to resolve service "unexisting service" to a factory',
@@ -71,6 +72,7 @@ final class ServiceManagerContainerInteropIntegrationTest extends TestCase
         };
 
         $instance = $factory($this->container, stdClass::class);
+
         self::assertInstanceOf(stdClass::class, $instance);
     }
 }

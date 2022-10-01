@@ -8,8 +8,7 @@ final class TargetObject
 {
     public const INITIAL_VALUE = 'Default';
 
-    /** @var string */
-    public $value;
+    public string $value;
 
     public function __construct()
     {

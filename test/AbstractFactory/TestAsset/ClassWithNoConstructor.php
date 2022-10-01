@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
-class ClassWithNoConstructor
+final class ClassWithNoConstructor
 {
 }

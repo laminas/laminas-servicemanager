@@ -26,6 +26,7 @@ final class DelegatorAndAliasBehaviorTest extends TestCase
         ]);
 
         $service = $serviceManager->get(TargetObject::class);
+
         self::assertInstanceOf(TargetObject::class, $service);
         self::assertEquals(TargetObjectDelegator::DELEGATED_VALUE, $service->value);
     }
@@ -47,6 +48,7 @@ final class DelegatorAndAliasBehaviorTest extends TestCase
         ]);
 
         $service = $serviceManager->get('Some Alias');
+
         self::assertInstanceOf(TargetObject::class, $service);
         self::assertEquals(TargetObject::INITIAL_VALUE, $service->value);
     }
