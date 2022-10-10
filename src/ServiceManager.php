@@ -560,7 +560,7 @@ class ServiceManager implements ServiceLocatorInterface
      */
     private function createDelegatorFromName(string $name, ?array $options = null)
     {
-        $creationCallback = function () use ($name, $options): object {
+        $creationCallback = function () use ($name, $options) {
             // Code is inlined for performance reason, instead of abstracting the creation
             $factory = $this->getFactory($name);
             return $factory($this->creationContext, $name, $options);
