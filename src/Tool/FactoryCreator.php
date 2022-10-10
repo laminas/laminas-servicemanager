@@ -104,8 +104,10 @@ class FactoryCreator
                 if ($argument->isOptional()) {
                     return false;
                 }
+
                 $type  = $argument->getType();
                 $class = $type instanceof ReflectionNamedType && ! $type->isBuiltin() ? $type->getName() : null;
+
                 if (null === $class) {
                     throw new InvalidArgumentException(sprintf(
                         'Cannot identify type for constructor argument "%s"; '
@@ -113,6 +115,7 @@ class FactoryCreator
                         $argument->getName()
                     ));
                 }
+
                 return true;
             }
         );
