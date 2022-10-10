@@ -21,7 +21,6 @@ use function implode;
 use function interface_exists;
 use function is_array;
 use function is_int;
-use function is_iterable;
 use function is_string;
 use function sprintf;
 use function str_repeat;
