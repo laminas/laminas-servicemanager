@@ -6,10 +6,7 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 final class ClassAcceptingWellKnownServicesAsConstructorParameters
 {
-    public ValidatorPluginManager $validators;
-
-    public function __construct(ValidatorPluginManager $validators)
+    public function __construct(public ValidatorPluginManager $validators)
     {
-        $this->validators = $validators;
     }
 }

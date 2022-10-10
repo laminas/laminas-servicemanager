@@ -17,8 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
 
-use function get_class;
-
 /**
  * @see ConfigInterface
  *
@@ -399,7 +397,7 @@ final class ServiceManagerTest extends TestCase
         ];
         $serviceManager = new SimpleServiceManager($config);
 
-        self::assertEquals(stdClass::class, get_class($serviceManager->get(stdClass::class)));
+        self::assertEquals(stdClass::class, $serviceManager->get(stdClass::class)::class);
     }
 
     public function testResolvedAliasFromAbstractFactory(): void

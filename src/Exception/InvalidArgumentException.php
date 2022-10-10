@@ -17,10 +17,7 @@ use function sprintf;
  */
 class InvalidArgumentException extends SplInvalidArgumentException implements ExceptionInterface
 {
-    /**
-     * @param mixed $initializer
-     */
-    public static function fromInvalidInitializer($initializer): self
+    public static function fromInvalidInitializer(mixed $initializer): self
     {
         return new self(sprintf(
             'An invalid initializer was registered. Expected a callable or an'
@@ -30,10 +27,7 @@ class InvalidArgumentException extends SplInvalidArgumentException implements Ex
         ));
     }
 
-    /**
-     * @param mixed $abstractFactory
-     */
-    public static function fromInvalidAbstractFactory($abstractFactory): self
+    public static function fromInvalidAbstractFactory(mixed $abstractFactory): self
     {
         return new self(sprintf(
             'An invalid abstract factory was registered. Expected an instance of or a valid'

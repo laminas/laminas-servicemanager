@@ -436,9 +436,8 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * @group has
      * @dataProvider abstractFactories
-     * @param mixed $abstractFactory
      */
-    public function testHasChecksAgainstAbstractFactories($abstractFactory, bool $expected): void
+    public function testHasChecksAgainstAbstractFactories(mixed $abstractFactory, bool $expected): void
     {
         $serviceManager = $this->createContainer([
             'abstract_factories' => [
@@ -572,11 +571,10 @@ trait CommonServiceLocatorBehaviorsTrait
 
     /**
      * @dataProvider invalidAbstractFactories
-     * @param mixed $factory
      * @covers \Laminas\ServiceManager\ServiceManager::configure
      */
     public function testPassingInvalidAbstractFactoryTypeViaConfigurationRaisesException(
-        $factory,
+        mixed $factory,
         string $contains = 'invalid abstract factory'
     ): void {
         $this->expectException(InvalidArgumentException::class);
@@ -617,11 +615,10 @@ trait CommonServiceLocatorBehaviorsTrait
 
     /**
      * @dataProvider invalidInitializers
-     * @param mixed $initializer
      * @covers \Laminas\ServiceManager\ServiceManager::configure
      */
     public function testPassingInvalidInitializerTypeViaConfigurationRaisesException(
-        $initializer,
+        mixed $initializer,
         string $contains = 'invalid initializer'
     ): void {
         $this->expectException(InvalidArgumentException::class);
@@ -651,12 +648,11 @@ trait CommonServiceLocatorBehaviorsTrait
     }
 
     /**
-     * @param mixed $delegator
      * @dataProvider invalidDelegators
      * @covers \Laminas\ServiceManager\ServiceManager::createDelegatorFromName
      */
     public function testInvalidDelegatorShouldRaiseExceptionDuringCreation(
-        $delegator,
+        mixed $delegator,
         string $contains = 'non-callable delegator'
     ): void {
         /** @psalm-suppress InvalidArgument */
@@ -859,7 +855,7 @@ trait CommonServiceLocatorBehaviorsTrait
                 'setFactory',
                 [
                     'foo',
-                    function () {
+                    static function (): void {
                     },
                 ],
             ],
@@ -870,7 +866,7 @@ trait CommonServiceLocatorBehaviorsTrait
                 'addDelegator',
                 [
                     'foo',
-                    function () {
+                    static function (): void {
                     },
                 ],
             ],

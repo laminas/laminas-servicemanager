@@ -177,7 +177,7 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
      *
      * @psalm-assert InstanceType $instance
      */
-    public function validate($instance)
+    public function validate(mixed $instance)
     {
         if (method_exists($this, 'validatePlugin')) {
             trigger_error(sprintf(

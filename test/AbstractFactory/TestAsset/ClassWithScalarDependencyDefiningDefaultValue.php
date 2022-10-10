@@ -6,10 +6,7 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 final class ClassWithScalarDependencyDefiningDefaultValue
 {
-    public string $foo;
-
-    public function __construct(string $foo = 'bar')
+    public function __construct(public string $foo = 'bar')
     {
-        $this->foo = $foo;
     }
 }

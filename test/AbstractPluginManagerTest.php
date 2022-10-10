@@ -265,10 +265,9 @@ final class AbstractPluginManagerTest extends TestCase
 
     /**
      * @group migration
-     * @param mixed $arg
      * @dataProvider invalidConstructorArguments
      */
-    public function testPassingNonContainerNonConfigNonNullFirstConstructorArgumentRaisesException($arg): void
+    public function testPassingNonContainerNonConfigNonNullFirstConstructorArgumentRaisesException(mixed $arg): void
     {
         $this->expectException(InvalidArgumentException::class);
         new TestAsset\LenientPluginManager($arg);

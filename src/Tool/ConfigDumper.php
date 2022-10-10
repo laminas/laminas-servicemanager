@@ -39,15 +39,11 @@ class ConfigDumper
 return %s;
 EOC;
 
-    private ?ContainerInterface $container;
-
-    public function __construct(?ContainerInterface $container = null)
+    public function __construct(private ?ContainerInterface $container = null)
     {
-        $this->container = $container;
     }
 
     /**
-     * @param array $config
      * @param string $className
      * @param bool $ignoreUnresolved
      * @return array
@@ -127,7 +123,6 @@ EOC;
     }
 
     /**
-     * @param array $config
      * @param string $className
      * @return array
      */
@@ -138,7 +133,6 @@ EOC;
     }
 
     /**
-     * @param array $config
      * @return array
      * @throws InvalidArgumentException If ConfigAbstractFactory configuration
      *     value is not an array.
@@ -164,7 +158,6 @@ EOC;
     }
 
     /**
-     * @param array $config
      * @param string $className
      * @return array
      */
@@ -185,7 +178,6 @@ EOC;
     }
 
     /**
-     * @param array $config
      * @return string
      */
     public function dumpConfigFile(array $config)
@@ -245,11 +237,10 @@ EOC;
     }
 
     /**
-     * @param mixed $value
      * @param int $indentLevel
      * @return string
      */
-    private function createConfigValue($value, $indentLevel)
+    private function createConfigValue(mixed $value, $indentLevel)
     {
         if (is_array($value) || $value instanceof Traversable) {
             return $this->prepareConfig($value, $indentLevel + 1);
