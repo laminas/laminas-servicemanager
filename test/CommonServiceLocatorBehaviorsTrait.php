@@ -855,7 +855,7 @@ trait CommonServiceLocatorBehaviorsTrait
                 'setFactory',
                 [
                     'foo',
-                    static function () : void {
+                    static function (): void {
                     },
                 ],
             ],
@@ -866,7 +866,7 @@ trait CommonServiceLocatorBehaviorsTrait
                 'addDelegator',
                 [
                     'foo',
-                    static function () : void {
+                    static function (): void {
                     },
                 ],
             ],

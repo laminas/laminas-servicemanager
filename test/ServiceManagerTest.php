@@ -17,8 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
 
-use function get_class;
-
 /**
  * @see ConfigInterface
  *

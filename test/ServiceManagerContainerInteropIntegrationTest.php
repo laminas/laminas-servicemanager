@@ -15,7 +15,7 @@ use stdClass;
 
 final class ServiceManagerContainerInteropIntegrationTest extends TestCase
 {
-    private \Laminas\ServiceManager\ServiceManager $container;
+    private ServiceManager $container;
 
     protected function setUp(): void
     {
