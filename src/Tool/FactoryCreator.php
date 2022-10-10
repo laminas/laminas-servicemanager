@@ -100,14 +100,12 @@ class FactoryCreator
 
         $constructorParameters = array_filter(
             $constructorParameters,
-            function (ReflectionParameter $argument): bool {
+            static function (ReflectionParameter $argument): bool {
                 if ($argument->isOptional()) {
                     return false;
                 }
-
                 $type  = $argument->getType();
                 $class = $type instanceof ReflectionNamedType && ! $type->isBuiltin() ? $type->getName() : null;
-
                 if (null === $class) {
                     throw new InvalidArgumentException(sprintf(
                         'Cannot identify type for constructor argument "%s"; '
@@ -115,7 +113,6 @@ class FactoryCreator
                         $argument->getName()
                     ));
                 }
-
                 return true;
             }
         );
@@ -124,7 +121,7 @@ class FactoryCreator
             return [];
         }
 
-        return array_map(function (ReflectionParameter $parameter): ?string {
+        return array_map(static function (ReflectionParameter $parameter): ?string {
             $type = $parameter->getType();
             return $type instanceof ReflectionNamedType && ! $type->isBuiltin() ? $type->getName() : null;
         }, $constructorParameters);
@@ -136,7 +133,7 @@ class FactoryCreator
      */
     private function createArgumentString($className)
     {
-        $arguments = array_map(fn(string $dependency): string
+        $arguments = array_map(static fn(string $dependency): string
             => sprintf('$container->get(\\%s::class)', $dependency), $this->getConstructorParameters($className));
 
         switch (count($arguments)) {

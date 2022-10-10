@@ -87,7 +87,7 @@ final class LazyServiceFactoryTest extends TestCase
             ->expects(self::once())
             ->method('createProxy')
             ->willReturnCallback(
-                static function ($className, $initializer) use ($expectedService, $proxy) {
+                static function ($className, $initializer) use ($expectedService, $proxy): MockObject {
                     self::assertEquals('FooClass', $className, 'class name not match');
 
                     $wrappedInstance = null;

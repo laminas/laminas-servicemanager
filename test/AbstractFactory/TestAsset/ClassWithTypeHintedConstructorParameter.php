@@ -6,10 +6,7 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 final class ClassWithTypeHintedConstructorParameter
 {
-    public SampleInterface $sample;
-
-    public function __construct(SampleInterface $sample)
+    public function __construct(public SampleInterface $sample)
     {
-        $this->sample = $sample;
     }
 }

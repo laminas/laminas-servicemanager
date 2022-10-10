@@ -15,7 +15,7 @@ use function method_exists;
  * @todo Remove once laminas-code has a release that supports PHP 8.1.
  * @internal
  */
-class ParameterReflection extends ReflectionParameter implements ReflectionInterface
+class ParameterReflection extends ReflectionParameter implements ReflectionInterface, \Stringable
 {
     /** @var bool */
     protected $isFromMethod = false;
@@ -122,7 +122,7 @@ class ParameterReflection extends ReflectionParameter implements ReflectionInter
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return parent::__toString();
     }

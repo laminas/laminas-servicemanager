@@ -15,8 +15,7 @@ use stdClass;
 
 final class ServiceManagerContainerInteropIntegrationTest extends TestCase
 {
-    /** @var ServiceManager */
-    private $container;
+    private ServiceManager $container;
 
     protected function setUp(): void
     {

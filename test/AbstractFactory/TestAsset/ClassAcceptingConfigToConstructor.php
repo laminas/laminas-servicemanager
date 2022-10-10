@@ -6,10 +6,7 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 final class ClassAcceptingConfigToConstructor
 {
-    public array $config;
-
-    public function __construct(array $config)
+    public function __construct(public array $config)
     {
-        $this->config = $config;
     }
 }

@@ -157,7 +157,6 @@ class ServiceManager implements ServiceLocatorInterface
      * See {@see \Laminas\ServiceManager\ServiceManager::configure()} for details
      * on what $config accepts.
      *
-     * @param array $config
      * @psalm-param ServiceManagerConfiguration $config
      */
     public function __construct(array $config = [])
@@ -285,7 +284,6 @@ class ServiceManager implements ServiceLocatorInterface
     }
 
     /**
-     * @param  array $config
      * @psalm-param ServiceManagerConfiguration $config
      * @return self
      * @throws ContainerModificationsNotAllowedException If the allow
@@ -562,7 +560,7 @@ class ServiceManager implements ServiceLocatorInterface
      */
     private function createDelegatorFromName(string $name, ?array $options = null)
     {
-        $creationCallback = function () use ($name, $options) {
+        $creationCallback = function () use ($name, $options): object {
             // Code is inlined for performance reason, instead of abstracting the creation
             $factory = $this->getFactory($name);
             return $factory($this->creationContext, $name, $options);

@@ -19,7 +19,7 @@ use function strstr;
  * @todo Remove once laminas-code has a release that supports PHP 8.1.
  * @internal
  */
-class ClassReflection extends ReflectionClass implements ReflectionInterface
+class ClassReflection extends ReflectionClass implements ReflectionInterface, \Stringable
 {
     /** @var DocBlockReflection|null */
     protected $docBlock;
@@ -224,7 +224,7 @@ class ClassReflection extends ReflectionClass implements ReflectionInterface
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return parent::__toString();
     }
