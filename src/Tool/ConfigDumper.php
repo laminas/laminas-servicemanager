@@ -8,6 +8,7 @@ use Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
+use ReflectionNamedType;
 use ReflectionParameter;
 use Traversable;
 
@@ -83,7 +84,7 @@ EOC;
 
         foreach ($constructorArguments as $constructorArgument) {
             $type         = $constructorArgument->getType();
-            $argumentType = null !== $type && ! $type->isBuiltin() ? $type->getName() : null;
+            $argumentType = $type instanceof ReflectionNamedType && ! $type->isBuiltin() ? $type->getName() : null;
 
             if ($argumentType === null) {
                 if ($ignoreUnresolved) {
