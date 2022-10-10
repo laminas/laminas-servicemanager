@@ -24,7 +24,6 @@ use function array_intersect;
 use function array_key_exists;
 use function array_keys;
 use function class_exists;
-use function get_class;
 use function gettype;
 use function in_array;
 use function is_callable;
@@ -972,7 +971,7 @@ class ServiceManager implements ServiceLocatorInterface
         }
         throw new ServiceNotCreatedException(sprintf(
             'A non-callable delegator, "%s", was provided; expected a callable or instance of "%s"',
-            is_object($delegatorFactory) ? get_class($delegatorFactory) : gettype($delegatorFactory),
+            is_object($delegatorFactory) ? $delegatorFactory::class : gettype($delegatorFactory),
             DelegatorFactoryInterface::class
         ));
     }
