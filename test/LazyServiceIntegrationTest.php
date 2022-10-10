@@ -21,7 +21,6 @@ use stdClass;
 
 use function array_filter;
 use function closedir;
-use function get_class;
 use function is_dir;
 use function is_file;
 use function iterator_to_array;
@@ -157,7 +156,7 @@ final class LazyServiceIntegrationTest extends TestCase
         );
         self::assertStringContainsString(
             'TestAssetProxy',
-            get_class($instance),
+            $instance::class,
             'Service returned does not contain expected namespace'
         );
 
@@ -230,7 +229,7 @@ final class LazyServiceIntegrationTest extends TestCase
         );
         self::assertStringContainsString(
             'TestAssetProxy',
-            get_class($instance),
+            $instance::class,
             'Service returned does not contain expected namespace'
         );
 

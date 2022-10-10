@@ -9,7 +9,6 @@ use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use RuntimeException;
 
-use function get_class;
 use function sprintf;
 
 final class V2v3PluginManager extends AbstractPluginManager
@@ -54,7 +53,7 @@ final class V2v3PluginManager extends AbstractPluginManager
 
         throw new InvalidServiceException(sprintf(
             "'%s' is not an instance of '%s'",
-            get_class($plugin),
+            $plugin::class,
             $this->instanceOf
         ));
     }
