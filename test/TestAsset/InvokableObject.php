@@ -6,8 +6,11 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 class InvokableObject
 {
-    public function __construct(public array $options = [])
+    public array $options;
+
+    public function __construct(array $options = [])
     {
+        $this->options = $options;
     }
 
     public function getOptions(): array

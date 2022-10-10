@@ -15,7 +15,10 @@ final class V2ValidationPluginManager extends AbstractPluginManager
     /** @var (callable(mixed):void)|null */
     public $assertion;
 
-    public function validatePlugin(mixed $plugin): void
+    /**
+     * @param mixed $plugin
+     */
+    public function validatePlugin($plugin): void
     {
         if (! is_callable($this->assertion)) {
             throw new RuntimeException(sprintf(

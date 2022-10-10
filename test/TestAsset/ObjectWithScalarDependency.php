@@ -6,7 +6,11 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 final class ObjectWithScalarDependency
 {
-    public function __construct(mixed $aName, mixed $aValue)
+    /**
+     * @param mixed $aName
+     * @param mixed $aValue
+     */
+    public function __construct($aName, $aValue)
     {
     }
 }

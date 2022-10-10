@@ -34,7 +34,8 @@ final class V2v3PluginManager extends AbstractPluginManager
     /** @var string */
     protected $instanceOf = InvokableObject::class;
 
-    private bool $shareByDefault = false;
+    /** @var bool */
+    protected $shareByDefault = false;
 
     /** @var bool */
     protected $sharedByDefault = false;
@@ -58,10 +59,11 @@ final class V2v3PluginManager extends AbstractPluginManager
     }
 
     /**
+     * @param mixed $plugin
      * @return void
      * @throws RuntimeException
      */
-    public function validatePlugin(mixed $plugin)
+    public function validatePlugin($plugin)
     {
         try {
             $this->validate($plugin);

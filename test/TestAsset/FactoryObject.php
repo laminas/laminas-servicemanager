@@ -6,7 +6,14 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 final class FactoryObject
 {
-    public function __construct(public mixed $dependency)
+    /** @var mixed */
+    public $dependency;
+
+    /**
+     * @param mixed $dependency
+     */
+    public function __construct($dependency)
     {
+        $this->dependency = $dependency;
     }
 }
