@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "laminas/laminas-stdlib",
-            "version": "3.14.0",
+            "version": "3.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-stdlib.git",
-                "reference": "627e06f1d1ac276fd4c6f78407ce3d72db341a30"
+                "reference": "63b66bd4b696f024f42616b9d95cdb10e5109c27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/627e06f1d1ac276fd4c6f78407ce3d72db341a30",
-                "reference": "627e06f1d1ac276fd4c6f78407ce3d72db341a30",
+                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/63b66bd4b696f024f42616b9d95cdb10e5109c27",
+                "reference": "63b66bd4b696f024f42616b9d95cdb10e5109c27",
                 "shasum": ""
             },
             "require": {
@@ -63,7 +63,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-10-10T13:20:55+00:00"
+            "time": "2022-10-10T19:10:24+00:00"
         },
         {
             "name": "psr/container",
