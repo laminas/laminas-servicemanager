@@ -40,7 +40,7 @@
         "composer/package-versions-deprecated": "^1.11.99.5",
         "laminas/laminas-coding-standard": "~2.4.0",
         "laminas/laminas-container-config-test": "^0.7",
-        "laminas/laminas-dependency-plugin": "^2.2",
+        "laminas/laminas-dependency-plugin": "^2.5.0",
         "mikey179/vfsstream": "^1.6.11@alpha",
         "ocramius/proxy-manager": "^2.14.1",
         "phpbench/phpbench": "^1.2.7",
