@@ -10,6 +10,7 @@ use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
@@ -33,6 +34,8 @@ use stdClass;
 use function array_fill_keys;
 use function array_keys;
 use function array_merge;
+use function PHPUnit\Framework\assertIsBool;
+use function PHPUnit\Framework\assertIsString;
 use function restore_error_handler;
 use function set_error_handler;
 
@@ -49,14 +52,13 @@ trait CommonServiceLocatorBehaviorsTrait
 {
     /**
      * The creation context container; used in some mocks for comparisons; set during createContainer.
-     *
-     * @var ServiceManager
      */
-    protected $creationContext;
+    protected ServiceManager|null $creationContext;
 
     /**
      * @psalm-param ServiceManagerConfigurationType $config
      * @return ServiceManager
+     * @todo This will need to be static for future versions of PHPUnit
      */
     abstract public function createContainer(array $config = []);
 
@@ -425,7 +427,8 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertTrue($serviceManager->has(stdClass::class));
     }
 
-    public function abstractFactories(): array
+    /** @return array<string, array{0: AbstractFactoryInterface, 1: bool}> */
+    public static function abstractFactories(): array
     {
         return [
             'simple'  => [new SimpleAbstractFactory(), true],
@@ -437,8 +440,10 @@ trait CommonServiceLocatorBehaviorsTrait
      * @group has
      * @dataProvider abstractFactories
      */
-    public function testHasChecksAgainstAbstractFactories(mixed $abstractFactory, bool $expected): void
-    {
+    public function testHasChecksAgainstAbstractFactories(
+        AbstractFactoryInterface $abstractFactory,
+        bool $expected,
+    ): void {
         $serviceManager = $this->createContainer([
             'abstract_factories' => [
                 $abstractFactory,
@@ -500,7 +505,7 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertNotSame(
             $dateTime,
             $notShared,
-            'Expected unshared instances for DateTime service but received shared instances'
+            'Expected unshared instances for DateTime service but received shared instances',
         );
 
         $config = $serviceManager->get('config');
@@ -508,7 +513,7 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertSame(
             $config,
             $serviceManager->get('config'),
-            'Config service resolved as unshared instead of shared'
+            'Config service resolved as unshared instead of shared',
         );
 
         $stdClass = $serviceManager->get(stdClass::class);
@@ -516,16 +521,16 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertSame(
             $stdClass,
             $serviceManager->get(stdClass::class),
-            'stdClass service should be shared, but resolved as unshared'
+            'stdClass service should be shared, but resolved as unshared',
         );
         self::assertTrue(
             isset($stdClass->foo),
-            'Expected delegator to inject "foo" property in stdClass service, but it was not'
+            'Expected delegator to inject "foo" property in stdClass service, but it was not',
         );
         self::assertEquals('bar', $stdClass->foo, 'stdClass "foo" property was not injected correctly');
         self::assertTrue(
             isset($stdClass->bar),
-            'Expected initializer to inject "bar" property in stdClass service, but it was not'
+            'Expected initializer to inject "bar" property in stdClass service, but it was not',
         );
         self::assertEquals('baz', $stdClass->bar, 'stdClass "bar" property was not injected correctly');
     }
@@ -741,7 +746,9 @@ trait CommonServiceLocatorBehaviorsTrait
         $r->setAccessible(true);
         $lazyServices = $r->getValue($container);
 
+        self::assertIsArray($lazyServices);
         self::assertArrayHasKey('class_map', $lazyServices);
+        self::assertIsArray($lazyServices['class_map']);
         self::assertArrayHasKey('foo', $lazyServices['class_map']);
         self::assertEquals(self::class, $lazyServices['class_map']['foo']);
     }
@@ -799,7 +806,7 @@ trait CommonServiceLocatorBehaviorsTrait
                 'foo' => static fn (): stdClass => new stdClass(),
             ],
         ]);
-        $container->addInitializer(static function ($container, $instance) {
+        $container->addInitializer(static function (ContainerInterface $container, $instance) {
             if (! $instance instanceof stdClass) {
                 return;
             }
@@ -845,6 +852,7 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertNotSame($first, $second);
     }
 
+    /** @return array<string, array{0: string, 1: mixed[]}> */
     public function methodsAffectedByOverrideSettings(): array
     {
         //  name                        => [ 'method to invoke',  [arguments for invocation]]
@@ -1037,6 +1045,8 @@ trait CommonServiceLocatorBehaviorsTrait
      * Data provider
      *
      * @see testConsistencyOverInternalStates above
+     *
+     * @return list<array{0: ServiceManager, 1: string, 2: list<string>, 3: bool}>
      */
     public function provideConsistencyOverInternalStatesTests(): array
     {
@@ -1075,15 +1085,12 @@ trait CommonServiceLocatorBehaviorsTrait
 
         $configs = [$config1, $config2];
 
-        foreach ($configs as $config) {
-            $smTemplates[] = $this->createContainer($config);
-        }
-
         // produce all 3-tuples of 'build' and 'get', i.e.
         //
         // [['get', 'get', 'get'], ['get', 'get', 'build'], ...
         // ['build', 'build', 'build']]
-        $methods = ['get', 'build'];
+        $callSequences = [];
+        $methods       = ['get', 'build'];
         foreach ($methods as $method1) {
             foreach ($methods as $method2) {
                 foreach ($methods as $method3) {
@@ -1091,6 +1098,10 @@ trait CommonServiceLocatorBehaviorsTrait
                 }
             }
         }
+
+        /** @psalm-var list<list<string>> $callSequences */
+
+        $tests = [];
 
         foreach ($configs as $config) {
             $smTemplate = $this->createContainer($config);
@@ -1104,7 +1115,7 @@ trait CommonServiceLocatorBehaviorsTrait
                 $config['factories'],
                 $config['invokables'],
                 $config['aliases'],
-                $config['delegators']
+                $config['delegators'],
             )), $config['shared_by_default'] ?? true), $names);
 
             // add the key resolved by the abstract factory
@@ -1119,8 +1130,9 @@ trait CommonServiceLocatorBehaviorsTrait
             }
 
             foreach ($names as $name => $shared) {
+                assertIsString($name);
+                assertIsBool($shared);
                 foreach ($callSequences as $callSequence) {
-                    $sm      = clone $smTemplate;
                     $tests[] = [$smTemplate, $name, $callSequence, $shared];
                 }
             }

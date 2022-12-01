@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.27.0@faf106e717c37b8c81721845dba9de3d8deed8ff">
+<files psalm-version="5.0.0@4e177bf0c9f03c17d2fbfd83b7cc9c47605274d8">
   <file src="src/AbstractFactory/ConfigAbstractFactory.php">
     <InvalidStringClass occurrences="1">
       <code>new $requestedName(...$arguments)</code>
@@ -52,6 +52,10 @@
     </UndefinedDocblockClass>
   </file>
   <file src="src/AbstractPluginManager.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$config</code>
+      <code>$config</code>
+    </ArgumentTypeCoercion>
     <ImplementedParamTypeMismatch occurrences="1">
       <code>$service</code>
     </ImplementedParamTypeMismatch>
@@ -67,11 +71,29 @@
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>is_object($configInstanceOrParentLocator)</code>
     </RedundantConditionGivenDocblockType>
+    <UnusedPsalmSuppress occurrences="1">
+      <code>MixedAssignment</code>
+    </UnusedPsalmSuppress>
+  </file>
+  <file src="src/Config.php">
+    <LessSpecificReturnStatement occurrences="1">
+      <code>ArrayUtils::merge($a, $b)</code>
+    </LessSpecificReturnStatement>
+    <MixedArrayTypeCoercion occurrences="1">
+      <code>$this-&gt;allowedKeys[$key]</code>
+    </MixedArrayTypeCoercion>
+    <MoreSpecificReturnType occurrences="1">
+      <code>ServiceManagerConfigurationType</code>
+    </MoreSpecificReturnType>
+    <UnusedPsalmSuppress occurrences="2">
+      <code>MixedReturnTypeCoercion</code>
+      <code>MixedReturnTypeCoercion</code>
+    </UnusedPsalmSuppress>
   </file>
   <file src="src/Exception/CyclicAliasException.php">
-    <InvalidScalarArgument occurrences="1">
+    <InvalidArgument occurrences="1">
       <code>self::deDuplicateDetectedCycles($detectedCycles)</code>
-    </InvalidScalarArgument>
+    </InvalidArgument>
     <MixedArgumentTypeCoercion occurrences="2">
       <code>$alias</code>
       <code>$detectedCycles</code>
@@ -90,14 +112,35 @@
     <MissingClosureParamType occurrences="1">
       <code>$wrappedInstance</code>
     </MissingClosureParamType>
-    <MissingClosureReturnType occurrences="1">
-      <code>function (&amp;$wrappedInstance, LazyLoadingInterface $proxy) use ($callback) {</code>
-    </MissingClosureReturnType>
     <MixedAssignment occurrences="1">
       <code>$wrappedInstance</code>
     </MixedAssignment>
   </file>
   <file src="src/ServiceManager.php">
+    <InvalidArgument occurrences="3">
+      <code>['delegators' =&gt; [$name =&gt; [$factory]]]</code>
+      <code>['initializers' =&gt; [$initializer]]</code>
+      <code>['lazy_services' =&gt; ['class_map' =&gt; [$name =&gt; $class ?: $name]]]</code>
+    </InvalidArgument>
+    <InvalidArrayOffset occurrences="6">
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+    </InvalidArrayOffset>
+    <InvalidCast occurrences="6">
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+    </InvalidCast>
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$this-&gt;factories</code>
+    </InvalidPropertyAssignmentValue>
     <MissingClosureReturnType occurrences="1">
       <code>function () use ($name, $options) {</code>
     </MissingClosureReturnType>
@@ -112,17 +155,37 @@
       <code>setService</code>
       <code>setShared</code>
     </MissingReturnType>
-    <MixedArgument occurrences="5">
+    <MixedArgument occurrences="11">
       <code>$abstractFactory</code>
+      <code>$config['aliases']</code>
       <code>$config['delegators']</code>
+      <code>$config['delegators']</code>
+      <code>$config['factories']</code>
       <code>$config['initializers']</code>
       <code>$config['invokables']</code>
+      <code>$config['invokables']</code>
       <code>$config['lazy_services']</code>
+      <code>$config['lazy_services']['class_map']</code>
+      <code>$config['shared']</code>
     </MixedArgument>
-    <MixedArgumentTypeCoercion occurrences="2">
+    <MixedArgumentTypeCoercion occurrences="8">
       <code>$alias</code>
       <code>$alias</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
+      <code>$service</code>
     </MixedArgumentTypeCoercion>
+    <MixedArrayTypeCoercion occurrences="6">
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+      <code>$this-&gt;services[$service]</code>
+    </MixedArrayTypeCoercion>
     <MixedAssignment occurrences="9">
       <code>$abstractFactories</code>
       <code>$abstractFactory</code>
@@ -131,14 +194,13 @@
       <code>$key</code>
       <code>$this-&gt;aliases</code>
       <code>$this-&gt;factories</code>
-      <code>$this-&gt;services</code>
       <code>$this-&gt;shared</code>
+      <code>$this-&gt;sharedByDefault</code>
     </MixedAssignment>
-    <MixedOperand occurrences="5">
+    <MixedOperand occurrences="4">
       <code>$config['aliases']</code>
       <code>$config['aliases'] ?? []</code>
       <code>$config['factories']</code>
-      <code>$config['services']</code>
       <code>$config['shared']</code>
     </MixedOperand>
     <ParamNameMismatch occurrences="2">
@@ -149,7 +211,8 @@
       <code>(bool) $flag</code>
       <code>(bool) $flag</code>
     </RedundantCastGivenDocblockType>
-    <TypeDoesNotContainType occurrences="1">
+    <TypeDoesNotContainType occurrences="2">
+      <code>$sharedAlias</code>
       <code>$sharedAlias</code>
     </TypeDoesNotContainType>
     <UnusedForeachValue occurrences="3">
@@ -195,22 +258,22 @@
       <code>validateClassName</code>
     </MissingReturnType>
     <MixedArgument occurrences="3">
-      <code>$argumentType</code>
       <code>$config['service_manager']</code>
       <code>$config['service_manager']['factories']</code>
+      <code>$key</code>
     </MixedArgument>
     <MixedArgumentTypeCoercion occurrences="1">
       <code>$className</code>
     </MixedArgumentTypeCoercion>
-    <MixedArrayAssignment occurrences="3">
+    <MixedArrayAssignment occurrences="4">
       <code>$config['service_manager']['factories']</code>
+      <code>$config['service_manager']['factories'][$className]</code>
       <code>$config[ConfigAbstractFactory::class][$className]</code>
       <code>$config[ConfigAbstractFactory::class][$className]</code>
     </MixedArrayAssignment>
-    <MixedAssignment occurrences="4">
-      <code>$argumentType</code>
-      <code>$classConfig[]</code>
+    <MixedAssignment occurrences="3">
       <code>$dependency</code>
+      <code>$key</code>
       <code>$value</code>
     </MixedAssignment>
     <PossiblyNullArgument occurrences="1">
@@ -219,9 +282,6 @@
     <PossiblyNullReference occurrences="1">
       <code>getParameters</code>
     </PossiblyNullReference>
-    <UndefinedMethod occurrences="1">
-      <code>getName</code>
-    </UndefinedMethod>
     <UnusedForeachValue occurrences="1">
       <code>$dependency</code>
     </UnusedForeachValue>
@@ -256,25 +316,12 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <MixedAssignment occurrences="1">
-      <code>$class</code>
-    </MixedAssignment>
-    <MixedInferredReturnType occurrences="1">
-      <code>?string</code>
-    </MixedInferredReturnType>
-    <MixedReturnStatement occurrences="1">
-      <code>null !== $type &amp;&amp; ! $type-&gt;isBuiltin() ? $type-&gt;getName() : null</code>
-    </MixedReturnStatement>
     <PossiblyFalseOperand occurrences="1">
       <code>strrpos($className, '\\')</code>
     </PossiblyFalseOperand>
     <PossiblyNullReference occurrences="1">
       <code>getParameters</code>
     </PossiblyNullReference>
-    <UndefinedMethod occurrences="2">
-      <code>getName</code>
-      <code>getName</code>
-    </UndefinedMethod>
   </file>
   <file src="src/Tool/FactoryCreatorCommand.php">
     <MixedArgument occurrences="2">
@@ -335,9 +382,8 @@
     <MixedPropertyAssignment occurrences="1">
       <code>$instance</code>
     </MixedPropertyAssignment>
-    <UnusedClosureParam occurrences="7">
+    <UnusedClosureParam occurrences="6">
       <code>$container</code>
-      <code>$errstr</code>
       <code>$errstr</code>
       <code>$errstr</code>
       <code>$errstr</code>
@@ -356,10 +402,9 @@
     <InvalidArrayOffset occurrences="1">
       <code>$config['shared']</code>
     </InvalidArrayOffset>
-    <MissingClosureParamType occurrences="9">
+    <MissingClosureParamType occurrences="8">
       <code>$callback</code>
       <code>$className</code>
-      <code>$container</code>
       <code>$container</code>
       <code>$container</code>
       <code>$instance</code>
@@ -374,31 +419,18 @@
       <code>$creationContext</code>
       <code>$creationContext</code>
     </MissingConstructor>
-    <MixedArgument occurrences="2">
-      <code>$lazyServices</code>
-      <code>$lazyServices['class_map']</code>
-    </MixedArgument>
-    <MixedArrayAccess occurrences="2">
-      <code>$lazyServices['class_map']</code>
-      <code>$lazyServices['class_map']</code>
-    </MixedArrayAccess>
-    <MixedArrayAssignment occurrences="4">
-      <code>$callSequences[]</code>
+    <MixedArrayAssignment occurrences="1">
       <code>$object[$shared ? $method : 'build'][]</code>
-      <code>$smTemplates[]</code>
-      <code>$tests[]</code>
     </MixedArrayAssignment>
     <MixedArrayOffset occurrences="2">
       <code>$names[$name]</code>
       <code>$object[$shared ? $method : 'build']</code>
     </MixedArrayOffset>
-    <MixedAssignment occurrences="24">
-      <code>$callSequence</code>
+    <MixedAssignment occurrences="22">
       <code>$first</code>
       <code>$idx1</code>
       <code>$idx2</code>
       <code>$instance</code>
-      <code>$lazyServices</code>
       <code>$method</code>
       <code>$name</code>
       <code>$names[$name]</code>
@@ -421,10 +453,7 @@
     <MixedFunctionCall occurrences="1">
       <code>$callback()</code>
     </MixedFunctionCall>
-    <MixedInferredReturnType occurrences="6">
-      <code>array</code>
-      <code>array</code>
-      <code>array</code>
+    <MixedInferredReturnType occurrences="3">
       <code>array</code>
       <code>array</code>
       <code>array</code>
@@ -432,12 +461,8 @@
     <MixedPropertyAssignment occurrences="1">
       <code>$instance</code>
     </MixedPropertyAssignment>
-    <PossiblyUndefinedVariable occurrences="5">
-      <code>$callSequences</code>
+    <PossiblyUndefinedVariable occurrences="1">
       <code>$object</code>
-      <code>$smTemplates</code>
-      <code>$tests</code>
-      <code>$tests</code>
     </PossiblyUndefinedVariable>
     <TooManyArguments occurrences="1">
       <code>has</code>
@@ -453,9 +478,6 @@
       <code>$requestedName</code>
       <code>$serviceLocator</code>
     </UnusedClosureParam>
-    <UnusedVariable occurrences="1">
-      <code>$sm</code>
-    </UnusedVariable>
   </file>
   <file src="test/ConfigTest.php">
     <MixedAssignment occurrences="2">
@@ -465,11 +487,6 @@
     <MixedMethodCall occurrences="1">
       <code>toArray</code>
     </MixedMethodCall>
-  </file>
-  <file src="test/Exception/CyclicAliasExceptionTest.php">
-    <PossiblyInvalidArgument occurrences="1">
-      <code>testFromAliasesMap</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="test/LazyServiceIntegrationTest.php">
     <InvalidReturnStatement occurrences="1">
@@ -508,9 +525,6 @@
       <code>$context</code>
       <code>$name</code>
     </MissingClosureParamType>
-    <MixedArgument occurrences="1">
-      <code>$serviceManager-&gt;get(stdClass::class)</code>
-    </MixedArgument>
     <MixedAssignment occurrences="17">
       <code>$a</code>
       <code>$alias</code>
@@ -548,9 +562,6 @@
       <code>$name</code>
       <code>$name</code>
     </UnusedClosureParam>
-    <UnusedVariable occurrences="1">
-      <code>$inc</code>
-    </UnusedVariable>
   </file>
   <file src="test/Tool/ConfigDumperCommandTest.php">
     <MixedArgument occurrences="5">
@@ -571,10 +582,6 @@
     </UnresolvableInclude>
   </file>
   <file src="test/Tool/ConfigDumperTest.php">
-    <InvalidScalarArgument occurrences="2">
-      <code>42</code>
-      <code>42</code>
-    </InvalidScalarArgument>
     <MixedAssignment occurrences="1">
       <code>$test</code>
     </MixedAssignment>
