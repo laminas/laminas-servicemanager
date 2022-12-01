@@ -59,7 +59,19 @@ use const E_USER_DEPRECATED;
  * @psalm-import-type FactoriesConfigurationType from ConfigInterface
  * @psalm-import-type InitializersConfigurationType from ConfigInterface
  * @psalm-import-type LazyServicesConfigurationType from ConfigInterface
- * @psalm-type ServiceManagerConfiguration = array{shared_by_default?:bool}&ServiceManagerConfigurationType
+ * @psalm-type ServiceManagerConfiguration = array{
+ *     abstract_factories?: AbstractFactoriesConfigurationType,
+ *     aliases?: array<string,string>,
+ *     delegators?: DelegatorsConfigurationType,
+ *     factories?: FactoriesConfigurationType,
+ *     initializers?: InitializersConfigurationType,
+ *     invokables?: array<string,string>,
+ *     lazy_services?: LazyServicesConfigurationType,
+ *     services?: array<string,object|array>,
+ *     shared?:array<string,bool>,
+ *     shared_by_default?:bool,
+ *     ...
+ * }
  */
 class ServiceManager implements ServiceLocatorInterface
 {

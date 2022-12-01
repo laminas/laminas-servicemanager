@@ -48,7 +48,8 @@ use Psr\Container\ContainerInterface;
  *     invokables?: array<string,string>,
  *     lazy_services?: LazyServicesConfigurationType,
  *     services?: array<string,object|array>,
- *     shared?:array<string,bool>
+ *     shared?:array<string,bool>,
+ *     ...
  * }
  */
 interface ConfigInterface
