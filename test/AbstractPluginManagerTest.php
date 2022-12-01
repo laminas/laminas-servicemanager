@@ -284,8 +284,10 @@ final class AbstractPluginManagerTest extends TestCase
             ->method('toArray')
             ->willReturn(['services' => [self::class => $this]]);
 
-        set_error_handler(static function ($errno, $errstr): void {
+        set_error_handler(static function (int $errno, string $_): bool { // phpcs:ignore
             self::assertEquals(E_USER_DEPRECATED, $errno);
+
+            return true;
         }, E_USER_DEPRECATED);
         $pluginManager = new TestAsset\LenientPluginManager($config, ['services' => [self::class => []]]);
         restore_error_handler();

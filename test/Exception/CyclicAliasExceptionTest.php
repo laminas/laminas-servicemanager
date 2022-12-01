@@ -98,9 +98,8 @@ final class CyclicAliasExceptionTest extends TestCase
     /**
      * @dataProvider aliasesProvider
      * @param string[] $aliases
-     * @param string   $expectedMessage
      */
-    public function testFromAliasesMap(array $aliases, $expectedMessage): void
+    public function testFromAliasesMap(array $aliases, string $expectedMessage): void
     {
         $exception = CyclicAliasException::fromAliasesMap($aliases);
 
@@ -109,7 +108,7 @@ final class CyclicAliasExceptionTest extends TestCase
     }
 
     /**
-     * @return string[][]|string[][][]
+     * @return array<string, array{0: array<string, string>, string}>
      */
     public function aliasesProvider(): array
     {

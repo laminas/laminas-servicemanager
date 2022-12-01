@@ -43,6 +43,7 @@ final class ConfigDumperTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Class name must be a string, integer given');
 
+        /** @psalm-suppress InvalidArgument */
         $this->dumper->createDependencyConfig([], 42);
     }
 
@@ -233,6 +234,7 @@ final class ConfigDumperTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Class name must be a string, integer given');
 
+        /** @psalm-suppress InvalidArgument */
         $this->dumper->createFactoryMappings([], 42);
     }
 

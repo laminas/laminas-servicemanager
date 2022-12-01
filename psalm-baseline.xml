@@ -326,7 +326,7 @@
     <InvalidArrayOffset occurrences="1">
       <code>$config['shared']</code>
     </InvalidArrayOffset>
-    <MissingClosureParamType occurrences="9">
+    <MissingClosureParamType occurrences="8">
       <code>$callback</code>
       <code>$className</code>
       <code>$container</code>
@@ -352,18 +352,14 @@
       <code>$lazyServices['class_map']</code>
       <code>$lazyServices['class_map']</code>
     </MixedArrayAccess>
-    <MixedArrayAssignment occurrences="4">
-      <code>$callSequences[]</code>
+    <MixedArrayAssignment occurrences="1">
       <code>$object[$shared ? $method : 'build'][]</code>
-      <code>$smTemplates[]</code>
-      <code>$tests[]</code>
     </MixedArrayAssignment>
     <MixedArrayOffset occurrences="2">
       <code>$names[$name]</code>
       <code>$object[$shared ? $method : 'build']</code>
     </MixedArrayOffset>
-    <MixedAssignment occurrences="24">
-      <code>$callSequence</code>
+    <MixedAssignment occurrences="23">
       <code>$first</code>
       <code>$idx1</code>
       <code>$idx2</code>
@@ -391,7 +387,7 @@
     <MixedFunctionCall occurrences="1">
       <code>$callback()</code>
     </MixedFunctionCall>
-    <MixedInferredReturnType occurrences="6">
+    <MixedInferredReturnType occurrences="3">
       <code>array</code>
       <code>array</code>
       <code>array</code>
@@ -402,12 +398,8 @@
     <MixedPropertyAssignment occurrences="1">
       <code>$instance</code>
     </MixedPropertyAssignment>
-    <PossiblyUndefinedVariable occurrences="5">
-      <code>$callSequences</code>
+    <PossiblyUndefinedVariable occurrences="1">
       <code>$object</code>
-      <code>$smTemplates</code>
-      <code>$tests</code>
-      <code>$tests</code>
     </PossiblyUndefinedVariable>
     <TooManyArguments occurrences="1">
       <code>has</code>
@@ -423,9 +415,6 @@
       <code>$requestedName</code>
       <code>$serviceLocator</code>
     </UnusedClosureParam>
-    <UnusedVariable occurrences="1">
-      <code>$sm</code>
-    </UnusedVariable>
   </file>
   <file src="test/ConfigTest.php">
     <MixedAssignment occurrences="2">
@@ -435,11 +424,6 @@
     <MixedMethodCall occurrences="1">
       <code>toArray</code>
     </MixedMethodCall>
-  </file>
-  <file src="test/Exception/CyclicAliasExceptionTest.php">
-    <PossiblyInvalidArgument occurrences="1">
-      <code>testFromAliasesMap</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="test/LazyServiceIntegrationTest.php">
     <InvalidReturnStatement occurrences="1">
