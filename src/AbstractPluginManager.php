@@ -143,10 +143,11 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
     }
 
     /**
-     * @param class-string<InstanceType>|string $name Service name of plugin to retrieve.
+     * @template RequestedType of object
+     * @param class-string<RequestedType>|string $name Service name of plugin to retrieve.
      * @param null|array<mixed> $options Options to use when creating the instance.
      * @return mixed
-     * @psalm-return ($name is class-string<InstanceType> ? InstanceType : mixed)
+     * @psalm-return ($name is class-string<RequestedType> ? (RequestedType&InstanceType) : InstanceType)
      * @throws Exception\ServiceNotFoundException If the manager does not have
      *     a service definition for the instance, and the service is not
      *     auto-invokable.
