@@ -976,13 +976,13 @@ class ServiceManager implements ServiceLocatorInterface
                 . ' which does not exist; please provide a valid function name or class name resolving'
                 . ' to an implementation of %s',
                 $delegatorFactory,
-                DelegatorFactoryInterface::class
+                Factory\DelegatorFactoryInterface::class
             ));
         }
         throw new ServiceNotCreatedException(sprintf(
             'A non-callable delegator, "%s", was provided; expected a callable or instance of "%s"',
             is_object($delegatorFactory) ? $delegatorFactory::class : gettype($delegatorFactory),
-            DelegatorFactoryInterface::class
+            Factory\DelegatorFactoryInterface::class
         ));
     }
 }
