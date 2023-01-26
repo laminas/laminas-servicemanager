@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use interop\container\containerinterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
 final class PassthroughDelegatorFactory implements DelegatorFactoryInterface
@@ -14,7 +14,7 @@ final class PassthroughDelegatorFactory implements DelegatorFactoryInterface
      *
      * @see \Laminas\ServiceManager\Factory\DelegatorFactoryInterface::__invoke()
      */
-    public function __invoke(containerinterface $container, $name, callable $callback, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $name, callable $callback, ?array $options = null)
     {
         return $callback();
     }

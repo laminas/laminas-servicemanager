@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use interop\container\containerinterface;
+use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 
 final class PreDelegator implements DelegatorFactoryInterface
 {
     /** {@inheritDoc} */
-    public function __invoke(containerinterface $container, $name, callable $callback, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $name, callable $callback, ?array $options = null)
     {
         if (! $container->has('config')) {
             return $callback();
