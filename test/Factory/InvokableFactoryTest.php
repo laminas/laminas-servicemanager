@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Factory;
 
-use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 /**
  * @covers \Laminas\ServiceManager\Factory\InvokableFactory

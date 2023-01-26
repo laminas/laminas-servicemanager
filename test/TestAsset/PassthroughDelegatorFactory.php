@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use Psr\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
+use Psr\Container\ContainerInterface;
 
 final class PassthroughDelegatorFactory implements DelegatorFactoryInterface
 {
