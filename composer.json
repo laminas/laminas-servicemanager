@@ -44,7 +44,7 @@
         "mikey179/vfsstream": "^1.6.11@alpha",
         "ocramius/proxy-manager": "^2.14.1",
         "phpbench/phpbench": "^1.2.7",
-        "phpunit/phpunit": "^9.5.26",
+        "phpunit/phpunit": "^10.0.0",
         "psalm/plugin-phpunit": "^0.18.0",
         "vimeo/psalm": "^5.0.0"
     },
