@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager\Exception;
 
 use InvalidArgumentException as SplInvalidArgumentException;
-use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
 
 use function gettype;
