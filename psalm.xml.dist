@@ -8,7 +8,6 @@
     findUnusedPsalmSuppress="true"
 >
     <projectFiles>
-        <directory name="bin"/>
         <directory name="src"/>
         <directory name="test"/>
         <ignoreFiles>
@@ -47,9 +46,26 @@
                 <referencedClass name="Interop\Container\Exception\ContainerException"/>
             </errorLevel>
         </InvalidThrow>
+        <InternalClass>
+            <errorLevel type="suppress">
+                <referencedClass name="Laminas\ServiceManager\Tool\FactoryCreator"/>
+                <referencedClass name="Laminas\ServiceManager\Tool\ConfigDumper"/>
+            </errorLevel>
+        </InternalClass>
+        <InternalMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="Laminas\ServiceManager\Tool\FactoryCreator::createFactory"/>
+                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::createDependencyConfig"/>
+                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::dumpConfigFile"/>
+                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::createFactoryMappingsFromConfig"/>
+                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::createFactoryMappings"/>
+                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::__construct"/>
+            </errorLevel>
+        </InternalMethod>
     </issueHandlers>
 
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+        <pluginClass class="Boesing\PsalmPluginStringf\Plugin"/>
     </plugins>
 </psalm>

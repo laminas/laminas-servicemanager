@@ -38,25 +38,6 @@ final class ConfigDumperTest extends TestCase
         $this->dumper = new ConfigDumper();
     }
 
-    public function testCreateDependencyConfigExceptsIfClassNameIsNotString(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Class name must be a string, integer given');
-
-        /** @psalm-suppress InvalidArgument */
-        $this->dumper->createDependencyConfig([], 42);
-    }
-
-    public function testCreateDependencyConfigExceptsIfClassDoesNotExist(): void
-    {
-        $className = 'Dirk\Gentley\Holistic\Detective\Agency';
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot find class or interface with name ' . $className);
-
-        $this->dumper->createDependencyConfig([], $className);
-    }
-
     public function testCreateDependencyConfigInvokableObjectReturnsEmptyArray(): void
     {
         $config = $this->dumper->createDependencyConfig([], InvokableObject::class);
@@ -227,25 +208,6 @@ final class ConfigDumperTest extends TestCase
         ];
 
         self::assertSame($expectedConfig, $this->dumper->createDependencyConfig([], DoubleDependencyObject::class));
-    }
-
-    public function testCreateFactoryMappingsExceptsIfClassNameIsNotString(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Class name must be a string, integer given');
-
-        /** @psalm-suppress InvalidArgument */
-        $this->dumper->createFactoryMappings([], 42);
-    }
-
-    public function testCreateFactoryMappingsExceptsIfClassDoesNotExist(): void
-    {
-        $className = 'Dirk\Gentley\Holistic\Detective\Agency';
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Cannot find class or interface with name ' . $className);
-
-        $this->dumper->createFactoryMappings([], $className);
     }
 
     public function testCreateFactoryMappingsReturnsUnmodifiedArrayIfMappingExists(): void

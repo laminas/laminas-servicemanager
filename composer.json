@@ -37,7 +37,9 @@
         "psr/container": "^1.0"
     },
     "require-dev": {
+        "boesing/psalm-plugin-stringf": "^1.4",
         "composer/package-versions-deprecated": "^1.11.99.5",
+        "laminas/laminas-cli": "^1.8",
         "laminas/laminas-coding-standard": "~2.5.0",
         "laminas/laminas-container-config-test": "^0.8",
         "laminas/laminas-dependency-plugin": "^2.2",
