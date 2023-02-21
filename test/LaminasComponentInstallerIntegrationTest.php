@@ -9,6 +9,7 @@ use Laminas\ServiceManager\ConfigProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
+use function assert;
 use function class_exists;
 use function file_get_contents;
 use function is_readable;
@@ -25,7 +26,10 @@ final class LaminasComponentInstallerIntegrationTest extends TestCase
      */
     private function getComposerJsonPath(): string
     {
-        return realpath(__DIR__ . '/../composer.json');
+        $path = realpath(__DIR__ . '/../composer.json');
+        assert($path !== '');
+
+        return $path;
     }
 
     /**
