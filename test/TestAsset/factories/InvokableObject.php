@@ -9,13 +9,7 @@ use Psr\Container\ContainerInterface;
 
 class InvokableObjectFactory implements FactoryInterface
 {
-    /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param null|array $options
-     * @return InvokableObject
-     */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): InvokableObject
     {
         return new InvokableObject([]);
     }

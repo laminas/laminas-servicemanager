@@ -11,11 +11,13 @@ final class PassthroughDelegatorFactory implements DelegatorFactoryInterface
 {
     /**
      * {@inheritDoc}
-     *
-     * @see \Laminas\ServiceManager\Factory\DelegatorFactoryInterface::__invoke()
      */
-    public function __invoke(ContainerInterface $container, $name, callable $callback, ?array $options = null)
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $name,
+        callable $callback,
+        ?array $options = null
+    ): mixed {
         return $callback();
     }
 }

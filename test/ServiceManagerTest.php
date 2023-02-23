@@ -15,6 +15,7 @@ use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleServiceManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use ReflectionProperty;
 use stdClass;
 
 /**
@@ -218,19 +219,13 @@ final class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new class ($config) extends ServiceManager
-        {
-            public function getFactories(): array
-            {
-                return $this->factories;
-            }
-        };
+        $serviceManager = new ServiceManager($config);
 
         self::assertSame(
             [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            $serviceManager->getFactories(),
+            $this->extractPrivateProperty($serviceManager, 'factories'),
             'Invokable object factory not found'
         );
     }
@@ -243,24 +238,13 @@ final class ServiceManagerTest extends TestCase
             ],
         ];
 
-        $serviceManager = new class ($config) extends ServiceManager
-        {
-            public function getFactories(): array
-            {
-                return $this->factories;
-            }
-
-            public function getAliases(): array
-            {
-                return $this->aliases;
-            }
-        };
+        $serviceManager = new ServiceManager($config);
 
         self::assertSame(
             [
                 'Invokable' => InvokableObject::class,
             ],
-            $serviceManager->getAliases(),
+            $this->extractPrivateProperty($serviceManager, 'aliases'),
             'Alias not found for non-symmetric invokable'
         );
 
@@ -268,7 +252,7 @@ final class ServiceManagerTest extends TestCase
             [
                 InvokableObject::class => InvokableFactory::class,
             ],
-            $serviceManager->getFactories()
+            $this->extractPrivateProperty($serviceManager, 'factories'),
         );
     }
 
@@ -378,7 +362,7 @@ final class ServiceManagerTest extends TestCase
                 [self::anything(), self::equalTo('Alias')],
                 [self::anything(), self::equalTo('ServiceName')]
             )
-            ->willReturnCallback(static fn ($context, string $name): bool => $name === 'Alias');
+            ->willReturnCallback(static fn (mixed $context, string $name): bool => $name === 'Alias');
 
         self::assertTrue($serviceManager->has('Alias'));
     }
@@ -420,7 +404,7 @@ final class ServiceManagerTest extends TestCase
                 [self::anything(), 'Alias'],
                 [self::anything(), 'ServiceName']
             )
-            ->willReturnCallback(static fn ($context, string $name): bool => $name === 'ServiceName');
+            ->willReturnCallback(static fn (mixed $context, string $name): bool => $name === 'ServiceName');
 
         self::assertTrue($serviceManager->has('Alias'));
     }
@@ -459,7 +443,7 @@ final class ServiceManagerTest extends TestCase
     {
         $delegatorFactory = static function (
             ContainerInterface $container,
-            $name,
+            string $name,
             callable $callback
         ): InvokableObject {
             /** @var InvokableObject $instance */
@@ -530,8 +514,7 @@ final class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @param array<string,mixed>  $config
-     * @psalm-param ServiceManagerConfigurationType $config
+     * @param ServiceManagerConfigurationType $config
      * @param non-empty-string $serviceName
      * @param non-empty-string $alias
      * @dataProvider aliasedServices
@@ -592,10 +575,7 @@ final class ServiceManagerTest extends TestCase
                 [
                     'abstract_factories' => [
                         new class implements AbstractFactoryInterface {
-                            /**
-                             * @param string $requestedName
-                             */
-                            public function canCreate(ContainerInterface $container, $requestedName): bool
+                            public function canCreate(ContainerInterface $container, string $requestedName): bool
                             {
                                 return $requestedName === stdClass::class;
                             }
@@ -648,5 +628,29 @@ final class ServiceManagerTest extends TestCase
         ]);
 
         self::assertTrue($serviceManager->has('config'));
+    }
+
+    /**
+     * @group mutation
+     * @covers \Laminas\ServiceManager\ServiceManager::mapLazyService
+     */
+    public function testCanMapLazyServices(): void
+    {
+        $container = $this->createContainer();
+
+        $container->mapLazyService('foo', self::class);
+        $r            = new ReflectionProperty($container, 'lazyServices');
+        $lazyServices = $r->getValue($container);
+
+        self::assertIsArray($lazyServices);
+        self::assertArrayHasKey('class_map', $lazyServices);
+        self::assertIsArray($lazyServices['class_map']);
+        self::assertArrayHasKey('foo', $lazyServices['class_map']);
+        self::assertEquals(self::class, $lazyServices['class_map']['foo']);
+    }
+
+    private function extractPrivateProperty(object $object, string $propertyName): mixed
+    {
+        return (new ReflectionProperty($object, $propertyName))->getValue($object);
     }
 }

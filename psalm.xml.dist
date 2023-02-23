@@ -6,6 +6,8 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     errorBaseline="psalm-baseline.xml"
     findUnusedPsalmSuppress="true"
+    findUnusedCode="false"
+    findUnusedBaselineEntry="true"
 >
     <projectFiles>
         <directory name="src"/>
@@ -46,6 +48,19 @@
                 <referencedClass name="Interop\Container\Exception\ContainerException"/>
             </errorLevel>
         </InvalidThrow>
+        <DeprecatedMethod>
+            <errorLevel type="info">
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::addAbstractFactory"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setService"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setInvokableClass"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setAlias"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setShared"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::addInitializer"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::addDelegator"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setFactory"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::mapLazyService"/>
+            </errorLevel>
+        </DeprecatedMethod>
         <InternalClass>
             <errorLevel type="suppress">
                 <!-- Tests are allowed to work with internal classes -->

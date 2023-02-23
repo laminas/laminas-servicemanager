@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
 final class AbstractFactoryFoo implements AbstractFactoryInterface
 {
     /** {@inheritDoc} */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
+    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null): mixed
     {
         if ($requestedName === 'foo') {
             return new Foo($options);
@@ -19,10 +19,7 @@ final class AbstractFactoryFoo implements AbstractFactoryInterface
         return false;
     }
 
-    /**
-     * @param string $requestedName
-     */
-    public function canCreate(ContainerInterface $container, $requestedName): bool
+    public function canCreate(ContainerInterface $container, string $requestedName): bool
     {
         return $requestedName === 'foo';
     }

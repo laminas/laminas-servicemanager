@@ -12,7 +12,7 @@ final class CallTimesAbstractFactory implements AbstractFactoryInterface
     protected static int $callTimes = 0;
 
     /** {@inheritDoc} */
-    public function canCreate(ContainerInterface $container, $name)
+    public function canCreate(ContainerInterface $container, string $name): bool
     {
         self::$callTimes++;
 
@@ -20,7 +20,7 @@ final class CallTimesAbstractFactory implements AbstractFactoryInterface
     }
 
     /** {@inheritDoc} */
-    public function __invoke(ContainerInterface $container, $className, ?array $options = null)
+    public function __invoke(ContainerInterface $container, string $className, ?array $options = null): mixed
     {
     }
 

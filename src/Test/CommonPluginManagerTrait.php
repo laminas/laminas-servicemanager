@@ -6,7 +6,6 @@ namespace Laminas\ServiceManager\Test;
 
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
-use ReflectionClass;
 use ReflectionProperty;
 
 use function method_exists;
@@ -24,32 +23,7 @@ trait CommonPluginManagerTrait
     {
         $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'instanceOf');
-        $reflection->setAccessible(true);
         $this->assertEquals($this->getInstanceOf(), $reflection->getValue($manager), 'instanceOf does not match');
-    }
-
-    public function testShareByDefaultAndSharedByDefault()
-    {
-        $manager        = $this->getPluginManager();
-        $reflection     = new ReflectionClass($manager);
-        $shareByDefault = $sharedByDefault = true;
-
-        foreach ($reflection->getProperties() as $prop) {
-            if ($prop->getName() === 'shareByDefault') {
-                $prop->setAccessible(true);
-                $shareByDefault = $prop->getValue($manager);
-            }
-            if ($prop->getName() === 'sharedByDefault') {
-                $prop->setAccessible(true);
-                $sharedByDefault = $prop->getValue($manager);
-            }
-        }
-
-        $this->assertSame(
-            $shareByDefault,
-            $sharedByDefault,
-            'Values of shareByDefault and sharedByDefault do not match'
-        );
     }
 
     public function testRegisteringInvalidElementRaisesException()
@@ -83,8 +57,7 @@ trait CommonPluginManagerTrait
     {
         $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'aliases');
-        $reflection->setAccessible(true);
-        $data = [];
+        $data       = [];
         foreach ($reflection->getValue($manager) as $alias => $expected) {
             $data[] = [$alias, $expected];
         }

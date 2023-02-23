@@ -4,34 +4,39 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
-use ArrayAccess;
 use Psr\Container\ContainerInterface;
 
 /**
  * @see ContainerInterface
- * @see ArrayAccess
  *
  * @psalm-type AbstractFactoriesConfigurationType = array<
  *      array-key,
- *      (class-string<Factory\AbstractFactoryInterface>|Factory\AbstractFactoryInterface)
+ *      class-string<Factory\AbstractFactoryInterface>
+ *      |Factory\AbstractFactoryInterface
  * >
+ * @psalm-type DelegatorCallableType = callable(ContainerInterface,string,callable():mixed,array|null):mixed
  * @psalm-type DelegatorsConfigurationType = array<
  *      string,
  *      array<
  *          array-key,
- *          (class-string<Factory\DelegatorFactoryInterface>|Factory\DelegatorFactoryInterface)
- *          |callable(ContainerInterface,string,callable():object,array<mixed>|null):object
+ *          class-string<Factory\DelegatorFactoryInterface>
+ *          |Factory\DelegatorFactoryInterface
+ *          |DelegatorCallableType
  *      >
  * >
+ * @psalm-type FactoryCallableType = callable(ContainerInterface,string,array|null):mixed
  * @psalm-type FactoriesConfigurationType = array<
  *      string,
- *      (class-string<Factory\FactoryInterface>|Factory\FactoryInterface)
- *      |callable(ContainerInterface,?string,?array<mixed>|null):object
+ *      class-string<Factory\FactoryInterface>
+ *      |Factory\FactoryInterface
+ *      |FactoryCallableType
  * >
+ * @psalm-type InitializerCallableType = callable(ContainerInterface,mixed):void
  * @psalm-type InitializersConfigurationType = array<
  *      array-key,
- *      (class-string<Initializer\InitializerInterface>|Initializer\InitializerInterface)
- *      |callable(ContainerInterface,object):void
+ *      class-string<Initializer\InitializerInterface>
+ *      |Initializer\InitializerInterface
+ *      |InitializerCallableType
  * >
  * @psalm-type LazyServicesConfigurationType = array{
  *      class_map?:array<string,class-string>,
@@ -45,10 +50,11 @@ use Psr\Container\ContainerInterface;
  *     delegators?: DelegatorsConfigurationType,
  *     factories?: FactoriesConfigurationType,
  *     initializers?: InitializersConfigurationType,
- *     invokables?: array<string,string>,
+ *     invokables?: array<string,class-string>,
  *     lazy_services?: LazyServicesConfigurationType,
- *     services?: array<string,object|array>,
+ *     services?: array<string,mixed>,
  *     shared?:array<string,bool>,
+ *     shared_by_default?: bool,
  *     ...
  * }
  */
@@ -61,9 +67,11 @@ interface ConfigInterface
      * local properties) and pass it to a ServiceManager's withConfig() method,
      * returning a new instance.
      *
-     * @return ServiceManager
+     * @template T of ServiceLocatorInterface
+     * @param T $serviceLocator
+     * @return T
      */
-    public function configureServiceManager(ServiceManager $serviceManager);
+    public function configureServiceManager(ServiceLocatorInterface $serviceLocator);
 
     /**
      * Return configuration for a service manager instance as an array.
@@ -84,8 +92,7 @@ interface ConfigInterface
      * In other words, this should return configuration that can be used to instantiate
      * a service manager or plugin manager, or pass to its `withConfig()` method.
      *
-     * @return array
-     * @psalm-return ServiceManagerConfigurationType
+     * @return ServiceManagerConfigurationType
      */
-    public function toArray();
+    public function toArray(): array;
 }

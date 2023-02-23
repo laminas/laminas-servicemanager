@@ -4,59 +4,29 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
+use Laminas\ContainerConfigTest\TestAsset\Delegator1Factory;
 use Laminas\ServiceManager\Config;
-use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\ConfigInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use LaminasTest\ServiceManager\TestAsset\AbstractFactoryFoo;
+use LaminasTest\ServiceManager\TestAsset\InvokableObject;
+use LaminasTest\ServiceManager\TestAsset\SimpleInitializer;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Laminas\ServiceManager\Config
+ * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
 final class ConfigTest extends TestCase
 {
-    public function testMergeArrays(): void
-    {
-        $config = [
-            'invokables' => [
-                'foo' => TestAsset\InvokableObject::class,
-            ],
-            'delegators' => [
-                'foo' => [
-                    TestAsset\PreDelegator::class,
-                ],
-            ],
-            'factories'  => [
-                'service' => TestAsset\FactoryObject::class,
-            ],
-        ];
-
-        $configuration = new TestAsset\ExtendedConfig($config);
-        $result        = $configuration->toArray();
-
-        $expected = [
-            'invokables' => [
-                'foo'                            => TestAsset\InvokableObject::class,
-                TestAsset\InvokableObject::class => TestAsset\InvokableObject::class,
-            ],
-            'delegators' => [
-                'foo' => [
-                    TestAsset\InvokableObject::class,
-                    TestAsset\PreDelegator::class,
-                ],
-            ],
-            'factories'  => [
-                'service' => TestAsset\FactoryObject::class,
-            ],
-        ];
-
-        self::assertEquals($expected, $result);
-    }
-
+    /**
+     * @return array{"array":ServiceManagerConfigurationType,config:ConfigInterface}
+     */
     public function testPassesKnownServiceConfigKeysToServiceManagerWithConfigMethod(): array
     {
         $expected = [
             'abstract_factories' => [
-                self::class,
-                __NAMESPACE__,
+                AbstractFactoryFoo::class,
             ],
             'aliases'            => [
                 'foo' => self::class,
@@ -64,26 +34,21 @@ final class ConfigTest extends TestCase
             ],
             'delegators'         => [
                 'foo' => [
-                    self::class,
-                    __NAMESPACE__,
+                    Delegator1Factory::class,
                 ],
             ],
             'factories'          => [
-                'foo' => self::class,
-                'bar' => __NAMESPACE__,
+                'bar' => AbstractFactoryFoo::class,
             ],
             'initializers'       => [
-                self::class,
-                __NAMESPACE__,
+                SimpleInitializer::class,
             ],
             'invokables'         => [
-                'foo' => self::class,
-                'bar' => __NAMESPACE__,
+                'foo' => InvokableObject::class,
             ],
             'lazy_services'      => [
                 'class_map' => [
-                    self::class   => self::class,
-                    __NAMESPACE__ => __NAMESPACE__,
+                    self::class => self::class,
                 ],
             ],
             'services'           => [
@@ -95,21 +60,17 @@ final class ConfigTest extends TestCase
             ],
         ];
 
-        $config = $expected + [
-            'foo' => 'bar',
-            'baz' => 'bat',
-        ];
+        $config = $expected;
 
-        $services = $this->createMock(ServiceManager::class);
+        $services = $this->createMock(ServiceLocatorInterface::class);
         $services
             ->expects(self::once())
             ->method('configure')
             ->with($expected)
-            ->willReturn('CALLED');
+            ->willReturnSelf();
 
-        /** @psalm-suppress InvalidArgument Keeping this invalid configuration to ensure BC compatibility. */
         $configuration = new Config($config);
-        self::assertEquals('CALLED', $configuration->configureServiceManager($services));
+        self::assertEquals($services, $configuration->configureServiceManager($services));
 
         return [
             'array'  => $expected,
@@ -118,6 +79,7 @@ final class ConfigTest extends TestCase
     }
 
     /**
+     * @param array{"array":ServiceManagerConfigurationType,config:ConfigInterface} $dependencies
      * @depends testPassesKnownServiceConfigKeysToServiceManagerWithConfigMethod
      */
     public function testToArrayReturnsConfiguration(array $dependencies): void

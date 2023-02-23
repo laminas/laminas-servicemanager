@@ -9,13 +9,7 @@ use Psr\Container\ContainerInterface;
 
 class SimpleDependencyObjectFactory implements FactoryInterface
 {
-    /**
-     * @param ContainerInterface $container
-     * @param string $requestedName
-     * @param null|array $options
-     * @return SimpleDependencyObject
-     */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): SimpleDependencyObject
     {
         return new SimpleDependencyObject($container->get(\LaminasTest\ServiceManager\TestAsset\InvokableObject::class));
     }

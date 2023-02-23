@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
-use Laminas\Stdlib\ArrayUtils;
-
-use function array_keys;
-
 /**
  * Object for defining configuration and configuring an existing service manager instance.
  *
@@ -25,10 +21,9 @@ use function array_keys;
  *
  * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
-class Config implements ConfigInterface
+final class Config implements ConfigInterface
 {
-    /** @var array<string,bool> */
-    private array $allowedKeys = [
+    private const ALLOWED_CONFIGURATION_KEYS = [
         'abstract_factories' => true,
         'aliases'            => true,
         'delegators'         => true,
@@ -40,63 +35,30 @@ class Config implements ConfigInterface
         'shared'             => true,
     ];
 
-    /**
-     * @var array<string,array>
-     * @psalm-var ServiceManagerConfigurationType
-     */
-    protected $config = [
-        'abstract_factories' => [],
-        'aliases'            => [],
-        'delegators'         => [],
-        'factories'          => [],
-        'initializers'       => [],
-        'invokables'         => [],
-        'lazy_services'      => [],
-        'services'           => [],
-        'shared'             => [],
-    ];
+    /** @var ServiceManagerConfigurationType */
+    private array $config;
 
     /**
-     * @psalm-param ServiceManagerConfigurationType $config
+     * @param ServiceManagerConfigurationType $config
      */
     public function __construct(array $config = [])
     {
-        // Only merge keys we're interested in
-        foreach (array_keys($config) as $key) {
-            if (! isset($this->allowedKeys[$key])) {
-                unset($config[$key]);
-            }
-        }
-
-        /** @psalm-suppress ArgumentTypeCoercion */
-        $this->config = $this->merge($this->config, $config);
+        $this->config = $config;
     }
 
     /**
      * @inheritDoc
      */
-    public function configureServiceManager(ServiceManager $serviceManager)
+    public function configureServiceManager(ServiceLocatorInterface $serviceLocator)
     {
-        return $serviceManager->configure($this->config);
+        return $serviceLocator->configure($this->config);
     }
 
     /**
      * @inheritDoc
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->config;
-    }
-
-    /**
-     * @psalm-param ServiceManagerConfigurationType $a
-     * @psalm-param ServiceManagerConfigurationType $b
-     * @psalm-return ServiceManagerConfigurationType
-     * @psalm-suppress MixedReturnTypeCoercion
-     */
-    private function merge(array $a, array $b)
-    {
-        /** @psalm-suppress MixedReturnTypeCoercion */
-        return ArrayUtils::merge($a, $b);
     }
 }

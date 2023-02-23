@@ -4,23 +4,30 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager;
 
+use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\ServiceManager\Test\CommonPluginManagerTrait;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
-use LaminasTest\ServiceManager\TestAsset\V2v3PluginManager;
+use LaminasTest\ServiceManager\TestAsset\InvokableObjectPluginManager;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
  * Example test of using CommonPluginManagerTrait
+ *
+ * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
 final class ExamplePluginManagerTest extends TestCase
 {
     use CommonPluginManagerTrait;
 
-    protected function getPluginManager(): V2v3PluginManager
+    /**
+     * @param ServiceManagerConfigurationType $config
+     */
+    protected function getPluginManager(array $config = []): AbstractPluginManager
     {
-        return new V2v3PluginManager(new ServiceManager());
+        return new InvokableObjectPluginManager(new ServiceManager());
     }
 
     protected function getV2InvalidPluginException(): string

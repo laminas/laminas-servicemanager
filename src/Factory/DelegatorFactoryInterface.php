@@ -22,13 +22,15 @@ interface DelegatorFactoryInterface
     /**
      * A factory that creates delegates of a given service
      *
-     * @param  string                $name
-     * @psalm-param callable():mixed $callback
-     * @param  null|array<mixed>     $options
-     * @return object
+     * @param callable():mixed $callback
      * @throws ServiceNotFoundException If unable to resolve the service.
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
      * @throws ContainerExceptionInterface If any other error occurs.
      */
-    public function __invoke(ContainerInterface $container, $name, callable $callback, ?array $options = null);
+    public function __invoke(
+        ContainerInterface $container,
+        string $name,
+        callable $callback,
+        ?array $options = null
+    ): mixed;
 }

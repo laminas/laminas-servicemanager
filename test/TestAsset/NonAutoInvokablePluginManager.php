@@ -8,9 +8,7 @@ use Laminas\ServiceManager\AbstractPluginManager;
 
 final class NonAutoInvokablePluginManager extends AbstractPluginManager
 {
-    /** @var bool */
-    protected $autoAddInvokableClass = false;
+    protected bool $autoAddInvokableClass = false;
 
-    /** @var string */
-    protected $instanceOf = InvokableObject::class;
+    protected string|null $instanceOf = InvokableObject::class;
 }

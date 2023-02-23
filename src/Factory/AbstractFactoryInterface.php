@@ -20,9 +20,6 @@ interface AbstractFactoryInterface extends FactoryInterface
 {
     /**
      * Can the factory create an instance for the service?
-     *
-     * @param  string $requestedName
-     * @return bool
      */
-    public function canCreate(ContainerInterface $container, $requestedName);
+    public function canCreate(ContainerInterface $container, string $requestedName): bool;
 }

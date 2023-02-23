@@ -30,7 +30,7 @@ final class CyclicAliasExceptionTest extends TestCase
      *
      * @return array<
      *     non-empty-string,
-     *     array{0:non-empty-string,1:array<non-empty-string,non-empty-string>,non-empty-string}
+     *     array{0:non-empty-string,1:array<non-empty-string,non-empty-string>,2:non-empty-string}
      * >
      */
     public function cyclicAliasProvider(): array
@@ -108,7 +108,7 @@ final class CyclicAliasExceptionTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0: array<string, string>, string}>
+     * @return array<string, array{0: array<string, string>, 1: string}>
      */
     public function aliasesProvider(): array
     {

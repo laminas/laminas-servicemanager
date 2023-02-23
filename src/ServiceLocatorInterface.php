@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
+use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
+use Laminas\ServiceManager\Exception\CyclicAliasException;
+use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 /**
  * Interface for service locator
+ *
+ * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
 interface ServiceLocatorInterface extends ContainerInterface
 {
@@ -17,14 +23,20 @@ interface ServiceLocatorInterface extends ContainerInterface
      *
      * @template T of object
      * @param  string|class-string<T> $name
-     * @param  null|array<mixed>  $options
-     * @return mixed
      * @psalm-return ($name is class-string<T> ? T : mixed)
-     * @throws Exception\ServiceNotFoundException If no factory/abstract
+     * @throws ServiceNotFoundException If no factory/abstract
      *     factory could be found to create the instance.
-     * @throws Exception\ServiceNotCreatedException If factory/delegator fails
+     * @throws ServiceNotCreatedException If factory/delegator fails
      *     to create the instance.
      * @throws ContainerExceptionInterface If any other error occurs.
      */
-    public function build($name, ?array $options = null);
+    public function build(string $name, ?array $options = null): mixed;
+
+    /**
+     * @param ServiceManagerConfigurationType $config
+     * @throws ContainerModificationsNotAllowedException If the allow override flag has been toggled off, and a
+     *                                                   service instanceexists for a given service.
+     * @throws CyclicAliasException If the configuration contains aliases targeting themselves.
+     */
+    public function configure(array $config): static;
 }

@@ -45,13 +45,7 @@ final class FactoryCreator implements FactoryCreatorInterface
 
         class %sFactory implements FactoryInterface
         {
-            /**
-             * @param ContainerInterface $container
-             * @param string $requestedName
-             * @param null|array $options
-             * @return %s
-             */
-            public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+            public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): %s
             {
                 return new %s(%s);
             }

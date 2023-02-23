@@ -15,9 +15,9 @@ use Psr\Container\ContainerInterface;
 interface InitializerInterface
 {
     /**
-     * Initialize the given instance
+     * Initialize the given service
      *
-     * @param  object             $instance
+     * @param  mixed $instance
      * @return void
      */
     public function __invoke(ContainerInterface $container, $instance);
