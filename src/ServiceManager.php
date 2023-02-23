@@ -213,12 +213,7 @@ class ServiceManager implements ServiceLocatorInterface
         // Cache the object for later, if it is supposed to be shared.
         if ($sharedService) {
             $this->services[$resolvedName] = $service;
-        }
-
-        // Also cache under the alias name; this allows sharing based on the
-        // service name used.
-        if ($sharedAlias) {
-            $this->services[$name] = $service;
+            $this->services[$name]         = $service;
         }
 
         return $service;
@@ -389,7 +384,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @param null|string $class Class to which to map; if not provided, $name
      *     will be used for the mapping.
      */
-    public function mapLazyService(string $name, ?string $class = null)
+    public function mapLazyService(string $name, ?string $class = null): void
     {
         $this->configure(['lazy_services' => ['class_map' => [$name => $class ?: $name]]]);
     }
@@ -413,9 +408,10 @@ class ServiceManager implements ServiceLocatorInterface
      * @param string|callable|DelegatorFactoryInterface $factory Delegator
      *     factory to assign.
      * @psalm-param class-string<Factory\DelegatorFactoryInterface>
-     *     |callable(ContainerInterface,string,callable,array<mixed>|null) $factory
+     *     |DelegatorCallableType
+     *     |Factory\DelegatorFactoryInterface $factory
      */
-    public function addDelegator($name, $factory)
+    public function addDelegator(string $name, string|callable|Factory\DelegatorFactoryInterface $factory): void
     {
         $this->configure(['delegators' => [$name => [$factory]]]);
     }
@@ -423,12 +419,11 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Add an initializer.
      *
-     * @param string|callable|Initializer\InitializerInterface $initializer
      * @psalm-param class-string<Initializer\InitializerInterface>
-     *     |callable(ContainerInterface,mixed):void
+     *     |InitializerCallableType
      *     |Initializer\InitializerInterface $initializer
      */
-    public function addInitializer($initializer)
+    public function addInitializer(string|callable|Initializer\InitializerInterface $initializer)
     {
         $this->configure(['initializers' => [$initializer]]);
     }
@@ -937,10 +932,6 @@ class ServiceManager implements ServiceLocatorInterface
      */
     private function resolveDelegatorFactory(mixed $delegatorFactory): callable|DelegatorFactoryInterface
     {
-        if ($delegatorFactory instanceof DelegatorFactoryInterface) {
-            return $delegatorFactory;
-        }
-
         if ($delegatorFactory === LazyServiceFactory::class) {
             return $this->createLazyServiceDelegatorFactory();
         }
