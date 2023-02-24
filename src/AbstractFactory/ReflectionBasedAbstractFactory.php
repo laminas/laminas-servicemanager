@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\AbstractFactory;
 
-use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolverInterface;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
-use ReflectionNamedType;
-use ReflectionParameter;
 
-use function array_map;
 use function class_exists;
-use function interface_exists;
-use function is_string;
 use function sprintf;
 
 /**
@@ -67,66 +64,38 @@ use function sprintf;
  *
  * Based on the LazyControllerAbstractFactory from laminas-mvc.
  */
-class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
+final class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
 {
-    /**
-     * Maps known classes/interfaces to the service that provides them; only
-     * required for those services with no entry based on the class/interface
-     * name.
-     *
-     * Extend the class if you wish to add to the list.
-     *
-     * Example:
-     *
-     * <code>
-     * [
-     *     \Laminas\Filter\FilterPluginManager::class       => 'FilterManager',
-     *     \Laminas\Validator\ValidatorPluginManager::class => 'ValidatorManager',
-     * ]
-     * </code>
-     *
-     * @var string[]
-     */
-    protected $aliases = [];
+    private ConstructorParameterResolverInterface $constructorParameterResolver;
 
     /**
      * Allows overriding the internal list of aliases. These should be of the
      * form `class name => well-known service name`; see the documentation for
      * the `$aliases` property for details on what is accepted.
      *
-     * @param string[] $aliases
+     * @param array<string,string> $aliases
      */
-    public function __construct(array $aliases = [])
-    {
-        if (! empty($aliases)) {
-            $this->aliases = $aliases;
-        }
+    public function __construct(
+        public array $aliases = [],
+        ?ConstructorParameterResolverInterface $constructorParameterResolver = null,
+    ) {
+        $this->constructorParameterResolver = $constructorParameterResolver ?? new ConstructorParameterResolver();
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @return DispatchableInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
-        $reflectionClass = new ReflectionClass($requestedName);
-
-        if (null === ($constructor = $reflectionClass->getConstructor())) {
-            return new $requestedName();
+        if (! class_exists($requestedName)) {
+            throw new InvalidArgumentException(sprintf('%s can only be used with class names.', self::class));
         }
 
-        $reflectionParameters = $constructor->getParameters();
-
-        if (empty($reflectionParameters)) {
-            return new $requestedName();
-        }
-
-        $resolver = $container->has('config')
-            ? $this->resolveParameterWithConfigService($container, $requestedName)
-            : $this->resolveParameterWithoutConfigService($container, $requestedName);
-
-        $parameters = array_map($resolver, $reflectionParameters);
+        $parameters = $this->constructorParameterResolver->resolveConstructorParameters(
+            $requestedName,
+            $container,
+            $this->aliases
+        );
 
         return new $requestedName(...$parameters);
     }
@@ -142,104 +111,5 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
         $constructor = (new ReflectionClass($requestedName))->getConstructor();
 
         return $constructor === null || $constructor->isPublic();
-    }
-
-    /**
-     * Resolve a parameter to a value.
-     *
-     * Returns a callback for resolving a parameter to a value, but without
-     * allowing mapping array `$config` arguments to the `config` service.
-     *
-     * @param string $requestedName
-     * @return callable
-     */
-    private function resolveParameterWithoutConfigService(ContainerInterface $container, $requestedName)
-    {
-        /**
-         * @param ReflectionParameter $parameter
-         * @return mixed
-         * @throws ServiceNotFoundException If type-hinted parameter cannot be
-         *   resolved to a service in the container.
-         * @psalm-suppress MissingClosureReturnType
-         */
-        return fn(ReflectionParameter $parameter) => $this->resolveParameter($parameter, $container, $requestedName);
-    }
-
-    /**
-     * Returns a callback for resolving a parameter to a value, including mapping 'config' arguments.
-     *
-     * Unlike resolveParameter(), this version will detect `$config` array
-     * arguments and have them return the 'config' service.
-     *
-     * @param string $requestedName
-     * @return callable
-     */
-    private function resolveParameterWithConfigService(ContainerInterface $container, $requestedName)
-    {
-        /**
-         * @param ReflectionParameter $parameter
-         * @return mixed
-         * @throws ServiceNotFoundException If type-hinted parameter cannot be
-         *   resolved to a service in the container.
-         */
-        return function (ReflectionParameter $parameter) use ($container, $requestedName) {
-            if ($parameter->getName() === 'config') {
-                $type = $parameter->getType();
-                if ($type instanceof ReflectionNamedType && $type->getName() === 'array') {
-                    return $container->get('config');
-                }
-            }
-            return $this->resolveParameter($parameter, $container, $requestedName);
-        };
-    }
-
-    /**
-     * Logic common to all parameter resolution.
-     *
-     * @param string $requestedName
-     * @return mixed
-     * @throws ServiceNotFoundException If type-hinted parameter cannot be
-     *   resolved to a service in the container.
-     */
-    private function resolveParameter(ReflectionParameter $parameter, ContainerInterface $container, $requestedName)
-    {
-        $type = $parameter->getType();
-        $type = $type instanceof ReflectionNamedType ? $type->getName() : null;
-
-        if ($type === 'array') {
-            return [];
-        }
-
-        if ($type === null || (is_string($type) && ! class_exists($type) && ! interface_exists($type))) {
-            if (! $parameter->isDefaultValueAvailable()) {
-                throw new ServiceNotFoundException(sprintf(
-                    'Unable to create service "%s"; unable to resolve parameter "%s" '
-                    . 'to a class, interface, or array type',
-                    $requestedName,
-                    $parameter->getName()
-                ));
-            }
-
-            return $parameter->getDefaultValue();
-        }
-
-        $type = $this->aliases[$type] ?? $type;
-
-        if ($container->has($type)) {
-            return $container->get($type);
-        }
-
-        if (! $parameter->isOptional()) {
-            throw new ServiceNotFoundException(sprintf(
-                'Unable to create service "%s"; unable to resolve parameter "%s" using type hint "%s"',
-                $requestedName,
-                $parameter->getName(),
-                $type
-            ));
-        }
-
-        // Type not available in container, but the value is optional and has a
-        // default defined.
-        return $parameter->getDefaultValue();
     }
 }

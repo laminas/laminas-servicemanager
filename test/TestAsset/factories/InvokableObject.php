@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Psr\Container\ContainerInterface;
 
@@ -18,6 +17,6 @@ class InvokableObjectFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new InvokableObject();
+        return new InvokableObject([]);
     }
 }

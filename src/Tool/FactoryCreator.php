@@ -4,39 +4,40 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
-use Laminas\ServiceManager\Exception\InvalidArgumentException;
+use Brick\VarExporter\VarExporter;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceManager;
 use Psr\Container\ContainerInterface;
-use ReflectionClass;
-use ReflectionNamedType;
-use ReflectionParameter;
 
-use function array_filter;
 use function array_map;
-use function array_merge;
 use function array_shift;
 use function assert;
+use function class_exists;
 use function count;
 use function implode;
+use function is_string;
 use function preg_replace;
 use function sort;
 use function sprintf;
+use function str_contains;
 use function str_repeat;
 use function strrpos;
 use function substr;
+
+use const PHP_EOL;
 
 /**
  * @internal
  */
 final class FactoryCreator implements FactoryCreatorInterface
 {
+    private const NAMESPACE_SEPARATOR = '\\';
+
     private const FACTORY_TEMPLATE = <<<'EOT'
         <?php
 
         declare(strict_types=1);
-
-        namespace %s;
-
+        %s
         %s
 
         class %sFactory implements FactoryInterface
@@ -54,24 +55,36 @@ final class FactoryCreator implements FactoryCreatorInterface
         }
 
         EOT;
-
-    private const IMPORT_ALWAYS = [
+    private const IMPORT_ALWAYS    = [
         FactoryInterface::class,
         ContainerInterface::class,
     ];
 
-    public function createFactory(string $className): string
+    private ConstructorParameterResolverInterface $constructorParameterResolver;
+
+    private ContainerInterface $container;
+
+    public function __construct(
+        ?ContainerInterface $container = null,
+        ?ConstructorParameterResolverInterface $constructorParameterResolver = null
+    ) {
+        $this->container                    = $container ?? new ServiceManager();
+        $this->constructorParameterResolver = $constructorParameterResolver ?? new ConstructorParameterResolver();
+    }
+
+    public function createFactory(string $className, array $aliases = []): string
     {
-        $class = $this->getClassName($className);
+        $class     = $this->getClassName($className);
+        $namespace = $this->getNamespace($className, $class);
 
         return sprintf(
             self::FACTORY_TEMPLATE,
-            preg_replace('/\\\\' . $class . '$/', '', $className),
-            $this->createImportStatements($className),
+            $namespace,
+            $this->createImportStatements(),
             $class,
             $class,
             $class,
-            $this->createArgumentString($className)
+            $this->createArgumentString($className, $aliases)
         );
     }
 
@@ -81,7 +94,7 @@ final class FactoryCreator implements FactoryCreatorInterface
      */
     private function getClassName(string $className): string
     {
-        $lastNamespaceSeparator = strrpos($className, '\\');
+        $lastNamespaceSeparator = strrpos($className, self::NAMESPACE_SEPARATOR);
         if ($lastNamespaceSeparator === false) {
             return $className;
         }
@@ -94,67 +107,44 @@ final class FactoryCreator implements FactoryCreatorInterface
 
     /**
      * @param class-string $className
+     * @param array<string,string> $aliases
      * @return array<string>
      */
-    private function getConstructorParameters(string $className): array
+    private function getConstructorParameters(string $className, array $aliases): array
     {
-        $reflectionClass = new ReflectionClass($className);
-        $constructor     = $reflectionClass->getConstructor();
-
-        if ($constructor === null) {
-            return [];
-        }
-
-        $constructorParameters = $constructor->getParameters();
-
-        if ($constructorParameters === []) {
-            return [];
-        }
-
-        $constructorParameters = array_filter(
-            $constructorParameters,
-            static function (ReflectionParameter $argument): bool {
-                if ($argument->isOptional()) {
-                    return false;
-                }
-
-                $type  = $argument->getType();
-                $class = $type instanceof ReflectionNamedType && ! $type->isBuiltin() ? $type->getName() : null;
-
-                if (null === $class) {
-                    throw new InvalidArgumentException(sprintf(
-                        'Cannot identify type for constructor argument "%s"; '
-                        . 'no type hint, or non-class/interface type hint',
-                        $argument->getName()
-                    ));
-                }
-
-                return true;
-            }
+        $dependencies = $this->constructorParameterResolver->resolveConstructorParameterServiceNamesOrFallbackTypes(
+            $className,
+            $this->container,
+            $aliases,
         );
 
-        if ($constructorParameters === []) {
-            return [];
+        $stringifiedConstructorArguments = [];
+
+        foreach ($dependencies as $dependency) {
+            if ($dependency instanceof ServiceFromContainerConstructorParameter) {
+                $stringifiedConstructorArguments[] = sprintf(
+                    '$container->get(%s)',
+                    $this->export($dependency->serviceName)
+                );
+                continue;
+            }
+
+            $stringifiedConstructorArguments[] = $this->export($dependency->argumentValue);
         }
 
-        return array_map(static function (ReflectionParameter $parameter): string {
-            $type = $parameter->getType();
-            // We can safely assert here as the filter above already triggers InvalidArgumentException
-            assert($type instanceof ReflectionNamedType && ! $type->isBuiltin());
-
-            return $type->getName();
-        }, $constructorParameters);
+        return $stringifiedConstructorArguments;
     }
 
     /**
      * @param class-string $className
+     * @param array<string,string> $aliases
      */
-    private function createArgumentString(string $className): string
+    private function createArgumentString(string $className, array $aliases): string
     {
         $arguments = array_map(
             static fn(string $dependency): string
-            => sprintf('$container->get(\\%s::class)', $dependency),
-            $this->getConstructorParameters($className)
+            => sprintf('%s', $dependency),
+            $this->getConstructorParameters($className, $aliases)
         );
 
         switch (count($arguments)) {
@@ -174,10 +164,40 @@ final class FactoryCreator implements FactoryCreatorInterface
         }
     }
 
-    private function createImportStatements(string $className): string
+    private function createImportStatements(): string
     {
-        $imports = array_merge(self::IMPORT_ALWAYS, [$className]);
+        $imports = self::IMPORT_ALWAYS;
         sort($imports);
         return implode("\n", array_map(static fn(string $import): string => sprintf('use %s;', $import), $imports));
+    }
+
+    private function export(mixed $value): string
+    {
+        if (is_string($value) && class_exists($value)) {
+            return sprintf('\\%s::class', $value);
+        }
+
+        return VarExporter::export(
+            $value,
+            VarExporter::NO_CLOSURES | VarExporter::NO_SERIALIZE | VarExporter::NO_SERIALIZE | VarExporter::NO_SET_STATE
+        );
+    }
+
+    /**
+     * @param class-string $className
+     * @param non-empty-string $class
+     */
+    private function getNamespace(string $className, string $class): string
+    {
+        if (! str_contains($className, self::NAMESPACE_SEPARATOR)) {
+            return '';
+        }
+
+        return sprintf(
+            '%snamespace %s;%s',
+            PHP_EOL,
+            preg_replace('/\\\\' . $class . '$/', '', $className),
+            PHP_EOL
+        );
     }
 }
