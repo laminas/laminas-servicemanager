@@ -32,9 +32,6 @@ use function is_string;
 use function spl_autoload_register;
 use function spl_object_hash;
 use function sprintf;
-use function trigger_error;
-
-use const E_USER_DEPRECATED;
 
 /**
  * Service Manager.
@@ -175,25 +172,6 @@ class ServiceManager implements ServiceLocatorInterface
     {
         $this->creationContext = $this;
         $this->configure($config);
-    }
-
-    /**
-     * Implemented for backwards compatibility with previous plugin managers only.
-     *
-     * Returns the creation context.
-     *
-     * @deprecated since 3.0.0. Factories using 3.0 should use the container
-     *     instance passed to the factory instead.
-     *
-     * @return ContainerInterface
-     */
-    public function getServiceLocator()
-    {
-        trigger_error(sprintf(
-            'Usage of %s is deprecated since v3.0.0; please use the container passed to the factory instead',
-            __METHOD__
-        ), E_USER_DEPRECATED);
-        return $this->creationContext;
     }
 
     /** {@inheritDoc} */
