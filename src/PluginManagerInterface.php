@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager;
 
-use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
-use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Psr\Container\ContainerExceptionInterface;
 
@@ -54,14 +52,4 @@ interface PluginManagerInterface extends ServiceLocatorInterface
      * @throws ContainerExceptionInterface If any other error occurs.
      */
     public function build(string $name, ?array $options = null): mixed;
-
-    /**
-     * @param ServiceManagerConfigurationType $config
-     * @throws ContainerModificationsNotAllowedException If the allow override flag has been toggled off, and a
-     *                                                   service instanceexists for a given service.
-     * @throws InvalidServiceException If an instance passed in the `services` configuration is invalid for the
-     *                                 plugin manager.
-     * @throws CyclicAliasException If the configuration contains aliases targeting themselves.
-     */
-    public function configure(array $config): static;
 }
