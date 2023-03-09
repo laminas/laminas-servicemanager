@@ -41,13 +41,6 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      */
     protected bool $autoAddInvokableClass = true;
 
-    /**
-     * An object type that the created instance must be instanced of
-     *
-     * @var null|class-string<InstanceType>
-     */
-    protected ?string $instanceOf = null;
-
     protected bool $sharedByDefault = true;
 
     private ServiceManager $plugins;
@@ -119,23 +112,6 @@ abstract class AbstractPluginManager implements PluginManagerInterface
         $this->validate($instance);
         /** @psalm-suppress MixedReturnStatement Yes indeed, plugin managers can return mixed. */
         return $instance;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function validate(mixed $instance): void
-    {
-        if ($this->instanceOf === null || $instance instanceof $this->instanceOf) {
-            return;
-        }
-
-        throw new InvalidServiceException(sprintf(
-            'Plugin manager "%s" expected an instance of type "%s", but "%s" was received',
-            self::class,
-            $this->instanceOf,
-            is_object($instance) ? $instance::class : gettype($instance)
-        ));
     }
 
     /**
