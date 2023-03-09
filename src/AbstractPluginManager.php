@@ -5,27 +5,22 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager;
 
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
+use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
+use Laminas\Stdlib\ArrayUtils;
 use Psr\Container\ContainerInterface;
 
 use function class_exists;
-use function gettype;
-use function is_object;
 use function sprintf;
 
 /**
  * Abstract plugin manager.
  *
- * Abstract PluginManagerInterface implementation providing:
- *
- * - creation context support. The constructor accepts the parent container
- *   instance, which is then used when creating instances.
- * - plugin validation. Implementations may define the `$instanceOf` property
- *   to indicate what class types constitute valid plugins, omitting the
- *   requirement to define the `validate()` method.
+ * Abstract PluginManagerInterface implementation providing creation context support.
+ * The constructor accepts the parent container instance, which is then used when creating instances.
  *
  * @template InstanceType
  * @template-implements PluginManagerInterface<InstanceType>
@@ -33,6 +28,11 @@ use function sprintf;
  * @psalm-import-type FactoryCallableType from ConfigInterface
  * @psalm-import-type DelegatorCallableType from ConfigInterface
  * @psalm-import-type InitializerCallableType from ConfigInterface
+ * @psalm-import-type AbstractFactoriesConfigurationType from ConfigInterface
+ * @psalm-import-type DelegatorsConfigurationType from ConfigInterface
+ * @psalm-import-type FactoriesConfigurationType from ConfigInterface
+ * @psalm-import-type InitializersConfigurationType from ConfigInterface
+ * @psalm-import-type LazyServicesConfigurationType from ConfigInterface
  */
 abstract class AbstractPluginManager implements PluginManagerInterface
 {
@@ -42,6 +42,79 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     protected bool $autoAddInvokableClass = true;
 
     protected bool $sharedByDefault = true;
+
+    /**
+     * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
+     *
+     * @var AbstractFactoryInterface[]
+     */
+    protected array $abstractFactories = [];
+
+    /**
+     * A list of aliases
+     *
+     * Should map one alias to a service name, or another alias (aliases are recursively resolved)
+     *
+     * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
+     *
+     * @var string[]
+     */
+    protected array $aliases = [];
+
+    /**
+     * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
+     *
+     * @var DelegatorsConfigurationType
+     */
+    protected array $delegators = [];
+
+    /**
+     * A list of factories (either as string name or callable)
+     *
+     * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
+     *
+     * @var FactoriesConfigurationType
+     */
+    protected array $factories = [];
+
+    /**
+     * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
+     *
+     * @var InitializersConfigurationType
+     */
+    protected array $initializers = [];
+
+    /**
+     * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
+     *
+     * @var LazyServicesConfigurationType
+     */
+    protected array $lazyServices = [];
+
+    /**
+     * A list of already loaded services (this act as a local cache)
+     *
+     * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
+     *
+     * @var array<string,mixed>
+     */
+    protected array $services = [];
+
+    /**
+     * Enable/disable shared instances by service name.
+     *
+     * Example configuration:
+     *
+     * 'shared' => [
+     *     MyService::class => true, // will be shared, even if "sharedByDefault" is false
+     *     MyOtherService::class => false // won't be shared, even if "sharedByDefault" is true
+     * ]
+     *
+     * @deprecated Please pass the plugin manager configuration via {@see AbstractPluginManager::__construct} instead.
+     *
+     * @var array<string,bool>
+     */
+    protected array $shared = [];
 
     private ServiceManager $plugins;
 
@@ -56,12 +129,28 @@ abstract class AbstractPluginManager implements PluginManagerInterface
             'shared_by_default' => $this->sharedByDefault,
         ], $creationContext);
 
-        // TODO: support old, internal, servicemanager properties in constructor to register services from properties
+        /** @var ServiceManagerConfigurationType $config */
+        $config = ArrayUtils::merge([
+            'factories'          => $this->factories,
+            'abstract_factories' => $this->abstractFactories,
+            'aliases'            => $this->aliases,
+            'services'           => $this->services,
+            'lazy_services'      => $this->lazyServices,
+            'shared'             => $this->shared,
+            'delegators'         => $this->delegators,
+            'initializers'       => $this->initializers,
+        ], $config);
+
         $this->configure($config);
     }
 
     /**
-     * {@inheritDoc}
+     * @param ServiceManagerConfigurationType $config
+     * @throws ContainerModificationsNotAllowedException If the allow override flag has been toggled off, and a
+     *                                                   service instanceexists for a given service.
+     * @throws InvalidServiceException If an instance passed in the `services` configuration is invalid for the
+     *                                 plugin manager.
+     * @throws CyclicAliasException If the configuration contains aliases targeting themselves.
      */
     public function configure(array $config): static
     {
@@ -79,7 +168,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     }
 
     /**
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param string|class-string<InstanceType> $name
      * @param InstanceType $service
@@ -110,7 +199,6 @@ abstract class AbstractPluginManager implements PluginManagerInterface
         /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
         $instance = $this->plugins->get($id);
         $this->validate($instance);
-        /** @psalm-suppress MixedReturnStatement Yes indeed, plugin managers can return mixed. */
         return $instance;
     }
 
@@ -131,14 +219,13 @@ abstract class AbstractPluginManager implements PluginManagerInterface
         $plugin = $this->plugins->build($name, $options);
         $this->validate($plugin);
 
-        /** @psalm-suppress MixedReturnStatement Yes indeed, service managers can return mixed. */
         return $plugin;
     }
 
     /**
      * Add an alias.
      *
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @throws ContainerModificationsNotAllowedException If $alias already
      *     exists as a service and overrides are disallowed.
@@ -151,7 +238,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     /**
      * Add an invokable class mapping.
      *
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param null|string $class Class to which to map; if omitted, $name is
      *     assumed.
@@ -166,7 +253,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     /**
      * Specify a factory for a given service name.
      *
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param class-string<Factory\FactoryInterface>|FactoryCallableType|Factory\FactoryInterface $factory
      * @throws ContainerModificationsNotAllowedException If $name already
@@ -180,7 +267,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     /**
      * Create a lazy service mapping to a class.
      *
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param null|string $class Class to which to map; if not provided, $name
      *     will be used for the mapping.
@@ -193,7 +280,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     /**
      * Add an abstract factory for resolving services.
      *
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param string|AbstractFactoryInterface $factory Abstract factory
      *     instance or class name.
@@ -207,7 +294,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     /**
      * Add a delegator for a given service.
      *
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param string $name Service name
      * @param string|callable|DelegatorFactoryInterface $factory Delegator
@@ -222,7 +309,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     /**
      * Add an initializer.
      *
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @psalm-param class-string<InitializerInterface>|InitializerCallableType|InitializerInterface $initializer
      */
@@ -234,7 +321,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     /**
      * Add a service sharing rule.
      *
-     * @deprecated Please use {@see PluginManagerInterface::configure()} instead.
+     * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param bool $flag Whether or not the service should be shared.
      * @throws ContainerModificationsNotAllowedException If $name already

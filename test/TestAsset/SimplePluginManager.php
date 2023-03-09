@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\AbstractSingleInstancePluginManager;
 
-final class SimplePluginManager extends AbstractPluginManager
+final class SimplePluginManager extends AbstractSingleInstancePluginManager
 {
-    protected string|null $instanceOf = InvokableObject::class;
+    protected string $instanceOf = InvokableObject::class;
 }

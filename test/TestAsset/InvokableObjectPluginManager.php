@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager\TestAsset;
 
 use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\AbstractSingleInstancePluginManager;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Psr\Container\ContainerInterface;
 
 /**
  * @template-extends AbstractPluginManager<InvokableObject>
  */
-final class InvokableObjectPluginManager extends AbstractPluginManager
+final class InvokableObjectPluginManager extends AbstractSingleInstancePluginManager
 {
     /** @var array<string,string> */
-    protected $aliases = [
+    protected array $aliases = [
         'foo' => InvokableObject::class,
 
         // v2 normalized FQCNs
@@ -22,13 +23,13 @@ final class InvokableObjectPluginManager extends AbstractPluginManager
     ];
 
     /** @var array<string,string> */
-    protected $factories = [
+    protected array $factories = [
         InvokableObject::class => InvokableFactory::class,
         // Legacy (v2) due to alias resolution
         'laminastestservicemanagertestassetinvokableobject' => InvokableFactory::class,
     ];
 
-    protected string|null $instanceOf = InvokableObject::class;
+    protected string $instanceOf = InvokableObject::class;
 
     protected bool $sharedByDefault = false;
 

@@ -11,4 +11,7 @@ use Laminas\ServiceManager\AbstractPluginManager;
  */
 final class LenientPluginManager extends AbstractPluginManager
 {
+    public function validate(mixed $instance): void
+    {
+    }
 }
