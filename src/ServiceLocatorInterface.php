@@ -11,8 +11,6 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Interface for service locator
- *
- * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
 interface ServiceLocatorInterface extends ContainerInterface
 {
