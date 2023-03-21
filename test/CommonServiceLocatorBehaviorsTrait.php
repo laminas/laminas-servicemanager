@@ -53,14 +53,14 @@ trait CommonServiceLocatorBehaviorsTrait
     /**
      * The creation context container; used in some mocks for comparisons; set during createContainer.
      */
-    protected ServiceManager|null $creationContext;
+    protected static ServiceManager|null $creationContext;
 
     /**
      * @psalm-param ServiceManagerConfigurationType $config
      * @return ServiceManager
      * @todo This will need to be static for future versions of PHPUnit
      */
-    abstract public function createContainer(array $config = []);
+    abstract public static function createContainer(array $config = []);
 
     public function testIsSharedByDefault(): void
     {
@@ -271,7 +271,7 @@ trait CommonServiceLocatorBehaviorsTrait
         $initializer
             ->expects(self::once())
             ->method('__invoke')
-            ->with($this->creationContext, self::isInstanceOf(stdClass::class));
+            ->with(self::$creationContext, self::isInstanceOf(stdClass::class));
 
         // We call it twice to make sure that the initializer is only called once
 
@@ -551,7 +551,7 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertInstanceOf(DateTime::class, $dateTime);
     }
 
-    public function invalidFactories(): array
+    public static function invalidFactories(): array
     {
         return [
             'null'                 => [null],
@@ -566,9 +566,9 @@ trait CommonServiceLocatorBehaviorsTrait
         ];
     }
 
-    public function invalidAbstractFactories(): array
+    public static function invalidAbstractFactories(): array
     {
-        $factories                     = $this->invalidFactories();
+        $factories                     = self::invalidFactories();
         $factories['non-class-string'] = ['non-callable-string', 'valid class name'];
 
         return $factories;
@@ -610,9 +610,9 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertEquals('bar', $instance->foo, '"foo" property was not properly injected');
     }
 
-    public function invalidInitializers(): array
+    public static function invalidInitializers(): array
     {
-        $factories                     = $this->invalidFactories();
+        $factories                     = self::invalidFactories();
         $factories['non-class-string'] = ['non-callable-string', 'callable or an instance of'];
 
         return $factories;
@@ -643,9 +643,9 @@ trait CommonServiceLocatorBehaviorsTrait
         $serviceManager->get('Some\Unknown\Service');
     }
 
-    public function invalidDelegators(): array
+    public static function invalidDelegators(): array
     {
-        $invalidDelegators                        = $this->invalidFactories();
+        $invalidDelegators                        = self::invalidFactories();
         $invalidDelegators['invalid-classname']   = ['not-a-class-name', 'invalid delegator'];
         $invalidDelegators['non-invokable-class'] = [stdClass::class];
 
@@ -852,12 +852,14 @@ trait CommonServiceLocatorBehaviorsTrait
     }
 
     /** @return array<string, array{0: string, 1: mixed[]}> */
-    public function methodsAffectedByOverrideSettings(): array
+    public static function methodsAffectedByOverrideSettings(): array
     {
         //  name                        => [ 'method to invoke',  [arguments for invocation]]
+        $that = new stdClass();
+
         return [
             'setAlias'                  => ['setAlias', ['foo', 'bar']],
-            'setInvokableClass'         => ['setInvokableClass', ['foo', self::class]],
+            'setInvokableClass'         => ['setInvokableClass', ['foo', stdClass::class]],
             'setFactory'                => [
                 'setFactory',
                 [
@@ -866,9 +868,9 @@ trait CommonServiceLocatorBehaviorsTrait
                     },
                 ],
             ],
-            'setService'                => ['setService', ['foo', $this]],
+            'setService'                => ['setService', ['foo', $that]],
             'setShared'                 => ['setShared', ['foo', false]],
-            'mapLazyService'            => ['mapLazyService', ['foo', self::class]],
+            'mapLazyService'            => ['mapLazyService', ['foo', stdClass::class]],
             'addDelegator'              => [
                 'addDelegator',
                 [
@@ -891,11 +893,11 @@ trait CommonServiceLocatorBehaviorsTrait
                     ],
                 ],
             ],
-            'configure-service'         => ['configure', [['services' => ['foo' => $this]]]],
+            'configure-service'         => ['configure', [['services' => ['foo' => $that]]]],
             'configure-shared'          => ['configure', [['shared' => ['foo' => false]]]],
             'configure-lazy-service'    => [
                 'configure',
-                [['lazy_services' => ['class_map' => ['foo' => self::class]]]],
+                [['lazy_services' => ['class_map' => ['foo' => stdClass::class]]]],
             ],
         ];
     }
@@ -946,7 +948,7 @@ trait CommonServiceLocatorBehaviorsTrait
 
             return true;
         }, E_USER_DEPRECATED);
-        self::assertSame($this->creationContext, $container->getServiceLocator());
+        self::assertSame(self::$creationContext, $container->getServiceLocator());
         restore_error_handler();
     }
 
@@ -1047,7 +1049,7 @@ trait CommonServiceLocatorBehaviorsTrait
      *
      * @return list<array{0: ServiceManager, 1: string, 2: list<string>, 3: bool}>
      */
-    public function provideConsistencyOverInternalStatesTests(): array
+    public static function provideConsistencyOverInternalStatesTests(): array
     {
         $config1                      = [
             'factories'          => [
@@ -1103,7 +1105,7 @@ trait CommonServiceLocatorBehaviorsTrait
         $tests = [];
 
         foreach ($configs as $config) {
-            $smTemplate = $this->createContainer($config);
+            $smTemplate = self::createContainer($config);
 
             // setup sharing, services are always shared
             $names = array_fill_keys(array_keys($config['services']), true);

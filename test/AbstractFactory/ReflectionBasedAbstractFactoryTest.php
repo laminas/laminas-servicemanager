@@ -31,7 +31,7 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
         $this->factory   = new ReflectionBasedAbstractFactory();
     }
 
-    public function nonClassRequestedNames(): array
+    public static function nonClassRequestedNames(): array
     {
         return [
             'non-class-string' => ['non-class-string'],

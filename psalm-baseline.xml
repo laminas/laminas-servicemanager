@@ -449,10 +449,6 @@
     <MissingClosureReturnType>
       <code>static function ($container, $name, $callback) {</code>
     </MissingClosureReturnType>
-    <MissingConstructor>
-      <code>$creationContext</code>
-      <code>$creationContext</code>
-    </MissingConstructor>
     <MixedArrayAssignment>
       <code><![CDATA[$object[$shared ? $method : 'build'][]]]></code>
     </MixedArrayAssignment>
@@ -524,8 +520,8 @@
   </file>
   <file src="test/Exception/CyclicAliasExceptionTest.php">
     <InvalidDocblock>
-      <code>public function aliasesProvider(): array</code>
-      <code>public function cyclicAliasProvider(): array</code>
+      <code>public static function aliasesProvider(): array</code>
+      <code>public static function cyclicAliasProvider(): array</code>
     </InvalidDocblock>
     <MixedInferredReturnType>
       <code><![CDATA[array<

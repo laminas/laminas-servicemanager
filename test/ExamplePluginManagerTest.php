@@ -18,7 +18,7 @@ final class ExamplePluginManagerTest extends TestCase
 {
     use CommonPluginManagerTrait;
 
-    protected function getPluginManager(): V2v3PluginManager
+    protected static function getPluginManager(): V2v3PluginManager
     {
         return new V2v3PluginManager(new ServiceManager());
     }

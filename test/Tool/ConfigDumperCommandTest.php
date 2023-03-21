@@ -73,7 +73,7 @@ final class ConfigDumperCommandTest extends TestCase
         self::assertEquals(0, $this->command->__invoke([]));
     }
 
-    public function helpArguments(): array
+    public static function helpArguments(): array
     {
         return [
             'short'   => ['-h'],
@@ -82,7 +82,7 @@ final class ConfigDumperCommandTest extends TestCase
         ];
     }
 
-    public function ignoreUnresolvedArguments(): array
+    public static function ignoreUnresolvedArguments(): array
     {
         return [
             'short' => ['-i'],

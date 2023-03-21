@@ -57,7 +57,7 @@ final class FactoryCreatorCommandTest extends TestCase
             );
     }
 
-    public function helpArguments(): array
+    public static function helpArguments(): array
     {
         return [
             'short'   => ['-h'],
@@ -75,7 +75,7 @@ final class FactoryCreatorCommandTest extends TestCase
         self::assertSame(0, $this->command->__invoke([$argument]));
     }
 
-    public function invalidArguments(): array
+    public static function invalidArguments(): array
     {
         return [
             'string'    => ['string'],

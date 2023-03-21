@@ -32,10 +32,10 @@ final class AbstractPluginManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
 
-    public function createContainer(array $config = []): ServiceManager
+    public static function createContainer(array $config = []): ServiceManager
     {
-        $this->creationContext = new ServiceManager();
-        return new TestAsset\LenientPluginManager($this->creationContext, $config);
+        self::$creationContext = new ServiceManager();
+        return new TestAsset\LenientPluginManager(self::$creationContext, $config);
     }
 
     public function testInjectCreationContextInFactories(): void
@@ -101,7 +101,7 @@ final class AbstractPluginManagerTest extends TestCase
         self::assertSame($first, $second);
     }
 
-    public function shareByDefaultSettings(): array
+    public static function shareByDefaultSettings(): array
     {
         return [
             'true'  => [true],
@@ -248,7 +248,7 @@ final class AbstractPluginManagerTest extends TestCase
         self::assertSame($pluginManager, $pluginManager->getCreationContext());
     }
 
-    public function invalidConstructorArguments(): array
+    public static function invalidConstructorArguments(): array
     {
         return [
             'true'       => [true],
