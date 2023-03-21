@@ -87,10 +87,10 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
         $this->container
             ->expects(self::exactly(2))
             ->method('has')
-            ->withConsecutive(
-                ['config'],
-                [TestAsset\SampleInterface::class],
-            )
+            ->willReturnMap([
+                ['config', false],
+                [TestAsset\SampleInterface::class, false],
+            ])
             ->willReturn(false, false);
 
         $this->expectException(ServiceNotFoundException::class);
@@ -141,11 +141,10 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
         $this->container
             ->expects(self::exactly(2))
             ->method('has')
-            ->withConsecutive(
-                ['config'],
-                [TestAsset\SampleInterface::class],
-            )
-            ->willReturn(false, true);
+            ->willReturnMap([
+                ['config', false],
+                [TestAsset\SampleInterface::class, true],
+            ]);
 
         $sample = $this->createMock(TestAsset\SampleInterface::class);
 
@@ -169,11 +168,10 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
         $this->container
             ->expects(self::exactly(2))
             ->method('has')
-            ->withConsecutive(
-                ['config'],
-                ['ValidatorManager'],
-            )
-            ->willReturn(false, true);
+            ->willReturnMap([
+                ['config', false],
+                ['ValidatorManager', true],
+            ]);
 
         $validators = $this->createMock(TestAsset\ValidatorPluginManager::class);
 
@@ -201,12 +199,11 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
         $this->container
             ->expects(self::exactly(3))
             ->method('has')
-            ->withConsecutive(
-                ['config'],
-                [TestAsset\SampleInterface::class],
-                ['ValidatorManager'],
-            )
-            ->willReturn(true, true, true);
+            ->willReturnMap([
+                ['config', true],
+                [TestAsset\SampleInterface::class, true],
+                ['ValidatorManager', true],
+            ]);
 
         $config     = ['foo' => 'bar'];
         $sample     = $this->createMock(TestAsset\SampleInterface::class);
@@ -215,12 +212,11 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
         $this->container
             ->expects(self::exactly(3))
             ->method('get')
-            ->withConsecutive(
-                ['config'],
-                [TestAsset\SampleInterface::class],
-                ['ValidatorManager'],
-            )
-            ->willReturn($config, $sample, $validators);
+            ->willReturnMap([
+                ['config', $config],
+                [TestAsset\SampleInterface::class, $sample],
+                ['ValidatorManager', $validators],
+            ]);
 
         $factory  = new ReflectionBasedAbstractFactory([TestAsset\ValidatorPluginManager::class => 'ValidatorManager']);
         $instance = $factory->__invoke($this->container, TestAsset\ClassWithMixedConstructorParameters::class);
@@ -257,11 +253,10 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
         $this->container
             ->expects(self::exactly(2))
             ->method('has')
-            ->withConsecutive(
-                ['config'],
-                [ArrayAccess::class],
-            )
-            ->willReturn(false, false);
+            ->willReturnMap([
+                ['config', false],
+                [ArrayAccess::class, false],
+            ]);
 
         $instance = $this->factory->__invoke(
             $this->container,

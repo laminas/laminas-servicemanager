@@ -14,7 +14,7 @@ use Psr\Container\ContainerInterface;
 use function sprintf;
 
 /**
- * Delegator factory responsible of instantiating lazy loading value holder proxies of
+ * Delegator factory responsible for instantiating lazy loading value holder proxies of
  * given services at runtime
  *
  * @link https://github.com/Ocramius/ProxyManager/blob/master/docs/lazy-loading-value-holder.md

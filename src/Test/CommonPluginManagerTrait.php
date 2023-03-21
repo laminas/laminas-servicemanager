@@ -24,7 +24,6 @@ trait CommonPluginManagerTrait
     {
         $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'instanceOf');
-        $reflection->setAccessible(true);
         $this->assertEquals($this->getInstanceOf(), $reflection->getValue($manager), 'instanceOf does not match');
     }
 
@@ -36,11 +35,9 @@ trait CommonPluginManagerTrait
 
         foreach ($reflection->getProperties() as $prop) {
             if ($prop->getName() === 'shareByDefault') {
-                $prop->setAccessible(true);
                 $shareByDefault = $prop->getValue($manager);
             }
             if ($prop->getName() === 'sharedByDefault') {
-                $prop->setAccessible(true);
                 $sharedByDefault = $prop->getValue($manager);
             }
         }
@@ -83,8 +80,7 @@ trait CommonPluginManagerTrait
     {
         $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'aliases');
-        $reflection->setAccessible(true);
-        $data = [];
+        $data       = [];
         foreach ($reflection->getValue($manager) as $alias => $expected) {
             $data[] = [$alias, $expected];
         }
