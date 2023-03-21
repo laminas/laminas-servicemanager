@@ -374,10 +374,6 @@ final class ServiceManagerTest extends TestCase
         $abstractFactory
             ->expects(self::once())
             ->method('canCreate')
-            ->withConsecutive(
-                [self::anything(), self::equalTo('Alias')],
-                [self::anything(), self::equalTo('ServiceName')]
-            )
             ->willReturnCallback(static fn ($context, string $name): bool => $name === 'Alias');
 
         self::assertTrue($serviceManager->has('Alias'));
@@ -416,10 +412,6 @@ final class ServiceManagerTest extends TestCase
         $abstractFactory
             ->expects(self::exactly(2))
             ->method('canCreate')
-            ->withConsecutive(
-                [self::anything(), 'Alias'],
-                [self::anything(), 'ServiceName']
-            )
             ->willReturnCallback(static fn ($context, string $name): bool => $name === 'ServiceName');
 
         self::assertTrue($serviceManager->has('Alias'));
@@ -441,11 +433,10 @@ final class ServiceManagerTest extends TestCase
         $abstractFactory
             ->expects(self::exactly(2))
             ->method('canCreate')
-            ->withConsecutive(
-                [self::anything(), 'Alias'],
-                [self::anything(), 'ServiceName']
-            )
-            ->willReturn(false);
+            ->willReturnMap([
+                [self::anything(), 'Alias', false],
+                [self::anything(), 'ServiceName', false],
+            ]);
 
         self::assertFalse($serviceManager->has('Alias'));
     }

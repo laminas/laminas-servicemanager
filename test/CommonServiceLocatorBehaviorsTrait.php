@@ -742,8 +742,7 @@ trait CommonServiceLocatorBehaviorsTrait
     {
         $container = $this->createContainer();
         $container->mapLazyService('foo', self::class);
-        $r = new ReflectionProperty($container, 'lazyServices');
-        $r->setAccessible(true);
+        $r            = new ReflectionProperty($container, 'lazyServices');
         $lazyServices = $r->getValue($container);
 
         self::assertIsArray($lazyServices);

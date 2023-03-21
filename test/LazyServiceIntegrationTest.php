@@ -38,11 +38,8 @@ use function unlink;
  */
 final class LazyServiceIntegrationTest extends TestCase
 {
-    /**
-     * @var string
-     * @psalm-var non-empty-string
-     */
-    public $proxyDir;
+    /** @var non-empty-string */
+    private string $proxyDir;
 
     protected function setUp(): void
     {
@@ -70,7 +67,7 @@ final class LazyServiceIntegrationTest extends TestCase
         }
     }
 
-    public function removeDir(string $directory): void
+    private function removeDir(string $directory): void
     {
         $handle = opendir($directory);
         while (false !== ($item = readdir($handle))) {
@@ -95,7 +92,7 @@ final class LazyServiceIntegrationTest extends TestCase
         rmdir($directory);
     }
 
-    public function listProxyFiles(): RegexIterator
+    private function listProxyFiles(): RegexIterator
     {
         $rdi = new RecursiveDirectoryIterator($this->proxyDir);
         $rii = new RecursiveIteratorIterator($rdi);
@@ -103,7 +100,7 @@ final class LazyServiceIntegrationTest extends TestCase
         return new RegexIterator($rii, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
     }
 
-    public function assertProxyDirEmpty(string $message = ''): void
+    private function assertProxyDirEmpty(string $message = ''): void
     {
         $message = $message ?: 'Expected empty proxy directory; found files';
 
@@ -111,7 +108,7 @@ final class LazyServiceIntegrationTest extends TestCase
         self::assertEquals([], iterator_to_array($this->listProxyFiles()), $message);
     }
 
-    public function assertProxyFileWritten(string $message = ''): void
+    private function assertProxyFileWritten(string $message = ''): void
     {
         $message = $message ?: 'Expected ProxyManager to write at least one class file; none found';
 
@@ -312,7 +309,7 @@ final class LazyServiceIntegrationTest extends TestCase
     /**
      * @return AutoloaderInterface[]
      */
-    protected function getRegisteredProxyAutoloadFunctions(): array
+    private function getRegisteredProxyAutoloadFunctions(): array
     {
         $filter = static fn($autoload): bool => $autoload instanceof AutoloaderInterface;
 
