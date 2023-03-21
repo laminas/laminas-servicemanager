@@ -30,10 +30,10 @@ final class ServiceManagerTest extends TestCase
     /**
      * @psalm-param ServiceManagerConfigurationType $config
      */
-    public function createContainer(array $config = []): ServiceManager
+    public static function createContainer(array $config = []): ServiceManager
     {
         $container             = new ServiceManager($config);
-        $this->creationContext = $container;
+        self::$creationContext = $container;
 
         return $container;
     }
@@ -120,7 +120,7 @@ final class ServiceManagerTest extends TestCase
         self::assertEquals('bar', $instance->foo);
     }
 
-    public function shareProvider(): array
+    public static function shareProvider(): array
     {
         $sharedByDefault          = true;
         $serviceShared            = true;
@@ -546,7 +546,7 @@ final class ServiceManagerTest extends TestCase
      *     2:non-empty-string
      * }>
      */
-    public function aliasedServices(): array
+    public static function aliasedServices(): array
     {
         return [
             'invokables'         => [

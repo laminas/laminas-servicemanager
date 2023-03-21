@@ -9,3 +9,4 @@
 /.phpcs-cache
 /phpcs.xml
 /.phpbench
+/.phpunit.cache/

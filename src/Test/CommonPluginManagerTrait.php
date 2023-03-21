@@ -8,6 +8,7 @@ use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use ReflectionClass;
 use ReflectionProperty;
+use stdClass;
 
 use function method_exists;
 
@@ -58,7 +59,7 @@ trait CommonPluginManagerTrait
     public function testLoadingInvalidElementRaisesException()
     {
         $manager = $this->getPluginManager();
-        $manager->setInvokableClass('test', static::class);
+        $manager->setInvokableClass('test', stdClass::class);
         $this->expectException($this->getServiceNotFoundException());
         $manager->get('test');
     }
@@ -76,9 +77,9 @@ trait CommonPluginManagerTrait
     /**
      * @return array
      */
-    public function aliasProvider()
+    public static function aliasProvider(): array
     {
-        $manager    = $this->getPluginManager();
+        $manager    = self::getPluginManager();
         $reflection = new ReflectionProperty($manager, 'aliases');
         $data       = [];
         foreach ($reflection->getValue($manager) as $alias => $expected) {
@@ -101,7 +102,7 @@ trait CommonPluginManagerTrait
      *
      * @return AbstractPluginManager
      */
-    abstract protected function getPluginManager();
+    abstract protected static function getPluginManager();
 
     /**
      * Returns the FQCN of the exception thrown under v2 by `validatePlugin()`
