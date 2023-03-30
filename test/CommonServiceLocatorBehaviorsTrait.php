@@ -36,10 +36,6 @@ use function array_keys;
 use function array_merge;
 use function PHPUnit\Framework\assertIsBool;
 use function PHPUnit\Framework\assertIsString;
-use function restore_error_handler;
-use function set_error_handler;
-
-use const E_USER_DEPRECATED;
 
 /**
  * @see ConfigInterface
@@ -934,21 +930,6 @@ trait CommonServiceLocatorBehaviorsTrait
         $container->setAllowOverride(true);
 
         self::assertTrue($container->getAllowOverride());
-    }
-
-    /**
-     * @group migration
-     */
-    public function testCanRetrieveParentContainerViaGetServiceLocatorWithDeprecationNotice(): void
-    {
-        $container = $this->createContainer();
-        set_error_handler(static function (int $errno): bool {
-            self::assertEquals(E_USER_DEPRECATED, $errno);
-
-            return true;
-        }, E_USER_DEPRECATED);
-        self::assertSame($this->creationContext, $container->getServiceLocator());
-        restore_error_handler();
     }
 
     /**
