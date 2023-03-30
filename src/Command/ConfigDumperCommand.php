@@ -25,6 +25,9 @@ use function is_string;
 use function is_writable;
 use function sprintf;
 
+/**
+ * @internal CLI commands are not meant to be used in any upstream projects other than via `laminas-cli`.
+ */
 final class ConfigDumperCommand extends Command
 {
     public const NAME = 'servicemanager:generate-deps-for-config-factory';

@@ -17,6 +17,9 @@ use function class_exists;
 use function is_string;
 use function sprintf;
 
+/**
+ * @internal CLI commands are not meant to be used in any upstream projects other than via `laminas-cli`.
+ */
 final class FactoryCreatorCommand extends Command
 {
     public const NAME = 'servicemanager:generate-factory-for-class';

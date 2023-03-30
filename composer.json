@@ -65,6 +65,7 @@
         "zendframework/zend-code": "<3.3.1"
     },
     "suggest": {
+        "laminas/laminas-cli": "To consume CLI commands provided by this component",
         "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
     },
     "autoload": {

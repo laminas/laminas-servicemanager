@@ -48,18 +48,14 @@
         </InvalidThrow>
         <InternalClass>
             <errorLevel type="suppress">
-                <referencedClass name="Laminas\ServiceManager\Tool\FactoryCreator"/>
-                <referencedClass name="Laminas\ServiceManager\Tool\ConfigDumper"/>
+                <!-- Tests are allowed to work with internal classes -->
+                <directory name="test"/>
             </errorLevel>
         </InternalClass>
         <InternalMethod>
             <errorLevel type="suppress">
-                <referencedMethod name="Laminas\ServiceManager\Tool\FactoryCreator::createFactory"/>
-                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::createDependencyConfig"/>
-                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::dumpConfigFile"/>
-                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::createFactoryMappingsFromConfig"/>
-                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::createFactoryMappings"/>
-                <referencedMethod name="Laminas\ServiceManager\Tool\ConfigDumper::__construct"/>
+                <!-- Tests are allowed to work with internal classes -->
+                <directory name="test"/>
             </errorLevel>
         </InternalMethod>
     </issueHandlers>
