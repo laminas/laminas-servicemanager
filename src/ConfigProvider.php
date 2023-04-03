@@ -15,8 +15,6 @@ use Symfony\Component\Console\Command\Command;
 
 use function class_exists;
 
-use const PHP_SAPI;
-
 /**
  * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
@@ -63,10 +61,6 @@ final class ConfigProvider
      */
     private function getLaminasCliDependencies(): array
     {
-        if (PHP_SAPI !== 'cli') {
-            return [];
-        }
-
         if (! class_exists(Command::class)) {
             return [];
         }
