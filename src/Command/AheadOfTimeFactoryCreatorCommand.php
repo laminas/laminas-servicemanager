@@ -27,6 +27,8 @@ use function sprintf;
 use function str_replace;
 
 /**
+ * @internal CLI commands are not meant to be used in any upstream projects other than via `laminas-cli`.
+ *
  * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
 final class AheadOfTimeFactoryCreatorCommand extends Command
