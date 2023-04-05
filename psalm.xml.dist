@@ -8,7 +8,6 @@
     findUnusedPsalmSuppress="true"
 >
     <projectFiles>
-        <directory name="bin"/>
         <directory name="src"/>
         <directory name="test"/>
         <ignoreFiles>
@@ -47,9 +46,22 @@
                 <referencedClass name="Interop\Container\Exception\ContainerException"/>
             </errorLevel>
         </InvalidThrow>
+        <InternalClass>
+            <errorLevel type="suppress">
+                <!-- Tests are allowed to work with internal classes -->
+                <directory name="test"/>
+            </errorLevel>
+        </InternalClass>
+        <InternalMethod>
+            <errorLevel type="suppress">
+                <!-- Tests are allowed to work with internal classes -->
+                <directory name="test"/>
+            </errorLevel>
+        </InternalMethod>
     </issueHandlers>
 
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
+        <pluginClass class="Boesing\PsalmPluginStringf\Plugin"/>
     </plugins>
 </psalm>

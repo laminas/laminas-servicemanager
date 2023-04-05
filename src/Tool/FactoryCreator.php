@@ -15,6 +15,7 @@ use function array_filter;
 use function array_map;
 use function array_merge;
 use function array_shift;
+use function assert;
 use function count;
 use function implode;
 use function preg_replace;
@@ -24,9 +25,12 @@ use function str_repeat;
 use function strrpos;
 use function substr;
 
-class FactoryCreator
+/**
+ * @internal
+ */
+final class FactoryCreator implements FactoryCreatorInterface
 {
-    public const FACTORY_TEMPLATE = <<<'EOT'
+    private const FACTORY_TEMPLATE = <<<'EOT'
         <?php
 
         declare(strict_types=1);
@@ -56,11 +60,7 @@ class FactoryCreator
         ContainerInterface::class,
     ];
 
-    /**
-     * @param string $className
-     * @return string
-     */
-    public function createFactory($className)
+    public function createFactory(string $className): string
     {
         $class = $this->getClassName($className);
 
@@ -75,26 +75,39 @@ class FactoryCreator
         );
     }
 
+    /**
+     * @param class-string $className
+     * @return non-empty-string
+     */
     private function getClassName(string $className): string
     {
-        return substr($className, strrpos($className, '\\') + 1);
+        $lastNamespaceSeparator = strrpos($className, '\\');
+        if ($lastNamespaceSeparator === false) {
+            return $className;
+        }
+
+        $className = substr($className, $lastNamespaceSeparator + 1);
+        assert($className !== '');
+
+        return $className;
     }
 
     /**
-     * @param string $className
-     * @return array
+     * @param class-string $className
+     * @return array<string>
      */
-    private function getConstructorParameters($className)
+    private function getConstructorParameters(string $className): array
     {
         $reflectionClass = new ReflectionClass($className);
+        $constructor     = $reflectionClass->getConstructor();
 
-        if (! $reflectionClass->getConstructor()) {
+        if ($constructor === null) {
             return [];
         }
 
-        $constructorParameters = $reflectionClass->getConstructor()->getParameters();
+        $constructorParameters = $constructor->getParameters();
 
-        if (empty($constructorParameters)) {
+        if ($constructorParameters === []) {
             return [];
         }
 
@@ -120,24 +133,29 @@ class FactoryCreator
             }
         );
 
-        if (empty($constructorParameters)) {
+        if ($constructorParameters === []) {
             return [];
         }
 
-        return array_map(static function (ReflectionParameter $parameter): ?string {
+        return array_map(static function (ReflectionParameter $parameter): string {
             $type = $parameter->getType();
-            return $type instanceof ReflectionNamedType && ! $type->isBuiltin() ? $type->getName() : null;
+            // We can safely assert here as the filter above already triggers InvalidArgumentException
+            assert($type instanceof ReflectionNamedType && ! $type->isBuiltin());
+
+            return $type->getName();
         }, $constructorParameters);
     }
 
     /**
-     * @param string $className
-     * @return string
+     * @param class-string $className
      */
-    private function createArgumentString($className)
+    private function createArgumentString(string $className): string
     {
-        $arguments = array_map(static fn(string $dependency): string
-            => sprintf('$container->get(\\%s::class)', $dependency), $this->getConstructorParameters($className));
+        $arguments = array_map(
+            static fn(string $dependency): string
+            => sprintf('$container->get(\\%s::class)', $dependency),
+            $this->getConstructorParameters($className)
+        );
 
         switch (count($arguments)) {
             case 0:

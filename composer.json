@@ -36,8 +36,16 @@
         "laminas/laminas-stdlib": "^3.2.1",
         "psr/container": "^1.0"
     },
+    "extra": {
+        "laminas": {
+            "config-provider": "Laminas\\ServiceManager\\ConfigProvider",
+            "module": "Laminas\\ServiceManager"
+        }
+    },
     "require-dev": {
+        "boesing/psalm-plugin-stringf": "^1.4",
         "composer/package-versions-deprecated": "^1.11.99.5",
+        "laminas/laminas-cli": "^1.8",
         "laminas/laminas-coding-standard": "~2.5.0",
         "laminas/laminas-container-config-test": "^0.8",
         "laminas/laminas-dependency-plugin": "^2.2",
@@ -46,6 +54,7 @@
         "phpbench/phpbench": "^1.2.7",
         "phpunit/phpunit": "^9.5.26",
         "psalm/plugin-phpunit": "^0.18.0",
+        "symfony/console": "^6.0",
         "vimeo/psalm": "^5.0.0"
     },
     "provide": {
@@ -56,6 +65,7 @@
         "zendframework/zend-code": "<3.3.1"
     },
     "suggest": {
+        "laminas/laminas-cli": "To consume CLI commands provided by this component",
         "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
     },
     "autoload": {

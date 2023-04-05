@@ -10,7 +10,6 @@ use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionParameter;
-use Traversable;
 
 use function array_filter;
 use function array_key_exists;
@@ -18,17 +17,20 @@ use function class_exists;
 use function date;
 use function gettype;
 use function implode;
-use function interface_exists;
 use function is_array;
 use function is_int;
+use function is_iterable;
 use function is_string;
 use function sprintf;
 use function str_repeat;
 use function var_export;
 
-class ConfigDumper
+/**
+ * @internal
+ */
+final class ConfigDumper implements ConfigDumperInterface
 {
-    public const CONFIG_TEMPLATE = <<<EOC
+    public const CONFIG_TEMPLATE                          = <<<EOC
 <?php
 
 /**
@@ -38,41 +40,33 @@ class ConfigDumper
 
 return %s;
 EOC;
+    public const LAMINAS_MVC_SERVICEMANAGER_CONFIGURATION = 'service_manager';
+    public const MEZZIO_CONTAINER_CONFIGURATION           = 'dependencies';
 
-    public function __construct(private ?ContainerInterface $container = null)
-    {
+    public function __construct(
+        private ?ContainerInterface $container = null,
+        private string $serviceManagerConfigurationKey = self::LAMINAS_MVC_SERVICEMANAGER_CONFIGURATION,
+    ) {
     }
 
-    /**
-     * @param string $className
-     * @param bool $ignoreUnresolved
-     * @return array
-     * @throws InvalidArgumentException For invalid $className.
-     */
-    public function createDependencyConfig(array $config, $className, $ignoreUnresolved = false)
+    public function createDependencyConfig(array $config, string $className, bool $ignoreUnresolved = false): array
     {
-        $this->validateClassName($className);
-
         $reflectionClass = new ReflectionClass($className);
-
-        // class is an interface; do nothing
-        if ($reflectionClass->isInterface()) {
-            return $config;
-        }
+        $constructor     = $reflectionClass->getConstructor();
 
         // class has no constructor, treat it as an invokable
-        if (! $reflectionClass->getConstructor()) {
+        if ($constructor === null) {
             return $this->createInvokable($config, $className);
         }
 
-        $constructorArguments = $reflectionClass->getConstructor()->getParameters();
+        $constructorArguments = $constructor->getParameters();
         $constructorArguments = array_filter(
             $constructorArguments,
             static fn(ReflectionParameter $argument): bool => ! $argument->isOptional()
         );
 
         // has no required parameters, treat it as an invokable
-        if (empty($constructorArguments)) {
+        if ($constructorArguments === []) {
             return $this->createInvokable($config, $className);
         }
 
@@ -91,14 +85,20 @@ EOC;
                 if ($this->container && $this->container->has($className)) {
                     return $config;
                 }
+
                 throw new InvalidArgumentException(sprintf(
                     'Cannot create config for constructor argument "%s", '
                     . 'it has no type hint, or non-class/interface type hint',
                     $constructorArgument->getName()
                 ));
             }
-            $config        = $this->createDependencyConfig($config, $argumentType, $ignoreUnresolved);
+
             $classConfig[] = $argumentType;
+            if (! class_exists($argumentType)) {
+                continue;
+            }
+
+            $config = $this->createDependencyConfig($config, $argumentType, $ignoreUnresolved);
         }
 
         $config[ConfigAbstractFactory::class][$className] = $classConfig;
@@ -107,37 +107,17 @@ EOC;
     }
 
     /**
-     * @param string $className
-     * @throws InvalidArgumentException If class name is not a string or does
-     *     not exist.
+     * @param array<string,mixed>  $config
+     * @param class-string $className
+     * @return array<string,mixed>
      */
-    private function validateClassName($className)
-    {
-        if (! is_string($className)) {
-            throw new InvalidArgumentException('Class name must be a string, ' . gettype($className) . ' given');
-        }
-
-        if (! class_exists($className) && ! interface_exists($className)) {
-            throw new InvalidArgumentException('Cannot find class or interface with name ' . $className);
-        }
-    }
-
-    /**
-     * @param string $className
-     * @return array
-     */
-    private function createInvokable(array $config, $className)
+    private function createInvokable(array $config, string $className): array
     {
         $config[ConfigAbstractFactory::class][$className] = [];
         return $config;
     }
 
-    /**
-     * @return array
-     * @throws InvalidArgumentException If ConfigAbstractFactory configuration
-     *     value is not an array.
-     */
-    public function createFactoryMappingsFromConfig(array $config)
+    public function createFactoryMappingsFromConfig(array $config): array
     {
         if (! array_key_exists(ConfigAbstractFactory::class, $config)) {
             return $config;
@@ -157,16 +137,10 @@ EOC;
         return $config;
     }
 
-    /**
-     * @param string $className
-     * @return array
-     */
-    public function createFactoryMappings(array $config, $className)
+    public function createFactoryMappings(array $config, string $className): array
     {
-        $this->validateClassName($className);
-
         if (
-            array_key_exists('service_manager', $config)
+            array_key_exists($this->serviceManagerConfigurationKey, $config)
             && array_key_exists('factories', $config['service_manager'])
             && array_key_exists($className, $config['service_manager']['factories'])
         ) {
@@ -177,26 +151,22 @@ EOC;
         return $config;
     }
 
-    /**
-     * @return string
-     */
-    public function dumpConfigFile(array $config)
+    public function dumpConfigFile(array $config): string
     {
         $prepared = $this->prepareConfig($config);
         return sprintf(
             self::CONFIG_TEMPLATE,
-            static::class,
+            self::class,
             date('Y-m-d H:i:s'),
             $prepared
         );
     }
 
     /**
-     * @param array|Traversable $config
-     * @param int $indentLevel
-     * @return string
+     * @param int<0,max> $indentLevel
+     * @return non-empty-string
      */
-    private function prepareConfig($config, $indentLevel = 1)
+    private function prepareConfig(iterable $config, int $indentLevel = 1): string
     {
         $indent  = str_repeat(' ', $indentLevel * 4);
         $entries = [];
@@ -219,11 +189,7 @@ EOC;
         );
     }
 
-    /**
-     * @param string|int|null $key
-     * @return null|string
-     */
-    private function createConfigKey($key)
+    private function createConfigKey(string|int|null $key): string|null
     {
         if (is_string($key) && class_exists($key)) {
             return sprintf('\\%s::class', $key);
@@ -237,12 +203,11 @@ EOC;
     }
 
     /**
-     * @param int $indentLevel
-     * @return string
+     * @param int<0,max> $indentLevel
      */
-    private function createConfigValue(mixed $value, $indentLevel)
+    private function createConfigValue(mixed $value, int $indentLevel): string
     {
-        if (is_array($value) || $value instanceof Traversable) {
+        if (is_iterable($value)) {
             return $this->prepareConfig($value, $indentLevel + 1);
         }
 
