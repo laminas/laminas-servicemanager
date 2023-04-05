@@ -2,7 +2,7 @@
 
 - Since 4.0.0
 
-In addition to the already existing [Reflection Factory](TODO), one can create factories for those services using `ReflectionBasedAbstractFactory` before deploying the project to production.
+In addition to the already existing [Reflection Factory](reflection-abstract-factory.md), one can create factories for those services using `ReflectionBasedAbstractFactory` before deploying the project to production.
 For this purpose, a `laminas-cli` command was created. Therefore, `laminas/laminas-cli` is required as at least a `require-dev` dependency.
 Using `ReflectionBasedAbstractFactory` in production is not recommended as the usage of `Reflection` is not too performant. 
 
