@@ -85,7 +85,7 @@ final class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): object
     {
         if (! class_exists($requestedName)) {
             throw new InvalidArgumentException(sprintf('%s can only be used with class names.', self::class));
@@ -101,7 +101,7 @@ final class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
     }
 
     /** {@inheritDoc} */
-    public function canCreate(ContainerInterface $container, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName): bool
     {
         return class_exists($requestedName) && $this->canCallConstructor($requestedName);
     }
