@@ -23,6 +23,8 @@ When the CLI command has finished, there are all factories generated within the 
 
 When the project is executed having all the files in-place, the generated factory classes are picked up instead of the `ReflectionBasedAbstractFactory` and thus, no additional runtime side-effects based on `Reflection` will occur.
 
+Ensure that both `<target for generated factory config>` file and the directory (including sub-directories and files) configured within `ConfigProvider::CONFIGURATION_KEY_FACTORY_TARGET_PATH`` is being picked up when generating the artifact which is deployed to production. 
+
 ## Project Setup
 
 The project needs some additional configuration so that the generated factories are properly detected and registered.
@@ -86,7 +88,6 @@ The CLI command to generate the factories expects a path to a file, which will b
 
 For example, if the CLI command detects `Laminas-MVC` `service_manager` service and `laminas/laminas-validator` validators using `ReflectionBasedAbstractFactory`, it will create a file like this:
 
-**after**
 ```php
 return [
     'service_manager' => [
