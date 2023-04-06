@@ -33,6 +33,13 @@
                 <referencedClass name="Psr\Container\ContainerExceptionInterface"/>
             </errorLevel>
         </InvalidThrow>
+        <DeprecatedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="Laminas\ServiceManager\DelegatorFactoryInterface"/>
+                <referencedClass name="Laminas\ServiceManager\InitializerInterface"/>
+                <referencedClass name="Laminas\ServiceManager\FactoryInterface"/>
+            </errorLevel>
+        </DeprecatedClass>
         <DeprecatedProperty>
             <errorLevel type="suppress">
                 <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$initializers"/>
@@ -45,16 +52,6 @@
                 <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$factories"/>
             </errorLevel>
         </DeprecatedProperty>
-    </issueHandlers>
-
-    <issueHandlers>
-        <DeprecatedClass>
-            <errorLevel type="suppress">
-                <referencedClass name="Laminas\ServiceManager\DelegatorFactoryInterface"/>
-                <referencedClass name="Laminas\ServiceManager\InitializerInterface"/>
-                <referencedClass name="Laminas\ServiceManager\FactoryInterface"/>
-            </errorLevel>
-        </DeprecatedClass>
         <InvalidThrow>
             <errorLevel type="suppress">
                 <referencedClass name="Interop\Container\Exception\ContainerException"/>
@@ -73,6 +70,11 @@
                 <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::mapLazyService"/>
             </errorLevel>
         </DeprecatedMethod>
+        <DeprecatedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="Laminas\ServiceManager\Config"/>
+            </errorLevel>
+        </DeprecatedClass>
         <InternalClass>
             <errorLevel type="suppress">
                 <!-- Tests are allowed to work with internal classes -->

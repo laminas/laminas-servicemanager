@@ -24,15 +24,15 @@ use function sprintf;
  *
  * @template InstanceType
  * @template-implements PluginManagerInterface<InstanceType>
- * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
- * @psalm-import-type FactoryCallableType from ConfigInterface
- * @psalm-import-type DelegatorCallableType from ConfigInterface
- * @psalm-import-type InitializerCallableType from ConfigInterface
- * @psalm-import-type AbstractFactoriesConfigurationType from ConfigInterface
- * @psalm-import-type DelegatorsConfigurationType from ConfigInterface
- * @psalm-import-type FactoriesConfigurationType from ConfigInterface
- * @psalm-import-type InitializersConfigurationType from ConfigInterface
- * @psalm-import-type LazyServicesConfigurationType from ConfigInterface
+ * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
+ * @psalm-import-type FactoryCallableType from ServiceManager
+ * @psalm-import-type DelegatorCallableType from ServiceManager
+ * @psalm-import-type InitializerCallableType from ServiceManager
+ * @psalm-import-type AbstractFactoriesConfigurationType from ServiceManager
+ * @psalm-import-type DelegatorsConfigurationType from ServiceManager
+ * @psalm-import-type FactoriesConfigurationType from ServiceManager
+ * @psalm-import-type InitializersConfigurationType from ServiceManager
+ * @psalm-import-type LazyServicesConfigurationType from ServiceManager
  */
 abstract class AbstractPluginManager implements PluginManagerInterface
 {

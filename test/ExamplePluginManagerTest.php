@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager;
 
 use Laminas\ServiceManager\AbstractPluginManager;
-use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\ServiceManager;
 use Laminas\ServiceManager\Test\CommonPluginManagerTrait;
 use LaminasTest\ServiceManager\TestAsset\InvokableObject;
@@ -16,7 +15,7 @@ use RuntimeException;
 /**
  * Example test of using CommonPluginManagerTrait
  *
- * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
  */
 final class ExamplePluginManagerTest extends TestCase
 {

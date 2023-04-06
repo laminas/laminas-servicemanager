@@ -6,7 +6,6 @@ namespace LaminasTest\ServiceManager;
 
 use DateTime;
 use Laminas\ServiceManager\AbstractPluginManager;
-use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
@@ -37,10 +36,9 @@ use function assert;
 use function in_array;
 
 /**
- * @see ConfigInterface
  * @see TestCase
  *
- * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
  * @psalm-require-extends TestCase
  */
 trait CommonServiceLocatorBehaviorsTrait

@@ -90,8 +90,7 @@
     </MixedAssignment>
   </file>
   <file src="src/ServiceManager.php">
-    <InvalidArgument occurrences="3">
-      <code>['delegators' =&gt; [$name =&gt; [$factory]]]</code>
+    <InvalidArgument occurrences="2">
       <code>['initializers' =&gt; [$initializer]]</code>
       <code>['lazy_services' =&gt; ['class_map' =&gt; [$name =&gt; $class ?: $name]]]</code>
     </InvalidArgument>

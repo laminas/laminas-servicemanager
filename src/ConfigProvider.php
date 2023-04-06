@@ -22,7 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use function class_exists;
 
 /**
- * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
  */
 final class ConfigProvider
 {

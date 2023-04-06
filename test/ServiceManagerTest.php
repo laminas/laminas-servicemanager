@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager;
 
 use DateTime;
-use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -19,10 +18,8 @@ use ReflectionProperty;
 use stdClass;
 
 /**
- * @see ConfigInterface
- *
  * @covers \Laminas\ServiceManager\ServiceManager
- * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
  */
 final class ServiceManagerTest extends TestCase
 {
