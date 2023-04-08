@@ -23,7 +23,7 @@ When the CLI command has finished, there are all factories generated within the 
 
 When the project is executed having all the files in-place, the generated factory classes are picked up instead of the `ReflectionBasedAbstractFactory` and thus, no additional runtime side-effects based on `Reflection` will occur.
 
-Ensure that both `<target for generated factory config>` file and the directory (including sub-directories and files) configured within `ConfigProvider::CONFIGURATION_KEY_FACTORY_TARGET_PATH`` is being picked up when generating the artifact which is deployed to production. 
+Ensure that both `<target for generated factory config>` file and the directory (including sub-directories and files) configured within `ConfigProvider::CONFIGURATION_KEY_FACTORY_TARGET_PATH` is being picked up when generating the artifact which is deployed to production. 
 
 ## Project Setup
 
