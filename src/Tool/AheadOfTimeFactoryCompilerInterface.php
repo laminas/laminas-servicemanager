@@ -9,5 +9,5 @@ interface AheadOfTimeFactoryCompilerInterface
     /**
      * @return list<AheadOfTimeCompiledFactory>
      */
-    public function compile(iterable $config): array;
+    public function compile(array $config): array;
 }

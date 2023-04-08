@@ -24,7 +24,7 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
     ) {
     }
 
-    public function compile(iterable $config): array
+    public function compile(array $config): array
     {
         $servicesRegisteredByReflectionBasedFactory = $this->extractServicesRegisteredByReflectionBasedFactory(
             $config
@@ -44,15 +44,14 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
     }
 
     /**
-     * @param iterable $config
      * @return array<class-string,array{non-empty-string,array<string,string>}>
      */
-    private function extractServicesRegisteredByReflectionBasedFactory(iterable $config): array
+    private function extractServicesRegisteredByReflectionBasedFactory(array $config): array
     {
         $services = [];
 
         foreach ($config as $key => $entry) {
-            if (! is_array($entry)) {
+            if (! is_string($key) || $key === '' || ! is_array($entry)) {
                 continue;
             }
 
@@ -73,12 +72,11 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
                 continue;
             }
 
-            assert(is_string($key) && $key !== '');
-
             foreach ($servicesUsingReflectionBasedFactory as $service => $factory) {
                 if (! class_exists($service)) {
                     throw new InvalidArgumentException(sprintf(
-                        'Configured service "%s" using the `ReflectionBasedAbstractFactory` does not exist.',
+                        'Configured service "%s" using the `ReflectionBasedAbstractFactory` does not exist or does'
+                        .' not refer to an actual class.',
                         $service
                     ));
                 }
