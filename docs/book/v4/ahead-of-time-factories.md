@@ -1,10 +1,10 @@
-# Ahead of Time Factories 
+# Ahead of Time Factories
 
 - Since 4.0.0
 
 In addition to the already existing [Reflection Factory](reflection-abstract-factory.md), one can create factories for those services using `ReflectionBasedAbstractFactory` before deploying the project to production.
 For this purpose, a `laminas-cli` command was created. Therefore, `laminas/laminas-cli` is required as at least a `require-dev` dependency.
-Using `ReflectionBasedAbstractFactory` in production is not recommended as the usage of `Reflection` is not too performant. 
+Using `ReflectionBasedAbstractFactory` in production is not recommended as the usage of `Reflection` is not too performant.
 
 ## Usage
 
@@ -12,7 +12,7 @@ It is recommended to create factories within CI pipeline. While developing a ser
 
 To generate the factories, run the following CLI command after [setting up the project](#project-setup):
 
-```
+```shell
 $ php vendor/bin/laminas servicemanager:generate-aot-factories [<target for generated factory config>]
 ```
 
@@ -23,7 +23,7 @@ When the CLI command has finished, there are all factories generated within the 
 
 When the project is executed having all the files in-place, the generated factory classes are picked up instead of the `ReflectionBasedAbstractFactory` and thus, no additional runtime side-effects based on `Reflection` will occur.
 
-Ensure that both `<target for generated factory config>` file and the directory (including sub-directories and files) configured within `ConfigProvider::CONFIGURATION_KEY_FACTORY_TARGET_PATH` is being picked up when generating the artifact which is deployed to production. 
+Ensure that both `<target for generated factory config>` file and the directory (including sub-directories and files) configured within `ConfigProvider::CONFIGURATION_KEY_FACTORY_TARGET_PATH` is being picked up when generating the artifact which is deployed to production.
 
 ## Project Setup
 
@@ -34,7 +34,7 @@ The project needs some additional configuration so that the generated factories 
 To execute the CLI command which auto-detects all services using the `ReflectionBasedAbstractFactory`, `laminas/laminas-cli` needs to be added as at least a dev requirement.
 There is no TODO in case that `laminas/laminas-cli` is already available in the project.
 
-```
+```shell
 $ composer require --dev laminas/laminas-cli
 ```
 
@@ -46,7 +46,7 @@ Use either `config/autoload/global.php` (which might already exist) or the `Appl
 
 Both Laminas-MVC and Mezzio do share the configuration directory structure as follows:
 
-```
+```text
 .
 ├── config
 │   ├── autoload
@@ -80,6 +80,7 @@ This will provide composer with the information, that PHP classes can be found w
 > The `autoload` config folder is scanned for files named `[<whatever>]<environment|global|local>.php`.
 > Those files containing `[*.]local.php` are ignored via `.gitignore` so that these are not accidentally committed.
 > The configuration merge will happen in the following order:
+>
 >  1. global configurations are used first
 >  2. global configurations are overridden by environment specific configurations
 >  3. global and environment specific configurations are overridden by local configurations
