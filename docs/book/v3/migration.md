@@ -855,7 +855,7 @@ class FooInitializer implements InitializerInterface
 }
 ```
 
-> ### Update your callables!
+> ### Update your callables
 >
 > Version 2 allows you to provide initializers as PHP callables. However, this
 > means that the signature of those callables is incorrect for version 3!
