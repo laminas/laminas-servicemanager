@@ -1,6 +1,6 @@
 # Migration Guide
 
-The Service Manager was first introduced for Laminas.0.0. Its API
+The Service Manager was first introduced for Laminas 2.0.0. Its API
 remained the same throughout that version.
 
 Version 3 is the first new major release of the Service Manager, and contains a
@@ -116,7 +116,7 @@ version 2 in version 3. However, we recommend starting to update your
 configuration to remove `invokables` entries in favor of factories (and aliases,
 if needed).
 
-> #### Invokables and plugin managers
+> ### Invokables and plugin managers
 >
 > If you are creating a plugin manager and in-lining invokables into the class
 > definition, you will need to make some changes.
@@ -718,7 +718,7 @@ class FooFactory implements FactoryInterface
 }
 ```
 
-> #### Many factories already work with v3!
+> #### Many factories already work with v3
 >
 > Within the skeleton application, tutorial, and even in commonly shipped
 > modules such as those in Laminas API Tools, we have typically suggested building your
@@ -1275,7 +1275,6 @@ This will check that:
 - `$shareByDefault` and `$sharedByDefault` match, if present.
 - That requesting an invalid plugin throws the right exception.
 - That all your aliases resolve.
-
 
 ### Post migration
 
