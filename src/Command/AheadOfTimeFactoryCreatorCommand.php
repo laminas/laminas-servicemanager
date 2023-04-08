@@ -17,6 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use function assert;
 use function count;
+use function dirname;
 use function file_put_contents;
 use function is_dir;
 use function is_string;
@@ -64,7 +65,8 @@ final class AheadOfTimeFactoryCreatorCommand extends Command
             $output->writeln(sprintf(
                 '<error>Please configure the `%s` configuration key in your projects config and ensure that the'
                 . ' directory is registered to the composer autoloader using `classmap` and writable by the executing'
-                . ' user.</error>',
+                . ' user. In case you are targeting a nonexistent directory, please create the appropriate directory'
+                . ' structure before executing this command.</error>',
                 ConfigProvider::CONFIGURATION_KEY_FACTORY_TARGET_PATH,
             ));
 
@@ -73,6 +75,17 @@ final class AheadOfTimeFactoryCreatorCommand extends Command
 
         $localConfigFilename = $input->getArgument('localConfigFilename');
         assert(is_string($localConfigFilename));
+
+        if (! is_writable(dirname($localConfigFilename))) {
+            $output->writeln(sprintf(
+                '<error>Provided `localConfigFilename` argument "%s" is not writable. In case you are targeting a'
+                . ' nonexistent directory, please create the appropriate directory structure before executing this'
+                . ' command.</error>',
+                $localConfigFilename,
+            ));
+
+            return self::FAILURE;
+        }
 
         $compiledFactories = $this->factoryCompiler->compile($this->config);
         if ($compiledFactories === []) {
