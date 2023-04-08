@@ -7,6 +7,8 @@ namespace Laminas\ServiceManager\Tool;
 final class AheadOfTimeCompiledFactory
 {
     /**
+     * @internal
+     *
      * @param class-string     $fullyQualifiedClassName
      * @param non-empty-string $containerConfigurationKey
      * @param non-empty-string $generatedFactory
