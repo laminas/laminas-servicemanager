@@ -28,7 +28,7 @@ return [
 ];
 ```
 
-Mapping services to the factory is more explicit and performant.
+Mapping services to the factory is more explicit and even more performant than in v3.0 due to the [ahead of time factory generation](ahead-of-time-factories.md).
 
 The factory operates with the following constraints/features:
 
@@ -44,110 +44,13 @@ The factory operates with the following constraints/features:
 `$options` passed to the factory are ignored in all cases, as we cannot
 make assumptions about which argument(s) they might replace.
 
-Once your dependencies have stabilized, we recommend writing a dedicated
-factory, as reflection can introduce performance overhead; you may use the
-[generate-factory-for-class console tool](console-tools.md#generate-factory-for-class)
-to do so.
+Once your dependencies have stabilized, we recommend providing a dedicated
+factory, as reflection introduces a performance overhead.
 
-## Handling well-known services
+There are two ways to provide dedicated factories for services consuming `ReflectionBasedAbstractFactory`:
 
-Some services provided by Laminas components do not have
-entries based on their class name (for historical reasons). As examples:
-
-- `Laminas\Console\Adapter\AdapterInterface` maps to the service name `ConsoleAdapter`,
-- `Laminas\Filter\FilterPluginManager` maps to the service name `FilterManager`,
-- `Laminas\Hydrator\HydratorPluginManager` maps to the service name `HydratorManager`,
-- `Laminas\InputFilter\InputFilterPluginManager` maps to the service name `InputFilterManager`,
-- `Laminas\Log\FilterPluginManager` maps to the service name `LogFilterManager`,
-- `Laminas\Log\FormatterPluginManager` maps to the service name `LogFormatterManager`,
-- `Laminas\Log\ProcessorPluginManager` maps to the service name `LogProcessorManager`,
-- `Laminas\Log\WriterPluginManager` maps to the service name `LogWriterManager`,
-- `Laminas\Serializer\AdapterPluginManager` maps to the service name `SerializerAdapterManager`,
-- `Laminas\Validator\ValidatorPluginManager` maps to the service name `ValidatorManager`,
-
-To allow the `ReflectionBasedAbstractFactory` to find these, you have two
-options.
-
-The first is to pass an array of mappings via the constructor:
-
-```php
-$reflectionFactory = new ReflectionBasedAbstractFactory([
-    \Laminas\Console\Adapter\AdapterInterface::class     => 'ConsoleAdapter',
-    \Laminas\Filter\FilterPluginManager::class           => 'FilterManager',
-    \Laminas\Hydrator\HydratorPluginManager::class       => 'HydratorManager',
-    \Laminas\InputFilter\InputFilterPluginManager::class => 'InputFilterManager',
-    \Laminas\Log\FilterPluginManager::class              => 'LogFilterManager',
-    \Laminas\Log\FormatterPluginManager::class           => 'LogFormatterManager',
-    \Laminas\Log\ProcessorPluginManager::class           => 'LogProcessorManager',
-    \Laminas\Log\WriterPluginManager::class              => 'LogWriterManager',
-    \Laminas\Serializer\AdapterPluginManager::class      => 'SerializerAdapterManager',
-    \Laminas\Validator\ValidatorPluginManager::class     => 'ValidatorManager',
-]);
-```
-
-This can be done either in your configuration file (which could be problematic
-when considering serialization for caching), or during an early phase of
-application bootstrapping.
-
-For instance, with laminas-mvc, this might be in your `Application` module's
-bootstrap listener:
-
-```php
-namespace Application
-
-use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
-
-class Module
-{
-    public function onBootstrap($e)
-    {
-        $application = $e->getApplication();
-        $container = $application->getServiceManager();
-
-        $container->addAbstractFactory(new ReflectionBasedAbstractFactory([
-            /* ... */
-        ]));
-    }
-}
-```
-
-For Mezzio, it could be part of your `config/container.php` definition:
-
-```php
-$container = new ServiceManager();
-(new Config($config['dependencies']))->configureServiceManager($container);
-// Add the following:
-$container->addAbstractFactory(new ReflectionBasedAbstractFactory([
-    /* ... */
-]));
-```
-
-The second approach is to extend the class, and define the map in the
-`$aliases` property:
-
-```php
-namespace Application;
-
-use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
-
-class ReflectionAbstractFactory extends ReflectionBasedAbstractFactory
-{
-    protected $aliases = [
-        \Laminas\Console\Adapter\AdapterInterface::class     => 'ConsoleAdapter',
-        \Laminas\Filter\FilterPluginManager::class           => 'FilterManager',
-        \Laminas\Hydrator\HydratorPluginManager::class       => 'HydratorManager',
-        \Laminas\InputFilter\InputFilterPluginManager::class => 'InputFilterManager',
-        \Laminas\Log\FilterPluginManager::class              => 'LogFilterManager',
-        \Laminas\Log\FormatterPluginManager::class           => 'LogFormatterManager',
-        \Laminas\Log\ProcessorPluginManager::class           => 'LogProcessorManager',
-        \Laminas\Log\WriterPluginManager::class              => 'LogWriterManager',
-        \Laminas\Serializer\AdapterPluginManager::class      => 'SerializerAdapterManager',
-        \Laminas\Validator\ValidatorPluginManager::class     => 'ValidatorManager',
-    ];
-}
-```
-
-You could then register it via class name in your service configuration.
+1. Usage of the [generate-factory-for-class console tool](console-tools.md#generate-factory-for-class) (this will also require to manually modify the configuration)
+2. Usage of the [generate-aot-factories console tool](console-tools.md#generate-ahead-of-time-factories) which needs an initial project + deployment setup
 
 ## Alternatives
 
