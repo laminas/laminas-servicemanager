@@ -18,7 +18,7 @@ interface ConstructorParameterResolverInterface
     public function resolveConstructorParameters(
         string $className,
         ContainerInterface $container,
-        array $aliases,
+        array $aliases = [],
     ): array;
 
     /**
@@ -32,6 +32,6 @@ interface ConstructorParameterResolverInterface
     public function resolveConstructorParameterServiceNamesOrFallbackTypes(
         string $className,
         ContainerInterface $container,
-        array $aliases,
+        array $aliases = [],
     ): array;
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
+use ArrayAccess;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
@@ -13,6 +14,7 @@ use ReflectionParameter;
 use function array_map;
 use function assert;
 use function class_exists;
+use function in_array;
 use function interface_exists;
 use function sprintf;
 
@@ -25,7 +27,7 @@ final class ConstructorParameterResolver implements ConstructorParameterResolver
     public function resolveConstructorParameters(
         string $className,
         ContainerInterface $container,
-        array $aliases
+        array $aliases = []
     ): array {
         $parameters = $this->resolveConstructorParameterServiceNamesOrFallbackTypes($className, $container, $aliases);
 
@@ -83,7 +85,10 @@ final class ConstructorParameterResolver implements ConstructorParameterResolver
         ): FallbackConstructorParameter|ServiceFromContainerConstructorParameter {
             if ($parameter->getName() === 'config') {
                 $type = $parameter->getType();
-                if ($type instanceof ReflectionNamedType && $type->getName() === 'array') {
+                if (
+                    $type instanceof ReflectionNamedType
+                    && in_array($type->getName(), ['array', ArrayAccess::class], true)
+                ) {
                     return new ServiceFromContainerConstructorParameter('config');
                 }
             }
@@ -107,10 +112,6 @@ final class ConstructorParameterResolver implements ConstructorParameterResolver
     ): FallbackConstructorParameter|ServiceFromContainerConstructorParameter {
         $type = $parameter->getType();
         $type = $type instanceof ReflectionNamedType ? $type->getName() : null;
-
-        if ($type === 'array') {
-            return new FallbackConstructorParameter([]);
-        }
 
         if ($type === null || (! class_exists($type) && ! interface_exists($type))) {
             if (! $parameter->isDefaultValueAvailable()) {
@@ -150,7 +151,7 @@ final class ConstructorParameterResolver implements ConstructorParameterResolver
     public function resolveConstructorParameterServiceNamesOrFallbackTypes(
         string $className,
         ContainerInterface $container,
-        array $aliases,
+        array $aliases = [],
     ): array {
         $reflectionClass = new ReflectionClass($className);
 

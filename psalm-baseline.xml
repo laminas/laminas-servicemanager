@@ -20,36 +20,9 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$requestedName</code>
     </ArgumentTypeCoercion>
-    <LessSpecificReturnStatement occurrences="3">
-      <code>new $requestedName()</code>
-      <code>new $requestedName()</code>
-      <code>new $requestedName(...$parameters)</code>
-    </LessSpecificReturnStatement>
-    <MissingClosureReturnType occurrences="1">
-      <code>function (ReflectionParameter $parameter) use ($container, $requestedName) {</code>
-    </MissingClosureReturnType>
-    <MissingParamType occurrences="1">
-      <code>$requestedName</code>
-    </MissingParamType>
-    <MixedArgument occurrences="3">
-      <code>$requestedName</code>
-      <code>$requestedName</code>
-      <code>$requestedName</code>
-    </MixedArgument>
-    <MixedMethodCall occurrences="3">
-      <code>new $requestedName()</code>
-      <code>new $requestedName()</code>
+    <MixedMethodCall occurrences="1">
       <code>new $requestedName(...$parameters)</code>
     </MixedMethodCall>
-    <MoreSpecificReturnType occurrences="1">
-      <code>DispatchableInterface</code>
-    </MoreSpecificReturnType>
-    <RedundantCondition occurrences="1">
-      <code>is_string($type)</code>
-    </RedundantCondition>
-    <UndefinedDocblockClass occurrences="1">
-      <code>DispatchableInterface</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="src/AbstractPluginManager.php">
     <ArgumentTypeCoercion occurrences="2">
@@ -279,21 +252,6 @@
       <code>'Holistic'</code>
     </InvalidArgument>
   </file>
-  <file src="test/AbstractFactory/ReflectionBasedAbstractFactoryTest.php">
-    <DocblockTypeContradiction occurrences="8">
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-    </DocblockTypeContradiction>
-    <MixedInferredReturnType occurrences="1">
-      <code>array</code>
-    </MixedInferredReturnType>
-  </file>
   <file src="test/AbstractPluginManagerTest.php">
     <DeprecatedMethod occurrences="1">
       <code>setServiceLocator</code>
@@ -334,9 +292,6 @@
     </UnusedClosureParam>
   </file>
   <file src="test/CommonServiceLocatorBehaviorsTrait.php">
-    <DeprecatedMethod occurrences="1">
-      <code>getServiceLocator</code>
-    </DeprecatedMethod>
     <EmptyArrayAccess occurrences="1">
       <code>$object['get'][0]</code>
     </EmptyArrayAccess>
@@ -368,7 +323,7 @@
       <code>$names[$name]</code>
       <code>$object[$shared ? $method : 'build']</code>
     </MixedArrayOffset>
-    <MixedAssignment occurrences="22">
+    <MixedAssignment occurrences="14">
       <code>$first</code>
       <code>$idx1</code>
       <code>$idx2</code>
@@ -379,14 +334,6 @@
       <code>$nonSharedObj1</code>
       <code>$nonSharedObj2</code>
       <code>$obj</code>
-      <code>$object1</code>
-      <code>$object1</code>
-      <code>$object1</code>
-      <code>$object1</code>
-      <code>$object2</code>
-      <code>$object2</code>
-      <code>$object2</code>
-      <code>$object2</code>
       <code>$object[$shared ? $method : 'build'][]</code>
       <code>$second</code>
       <code>$shared</code>
@@ -467,15 +414,9 @@
       <code>$context</code>
       <code>$name</code>
     </MissingClosureParamType>
-    <MixedAssignment occurrences="17">
-      <code>$a</code>
-      <code>$alias</code>
-      <code>$alias</code>
-      <code>$b</code>
-      <code>$headAlias</code>
+    <MixedAssignment occurrences="9">
       <code>$inc</code>
       <code>$inc</code>
-      <code>$instance</code>
       <code>$instance1</code>
       <code>$instance1</code>
       <code>$instance2</code>
@@ -492,10 +433,6 @@
     <MixedOperand occurrences="1">
       <code>$inc</code>
     </MixedOperand>
-    <MixedPropertyFetch occurrences="2">
-      <code>$instance-&gt;foo</code>
-      <code>$instance-&gt;option</code>
-    </MixedPropertyFetch>
     <UnusedClosureParam occurrences="6">
       <code>$container</code>
       <code>$container</code>
