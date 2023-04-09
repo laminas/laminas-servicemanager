@@ -11,11 +11,13 @@ use Laminas\ServiceManager\Tool\FactoryCreatorInterface;
 use function array_filter;
 use function array_key_exists;
 use function class_exists;
+use function enum_exists;
 use function is_array;
 use function is_string;
 use function sprintf;
 
 use const ARRAY_FILTER_USE_BOTH;
+use const PHP_VERSION_ID;
 
 final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInterface
 {
@@ -73,7 +75,7 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
             }
 
             foreach ($servicesUsingReflectionBasedFactory as $service => $factory) {
-                if (! class_exists($service)) {
+                if (!$this->canServiceBeUsedWithReflectionBasedFactory($service)) {
                     throw new InvalidArgumentException(sprintf(
                         'Configured service "%s" using the `ReflectionBasedAbstractFactory` does not exist or does'
                         . ' not refer to an actual class.',
@@ -100,5 +102,24 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
         }
 
         return $services;
+    }
+
+    /**
+     * Starting with PHP 8.1, `class_exists` resolves to `true` for enums.
+     * @link https://3v4l.org/FY7eg
+     *
+     * @psalm-assert-if-true class-string $service
+     */
+    private function canServiceBeUsedWithReflectionBasedFactory(string $service): bool
+    {
+        if (! class_exists($service)) {
+            return false;
+        }
+
+        if (PHP_VERSION_ID < 80100) {
+            return true;
+        }
+
+        return !enum_exists($service);
     }
 }
