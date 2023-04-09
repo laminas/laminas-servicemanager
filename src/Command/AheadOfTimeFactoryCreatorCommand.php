@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use function assert;
+use function class_exists;
 use function count;
 use function dirname;
 use function file_put_contents;
@@ -105,14 +106,24 @@ final class AheadOfTimeFactoryCreatorCommand extends Command
                 preg_replace('/\W/', '', $factory->containerConfigurationKey)
             );
 
+            /** @var class-string<FactoryInterface> $factoryClassName */
+            $factoryClassName = sprintf('%sFactory', $factory->fullyQualifiedClassName);
+            if (class_exists($factoryClassName)) {
+                $output->writeln(sprintf(
+                    '<error>There is already an existing factory class registered for "%s": %s</error>',
+                    $factory->fullyQualifiedClassName,
+                    $factoryClassName,
+                ));
+
+                return self::FAILURE;
+            }
+
             if (! is_dir($targetDirectory)) {
                 if (! mkdir($targetDirectory, recursive: true) && ! is_dir($targetDirectory)) {
                     throw new RuntimeException(sprintf('Unable to create directory "%s".', $targetDirectory));
                 }
             }
 
-            /** @var class-string<FactoryInterface> $factoryClassName */
-            $factoryClassName = sprintf('%sFactory', $factory->fullyQualifiedClassName);
             $factoryFileName  = sprintf(
                 '%s/%s.php',
                 $targetDirectory,
