@@ -269,7 +269,7 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
             ->willReturn(sprintf('%s/%s', $directory, $localConfigFilename));
 
         $generatedFactoryAssetPath = __DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php';
-        $generatedFactory = file_get_contents($generatedFactoryAssetPath);
+        $generatedFactory          = file_get_contents($generatedFactoryAssetPath);
         assert($generatedFactory !== '');
 
         $this->factoryCompiler
@@ -285,7 +285,7 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
 
         $this->assertErrorRaised(
             'There is already an existing factory class registered for'
-            .' "LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObject": LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObjectFactory'
+            . ' "LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObject": LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObjectFactory'
         );
 
         require $generatedFactoryAssetPath;
