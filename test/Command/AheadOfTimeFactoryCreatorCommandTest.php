@@ -285,7 +285,8 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
 
         $this->assertErrorRaised(
             'There is already an existing factory class registered for'
-            . ' "LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObject": LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObjectFactory'
+            . ' "LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObject":'
+            . ' LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObjectFactory'
         );
 
         require $generatedFactoryAssetPath;
