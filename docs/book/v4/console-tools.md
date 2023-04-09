@@ -11,6 +11,7 @@ To run the console tools with `laminas-servicemanager` v4, the [`laminas/laminas
 > ```shell
 > $ composer require laminas/laminas-cli
 > ```
+>
 > _In case laminas-cli is only required to consume these console tools, you might consider using the `--dev` flag._
 
 ## Available Commands
@@ -99,4 +100,4 @@ Options:
 
 This utility will generate factories in the same way as [servicemanager:generate-factory-for-class](#generate-factory-for-class). The main difference is, that it will scan the whole project configuration for the usage of `ReflectionBasedAbstractFactory` within **any** ServiceManager look-a-like configuration (i.e. explicit usage within `factories`) and auto-generates factories for all of these services **plus** creates a configuration file which overrides **all** ServiceManager look-a-like configurations so that these consume the generated factories.
 
-For more details and how to set up a project so that all factories are properly replaced, refer to the [dedicated command documentation](ahead-of-time-factories.md). 
+For more details and how to set up a project so that all factories are properly replaced, refer to the [dedicated command documentation](ahead-of-time-factories.md).
