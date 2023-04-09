@@ -9,7 +9,6 @@ use Laminas\ServiceManager\Exception\InvalidArgumentException;
 
 use function array_filter;
 use function array_key_exists;
-use function assert;
 use function class_exists;
 use function is_array;
 use function is_string;
@@ -76,7 +75,7 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
                 if (! class_exists($service)) {
                     throw new InvalidArgumentException(sprintf(
                         'Configured service "%s" using the `ReflectionBasedAbstractFactory` does not exist or does'
-                        .' not refer to an actual class.',
+                        . ' not refer to an actual class.',
                         $service
                     ));
                 }
