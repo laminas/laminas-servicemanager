@@ -220,6 +220,11 @@
       <code>array</code>
     </MixedInferredReturnType>
   </file>
+  <file src="src/Tool/AheadOfTimeFactoryCompiler/AheadOfTimeFactoryCompiler.php">
+    <UndefinedFunction occurrences="1">
+      <code>enum_exists($service)</code>
+    </UndefinedFunction>
+  </file>
   <file src="src/Tool/ConfigDumper.php">
     <MixedArgument occurrences="3">
       <code>$config['service_manager']</code>
@@ -422,8 +427,6 @@
       <code>$instance2</code>
       <code>$instance2</code>
       <code>$service</code>
-      <code>$service</code>
-      <code>$service</code>
       <code>$serviceFromAlias</code>
       <code>$serviceFromServiceNameAfterUsingAlias</code>
     </MixedAssignment>
@@ -441,6 +444,21 @@
       <code>$name</code>
       <code>$name</code>
     </UnusedClosureParam>
+  </file>
+  <file src="test/Tool/AheadOfTimeFactoryCompiler/AheadOfTimeFactoryCompilerTest.php">
+    <LessSpecificReturnStatement occurrences="1"/>
+    <MoreSpecificReturnType occurrences="1">
+      <code>array&lt;non-empty-string,array{string}&gt;</code>
+    </MoreSpecificReturnType>
+    <UndefinedClass occurrences="1">
+      <code>WhateverEnum</code>
+    </UndefinedClass>
+  </file>
+  <file src="test/Tool/AheadOfTimeFactoryCompiler/TestAsset/WhateverEnum.php">
+    <ParseError occurrences="2">
+      <code>WhateverEnum</code>
+      <code>case</code>
+    </ParseError>
   </file>
   <file src="test/Tool/ConfigDumperTest.php">
     <MixedAssignment occurrences="1">
