@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace LaminasTest\ServiceManager\Tool;
+namespace LaminasTest\ServiceManager\Tool\ConstructorParameterResolver;
 
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolver;
-use Laminas\ServiceManager\Tool\FallbackConstructorParameter;
-use Laminas\ServiceManager\Tool\ServiceFromContainerConstructorParameter;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolver;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\FallbackConstructorParameter;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ServiceFromContainerConstructorParameter;
 use LaminasTest\ServiceManager\AbstractFactory\TestAsset\ClassAcceptingConfigToConstructor;
 use LaminasTest\ServiceManager\AbstractFactory\TestAsset\ClassAcceptingWellKnownServicesAsConstructorParameters;
 use LaminasTest\ServiceManager\AbstractFactory\TestAsset\ClassWithMixedConstructorParameters;

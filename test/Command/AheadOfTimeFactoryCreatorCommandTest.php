@@ -6,8 +6,8 @@ namespace LaminasTest\ServiceManager\Command;
 
 use Laminas\ServiceManager\Command\AheadOfTimeFactoryCreatorCommand;
 use Laminas\ServiceManager\ConfigProvider;
-use Laminas\ServiceManager\Tool\AheadOfTimeCompiledFactory;
-use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompilerInterface;
+use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeCompiledFactory;
+use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
 use LaminasTest\ServiceManager\TestAsset\SimpleDependencyObject;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;

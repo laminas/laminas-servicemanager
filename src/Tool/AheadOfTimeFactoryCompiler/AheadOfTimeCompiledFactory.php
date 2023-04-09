@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laminas\ServiceManager\Tool;
+namespace Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler;
 
 final class AheadOfTimeCompiledFactory
 {

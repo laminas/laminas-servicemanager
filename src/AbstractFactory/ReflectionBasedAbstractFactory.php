@@ -6,8 +6,8 @@ namespace Laminas\ServiceManager\AbstractFactory;
 
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolver;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolverInterface;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolver;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 

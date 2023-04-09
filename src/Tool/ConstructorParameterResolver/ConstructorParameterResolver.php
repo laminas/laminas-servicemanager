@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laminas\ServiceManager\Tool;
+namespace Laminas\ServiceManager\Tool\ConstructorParameterResolver;
 
 use ArrayAccess;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;

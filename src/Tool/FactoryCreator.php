@@ -7,6 +7,9 @@ namespace Laminas\ServiceManager\Tool;
 use Brick\VarExporter\VarExporter;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\ServiceManager;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolver;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ServiceFromContainerConstructorParameter;
 use Psr\Container\ContainerInterface;
 
 use function array_map;

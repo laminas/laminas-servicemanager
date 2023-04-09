@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager\Command;
 
 use Laminas\ServiceManager\ConfigProvider;
-use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompilerInterface;
+use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
 use Psr\Container\ContainerInterface;
 
 use function is_array;

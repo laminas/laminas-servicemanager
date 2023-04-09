@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Laminas\ServiceManager\Tool;
+namespace Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler;
 
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
+use Laminas\ServiceManager\Tool\FactoryCreatorInterface;
 
 use function array_filter;
 use function array_key_exists;

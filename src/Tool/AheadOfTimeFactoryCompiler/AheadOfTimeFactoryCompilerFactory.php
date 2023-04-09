@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Laminas\ServiceManager\Tool;
+namespace Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler;
 
+use Laminas\ServiceManager\Tool\FactoryCreatorInterface;
 use Psr\Container\ContainerInterface;
 
 final class AheadOfTimeFactoryCompilerFactory

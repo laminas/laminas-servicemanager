@@ -9,7 +9,7 @@ use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\ConfigProvider;
 use Laminas\ServiceManager\Exception\RuntimeException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompilerInterface;
+use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

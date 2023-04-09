@@ -7,7 +7,7 @@ namespace LaminasTest\ServiceManager\AbstractFactory;
 use Laminas\ServiceManager\AbstractFactory\ReflectionBasedAbstractFactory;
 use Laminas\ServiceManager\Exception\ExceptionInterface;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolverInterface;
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
 use LaminasTest\ServiceManager\AbstractFactory\TestAsset\ClassWithConstructorAcceptingAnyArgument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
