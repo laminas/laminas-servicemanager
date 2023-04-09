@@ -59,16 +59,15 @@ EOC;
             return $this->createInvokable($config, $className);
         }
 
-        $constructorArguments = $constructor->getParameters();
-        $constructorArguments = array_filter(
-            $constructorArguments,
-            static fn(ReflectionParameter $argument): bool => ! $argument->isOptional()
-        );
-
         // has no required parameters, treat it as an invokable
-        if ($constructorArguments === []) {
+        if ($constructor->getNumberOfRequiredParameters() === 0) {
             return $this->createInvokable($config, $className);
         }
+
+        $constructorArguments = array_filter(
+            $constructor->getParameters(),
+            static fn(ReflectionParameter $argument): bool => ! $argument->isOptional()
+        );
 
         $classConfig = [];
 
@@ -81,6 +80,7 @@ EOC;
                     // don't throw an exception, just return the previous config
                     return $config;
                 }
+
                 // don't throw an exception if the class is an already defined service
                 if ($this->container && $this->container->has($className)) {
                     return $config;
