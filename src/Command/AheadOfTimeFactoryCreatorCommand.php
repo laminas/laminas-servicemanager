@@ -124,7 +124,7 @@ final class AheadOfTimeFactoryCreatorCommand extends Command
                 }
             }
 
-            $factoryFileName  = sprintf(
+            $factoryFileName = sprintf(
                 '%s/%s.php',
                 $targetDirectory,
                 str_replace('\\', '_', $factoryClassName)

@@ -75,7 +75,7 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
             }
 
             foreach ($servicesUsingReflectionBasedFactory as $service => $factory) {
-                if (!$this->canServiceBeUsedWithReflectionBasedFactory($service)) {
+                if (! $this->canServiceBeUsedWithReflectionBasedFactory($service)) {
                     throw new InvalidArgumentException(sprintf(
                         'Configured service "%s" using the `ReflectionBasedAbstractFactory` does not exist or does'
                         . ' not refer to an actual class.',
@@ -106,6 +106,7 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
 
     /**
      * Starting with PHP 8.1, `class_exists` resolves to `true` for enums.
+     *
      * @link https://3v4l.org/FY7eg
      *
      * @psalm-assert-if-true class-string $service
@@ -120,6 +121,6 @@ final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInte
             return true;
         }
 
-        return !enum_exists($service);
+        return ! enum_exists($service);
     }
 }
