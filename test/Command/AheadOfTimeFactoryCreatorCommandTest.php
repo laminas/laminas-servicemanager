@@ -116,7 +116,7 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
             ->method('compile')
             ->willReturn([]);
 
-        $command->run($this->input, $this->output);
+        self::assertSame(0, $command->run($this->input, $this->output));
 
         self::assertCount(0, $this->factoryTargetPath->getChildren());
     }
@@ -160,7 +160,7 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
             ->method('writeln')
             ->with('<info>Successfully created 1 factories.</info>');
 
-        $command->run($this->input, $this->output);
+        self::assertSame(0, $command->run($this->input, $this->output));
 
         self::assertCount(2, $this->factoryTargetPath->getChildren());
         self::assertTrue($this->factoryTargetPath->hasChild('foobar'));
@@ -245,6 +245,51 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
             $localConfigPath,
         ));
 
-        $command->run($this->input, $this->output);
+        self::assertSame(1, $command->run($this->input, $this->output));
+    }
+
+    /**
+     * @requires testWillVerifyLocalConfigFilenameIsWritable
+     */
+    public function testWillDetectAlreadyExistingFactories(): void
+    {
+        $directory = $this->factoryTargetPath->url();
+
+        $command = new AheadOfTimeFactoryCreatorCommand(
+            [],
+            $directory,
+            $this->factoryCompiler,
+        );
+
+        $localConfigFilename = 'yada-yada.local.php';
+
+        $this->input
+            ->method('getArgument')
+            ->with('localConfigFilename')
+            ->willReturn(sprintf('%s/%s', $directory, $localConfigFilename));
+
+        $generatedFactoryAssetPath = __DIR__ . '/../TestAsset/factories/SimpleDependencyObject.php';
+        $generatedFactory = file_get_contents($generatedFactoryAssetPath);
+        assert($generatedFactory !== '');
+
+        $this->factoryCompiler
+            ->expects(self::once())
+            ->method('compile')
+            ->willReturn([
+                new AheadOfTimeCompiledFactory(
+                    SimpleDependencyObject::class,
+                    'foobar',
+                    $generatedFactory,
+                ),
+            ]);
+
+        $this->assertErrorRaised(
+            'There is already an existing factory class registered for'
+            .' "LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObject": LaminasTest\\ServiceManager\\TestAsset\\SimpleDependencyObjectFactory'
+        );
+
+        require $generatedFactoryAssetPath;
+
+        self::assertSame(1, $command->run($this->input, $this->output));
     }
 }
