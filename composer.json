@@ -33,6 +33,7 @@
     },
     "require": {
         "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
+        "brick/varexporter": "^0.3.8",
         "laminas/laminas-stdlib": "^3.2.1",
         "psr/container": "^1.0"
     },
@@ -49,6 +50,7 @@
         "laminas/laminas-coding-standard": "~2.5.0",
         "laminas/laminas-container-config-test": "^0.8",
         "laminas/laminas-dependency-plugin": "^2.2",
+        "lctrs/psalm-psr-container-plugin": "^1.9",
         "mikey179/vfsstream": "^1.6.11@alpha",
         "ocramius/proxy-manager": "^2.14.1",
         "phpbench/phpbench": "^1.2.7",

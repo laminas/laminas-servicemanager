@@ -6,7 +6,7 @@ namespace LaminasTest\ServiceManager\AbstractFactory\TestAsset;
 
 use ArrayAccess;
 
-final class ClassWithTypehintedDefaultValue
+final class ClassWithTypehintedDefaultNullValue
 {
     public ?ArrayAccess $value;
 
