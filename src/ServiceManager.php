@@ -409,7 +409,9 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * @param string $name Service name
      * @param string|callable|FactoryInterface $factory  Factory to which to map.
+     * @phpcs:disable Generic.Files.LineLength.TooLong
      * @psalm-param class-string<FactoryInterface>|class-string<object&FactoryCallable>|FactoryCallable|FactoryInterface $factory
+     * @phpcs:enable Generic.Files.LineLength.TooLong
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
@@ -466,7 +468,9 @@ class ServiceManager implements ServiceLocatorInterface
      * @param string $name Service name
      * @param string|callable|DelegatorFactoryInterface $factory Delegator
      *     factory to assign.
+     * @phpcs:disable Generic.Files.LineLength.TooLong
      * @psalm-param class-string<DelegatorFactoryInterface>|class-string<object&DelegatorCallable>|DelegatorCallable|DelegatorFactoryInterface $factory
+     * @phpcs:enable Generic.Files.LineLength.TooLong
      */
     public function addDelegator(string $name, string|callable|DelegatorFactoryInterface $factory): void
     {

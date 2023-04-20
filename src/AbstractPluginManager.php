@@ -161,8 +161,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
             }
         }
 
+        // phpcs:disable SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
         /** @var ServiceManagerConfiguration $config */
         $this->plugins->configure($config);
+        // phpcs:enable SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
 
         return $this;
     }
@@ -254,7 +256,9 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      *
      * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
+     * @phpcs:disable Generic.Files.LineLength.TooLong
      * @param class-string<FactoryInterface>|class-string<object&FactoryCallable>|FactoryCallable|FactoryInterface $factory
+     * @phpcs:enable Generic.Files.LineLength.TooLong
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
@@ -297,9 +301,10 @@ abstract class AbstractPluginManager implements PluginManagerInterface
      * @deprecated Please use {@see AbstractPluginManager::configure()} instead.
      *
      * @param string $name Service name
-     * @param string|callable|DelegatorFactoryInterface $factory Delegator
-     *     factory to assign.
+     * @param string|callable|DelegatorFactoryInterface $factory Delegator factory to assign.
+     * @phpcs:disable Generic.Files.LineLength.TooLong
      * @psalm-param class-string<DelegatorFactoryInterface>|class-string<object&DelegatorCallable>|DelegatorCallable $factory
+     * @phpcs:enable Generic.Files.LineLength.TooLong
      */
     public function addDelegator(string $name, string|callable|DelegatorFactoryInterface $factory): void
     {
