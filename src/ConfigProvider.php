@@ -22,7 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use function class_exists;
 
 /**
- * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
  */
 final class ConfigProvider
 {
@@ -30,7 +30,7 @@ final class ConfigProvider
 
     /**
      * @return array{
-     *  dependencies: ServiceManagerConfigurationType,
+     *  dependencies: ServiceManagerConfiguration,
      *  ...
      * }
      */
@@ -43,7 +43,7 @@ final class ConfigProvider
     }
 
     /**
-     * @return ServiceManagerConfigurationType
+     * @return ServiceManagerConfiguration
      */
     public function getServiceDependencies(): array
     {

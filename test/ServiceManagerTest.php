@@ -19,14 +19,14 @@ use stdClass;
 
 /**
  * @covers \Laminas\ServiceManager\ServiceManager
- * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
  */
 final class ServiceManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
 
     /**
-     * @psalm-param ServiceManagerConfigurationType $config
+     * @psalm-param ServiceManagerConfiguration $config
      */
     public function createContainer(array $config = []): ServiceManager
     {
@@ -511,7 +511,7 @@ final class ServiceManagerTest extends TestCase
     }
 
     /**
-     * @param ServiceManagerConfigurationType $config
+     * @param ServiceManagerConfiguration $config
      * @param non-empty-string $serviceName
      * @param non-empty-string $alias
      * @dataProvider aliasedServices
@@ -530,9 +530,9 @@ final class ServiceManagerTest extends TestCase
 
     /**
      * @psalm-return array<non-empty-string,array{
-     *     0:ServiceManagerConfigurationType,
-     *     1:non-empty-string,
-     *     2:non-empty-string
+     *     ServiceManagerConfiguration,
+     *     non-empty-string,
+     *     non-empty-string
      * }>
      */
     public function aliasedServices(): array

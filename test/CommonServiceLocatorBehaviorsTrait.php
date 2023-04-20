@@ -8,12 +8,12 @@ use DateTime;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
-use Laminas\ServiceManager\Exception\InvalidArgumentException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
 use Laminas\ServiceManager\Initializer\InitializerInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\ServiceManager\ServiceManager;
 use LaminasBench\ServiceManager\BenchAsset\AbstractFactoryFoo;
 use LaminasTest\ServiceManager\TestAsset\CallTimesAbstractFactory;
@@ -38,7 +38,7 @@ use function in_array;
 /**
  * @see TestCase
  *
- * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
  * @psalm-require-extends TestCase
  */
 trait CommonServiceLocatorBehaviorsTrait
@@ -49,10 +49,9 @@ trait CommonServiceLocatorBehaviorsTrait
     protected ContainerInterface|null $creationContext;
 
     /**
-     * @psalm-param ServiceManagerConfigurationType $config
-     * @todo This will need to be static for future versions of PHPUnit
+     * @psalm-param ServiceManagerConfiguration $config
      */
-    abstract public function createContainer(array $config = []): AbstractPluginManager|ServiceManager;
+    abstract public function createContainer(array $config = []): ServiceLocatorInterface;
 
     public function testIsSharedByDefault(): void
     {
@@ -548,21 +547,6 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertInstanceOf(DateTime::class, $dateTime);
     }
 
-    public function invalidFactories(): array
-    {
-        return [
-            'null'                 => [null],
-            'true'                 => [true],
-            'false'                => [false],
-            'zero'                 => [0],
-            'int'                  => [1],
-            'zero-float'           => [0.0],
-            'float'                => [1.1],
-            'array'                => [['foo', 'bar']],
-            'non-invokable-object' => [(object) ['foo' => 'bar']],
-        ];
-    }
-
     public function testCanSpecifyInitializerUsingStringViaConfiguration(): void
     {
         $serviceManager = $this->createContainer([
@@ -579,28 +563,6 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertInstanceOf(stdClass::class, $instance);
         self::assertTrue(isset($instance->foo), '"foo" property was not injected by initializer');
         self::assertEquals('bar', $instance->foo, '"foo" property was not properly injected');
-    }
-
-    public function invalidInitializers(): array
-    {
-        $factories                     = $this->invalidFactories();
-        $factories['non-class-string'] = ['non-callable-string', 'callable or an instance of'];
-
-        return $factories;
-    }
-
-    /**
-     * @dataProvider invalidInitializers
-     * @covers \Laminas\ServiceManager\ServiceManager::configure
-     */
-    public function testPassingInvalidInitializerTypeViaConfigurationRaisesException(
-        mixed $initializer,
-        string $contains = 'invalid initializer'
-    ): void {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage($contains);
-        /** @psalm-suppress InvalidArgument */
-        $this->createContainer(['initializers' => [$initializer]]);
     }
 
     /**
@@ -725,7 +687,7 @@ trait CommonServiceLocatorBehaviorsTrait
         ]);
         $container->addInitializer(static function (ContainerInterface $container, $instance) {
             if (! $instance instanceof stdClass) {
-                return;
+                return $instance;
             }
 
             $instance->name = stdClass::class;

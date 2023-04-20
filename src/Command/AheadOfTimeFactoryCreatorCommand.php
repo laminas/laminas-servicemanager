@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager\Command;
 
 use Brick\VarExporter\VarExporter;
-use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\ConfigProvider;
 use Laminas\ServiceManager\Exception\RuntimeException;
 use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceManager;
 use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,7 +31,7 @@ use function str_replace;
 /**
  * @internal CLI commands are not meant to be used in any upstream projects other than via `laminas-cli`.
  *
- * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
  */
 final class AheadOfTimeFactoryCreatorCommand extends Command
 {
@@ -146,7 +146,7 @@ final class AheadOfTimeFactoryCreatorCommand extends Command
     }
 
     /**
-     * @param non-empty-array<non-empty-string,ServiceManagerConfigurationType> $containerConfigurations
+     * @param non-empty-array<non-empty-string,ServiceManagerConfiguration> $containerConfigurations
      * @return non-empty-string
      */
     private function createLocalAotContainerConfigContent(array $containerConfigurations): string

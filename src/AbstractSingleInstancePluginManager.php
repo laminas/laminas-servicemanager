@@ -14,7 +14,7 @@ use function sprintf;
  * Implementations define the `$instanceOf` property to indicate what class types constitute valid plugins, omitting the
  *   requirement to define the `validate()` method.
  *
- * @template InstanceType
+ * @template InstanceType of object
  * @template-extends AbstractPluginManager<InstanceType>
  */
 abstract class AbstractSingleInstancePluginManager extends AbstractPluginManager

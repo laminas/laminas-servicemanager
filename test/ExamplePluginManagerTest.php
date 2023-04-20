@@ -15,14 +15,14 @@ use RuntimeException;
 /**
  * Example test of using CommonPluginManagerTrait
  *
- * @psalm-import-type ServiceManagerConfigurationType from ServiceManager
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
  */
 final class ExamplePluginManagerTest extends TestCase
 {
     use CommonPluginManagerTrait;
 
     /**
-     * @param ServiceManagerConfigurationType $config
+     * @param ServiceManagerConfiguration $config
      */
     protected function getPluginManager(array $config = []): AbstractPluginManager
     {
