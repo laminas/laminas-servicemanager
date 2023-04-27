@@ -84,10 +84,6 @@
             "LaminasBench\\ServiceManager\\": "benchmarks/"
         }
     },
-    "bin": [
-        "bin/generate-deps-for-config-factory",
-        "bin/generate-factory-for-class"
-    ],
     "scripts": {
         "benchmark": "phpbench run --revs=2 --iterations=2 --report=aggregate",
         "check": [
