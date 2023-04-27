@@ -26,8 +26,6 @@ interface PluginManagerInterface extends ServiceLocatorInterface
      */
     public function validate(mixed $instance): void;
 
-    public function has(string $id): bool;
-
     /**
      * @template TRequestedInstance extends InstanceType
      * @psalm-param class-string<TRequestedInstance>|string $id Service name of plugin to retrieve.
