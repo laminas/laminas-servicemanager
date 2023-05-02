@@ -7,9 +7,11 @@ namespace LaminasTest\ServiceManager\TestAsset;
 use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\AbstractSingleInstancePluginManager;
 use Laminas\ServiceManager\Factory\InvokableFactory;
-use Psr\Container\ContainerInterface;
+use Laminas\ServiceManager\ServiceManager;
 
 /**
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
+ * @psalm-import-type FactoriesConfiguration from ServiceManager
  * @template-extends AbstractPluginManager<InvokableObject>
  */
 final class InvokableObjectPluginManager extends AbstractSingleInstancePluginManager
@@ -22,7 +24,7 @@ final class InvokableObjectPluginManager extends AbstractSingleInstancePluginMan
         'laminastestservicemanagertestassetinvokableobject' => InvokableObject::class,
     ];
 
-    /** @var array<string,string> */
+    /** @var FactoriesConfiguration */
     protected array $factories = [
         InvokableObject::class => InvokableFactory::class,
         // Legacy (v2) due to alias resolution
@@ -32,9 +34,4 @@ final class InvokableObjectPluginManager extends AbstractSingleInstancePluginMan
     protected string $instanceOf = InvokableObject::class;
 
     protected bool $sharedByDefault = false;
-
-    public function __construct(ContainerInterface $creationContext)
-    {
-        parent::__construct($creationContext, ['aliases' => $this->aliases, 'factories' => $this->factories]);
-    }
 }
