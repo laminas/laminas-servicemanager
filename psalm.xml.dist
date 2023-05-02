@@ -6,6 +6,8 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     errorBaseline="psalm-baseline.xml"
     findUnusedPsalmSuppress="true"
+    findUnusedCode="false"
+    findUnusedBaselineEntry="true"
 >
     <projectFiles>
         <directory name="src"/>
@@ -31,9 +33,6 @@
                 <referencedClass name="Psr\Container\ContainerExceptionInterface"/>
             </errorLevel>
         </InvalidThrow>
-    </issueHandlers>
-
-    <issueHandlers>
         <DeprecatedClass>
             <errorLevel type="suppress">
                 <referencedClass name="Laminas\ServiceManager\DelegatorFactoryInterface"/>
@@ -41,11 +40,41 @@
                 <referencedClass name="Laminas\ServiceManager\FactoryInterface"/>
             </errorLevel>
         </DeprecatedClass>
+        <DeprecatedProperty>
+            <errorLevel type="suppress">
+                <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$initializers"/>
+                <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$delegators"/>
+                <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$shared"/>
+                <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$lazyServices"/>
+                <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$services"/>
+                <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$aliases"/>
+                <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$abstractFactories"/>
+                <referencedProperty name="Laminas\ServiceManager\AbstractPluginManager::$factories"/>
+            </errorLevel>
+        </DeprecatedProperty>
         <InvalidThrow>
             <errorLevel type="suppress">
                 <referencedClass name="Interop\Container\Exception\ContainerException"/>
             </errorLevel>
         </InvalidThrow>
+        <DeprecatedMethod>
+            <errorLevel type="info">
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::addAbstractFactory"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setService"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setInvokableClass"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setAlias"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setShared"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::addInitializer"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::addDelegator"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::setFactory"/>
+                <referencedMethod name="Laminas\ServiceManager\AbstractPluginManager::mapLazyService"/>
+            </errorLevel>
+        </DeprecatedMethod>
+        <DeprecatedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="Laminas\ServiceManager\Config"/>
+            </errorLevel>
+        </DeprecatedClass>
         <InternalClass>
             <errorLevel type="suppress">
                 <!-- Tests are allowed to work with internal classes -->

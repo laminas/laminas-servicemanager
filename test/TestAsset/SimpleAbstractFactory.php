@@ -10,13 +10,13 @@ use Psr\Container\ContainerInterface;
 final class SimpleAbstractFactory implements AbstractFactoryInterface
 {
     /** {@inheritDoc} */
-    public function canCreate(ContainerInterface $container, $name)
+    public function canCreate(ContainerInterface $container, string $name): bool
     {
         return true;
     }
 
     /** {@inheritDoc} */
-    public function __invoke(ContainerInterface $container, $className, ?array $options = null)
+    public function __invoke(ContainerInterface $container, string $className, ?array $options = null): mixed
     {
         if (empty($options)) {
             return new $className();

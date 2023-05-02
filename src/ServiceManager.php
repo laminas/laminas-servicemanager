@@ -8,8 +8,14 @@ use Exception;
 use Laminas\ServiceManager\Exception\ContainerModificationsNotAllowedException;
 use Laminas\ServiceManager\Exception\CyclicAliasException;
 use Laminas\ServiceManager\Exception\InvalidArgumentException;
+use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Laminas\ServiceManager\Exception\ServiceNotFoundException;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Initializer\InitializerInterface;
 use Laminas\ServiceManager\Proxy\LazyServiceFactory;
 use Laminas\Stdlib\ArrayUtils;
 use ProxyManager\Configuration as ProxyConfiguration;
@@ -23,11 +29,10 @@ use Psr\Container\ContainerInterface;
 use function array_intersect;
 use function array_key_exists;
 use function array_keys;
+use function array_merge;
 use function class_exists;
-use function gettype;
 use function in_array;
 use function is_callable;
-use function is_object;
 use function is_string;
 use function spl_autoload_register;
 use function spl_object_hash;
@@ -48,31 +53,61 @@ use function sprintf;
  * It also provides the ability to inject specific service instances and to
  * define aliases.
  *
- * @see ConfigInterface
+ * @see ContainerInterface
+ * @see DelegatorFactoryInterface
+ * @see AbstractFactoryInterface
+ * @see FactoryInterface
  *
- * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
- * @psalm-import-type AbstractFactoriesConfigurationType from ConfigInterface
- * @psalm-import-type DelegatorsConfigurationType from ConfigInterface
- * @psalm-import-type FactoriesConfigurationType from ConfigInterface
- * @psalm-import-type InitializersConfigurationType from ConfigInterface
- * @psalm-import-type LazyServicesConfigurationType from ConfigInterface
+ * @psalm-type AbstractFactoriesConfiguration = array<
+ *      array-key,
+ *      class-string<AbstractFactoryInterface>|AbstractFactoryInterface
+ * >
+ * @psalm-type DelegatorCallable = callable(ContainerInterface,string,callable():mixed,array|null):mixed
+ * @psalm-type DelegatorsConfiguration = array<
+ *      string,
+ *      array<
+ *          array-key,
+ *          class-string<DelegatorFactoryInterface>
+ *          |class-string<object&DelegatorCallable>
+ *          |DelegatorFactoryInterface
+ *          |DelegatorCallable
+ *      >
+ * >
+ * @psalm-type FactoryCallable = callable(ContainerInterface,string,array|null):mixed
+ * @psalm-type FactoriesConfiguration = array<
+ *      string,
+ *      class-string<FactoryInterface>|class-string<object&FactoryCallable>|FactoryInterface|FactoryCallable
+ * >
+ * @psalm-type InitializerCallable = callable(ContainerInterface,mixed):void
+ * @psalm-type InitializersConfiguration = array<
+ *      array-key,
+ *      class-string<InitializerInterface>|class-string<object&InitializerCallable>|InitializerInterface|InitializerCallable
+ * >
+ * @psalm-type LazyServicesConfiguration = array{
+ *      class_map?:array<string,class-string>,
+ *      proxies_namespace?:non-empty-string,
+ *      proxies_target_dir?:non-empty-string,
+ *      write_proxy_files?:bool
+ * }
  * @psalm-type ServiceManagerConfiguration = array{
- *     abstract_factories?: AbstractFactoriesConfigurationType,
+ *     abstract_factories?: AbstractFactoriesConfiguration,
  *     aliases?: array<string,string>,
- *     delegators?: DelegatorsConfigurationType,
- *     factories?: FactoriesConfigurationType,
- *     initializers?: InitializersConfigurationType,
- *     invokables?: array<string,string>,
- *     lazy_services?: LazyServicesConfigurationType,
- *     services?: array<string,object|array>,
+ *     delegators?: DelegatorsConfiguration,
+ *     factories?: FactoriesConfiguration,
+ *     initializers?: InitializersConfiguration,
+ *     invokables?: array<string,class-string>,
+ *     lazy_services?: LazyServicesConfiguration,
+ *     services?: array<string,mixed>,
  *     shared?:array<string,bool>,
- *     shared_by_default?:bool,
+ *     shared_by_default?: bool,
  *     ...
  * }
+ *
+ * @final Will be marked as final with v5.0.0
  */
 class ServiceManager implements ServiceLocatorInterface
 {
-    /** @var Factory\AbstractFactoryInterface[] */
+    /** @var AbstractFactoryInterface[] */
     protected $abstractFactories = [];
 
     /**
@@ -94,30 +129,20 @@ class ServiceManager implements ServiceLocatorInterface
     /** @var ContainerInterface */
     protected $creationContext;
 
-    /**
-     * @var string[][]|Factory\DelegatorFactoryInterface[][]
-     * @psalm-var DelegatorsConfigurationType
-     */
+    /** @var DelegatorsConfiguration */
     protected $delegators = [];
 
     /**
      * A list of factories (either as string name or callable)
      *
-     * @var string[]|callable[]
-     * @psalm-var FactoriesConfigurationType
+     * @var FactoriesConfiguration
      */
     protected $factories = [];
 
-    /**
-     * @var Initializer\InitializerInterface[]|callable[]
-     * @psalm-var InitializersConfigurationType
-     */
+    /** @var list<InitializerInterface|InitializerCallable> */
     protected $initializers = [];
 
-    /**
-     * @var array
-     * @psalm-var LazyServicesConfigurationType
-     */
+    /** @var LazyServicesConfiguration */
     protected $lazyServices = [];
 
     private ?LazyServiceFactory $lazyServicesDelegator = null;
@@ -125,7 +150,7 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * A list of already loaded services (this act as a local cache)
      *
-     * @var array<string,array|object>
+     * @var array<string,mixed>
      */
     protected $services = [];
 
@@ -159,6 +184,8 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * Cached abstract factories from string.
+     *
+     * @var array<class-string<AbstractFactoryInterface>,AbstractFactoryInterface>
      */
     private array $cachedAbstractFactories = [];
 
@@ -166,11 +193,13 @@ class ServiceManager implements ServiceLocatorInterface
      * See {@see \Laminas\ServiceManager\ServiceManager::configure()} for details
      * on what $config accepts.
      *
-     * @psalm-param ServiceManagerConfiguration $config
+     * @param ServiceManagerConfiguration $config
      */
-    public function __construct(array $config = [])
-    {
-        $this->creationContext = $this;
+    public function __construct(
+        array $config = [],
+        ContainerInterface|null $creationContext = null
+    ) {
+        $this->creationContext = $creationContext ?? $this;
         $this->configure($config);
     }
 
@@ -189,13 +218,14 @@ class ServiceManager implements ServiceLocatorInterface
         // We achieve better performance if we can let all alias
         // considerations out.
         if (! $this->aliases) {
-            $object = $this->doCreate($name);
+            /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
+            $service = $this->doCreate($name);
 
-            // Cache the object for later, if it is supposed to be shared.
+            // Cache the service for later, if it is supposed to be shared.
             if ($sharedService) {
-                $this->services[$name] = $object;
+                $this->services[$name] = $service;
             }
-            return $object;
+            return $service;
         }
 
         // We now deal with requests which may be aliases.
@@ -217,27 +247,24 @@ class ServiceManager implements ServiceLocatorInterface
 
         // At this point, we have to create the object.
         // We use the resolved name for that.
-        $object = $this->doCreate($resolvedName);
+        /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
+        $service = $this->doCreate($resolvedName);
 
         // Cache the object for later, if it is supposed to be shared.
         if ($sharedService) {
-            $this->services[$resolvedName] = $object;
+            $this->services[$resolvedName] = $service;
+            $this->services[$name]         = $service;
         }
 
-        // Also cache under the alias name; this allows sharing based on the
-        // service name used.
-        if ($sharedAlias) {
-            $this->services[$name] = $object;
-        }
-
-        return $object;
+        return $service;
     }
 
     /** {@inheritDoc} */
-    public function build($name, ?array $options = null)
+    public function build(string $name, ?array $options = null): mixed
     {
         // We never cache when using "build".
         $name = $this->aliases[$name] ?? $name;
+        /** @psalm-suppress MixedReturnStatement Yes indeed, service managers can return mixed. */
         return $this->doCreate($name, $options);
     }
 
@@ -255,32 +282,29 @@ class ServiceManager implements ServiceLocatorInterface
 
     /**
      * Indicate whether or not the instance is immutable.
-     *
-     * @param bool $flag
      */
-    public function setAllowOverride($flag)
+    public function setAllowOverride(bool $flag): void
     {
-        $this->allowOverride = (bool) $flag;
+        $this->allowOverride = $flag;
     }
 
     /**
      * Retrieve the flag indicating immutability status.
-     *
-     * @return bool
      */
-    public function getAllowOverride()
+    public function getAllowOverride(): bool
     {
         return $this->allowOverride;
     }
 
     /**
-     * @psalm-param ServiceManagerConfiguration $config
-     * @return self
-     * @throws ContainerModificationsNotAllowedException If the allow
-     *     override flag has been toggled off, and a service instance
-     *     exists for a given service.
+     * @param ServiceManagerConfiguration $config
+     * @throws ContainerModificationsNotAllowedException If the allow override flag has been toggled off, and a
+     *                                                   service instanceexists for a given service.
+     * @throws InvalidServiceException If an instance passed in the `services` configuration is invalid for the
+     *                                 plugin manager.
+     * @throws CyclicAliasException If the configuration contains aliases targeting themselves.
      */
-    public function configure(array $config)
+    public function configure(array $config): static
     {
         // This is a bulk update/initial configuration,
         // so we check all definitions up front.
@@ -350,12 +374,10 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Add an alias.
      *
-     * @param string $alias
-     * @param string $target
      * @throws ContainerModificationsNotAllowedException If $alias already
      *     exists as a service and overrides are disallowed.
      */
-    public function setAlias($alias, $target)
+    public function setAlias(string $alias, string $target): void
     {
         if (isset($this->services[$alias]) && ! $this->allowOverride) {
             throw ContainerModificationsNotAllowedException::fromExistingService($alias);
@@ -373,7 +395,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
-    public function setInvokableClass($name, $class = null)
+    public function setInvokableClass(string $name, ?string $class = null)
     {
         if (isset($this->services[$name]) && ! $this->allowOverride) {
             throw ContainerModificationsNotAllowedException::fromExistingService($name);
@@ -386,15 +408,14 @@ class ServiceManager implements ServiceLocatorInterface
      * Specify a factory for a given service name.
      *
      * @param string $name Service name
-     * @param string|callable|Factory\FactoryInterface $factory  Factory to which to map.
-     * phpcs:disable Generic.Files.LineLength.TooLong
-     * @psalm-param class-string<Factory\FactoryInterface>|callable(ContainerInterface,string,array<mixed>|null):object|Factory\FactoryInterface $factory
-     * phpcs:enable Generic.Files.LineLength.TooLong
-     * @return void
+     * @param string|callable|FactoryInterface $factory  Factory to which to map.
+     * @phpcs:disable Generic.Files.LineLength.TooLong
+     * @psalm-param class-string<FactoryInterface>|class-string<object&FactoryCallable>|FactoryCallable|FactoryInterface $factory
+     * @phpcs:enable Generic.Files.LineLength.TooLong
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
-    public function setFactory($name, $factory)
+    public function setFactory(string $name, string|callable|FactoryInterface $factory): void
     {
         if (isset($this->services[$name]) && ! $this->allowOverride) {
             throw ContainerModificationsNotAllowedException::fromExistingService($name);
@@ -406,21 +427,35 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Create a lazy service mapping to a class.
      *
-     * @param string $name Service name to map
-     * @param null|string $class Class to which to map; if not provided, $name
+     * @param string|class-string $name Service name to map
+     * @param null|class-string $class Class to which to map; if not provided, $name
      *     will be used for the mapping.
      */
-    public function mapLazyService($name, $class = null)
+    public function mapLazyService(string $name, ?string $class = null): void
     {
-        $this->configure(['lazy_services' => ['class_map' => [$name => $class ?: $name]]]);
+        $targetClassName = $class ?? $name;
+        if (! class_exists($targetClassName)) {
+            $message = sprintf('Provided service name "%s" must be a `class-string`.', $name);
+            if ($class !== null) {
+                $message = sprintf(
+                    'Provided service name "%s" must target to a `class-string`. "%s" provided.',
+                    $name,
+                    $class,
+                );
+            }
+
+            throw new InvalidArgumentException($message);
+        }
+
+        $this->configure(['lazy_services' => ['class_map' => [$name => $targetClassName]]]);
     }
 
     /**
      * Add an abstract factory for resolving services.
      *
-     * @param string|Factory\AbstractFactoryInterface $factory Abstract factory
+     * @param string|AbstractFactoryInterface $factory Abstract factory
      *     instance or class name.
-     * @psalm-param class-string<Factory\AbstractFactoryInterface>|Factory\AbstractFactoryInterface $factory
+     * @psalm-param class-string<AbstractFactoryInterface>|AbstractFactoryInterface $factory
      */
     public function addAbstractFactory($factory)
     {
@@ -431,12 +466,13 @@ class ServiceManager implements ServiceLocatorInterface
      * Add a delegator for a given service.
      *
      * @param string $name Service name
-     * @param string|callable|Factory\DelegatorFactoryInterface $factory Delegator
+     * @param string|callable|DelegatorFactoryInterface $factory Delegator
      *     factory to assign.
-     * @psalm-param class-string<Factory\DelegatorFactoryInterface>
-     *     |callable(ContainerInterface,string,callable,array<mixed>|null) $factory
+     * @phpcs:disable Generic.Files.LineLength.TooLong
+     * @psalm-param class-string<DelegatorFactoryInterface>|class-string<object&DelegatorCallable>|DelegatorCallable|DelegatorFactoryInterface $factory
+     * @phpcs:enable Generic.Files.LineLength.TooLong
      */
-    public function addDelegator($name, $factory)
+    public function addDelegator(string $name, string|callable|DelegatorFactoryInterface $factory): void
     {
         $this->configure(['delegators' => [$name => [$factory]]]);
     }
@@ -444,12 +480,11 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Add an initializer.
      *
-     * @param string|callable|Initializer\InitializerInterface $initializer
-     * @psalm-param class-string<Initializer\InitializerInterface>
-     *     |callable(ContainerInterface,mixed):void
-     *     |Initializer\InitializerInterface $initializer
+     * @phpcs:disable Generic.Files.LineLength.TooLong
+     * @psalm-param class-string<InitializerInterface>|class-string<object&InitializerCallable>|InitializerCallable|InitializerInterface $initializer
+     * @phpcs:enable Generic.Files.LineLength.TooLong
      */
-    public function addInitializer($initializer)
+    public function addInitializer(string|callable|InitializerInterface $initializer)
     {
         $this->configure(['initializers' => [$initializer]]);
     }
@@ -458,11 +493,10 @@ class ServiceManager implements ServiceLocatorInterface
      * Map a service.
      *
      * @param string $name Service name
-     * @param array|object $service
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
-    public function setService($name, $service)
+    public function setService(string $name, mixed $service): void
     {
         if (isset($this->services[$name]) && ! $this->allowOverride) {
             throw ContainerModificationsNotAllowedException::fromExistingService($name);
@@ -478,53 +512,64 @@ class ServiceManager implements ServiceLocatorInterface
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
-    public function setShared($name, $flag)
+    public function setShared(string $name, bool $flag): void
     {
         if (isset($this->services[$name]) && ! $this->allowOverride) {
             throw ContainerModificationsNotAllowedException::fromExistingService($name);
         }
 
-        $this->shared[$name] = (bool) $flag;
+        $this->shared[$name] = $flag;
     }
 
     /**
      * Instantiate initializers for to avoid checks during service construction.
      *
-     * @psalm-param InitializersConfigurationType $initializers
+     * @param InitializersConfiguration $initializers
      */
     private function resolveInitializers(array $initializers): void
     {
+        $resolved = [];
         foreach ($initializers as $initializer) {
             if (is_string($initializer) && class_exists($initializer)) {
+                /**
+                 * @psalm-suppress MixedMethodCall We are calling an unknown initializer.
+                 *                                 We have to trust that the class is instantiable.
+                 */
                 $initializer = new $initializer();
             }
 
             if (is_callable($initializer)) {
-                $this->initializers[] = $initializer;
+                /** @psalm-var InitializerCallable $initializer */
+                $resolved[] = $initializer;
                 continue;
             }
 
             throw InvalidArgumentException::fromInvalidInitializer($initializer);
         }
+
+        $this->initializers = array_merge($this->initializers, $resolved);
     }
 
     /**
      * Get a factory for the given service name
      *
-     * @psalm-return (callable(ContainerInterface,string,array<mixed>|null):object)|Factory\FactoryInterface
-     * @throws ServiceNotFoundException
+     * @return FactoryCallable|FactoryInterface
+     * @throws ServiceNotFoundException In case that the service creation strategy based on factories
+     *                                  did not find any capable factory.
      */
-    private function getFactory(string $name): callable
+    private function getFactory(string $name): callable|FactoryInterface
     {
         $factory = $this->factories[$name] ?? null;
 
         $lazyLoaded = false;
         if (is_string($factory) && class_exists($factory)) {
+            /** @psalm-suppress MixedMethodCall We have to trust that the factory is instantiable. */
             $factory    = new $factory();
             $lazyLoaded = true;
         }
 
         if (is_callable($factory)) {
+            /** @psalm-var FactoryCallable $factory */
             if ($lazyLoaded) {
                 $this->factories[$name] = $factory;
             }
@@ -545,10 +590,7 @@ class ServiceManager implements ServiceLocatorInterface
         ));
     }
 
-    /**
-     * @return object
-     */
-    private function createDelegatorFromName(string $name, ?array $options = null)
+    private function createDelegatorFromName(string $name, ?array $options = null): mixed
     {
         $creationCallback = function () use ($name, $options) {
             // Code is inlined for performance reason, instead of abstracting the creation
@@ -558,23 +600,16 @@ class ServiceManager implements ServiceLocatorInterface
 
         $initialCreationContext = $this->creationContext;
 
+        $resolvedDelegators = [];
         foreach ($this->delegators[$name] as $index => $delegatorFactory) {
-            $delegatorFactory = $this->delegators[$name][$index];
-
-            if ($delegatorFactory === LazyServiceFactory::class) {
-                $delegatorFactory = $this->createLazyServiceDelegatorFactory();
-            } elseif (is_string($delegatorFactory) && class_exists($delegatorFactory)) {
-                $delegatorFactory = new $delegatorFactory();
-            }
-
-            $this->assertCallableDelegatorFactory($delegatorFactory);
-
+            /** @psalm-suppress ArgumentTypeCoercion https://github.com/vimeo/psalm/issues/9680 */
+            $delegatorFactory                = $this->resolveDelegatorFactory($delegatorFactory);
             $this->delegators[$name][$index] = $delegatorFactory;
-
-            $creationCallback =
-                /** @return object */
-                static fn() => $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
+            $creationCallback                =
+                static fn(): mixed => $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
         }
+
+        $this->delegators[$name] = $resolvedDelegators;
 
         return $creationCallback();
     }
@@ -584,20 +619,21 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * This is a highly performance sensitive method, do not modify if you have not benchmarked it carefully
      *
-     * @return object
      * @throws ServiceNotFoundException If unable to resolve the service.
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
      * @throws ContainerExceptionInterface If any other error occurs.
      */
-    private function doCreate(string $resolvedName, ?array $options = null)
+    private function doCreate(string $resolvedName, ?array $options = null): mixed
     {
         try {
             if (! isset($this->delegators[$resolvedName])) {
                 // Let's create the service by fetching the factory
                 $factory = $this->getFactory($resolvedName);
-                $object  = $factory($this->creationContext, $resolvedName, $options);
+                /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
+                $service = $factory($this->creationContext, $resolvedName, $options);
             } else {
-                $object = $this->createDelegatorFromName($resolvedName, $options);
+                /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
+                $service = $this->createDelegatorFromName($resolvedName, $options);
             }
         } catch (ContainerExceptionInterface $exception) {
             throw $exception;
@@ -610,10 +646,10 @@ class ServiceManager implements ServiceLocatorInterface
         }
 
         foreach ($this->initializers as $initializer) {
-            $initializer($this->creationContext, $object);
+            $initializer($this->creationContext, $service);
         }
 
-        return $object;
+        return $service;
     }
 
     /**
@@ -667,8 +703,8 @@ class ServiceManager implements ServiceLocatorInterface
      * It works with strings and class instances.
      * It's not possible to de-duple anonymous functions
      *
-     * @psalm-param DelegatorsConfigurationType $config
-     * @psalm-return DelegatorsConfigurationType
+     * @param DelegatorsConfiguration $config
+     * @return DelegatorsConfiguration
      */
     private function mergeDelegators(array $config): array
     {
@@ -703,7 +739,7 @@ class ServiceManager implements ServiceLocatorInterface
         $newAliases = [];
 
         foreach ($invokables as $name => $class) {
-            $this->factories[$class] = Factory\InvokableFactory::class;
+            $this->factories[$class] = InvokableFactory::class;
             if ($name !== $class) {
                 $this->aliases[$name] = $class;
                 $newAliases[$name]    = $class;
@@ -723,7 +759,7 @@ class ServiceManager implements ServiceLocatorInterface
      * a given service name we do not have a service instance
      * in the cache OR override is explicitly allowed.
      *
-     * @psalm-param ServiceManagerConfigurationType $config
+     * @param ServiceManagerConfiguration $config
      * @throws ContainerModificationsNotAllowedException If any
      *     service key is invalid.
      */
@@ -878,22 +914,17 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * Instantiate abstract factories in order to avoid checks during service construction.
      *
-     * @param string|Factory\AbstractFactoryInterface $abstractFactory
-     * @psalm-param class-string<Factory\AbstractFactoryInterface>|Factory\AbstractFactoryInterface $abstractFactory
+     * @param class-string<AbstractFactoryInterface>|AbstractFactoryInterface $abstractFactory
      */
-    private function resolveAbstractFactoryInstance($abstractFactory): void
+    private function resolveAbstractFactoryInstance(string|AbstractFactoryInterface $abstractFactory): void
     {
-        if (is_string($abstractFactory) && class_exists($abstractFactory)) {
+        if (is_string($abstractFactory)) {
             // Cached string factory name
             if (! isset($this->cachedAbstractFactories[$abstractFactory])) {
                 $this->cachedAbstractFactories[$abstractFactory] = new $abstractFactory();
             }
 
             $abstractFactory = $this->cachedAbstractFactories[$abstractFactory];
-        }
-
-        if (! $abstractFactory instanceof Factory\AbstractFactoryInterface) {
-            throw InvalidArgumentException::fromInvalidAbstractFactory($abstractFactory);
         }
 
         $abstractFactoryObjHash                           = spl_object_hash($abstractFactory);
@@ -937,30 +968,23 @@ class ServiceManager implements ServiceLocatorInterface
     }
 
     /**
-     * @psalm-param mixed $delegatorFactory
-     * @psalm-assert callable(ContainerInterface,string,callable():object,array<mixed>|null):object $delegatorFactory
+     * @param class-string<DelegatorFactoryInterface>|DelegatorCallable|DelegatorFactoryInterface $delegatorFactory
+     * @return DelegatorCallable
      */
-    private function assertCallableDelegatorFactory($delegatorFactory): void
+    private function resolveDelegatorFactory(DelegatorFactoryInterface|string|callable $delegatorFactory): callable
     {
-        if (
-            $delegatorFactory instanceof Factory\DelegatorFactoryInterface
-            || is_callable($delegatorFactory)
-        ) {
-            return;
+        if ($delegatorFactory === LazyServiceFactory::class) {
+            return $this->createLazyServiceDelegatorFactory();
         }
+
+        if (is_callable($delegatorFactory)) {
+            return $delegatorFactory;
+        }
+
         if (is_string($delegatorFactory)) {
-            throw new ServiceNotCreatedException(sprintf(
-                'An invalid delegator factory was registered; resolved to class or function "%s"'
-                . ' which does not exist; please provide a valid function name or class name resolving'
-                . ' to an implementation of %s',
-                $delegatorFactory,
-                Factory\DelegatorFactoryInterface::class
-            ));
+            $delegatorFactory = new $delegatorFactory();
         }
-        throw new ServiceNotCreatedException(sprintf(
-            'A non-callable delegator, "%s", was provided; expected a callable or instance of "%s"',
-            is_object($delegatorFactory) ? $delegatorFactory::class : gettype($delegatorFactory),
-            Factory\DelegatorFactoryInterface::class
-        ));
+
+        return $delegatorFactory;
     }
 }

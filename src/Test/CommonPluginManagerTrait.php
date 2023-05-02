@@ -5,60 +5,38 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager\Test;
 
 use Laminas\ServiceManager\AbstractPluginManager;
+use Laminas\ServiceManager\AbstractSingleInstancePluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
-use ReflectionClass;
+use Laminas\ServiceManager\ServiceManager;
 use ReflectionProperty;
 
-use function method_exists;
+use function assert;
+use function is_string;
 
 /**
- * Trait for testing plugin managers for v2-v3 compatibility
+ * Trait for testing plugin managers for compatibility
  *
  * To use this trait:
  *   * implement the `getPluginManager()` method to return your plugin manager
- *   * implement the `getV2InvalidPluginException()` method to return the class `validatePlugin()` throws under v2
+ *
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
  */
 trait CommonPluginManagerTrait
 {
-    public function testInstanceOfMatches()
+    public function testInstanceOfMatches(): void
     {
         $manager    = $this->getPluginManager();
         $reflection = new ReflectionProperty($manager, 'instanceOf');
-        $reflection->setAccessible(true);
         $this->assertEquals($this->getInstanceOf(), $reflection->getValue($manager), 'instanceOf does not match');
     }
 
-    public function testShareByDefaultAndSharedByDefault()
-    {
-        $manager        = $this->getPluginManager();
-        $reflection     = new ReflectionClass($manager);
-        $shareByDefault = $sharedByDefault = true;
-
-        foreach ($reflection->getProperties() as $prop) {
-            if ($prop->getName() === 'shareByDefault') {
-                $prop->setAccessible(true);
-                $shareByDefault = $prop->getValue($manager);
-            }
-            if ($prop->getName() === 'sharedByDefault') {
-                $prop->setAccessible(true);
-                $sharedByDefault = $prop->getValue($manager);
-            }
-        }
-
-        $this->assertSame(
-            $shareByDefault,
-            $sharedByDefault,
-            'Values of shareByDefault and sharedByDefault do not match'
-        );
-    }
-
-    public function testRegisteringInvalidElementRaisesException()
+    public function testRegisteringInvalidElementRaisesException(): void
     {
         $this->expectException($this->getServiceNotFoundException());
         $this->getPluginManager()->setService('test', $this);
     }
 
-    public function testLoadingInvalidElementRaisesException()
+    public function testLoadingInvalidElementRaisesException(): void
     {
         $manager = $this->getPluginManager();
         $manager->setInvokableClass('test', static::class);
@@ -68,56 +46,48 @@ trait CommonPluginManagerTrait
 
     /**
      * @dataProvider aliasProvider
-     * @param string $alias
-     * @param string $expected
      */
-    public function testPluginAliasesResolve($alias, $expected)
+    public function testPluginAliasesResolve(string $alias, string $expected): void
     {
         $this->assertInstanceOf($expected, $this->getPluginManager()->get($alias), "Alias '$alias' does not resolve'");
     }
 
     /**
-     * @return array
+     * @return list<array{string,string}>
      */
-    public function aliasProvider()
+    public function aliasProvider(): array
     {
-        $manager    = $this->getPluginManager();
-        $reflection = new ReflectionProperty($manager, 'aliases');
-        $reflection->setAccessible(true);
-        $data = [];
-        foreach ($reflection->getValue($manager) as $alias => $expected) {
+        $manager                 = $this->getPluginManager();
+        $pluginContainerProperty = new ReflectionProperty(AbstractPluginManager::class, 'plugins');
+        $pluginContainer         = $pluginContainerProperty->getValue($manager);
+        self::assertInstanceOf(ServiceManager::class, $pluginContainer);
+
+        $reflection = new ReflectionProperty($pluginContainer, 'aliases');
+        $data       = [];
+        foreach ($reflection->getValue($pluginContainer) as $alias => $expected) {
+            assert(is_string($alias) && is_string($expected));
             $data[] = [$alias, $expected];
         }
+
         return $data;
     }
 
     protected function getServiceNotFoundException(): string
     {
-        $manager = $this->getPluginManager();
-        if (method_exists($manager, 'configure')) {
-            return InvalidServiceException::class;
-        }
-        return $this->getV2InvalidPluginException();
+        return InvalidServiceException::class;
     }
 
     /**
      * Returns the plugin manager to test
      *
-     * @return AbstractPluginManager
+     * @param ServiceManagerConfiguration $config
      */
-    abstract protected function getPluginManager();
-
-    /**
-     * Returns the FQCN of the exception thrown under v2 by `validatePlugin()`
-     *
-     * @return mixed
-     */
-    abstract protected function getV2InvalidPluginException();
+    abstract protected function getPluginManager(array $config = []): AbstractSingleInstancePluginManager;
 
     /**
      * Returns the value the instanceOf property has been set to
      *
-     * @return string
+     * @return class-string
      */
-    abstract protected function getInstanceOf();
+    abstract protected function getInstanceOf(): string;
 }

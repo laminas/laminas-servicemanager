@@ -22,20 +22,19 @@
     },
     "config": {
         "platform": {
-            "php": "8.0.99"
+            "php": "8.1.99"
         },
         "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "composer/package-versions-deprecated": true,
-            "laminas/laminas-dependency-plugin": true
+            "composer/package-versions-deprecated": true
         }
     },
     "require": {
-        "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
+        "php": "~8.1.0 || ~8.2.0",
         "brick/varexporter": "^0.3.8",
         "laminas/laminas-stdlib": "^3.2.1",
-        "psr/container": "^1.0"
+        "psr/container": "^1.1"
     },
     "extra": {
         "laminas": {
@@ -48,16 +47,15 @@
         "composer/package-versions-deprecated": "^1.11.99.5",
         "laminas/laminas-cli": "^1.8",
         "laminas/laminas-coding-standard": "~2.5.0",
-        "laminas/laminas-container-config-test": "^0.8",
-        "laminas/laminas-dependency-plugin": "^2.2",
+        "laminas/laminas-container-config-test": "dev-qa/service-manager-v4",
         "lctrs/psalm-psr-container-plugin": "^1.9",
         "mikey179/vfsstream": "^1.6.11@alpha",
-        "ocramius/proxy-manager": "^2.14.1",
+        "friendsofphp/proxy-manager-lts": "^1",
         "phpbench/phpbench": "^1.2.7",
         "phpunit/phpunit": "^9.5.26",
         "psalm/plugin-phpunit": "^0.18.0",
         "symfony/console": "^6.0",
-        "vimeo/psalm": "^5.0.0"
+        "vimeo/psalm": "^5.10"
     },
     "provide": {
         "psr/container-implementation": "^1.0"
@@ -68,7 +66,7 @@
     },
     "suggest": {
         "laminas/laminas-cli": "To consume CLI commands provided by this component",
-        "ocramius/proxy-manager": "ProxyManager ^2.1.1 to handle lazy initialization of services"
+        "friendsofphp/proxy-manager-lts": "To handle lazy initialization of services"
     },
     "autoload": {
         "psr-4": {
@@ -76,9 +74,6 @@
         }
     },
     "autoload-dev": {
-        "files": [
-            "test/autoload.php"
-        ],
         "psr-4": {
             "LaminasTest\\ServiceManager\\": "test/",
             "LaminasBench\\ServiceManager\\": "benchmarks/"
@@ -95,5 +90,11 @@
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
         "static-analysis" : "psalm --shepherd --stats"
+    },
+    "repositories": {
+        "container-integration-tests": {
+            "type": "git",
+            "url": "https://github.com/boesing/laminas-container-config-test"
+        }
     }
 }
