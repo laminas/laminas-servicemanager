@@ -184,7 +184,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function get($id): mixed
+    public function get(string $id): mixed
     {
         if (! $this->has($id)) {
             if (! $this->autoAddInvokableClass || ! class_exists($id)) {

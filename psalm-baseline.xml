@@ -99,10 +99,6 @@
       <code><![CDATA[$config['factories']]]></code>
       <code><![CDATA[$config['shared']]]></code>
     </MixedOperand>
-    <ParamNameMismatch>
-      <code>$name</code>
-      <code>$name</code>
-    </ParamNameMismatch>
   </file>
   <file src="src/Test/CommonPluginManagerTrait.php">
     <ArgumentTypeCoercion>

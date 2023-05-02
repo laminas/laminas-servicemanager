@@ -15,7 +15,11 @@ use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use stdClass;
 
+use function array_pop;
+use function count;
 use function file_get_contents;
+use function func_get_args;
+use function is_array;
 use function preg_match;
 
 use const PHP_EOL;
@@ -55,9 +59,9 @@ final class FactoryCreatorTest extends TestCase
         $this->container
             ->expects(self::atLeastOnce())
             ->method('has')
-            ->willReturnMap([
+            ->willReturnCallback($this->createReturnMapCallbackWithDefault([
                 [InvokableObject::class, true],
-            ]);
+            ], false));
 
         self::assertSame($factory, $this->factoryCreator->createFactory($className));
     }
@@ -70,10 +74,10 @@ final class FactoryCreatorTest extends TestCase
         $this->container
             ->expects(self::atLeastOnce())
             ->method('has')
-            ->willReturnMap([
+            ->willReturnCallback($this->createReturnMapCallbackWithDefault([
                 [SimpleDependencyObject::class, true],
                 [SecondComplexDependencyObject::class, true],
-            ]);
+            ], false));
 
         self::assertSame($factory, $this->factoryCreator->createFactory($className));
     }
@@ -89,10 +93,10 @@ final class FactoryCreatorTest extends TestCase
         $this->container
             ->expects(self::atLeastOnce())
             ->method('has')
-            ->willReturnMap([
+            ->willReturnCallback($this->createReturnMapCallbackWithDefault([
                 [SimpleDependencyObject::class, true],
                 [SecondComplexDependencyObject::class, true],
-            ]);
+            ], false));
 
         foreach ($testClassNames as $testFqcn => $expectedNamespace) {
             $generatedFactory = $this->factoryCreator->createFactory($testFqcn);
@@ -107,5 +111,28 @@ final class FactoryCreatorTest extends TestCase
             self::assertNotEmpty($namespaceMatch);
             self::assertSame($expectedNamespace, $namespaceMatch[1]);
         }
+    }
+
+    private function createReturnMapCallbackWithDefault(array $values, mixed $default): callable
+    {
+        return function () use ($values, $default): mixed {
+            $args           = func_get_args();
+            $parameterCount = count($args);
+
+            foreach ($values as $map) {
+                if (! is_array($map) || $parameterCount !== count($map) - 1) {
+                    continue;
+                }
+
+                /** @var mixed $return */
+                $return = array_pop($map);
+
+                if ($args === $map) {
+                    return $return;
+                }
+            }
+
+            return $default;
+        };
     }
 }
