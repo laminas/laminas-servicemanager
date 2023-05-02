@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "319541139bcb7286a5afa215143af372",
+    "content-hash": "6639b46f0ff002d522b4eb0e7c619b0c",
     "packages": [
         {
             "name": "brick/varexporter",
@@ -4497,16 +4497,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v6.2.7",
+            "version": "v6.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "82b6c62b959f642d000456f08c6d219d749215b3"
+                "reference": "fd588debf7d1bc16a2c84b4b3b71145d9946b894"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/82b6c62b959f642d000456f08c6d219d749215b3",
-                "reference": "82b6c62b959f642d000456f08c6d219d749215b3",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/fd588debf7d1bc16a2c84b4b3b71145d9946b894",
+                "reference": "fd588debf7d1bc16a2c84b4b3b71145d9946b894",
                 "shasum": ""
             },
             "require": {
@@ -4540,7 +4540,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v6.2.7"
+                "source": "https://github.com/symfony/filesystem/tree/v6.2.10"
             },
             "funding": [
                 {
@@ -4556,7 +4556,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-14T08:44:56+00:00"
+            "time": "2023-04-18T13:46:08+00:00"
         },
         {
             "name": "symfony/finder",
@@ -5384,16 +5384,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "dev-master",
+            "version": "5.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "c059388274a641b0c577c11b845050891fbfbe2c"
+                "reference": "a5effd2d2dddd1a7ea7a0f6a051ce63ff979e356"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/c059388274a641b0c577c11b845050891fbfbe2c",
-                "reference": "c059388274a641b0c577c11b845050891fbfbe2c",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/a5effd2d2dddd1a7ea7a0f6a051ce63ff979e356",
+                "reference": "a5effd2d2dddd1a7ea7a0f6a051ce63ff979e356",
                 "shasum": ""
             },
             "require": {
@@ -5444,7 +5444,6 @@
                 "ext-curl": "In order to send data to shepherd",
                 "ext-igbinary": "^2.0.5 is required, used to serialize caching data"
             },
-            "default-branch": true,
             "bin": [
                 "psalm",
                 "psalm-language-server",
@@ -5485,9 +5484,9 @@
             ],
             "support": {
                 "issues": "https://github.com/vimeo/psalm/issues",
-                "source": "https://github.com/vimeo/psalm/tree/master"
+                "source": "https://github.com/vimeo/psalm/tree/5.10.0"
             },
-            "time": "2023-04-25T18:47:59+00:00"
+            "time": "2023-05-02T17:20:34+00:00"
         },
         {
             "name": "webimpress/coding-standard",
@@ -5656,8 +5655,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "laminas/laminas-container-config-test": 20,
-        "mikey179/vfsstream": 15,
-        "vimeo/psalm": 20
+        "mikey179/vfsstream": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
