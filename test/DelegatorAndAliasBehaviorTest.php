@@ -31,7 +31,7 @@ final class DelegatorAndAliasBehaviorTest extends TestCase
         self::assertEquals(TargetObjectDelegator::DELEGATED_VALUE, $service->value);
     }
 
-    public function testThatADelegatorWillNotExecuteWhenItTargetsAnAlias(): void
+    public function testThatADelegatorWillExecuteWhenItTargetsAnAlias(): void
     {
         $serviceManager = new ServiceManager([
             'factories'  => [
@@ -50,6 +50,6 @@ final class DelegatorAndAliasBehaviorTest extends TestCase
         $service = $serviceManager->get('Some Alias');
 
         self::assertInstanceOf(TargetObject::class, $service);
-        self::assertEquals(TargetObject::INITIAL_VALUE, $service->value);
+        self::assertEquals(TargetObjectDelegator::DELEGATED_VALUE, $service->value);
     }
 }
