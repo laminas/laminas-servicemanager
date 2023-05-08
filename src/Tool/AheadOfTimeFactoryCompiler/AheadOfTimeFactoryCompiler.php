@@ -22,7 +22,7 @@ use const PHP_VERSION_ID;
 final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInterface
 {
     public function __construct(
-        private FactoryCreatorInterface $factoryCreator,
+        private readonly FactoryCreatorInterface $factoryCreator,
     ) {
     }
 

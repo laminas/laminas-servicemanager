@@ -45,12 +45,12 @@
     "require-dev": {
         "boesing/psalm-plugin-stringf": "^1.4",
         "composer/package-versions-deprecated": "^1.11.99.5",
+        "friendsofphp/proxy-manager-lts": "^1",
         "laminas/laminas-cli": "^1.8",
         "laminas/laminas-coding-standard": "~2.5.0",
         "laminas/laminas-container-config-test": "dev-qa/service-manager-v4",
         "lctrs/psalm-psr-container-plugin": "^1.9",
         "mikey179/vfsstream": "^1.6.11@alpha",
-        "friendsofphp/proxy-manager-lts": "^1",
         "phpbench/phpbench": "^1.2.7",
         "phpunit/phpunit": "^9.5.26",
         "psalm/plugin-phpunit": "^0.18.0",

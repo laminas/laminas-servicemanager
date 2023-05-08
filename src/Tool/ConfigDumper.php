@@ -44,8 +44,8 @@ EOC;
     public const MEZZIO_CONTAINER_CONFIGURATION           = 'dependencies';
 
     public function __construct(
-        private ?ContainerInterface $container = null,
-        private string $serviceManagerConfigurationKey = self::LAMINAS_MVC_SERVICEMANAGER_CONFIGURATION,
+        private readonly ?ContainerInterface $container = null,
+        private readonly string $serviceManagerConfigurationKey = self::LAMINAS_MVC_SERVICEMANAGER_CONFIGURATION,
     ) {
     }
 

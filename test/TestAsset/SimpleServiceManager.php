@@ -11,7 +11,7 @@ use stdClass;
 final class SimpleServiceManager extends ServiceManager
 {
     /** @var array<string,string> */
-    protected $factories = [
+    protected array $factories = [
         stdClass::class => InvokableFactory::class,
     ];
 }

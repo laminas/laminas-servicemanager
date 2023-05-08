@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="dev-master@c059388274a641b0c577c11b845050891fbfbe2c">
+<files psalm-version="5.10.0@a5effd2d2dddd1a7ea7a0f6a051ce63ff979e356">
   <file src="src/AbstractFactory/ConfigAbstractFactory.php">
     <InvalidStringClass>
       <code>new $requestedName(...$arguments)</code>
@@ -28,10 +28,6 @@
     <InvalidArgument>
       <code>self::deDuplicateDetectedCycles($detectedCycles)</code>
     </InvalidArgument>
-    <MixedArgumentTypeCoercion>
-      <code>$alias</code>
-      <code>$detectedCycles</code>
-    </MixedArgumentTypeCoercion>
     <PossiblyFalseOperand>
       <code>$cycle</code>
     </PossiblyFalseOperand>
@@ -57,11 +53,6 @@
     <MissingClosureReturnType>
       <code>function () use ($name, $options) {</code>
     </MissingClosureReturnType>
-    <MissingReturnType>
-      <code>addAbstractFactory</code>
-      <code>addInitializer</code>
-      <code>setInvokableClass</code>
-    </MissingReturnType>
     <MixedArgument>
       <code>$abstractFactory</code>
       <code><![CDATA[$config['aliases']]]></code>
@@ -76,8 +67,6 @@
       <code><![CDATA[$config['shared']]]></code>
     </MixedArgument>
     <MixedArgumentTypeCoercion>
-      <code>$alias</code>
-      <code>$alias</code>
       <code>$service</code>
     </MixedArgumentTypeCoercion>
     <MixedArrayTypeCoercion>

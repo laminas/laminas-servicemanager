@@ -97,7 +97,7 @@ final class CyclicAliasExceptionTest extends TestCase
 
     /**
      * @dataProvider aliasesProvider
-     * @param string[] $aliases
+     * @param array<string,string> $aliases
      */
     public function testFromAliasesMap(array $aliases, string $expectedMessage): void
     {
