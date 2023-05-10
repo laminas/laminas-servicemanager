@@ -8,6 +8,8 @@ use ArrayAccess;
 use Psr\Container\ContainerInterface;
 
 /**
+ * @deprecated Interface will be removed as of v4.0
+ *
  * @see ContainerInterface
  * @see ArrayAccess
  *

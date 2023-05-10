@@ -23,6 +23,8 @@ use function array_keys;
  * These features are advanced, and not typically used. If you wish to use them,
  * you will need to require the laminas-stdlib package in your application.
  *
+ * @deprecated Class will be removed as of v4.0
+ *
  * @psalm-import-type ServiceManagerConfigurationType from ConfigInterface
  */
 class Config implements ConfigInterface
