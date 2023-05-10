@@ -6,8 +6,6 @@ namespace Laminas\ServiceManager\Tool;
 
 use Brick\VarExporter\VarExporter;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use Laminas\ServiceManager\ServiceManager;
-use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolver;
 use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
 use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ServiceFromContainerConstructorParameter;
 use Psr\Container\ContainerInterface;
@@ -57,16 +55,10 @@ final class FactoryCreator implements FactoryCreatorInterface
         ContainerInterface::class,
     ];
 
-    private ConstructorParameterResolverInterface $constructorParameterResolver;
-
-    private ContainerInterface $container;
-
     public function __construct(
-        ?ContainerInterface $container = null,
-        ?ConstructorParameterResolverInterface $constructorParameterResolver = null
+        private readonly ContainerInterface $container,
+        private readonly ConstructorParameterResolverInterface $constructorParameterResolver
     ) {
-        $this->container                    = $container ?? new ServiceManager();
-        $this->constructorParameterResolver = $constructorParameterResolver ?? new ConstructorParameterResolver();
     }
 
     public function createFactory(string $className, array $aliases = []): string

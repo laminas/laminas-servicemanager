@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Laminas\ServiceManager\Command;
 
 use Laminas\ServiceManager\Exception;
-use Laminas\ServiceManager\Tool\FactoryCreator;
 use Laminas\ServiceManager\Tool\FactoryCreatorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,12 +23,9 @@ final class FactoryCreatorCommand extends Command
 {
     public const NAME = 'servicemanager:generate-factory-for-class';
 
-    private FactoryCreatorInterface $factoryCreator;
-
     public function __construct(
-        ?FactoryCreatorInterface $factoryCreator = null
+        private readonly FactoryCreatorInterface $factoryCreator,
     ) {
-        $this->factoryCreator = $factoryCreator ?? new FactoryCreator();
         parent::__construct(self::NAME);
     }
 

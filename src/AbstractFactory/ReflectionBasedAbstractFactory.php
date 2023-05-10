@@ -76,7 +76,7 @@ final class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      * @param array<string,string> $aliases
      */
     public function __construct(
-        public array $aliases = [],
+        public readonly array $aliases = [],
         ?ConstructorParameterResolverInterface $constructorParameterResolver = null,
     ) {
         $this->constructorParameterResolver = $constructorParameterResolver ?? new ConstructorParameterResolver();

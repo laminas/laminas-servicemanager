@@ -108,42 +108,39 @@ use function sprintf;
 class ServiceManager implements ServiceLocatorInterface
 {
     /** @var AbstractFactoryInterface[] */
-    protected $abstractFactories = [];
+    protected array $abstractFactories = [];
 
     /**
      * A list of aliases
      *
      * Should map one alias to a service name, or another alias (aliases are recursively resolved)
      *
-     * @var string[]
+     * @var array<string,string>
      */
-    protected $aliases = [];
+    protected array $aliases = [];
 
     /**
      * Whether or not changes may be made to this instance.
-     *
-     * @var bool
      */
-    protected $allowOverride = false;
+    protected bool $allowOverride = false;
 
-    /** @var ContainerInterface */
-    protected $creationContext;
+    protected ContainerInterface $creationContext;
 
     /** @var DelegatorsConfiguration */
-    protected $delegators = [];
+    protected array $delegators = [];
 
     /**
      * A list of factories (either as string name or callable)
      *
      * @var FactoriesConfiguration
      */
-    protected $factories = [];
+    protected array $factories = [];
 
     /** @var list<InitializerInterface|InitializerCallable> */
-    protected $initializers = [];
+    protected array $initializers = [];
 
     /** @var LazyServicesConfiguration */
-    protected $lazyServices = [];
+    protected array $lazyServices = [];
 
     private ?LazyServiceFactory $lazyServicesDelegator = null;
 
@@ -152,7 +149,7 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * @var array<string,mixed>
      */
-    protected $services = [];
+    protected array $services = [];
 
     /**
      * Enable/disable shared instances by service name.
@@ -166,21 +163,17 @@ class ServiceManager implements ServiceLocatorInterface
      *
      * @var array<string,bool>
      */
-    protected $shared = [];
+    protected array $shared = [];
 
     /**
      * Should the services be shared by default?
-     *
-     * @var bool
      */
-    protected $sharedByDefault = true;
+    protected bool $sharedByDefault = true;
 
     /**
      * Service manager was already configured?
-     *
-     * @var bool
      */
-    protected $configured = false;
+    protected bool $configured = false;
 
     /**
      * Cached abstract factories from string.
@@ -314,7 +307,7 @@ class ServiceManager implements ServiceLocatorInterface
             $this->services = $config['services'] + $this->services;
         }
 
-        if (isset($config['invokables']) && ! empty($config['invokables'])) {
+        if (isset($config['invokables']) && $config['invokables'] !== []) {
             $newAliases = $this->createAliasesAndFactoriesForInvokables($config['invokables']);
             // override existing aliases with those created by invokables to ensure
             // that they are still present after merging aliases later on
@@ -346,7 +339,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         // If lazy service configuration was provided, reset the lazy services
         // delegator factory.
-        if (isset($config['lazy_services']) && ! empty($config['lazy_services'])) {
+        if (isset($config['lazy_services']) && $config['lazy_services'] !== []) {
             /** @psalm-suppress MixedPropertyTypeCoercion */
             $this->lazyServices          = ArrayUtils::merge($this->lazyServices, $config['lazy_services']);
             $this->lazyServicesDelegator = null;
@@ -395,7 +388,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @throws ContainerModificationsNotAllowedException If $name already
      *     exists as a service and overrides are disallowed.
      */
-    public function setInvokableClass(string $name, ?string $class = null)
+    public function setInvokableClass(string $name, ?string $class = null): void
     {
         if (isset($this->services[$name]) && ! $this->allowOverride) {
             throw ContainerModificationsNotAllowedException::fromExistingService($name);
@@ -457,7 +450,7 @@ class ServiceManager implements ServiceLocatorInterface
      *     instance or class name.
      * @psalm-param class-string<AbstractFactoryInterface>|AbstractFactoryInterface $factory
      */
-    public function addAbstractFactory($factory)
+    public function addAbstractFactory(string|AbstractFactoryInterface $factory): void
     {
         $this->resolveAbstractFactoryInstance($factory);
     }
@@ -484,7 +477,7 @@ class ServiceManager implements ServiceLocatorInterface
      * @psalm-param class-string<InitializerInterface>|class-string<object&InitializerCallable>|InitializerCallable|InitializerInterface $initializer
      * @phpcs:enable Generic.Files.LineLength.TooLong
      */
-    public function addInitializer(string|callable|InitializerInterface $initializer)
+    public function addInitializer(string|callable|InitializerInterface $initializer): void
     {
         $this->configure(['initializers' => [$initializer]]);
     }

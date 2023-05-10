@@ -6,7 +6,6 @@ namespace Laminas\ServiceManager\Command;
 
 use InvalidArgumentException;
 use Laminas\ServiceManager\Exception;
-use Laminas\ServiceManager\Tool\ConfigDumper;
 use Laminas\ServiceManager\Tool\ConfigDumperInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,12 +31,9 @@ final class ConfigDumperCommand extends Command
 {
     public const NAME = 'servicemanager:generate-deps-for-config-factory';
 
-    private ConfigDumperInterface $configDumper;
-
     public function __construct(
-        ?ConfigDumperInterface $configDumper = null,
+        private readonly ConfigDumperInterface $configDumper,
     ) {
-        $this->configDumper = $configDumper ?? new ConfigDumper();
         parent::__construct(self::NAME);
     }
 

@@ -38,9 +38,9 @@ final class AheadOfTimeFactoryCreatorCommand extends Command
     public const NAME = 'servicemanager:generate-aot-factories';
 
     public function __construct(
-        private array $config,
-        private string $factoryTargetPath,
-        private AheadOfTimeFactoryCompilerInterface $factoryCompiler,
+        private readonly array $config,
+        private readonly string $factoryTargetPath,
+        private readonly AheadOfTimeFactoryCompilerInterface $factoryCompiler,
     ) {
         parent::__construct(self::NAME);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\Tool;
 
+use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolver;
 use Laminas\ServiceManager\Tool\FactoryCreator;
 use LaminasTest\ServiceManager\TestAsset\ComplexDependencyObject;
 use LaminasTest\ServiceManager\TestAsset\DelegatorAndAliasBehaviorTest\TargetObjectDelegator;
@@ -41,6 +42,7 @@ final class FactoryCreatorTest extends TestCase
         $this->container      = $this->createMock(ContainerInterface::class);
         $this->factoryCreator = new FactoryCreator(
             $this->container,
+            new ConstructorParameterResolver(),
         );
     }
 

@@ -7,8 +7,9 @@ namespace Laminas\ServiceManager;
 use Laminas\ServiceManager\Command\AheadOfTimeFactoryCreatorCommand;
 use Laminas\ServiceManager\Command\AheadOfTimeFactoryCreatorCommandFactory;
 use Laminas\ServiceManager\Command\ConfigDumperCommand;
+use Laminas\ServiceManager\Command\ConfigDumperCommandFactory;
 use Laminas\ServiceManager\Command\FactoryCreatorCommand;
-use Laminas\ServiceManager\Factory\InvokableFactory;
+use Laminas\ServiceManager\Command\FactoryCreatorCommandFactory;
 use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerFactory;
 use Laminas\ServiceManager\Tool\AheadOfTimeFactoryCompiler\AheadOfTimeFactoryCompilerInterface;
 use Laminas\ServiceManager\Tool\ConfigDumperFactory;
@@ -29,10 +30,7 @@ final class ConfigProvider
     public const CONFIGURATION_KEY_FACTORY_TARGET_PATH = 'aot-factory-target-path';
 
     /**
-     * @return array{
-     *  dependencies: ServiceManagerConfiguration,
-     *  ...
-     * }
+     * @return array{dependencies: ServiceManagerConfiguration}&array<string,mixed>
      */
     public function __invoke(): array
     {
@@ -58,8 +56,8 @@ final class ConfigProvider
         if (class_exists(Command::class)) {
             $factories += [
                 AheadOfTimeFactoryCreatorCommand::class => AheadOfTimeFactoryCreatorCommandFactory::class,
-                ConfigDumperCommand::class              => InvokableFactory::class,
-                FactoryCreatorCommand::class            => InvokableFactory::class,
+                ConfigDumperCommand::class              => ConfigDumperCommandFactory::class,
+                FactoryCreatorCommand::class            => FactoryCreatorCommandFactory::class,
             ];
         }
 
