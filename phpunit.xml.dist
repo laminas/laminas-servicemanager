@@ -3,11 +3,11 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          colors="true"
          cacheDirectory=".phpunit.cache">
-  <coverage>
+  <source>
     <include>
       <directory suffix=".php">./src</directory>
     </include>
-  </coverage>
+  </source>
   <testsuites>
     <testsuite name="laminas-servicemanager Test Suite">
       <directory>./test/</directory>
