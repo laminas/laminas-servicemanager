@@ -13,7 +13,6 @@
 
     <!-- Paths to check -->
     <file>benchmarks</file>
-    <file>bin</file>
     <file>src</file>
     <file>test</file>
     <exclude-pattern>test/TestAsset/laminas-code/*.php</exclude-pattern>

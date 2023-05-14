@@ -10,7 +10,9 @@ nav:
       - 'Lazy services': lazy-services.md
       - 'Plugin managers': plugin-managers.md
       - 'Configuration-based Abstract Factory': config-abstract-factory.md
-      - 'Reflection-based Abstract Factory': reflection-abstract-factory.md
+      - 'Reflection-based Abstract Factory':
+        - 'Usage': reflection-abstract-factory.md
+        - 'Ahead of Time Factories': ahead-of-time-factories.md
       - 'Console Tools': console-tools.md
     - Cookbook:
       - 'Factories vs Abstract Factories': cookbook/factories-vs-abstract-factories.md

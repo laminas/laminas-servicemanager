@@ -18,7 +18,7 @@ class CyclicAliasException extends InvalidArgumentException
 {
     /**
      * @param string   $alias conflicting alias key
-     * @param string[] $aliases map of referenced services, indexed by alias name (string)
+     * @param array<string,string> $aliases map of referenced services, indexed by alias name
      */
     public static function fromCyclicAlias(string $alias, array $aliases): self
     {
@@ -37,13 +37,12 @@ class CyclicAliasException extends InvalidArgumentException
     }
 
     /**
-     * @param string[] $aliases map of referenced services, indexed by alias name (string)
-     * @return self
+     * @param array<string,string> $aliases map of referenced services, indexed by alias name (string)
      */
-    public static function fromAliasesMap(array $aliases)
+    public static function fromAliasesMap(array $aliases): self
     {
         $detectedCycles = array_filter(array_map(
-            static fn($alias): ?array => self::getCycleFor($aliases, $alias),
+            static fn(string $alias): ?array => self::getCycleFor($aliases, $alias),
             array_keys($aliases)
         ));
 
@@ -65,11 +64,10 @@ class CyclicAliasException extends InvalidArgumentException
     /**
      * Retrieves the cycle detected for the given $alias, or `null` if no cycle was detected
      *
-     * @param string[] $aliases
-     * @param string   $alias
-     * @return array|null
+     * @param array<string,string> $aliases
+     * @return array<string,true>|null
      */
-    private static function getCycleFor(array $aliases, $alias)
+    private static function getCycleFor(array $aliases, string $alias): ?array
     {
         $cycleCandidate = [];
         $targetName     = $alias;
@@ -87,10 +85,9 @@ class CyclicAliasException extends InvalidArgumentException
     }
 
     /**
-     * @param string[] $aliases
-     * @return string
+     * @param array<string,string> $aliases
      */
-    private static function printReferencesMap(array $aliases)
+    private static function printReferencesMap(array $aliases): string
     {
         $map = [];
 
@@ -103,19 +100,17 @@ class CyclicAliasException extends InvalidArgumentException
 
     /**
      * @param string[][] $detectedCycles
-     * @return string
      */
-    private static function printCycles(array $detectedCycles)
+    private static function printCycles(array $detectedCycles): string
     {
         return "[\n" . implode("\n", array_map([self::class, 'printCycle'], $detectedCycles)) . "\n]";
     }
 
     /**
      * @param string[] $detectedCycle
-     * @return string
      * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedMethod
      */
-    private static function printCycle(array $detectedCycle)
+    private static function printCycle(array $detectedCycle): string
     {
         $fullCycle   = array_keys($detectedCycle);
         $fullCycle[] = reset($fullCycle);
@@ -133,7 +128,7 @@ class CyclicAliasException extends InvalidArgumentException
      * @param bool[][] $detectedCycles
      * @return bool[][] de-duplicated
      */
-    private static function deDuplicateDetectedCycles(array $detectedCycles)
+    private static function deDuplicateDetectedCycles(array $detectedCycles): array
     {
         $detectedCyclesByHash = [];
 
