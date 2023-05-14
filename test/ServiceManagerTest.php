@@ -393,7 +393,9 @@ final class ServiceManagerTest extends TestCase
         $abstractFactory
             ->expects(self::exactly(2))
             ->method('canCreate')
-            ->willReturnCallback(static fn (ContainerInterface $context, string $name): bool => $name === 'ServiceName');
+            ->willReturnCallback(
+                static fn (ContainerInterface $context, string $name): bool => $name === 'ServiceName'
+            );
 
         self::assertTrue($serviceManager->has('Alias'));
     }
