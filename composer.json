@@ -62,9 +62,6 @@
         "laminas/laminas-code": "<4.10.0",
         "zendframework/zend-code": "<3.3.1"
     },
-    "provide": {
-        "psr/container-implementation": "^1.0"
-    },
     "suggest": {
         "laminas/laminas-cli": "To consume CLI commands provided by this component",
         "friendsofphp/proxy-manager-lts": "To handle lazy initialization of services"
