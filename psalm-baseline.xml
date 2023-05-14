@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.8.0@9cf4f60a333f779ad3bc704a555920e81d4fdcda">
+<files psalm-version="5.9.0@8b9ad1eb9e8b7d3101f949291da2b9f7767cd163">
   <file src="src/AbstractFactory/ConfigAbstractFactory.php">
     <InvalidStringClass>
       <code>new $requestedName(...$arguments)</code>
@@ -59,6 +59,9 @@
       <code>$config</code>
       <code>$config</code>
     </ArgumentTypeCoercion>
+    <DeprecatedInterface>
+      <code>null|ConfigInterface|ContainerInterface</code>
+    </DeprecatedInterface>
     <ImplementedParamTypeMismatch>
       <code>$service</code>
     </ImplementedParamTypeMismatch>
@@ -79,6 +82,9 @@
     </UnusedPsalmSuppress>
   </file>
   <file src="src/Config.php">
+    <DeprecatedInterface>
+      <code>Config</code>
+    </DeprecatedInterface>
     <LessSpecificReturnStatement>
       <code>ArrayUtils::merge($a, $b)</code>
     </LessSpecificReturnStatement>
@@ -510,6 +516,9 @@
     </UnusedClosureParam>
   </file>
   <file src="test/ConfigTest.php">
+    <DeprecatedClass>
+      <code>new Config($config)</code>
+    </DeprecatedClass>
     <MixedAssignment>
       <code>$configInstance</code>
       <code>$configuration</code>
