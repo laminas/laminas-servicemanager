@@ -20,7 +20,7 @@ final class ExamplePluginManagerTest extends TestCase
 {
     use CommonPluginManagerTrait;
 
-    protected function getPluginManager(array $config = []): AbstractSingleInstancePluginManager
+    protected static function getPluginManager(array $config = []): AbstractSingleInstancePluginManager
     {
         return new InvokableObjectPluginManager(new ServiceManager(), $config);
     }

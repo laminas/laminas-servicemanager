@@ -101,11 +101,10 @@ final class ConstructorParameterResolverTest extends TestCase
         $this->container
             ->expects(self::exactly(2))
             ->method('has')
-            ->withConsecutive(
-                ['config'],
-                [SampleInterface::class],
-            )
-            ->willReturn(false, false);
+            ->willReturnMap([
+                ['config', false],
+                [SampleInterface::class, false],
+            ]);
 
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage(sprintf(

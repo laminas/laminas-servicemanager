@@ -42,7 +42,7 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
     /**
      * @return array<non-empty-string,array{string}>
      */
-    public function invalidRequestNames(): array
+    public static function invalidRequestNames(): array
     {
         return [
             'empty-string'                   => [''],
@@ -73,7 +73,7 @@ final class ReflectionBasedAbstractFactoryTest extends TestCase
     /**
      * @return array<non-empty-string,array{class-string}>
      */
-    public function classNamesWithoutConstructorArguments(): array
+    public static function classNamesWithoutConstructorArguments(): array
     {
         return [
             'no-constructor'           => [

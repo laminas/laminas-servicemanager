@@ -27,11 +27,11 @@ object is really needed.
 `Laminas\ServiceManager\Proxy\LazyServiceFactory` is a [delegator factory](delegators.md)
 capable of generating lazy loading proxies for your services.
 
-The lazy service facilities depend on [ProxyManager](https://github.com/Ocramius/ProxyManager);
+The lazy service facilities depend on [ProxyManager](https://github.com/FriendsOfPHP/proxy-manager-lts);
 you will need to install that package before using the feature:
 
 ```php
-$ composer require ocramius/proxy-manager
+$ composer require friendsofphp/proxy-manager-lts
 ```
 
 ## Practical example

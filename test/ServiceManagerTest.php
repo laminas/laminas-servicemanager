@@ -28,17 +28,17 @@ final class ServiceManagerTest extends TestCase
     /**
      * @psalm-param ServiceManagerConfiguration $config
      */
-    public function createContainer(array $config = []): ServiceManager
+    public static function createContainer(array $config = []): ServiceManager
     {
         $container             = new ServiceManager($config);
-        $this->creationContext = $container;
+        self::$creationContext = $container;
 
         return $container;
     }
 
     public function testServiceManagerIsAPsr11Container(): void
     {
-        $container = $this->createContainer();
+        $container = self::createContainer();
 
         self::assertInstanceOf(ContainerInterface::class, $container);
     }
@@ -118,7 +118,7 @@ final class ServiceManagerTest extends TestCase
         self::assertEquals('bar', $instance->foo);
     }
 
-    public function shareProvider(): array
+    public static function shareProvider(): array
     {
         $sharedByDefault          = true;
         $serviceShared            = true;
@@ -355,11 +355,7 @@ final class ServiceManagerTest extends TestCase
         $abstractFactory
             ->expects(self::once())
             ->method('canCreate')
-            ->withConsecutive(
-                [self::anything(), self::equalTo('Alias')],
-                [self::anything(), self::equalTo('ServiceName')]
-            )
-            ->willReturnCallback(static fn (mixed $context, string $name): bool => $name === 'Alias');
+            ->willReturnCallback(static fn (ContainerInterface $context, string $name): bool => $name === 'Alias');
 
         self::assertTrue($serviceManager->has('Alias'));
     }
@@ -397,11 +393,9 @@ final class ServiceManagerTest extends TestCase
         $abstractFactory
             ->expects(self::exactly(2))
             ->method('canCreate')
-            ->withConsecutive(
-                [self::anything(), 'Alias'],
-                [self::anything(), 'ServiceName']
-            )
-            ->willReturnCallback(static fn (mixed $context, string $name): bool => $name === 'ServiceName');
+            ->willReturnCallback(
+                static fn (ContainerInterface $context, string $name): bool => $name === 'ServiceName'
+            );
 
         self::assertTrue($serviceManager->has('Alias'));
     }
@@ -422,11 +416,10 @@ final class ServiceManagerTest extends TestCase
         $abstractFactory
             ->expects(self::exactly(2))
             ->method('canCreate')
-            ->withConsecutive(
-                [self::anything(), 'Alias'],
-                [self::anything(), 'ServiceName']
-            )
-            ->willReturn(false);
+            ->willReturnMap([
+                [$serviceManager, 'Alias', false],
+                [$serviceManager, 'ServiceName', false],
+            ]);
 
         self::assertFalse($serviceManager->has('Alias'));
     }
@@ -535,7 +528,7 @@ final class ServiceManagerTest extends TestCase
      *     non-empty-string
      * }>
      */
-    public function aliasedServices(): array
+    public static function aliasedServices(): array
     {
         return [
             'invokables'         => [
@@ -633,7 +626,7 @@ final class ServiceManagerTest extends TestCase
      */
     public function testCanMapLazyServices(): void
     {
-        $container = $this->createContainer();
+        $container = self::createContainer();
 
         $container->mapLazyService('foo', self::class);
         $r            = new ReflectionProperty($container, 'lazyServices');

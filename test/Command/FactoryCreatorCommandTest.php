@@ -47,7 +47,7 @@ final class FactoryCreatorCommandTest extends TestCase
     /**
      * @return array<non-empty-string,array{string}>
      */
-    public function invalidArguments(): array
+    public static function invalidArguments(): array
     {
         return [
             'string'    => ['string'],

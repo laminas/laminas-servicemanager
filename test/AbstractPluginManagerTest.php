@@ -26,10 +26,10 @@ final class AbstractPluginManagerTest extends TestCase
 {
     use CommonServiceLocatorBehaviorsTrait;
 
-    public function createContainer(array $config = []): AbstractPluginManager
+    public static function createContainer(array $config = []): AbstractPluginManager
     {
-        $this->creationContext = new ServiceManager();
-        return new TestAsset\LenientPluginManager($this->creationContext, $config);
+        self::$creationContext = new ServiceManager();
+        return new TestAsset\LenientPluginManager(self::$creationContext, $config);
     }
 
     public function testInjectCreationContextInFactories(): void
@@ -95,7 +95,7 @@ final class AbstractPluginManagerTest extends TestCase
         self::assertSame($first, $second);
     }
 
-    public function shareByDefaultSettings(): array
+    public static function shareByDefaultSettings(): array
     {
         return [
             'true'  => [true],
@@ -179,7 +179,7 @@ final class AbstractPluginManagerTest extends TestCase
      */
     public function testGetRaisesExceptionWhenNoFactoryIsResolved(): void
     {
-        $pluginManager = $this->createContainer();
+        $pluginManager = self::createContainer();
         $this->expectException(ServiceNotFoundException::class);
         $this->expectExceptionMessage($pluginManager::class);
         $pluginManager->get('Some\Unknown\Service');

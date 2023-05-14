@@ -9,6 +9,7 @@ use Laminas\ServiceManager\AbstractSingleInstancePluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\ServiceManager;
 use ReflectionProperty;
+use stdClass;
 
 use function assert;
 use function is_string;
@@ -39,7 +40,7 @@ trait CommonPluginManagerTrait
     public function testLoadingInvalidElementRaisesException(): void
     {
         $manager = $this->getPluginManager();
-        $manager->setInvokableClass('test', static::class);
+        $manager->setInvokableClass('test', stdClass::class);
         $this->expectException($this->getServiceNotFoundException());
         $manager->get('test');
     }
@@ -49,15 +50,15 @@ trait CommonPluginManagerTrait
      */
     public function testPluginAliasesResolve(string $alias, string $expected): void
     {
-        $this->assertInstanceOf($expected, $this->getPluginManager()->get($alias), "Alias '$alias' does not resolve'");
+        $this->assertInstanceOf($expected, self::getPluginManager()->get($alias), "Alias '$alias' does not resolve'");
     }
 
     /**
      * @return list<array{string,string}>
      */
-    public function aliasProvider(): array
+    public static function aliasProvider(): array
     {
-        $manager                 = $this->getPluginManager();
+        $manager                 = self::getPluginManager();
         $pluginContainerProperty = new ReflectionProperty(AbstractPluginManager::class, 'plugins');
         $pluginContainer         = $pluginContainerProperty->getValue($manager);
         self::assertInstanceOf(ServiceManager::class, $pluginContainer);
@@ -82,7 +83,7 @@ trait CommonPluginManagerTrait
      *
      * @param ServiceManagerConfiguration $config
      */
-    abstract protected function getPluginManager(array $config = []): AbstractSingleInstancePluginManager;
+    abstract protected static function getPluginManager(array $config = []): AbstractSingleInstancePluginManager;
 
     /**
      * Returns the value the instanceOf property has been set to

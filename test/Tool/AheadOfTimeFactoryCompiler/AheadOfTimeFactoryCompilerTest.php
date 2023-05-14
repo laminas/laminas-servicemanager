@@ -38,7 +38,7 @@ final class AheadOfTimeFactoryCompilerTest extends TestCase
     /**
      * @return array<non-empty-string, array{array}>
      */
-    public function configurationsWithoutRegisteredServices(): array
+    public static function configurationsWithoutRegisteredServices(): array
     {
         return [
             'empty config'             => [
@@ -95,7 +95,7 @@ final class AheadOfTimeFactoryCompilerTest extends TestCase
     /**
      * @return array<non-empty-string,array{string}>
      */
-    public function nonClassReferencingServiceNames(): array
+    public static function nonClassReferencingServiceNames(): array
     {
         return [
             'nonexistent-service-name' => [
@@ -113,7 +113,7 @@ final class AheadOfTimeFactoryCompilerTest extends TestCase
     /**
      * @return array<non-empty-string,array{string}>
      */
-    public function nonClassReferencingServiceNamesPhp81Upwards(): array
+    public static function nonClassReferencingServiceNamesPhp81Upwards(): array
     {
         if (PHP_VERSION_ID < 80100) {
             return [];

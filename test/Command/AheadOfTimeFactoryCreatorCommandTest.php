@@ -50,7 +50,7 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
     /**
      * @return array<non-empty-string,array{string}>
      */
-    public function invalidFactoryTargetPaths(): array
+    public static function invalidFactoryTargetPaths(): array
     {
         $readOnlyDirectory = vfsStream::setup('read-only', 0544, ['bar' => []]);
         return [

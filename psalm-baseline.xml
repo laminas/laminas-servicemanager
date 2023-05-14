@@ -145,10 +145,6 @@
     <MissingClosureReturnType>
       <code>static function ($container, $name, $callback) {</code>
     </MissingClosureReturnType>
-    <MissingConstructor>
-      <code>$creationContext</code>
-      <code>$creationContext</code>
-    </MissingConstructor>
     <MixedAssignment>
       <code>$first</code>
       <code>$instance</code>
@@ -181,7 +177,6 @@
   </file>
   <file src="test/Proxy/LazyServiceFactoryTest.php">
     <InvalidArgument>
-      <code><![CDATA[[$callback, 'callback']]]></code>
       <code><![CDATA[[$callback, 'callback']]]></code>
     </InvalidArgument>
     <MissingClosureParamType>

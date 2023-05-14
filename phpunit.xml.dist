@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
-    bootstrap="./vendor/autoload.php"
-    colors="true">
-    <coverage includeUncoveredFiles="true">
-        <include>
-            <directory suffix=".php">./src</directory>
-        </include>
-    </coverage>
-
-    <testsuites>
-        <testsuite name="laminas-servicemanager Test Suite">
-            <directory>./test/</directory>
-        </testsuite>
-    </testsuites>
-
-    <groups>
-        <exclude>
-            <group>disable</group>
-        </exclude>
-    </groups>
-
-    <php>
-        <ini name="date.timezone" value="UTC"/>
-    </php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd" colors="true" cacheDirectory=".phpunit.cache">
+  <coverage/>
+  <testsuites>
+    <testsuite name="laminas-servicemanager Test Suite">
+      <directory>./test/</directory>
+    </testsuite>
+  </testsuites>
+  <groups>
+    <exclude>
+      <group>disable</group>
+    </exclude>
+  </groups>
+  <source>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </source>
 </phpunit>
