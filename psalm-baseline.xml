@@ -178,7 +178,6 @@
   <file src="test/Proxy/LazyServiceFactoryTest.php">
     <InvalidArgument>
       <code><![CDATA[[$callback, 'callback']]]></code>
-      <code><![CDATA[[$callback, 'callback']]]></code>
     </InvalidArgument>
     <MissingClosureParamType>
       <code>$className</code>
