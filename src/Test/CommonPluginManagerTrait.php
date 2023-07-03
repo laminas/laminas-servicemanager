@@ -26,7 +26,7 @@ trait CommonPluginManagerTrait
 {
     public function testInstanceOfMatches(): void
     {
-        $manager    = $this->getPluginManager();
+        $manager    = self::getPluginManager();
         $reflection = new ReflectionProperty($manager, 'instanceOf');
         $this->assertEquals($this->getInstanceOf(), $reflection->getValue($manager), 'instanceOf does not match');
     }
@@ -34,12 +34,12 @@ trait CommonPluginManagerTrait
     public function testRegisteringInvalidElementRaisesException(): void
     {
         $this->expectException($this->getServiceNotFoundException());
-        $this->getPluginManager()->setService('test', $this);
+        self::getPluginManager()->setService('test', $this);
     }
 
     public function testLoadingInvalidElementRaisesException(): void
     {
-        $manager = $this->getPluginManager();
+        $manager = self::getPluginManager();
         $manager->setInvokableClass('test', stdClass::class);
         $this->expectException($this->getServiceNotFoundException());
         $manager->get('test');
