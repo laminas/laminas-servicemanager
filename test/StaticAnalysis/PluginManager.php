@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaminasTest\ServiceManager\StaticAnalysis;
 
 use Laminas\ServiceManager\AbstractSingleInstancePluginManager;
@@ -10,9 +12,7 @@ use stdClass;
  */
 final class PluginManager extends AbstractSingleInstancePluginManager
 {
-    /**
-     * @var class-string<stdClass>
-     */
+    /** @var class-string<stdClass> */
     protected string $instanceOf = stdClass::class;
 
     public function getWhateverPlugin(array|null $options = null): stdClass
@@ -22,5 +22,11 @@ final class PluginManager extends AbstractSingleInstancePluginManager
         }
 
         return $this->build('foo', $options);
+    }
+
+    public function functionValidateWhateverPlugin(object $object): stdClass
+    {
+        $this->validate($object);
+        return $object;
     }
 }
