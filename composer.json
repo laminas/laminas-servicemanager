@@ -46,7 +46,7 @@
         "friendsofphp/proxy-manager-lts": "^1",
         "laminas/laminas-cli": "^1.8",
         "laminas/laminas-coding-standard": "~2.5.0",
-        "laminas/laminas-container-config-test": "dev-qa/service-manager-v4",
+        "laminas/laminas-container-config-test": "^1.0",
         "lctrs/psalm-psr-container-plugin": "^1.9",
         "mikey179/vfsstream": "^1.6.11@alpha",
         "phpbench/phpbench": "^1.2.7",
@@ -87,13 +87,6 @@
         "cs-fix": "phpcbf",
         "static-analysis": "psalm --shepherd --stats",
         "test": "phpunit --colors=always",
-        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
-        "static-analysis" : "psalm --shepherd --stats"
-    },
-    "repositories": {
-        "container-integration-tests": {
-            "type": "git",
-            "url": "https://github.com/boesing/laminas-container-config-test"
-        }
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     }
 }

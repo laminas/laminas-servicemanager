@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6194c348746f9b6ddd38388d46d9864a",
+    "content-hash": "7bc559037336da5fe19f5b7c67bcd5ee",
     "packages": [
         {
             "name": "brick/varexporter",
@@ -1438,24 +1438,30 @@
         },
         {
             "name": "laminas/laminas-container-config-test",
-            "version": "dev-qa/service-manager-v4",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/boesing/laminas-container-config-test",
-                "reference": "249c28ba37e05857ffab25a64ae6c9824626cf23"
+                "url": "https://github.com/laminas/laminas-container-config-test.git",
+                "reference": "c4ac1ffd77102fcec4a0588b1f55ebec7714fb48"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laminas/laminas-container-config-test/zipball/c4ac1ffd77102fcec4a0588b1f55ebec7714fb48",
+                "reference": "c4ac1ffd77102fcec4a0588b1f55ebec7714fb48",
+                "shasum": ""
             },
             "require": {
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
-                "psr/container": "^1.0 || ^2.0"
+                "php": "~8.1.0 || ~8.2.0",
+                "psr/container": "^1.0 || ^2.0.2"
             },
             "conflict": {
                 "zendframework/zend-container-config-test": "*"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "^2.3",
-                "phpunit/phpunit": "^9.5.26",
-                "psalm/plugin-phpunit": "^0.18.0",
-                "vimeo/psalm": "^5.0.0"
+                "laminas/laminas-coding-standard": "^2.5",
+                "phpunit/phpunit": "^10.3.2",
+                "psalm/plugin-phpunit": "^0.18.4",
+                "vimeo/psalm": "^5.15.0"
             },
             "type": "library",
             "autoload": {
@@ -1469,52 +1475,33 @@
                     "Laminas\\ContainerConfigTest\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "LaminasTest\\ContainerConfigTest\\": "test/"
-                }
-            },
-            "scripts": {
-                "check": [
-                    "@cs-check",
-                    "@test"
-                ],
-                "cs-check": [
-                    "phpcs"
-                ],
-                "cs-fix": [
-                    "phpcbf"
-                ],
-                "static-analysis": [
-                    "psalm --shepherd --stats"
-                ],
-                "test": [
-                    "phpunit --colors=always"
-                ],
-                "test-coverage": [
-                    "phpunit --colors=always --coverage-clover clover.xml"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
             "description": "Mezzio PSR-11 container configuration tests",
             "homepage": "https://laminas.dev",
             "keywords": [
+                "PSR-11",
                 "container",
                 "laminas",
                 "mezzio",
-                "psr-11",
                 "test"
             ],
             "support": {
-                "issues": "https://github.com/laminas/laminas-container-config-test/issues",
-                "source": "https://github.com/laminas/laminas-container-config-test",
-                "rss": "https://github.com/laminas/laminas-container-config-test/releases.atom",
                 "chat": "https://laminas.dev/chat",
-                "forum": "https://discourse.laminas.dev"
+                "forum": "https://discourse.laminas.dev",
+                "issues": "https://github.com/laminas/laminas-container-config-test/issues",
+                "rss": "https://github.com/laminas/laminas-container-config-test/releases.atom",
+                "source": "https://github.com/laminas/laminas-container-config-test"
             },
-            "time": "2023-04-19T23:38:19+00:00"
+            "funding": [
+                {
+                    "url": "https://funding.communitybridge.org/projects/laminas-project",
+                    "type": "community_bridge"
+                }
+            ],
+            "time": "2023-08-27T23:51:09+00:00"
         },
         {
             "name": "lctrs/psalm-psr-container-plugin",
@@ -5528,7 +5515,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "laminas/laminas-container-config-test": 20,
         "mikey179/vfsstream": 15
     },
     "prefer-stable": false,
