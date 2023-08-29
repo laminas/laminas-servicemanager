@@ -10,7 +10,7 @@ use stdClass;
 /**
  * @template-extends AbstractSingleInstancePluginManager<stdClass>
  */
-final class PluginManager extends AbstractSingleInstancePluginManager
+final class SingleInstancePluginManager extends AbstractSingleInstancePluginManager
 {
     /** @var class-string<stdClass> */
     protected string $instanceOf = stdClass::class;
