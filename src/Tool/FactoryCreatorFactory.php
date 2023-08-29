@@ -7,6 +7,8 @@ namespace Laminas\ServiceManager\Tool;
 use Laminas\ServiceManager\Tool\ConstructorParameterResolver\ConstructorParameterResolverInterface;
 use Psr\Container\ContainerInterface;
 
+use function assert;
+
 /**
  * @internal
  */
@@ -14,6 +16,8 @@ final class FactoryCreatorFactory
 {
     public function __invoke(ContainerInterface $container): FactoryCreatorInterface
     {
-        return new FactoryCreator($container, $container->get(ConstructorParameterResolverInterface::class));
+        $resolver = $container->get(ConstructorParameterResolverInterface::class);
+        assert($resolver instanceof ConstructorParameterResolverInterface);
+        return new FactoryCreator($container, $resolver);
     }
 }

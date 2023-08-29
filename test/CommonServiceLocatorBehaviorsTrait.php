@@ -897,12 +897,10 @@ trait CommonServiceLocatorBehaviorsTrait
                 $target = 'build';
             }
 
-            /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
             $object[$target][] = $obj;
         }
 
         // compares the first to the first also, but ok
-        /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
         foreach ($object['get'] as $sharedObj) {
             self::assertSame($object['get'][0], $sharedObj);
         }

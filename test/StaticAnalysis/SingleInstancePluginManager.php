@@ -29,4 +29,14 @@ final class SingleInstancePluginManager extends AbstractSingleInstancePluginMana
         $this->validate($object);
         return $object;
     }
+
+    public function getConcretePlugin(): ConcreteStdClassPlugin
+    {
+        return $this->get(ConcreteStdClassPlugin::class);
+    }
+
+    public function buildConcretePlugin(): ConcreteStdClassPlugin
+    {
+        return $this->build(ConcreteStdClassPlugin::class);
+    }
 }
