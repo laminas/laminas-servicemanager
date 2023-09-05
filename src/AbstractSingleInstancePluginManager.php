@@ -37,6 +37,14 @@ abstract class AbstractSingleInstancePluginManager extends AbstractPluginManager
     /**
      * {@inheritDoc}
      */
+    public function build(string $name, ?array $options = null): object
+    {
+        return parent::build($name, $options);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function validate(mixed $instance): void
     {
         if ($instance instanceof $this->instanceOf) {
