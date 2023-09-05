@@ -198,7 +198,6 @@ abstract class AbstractPluginManager implements PluginManagerInterface
             $this->plugins->setFactory($id, Factory\InvokableFactory::class);
         }
 
-        /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
         $instance = $this->plugins->get($id);
         $this->validate($instance);
         return $instance;
