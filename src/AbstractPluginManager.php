@@ -117,7 +117,6 @@ abstract class AbstractPluginManager extends ServiceManager implements PluginMan
     public function configure(array $config)
     {
         if (isset($config['services'])) {
-            /** @psalm-suppress MixedAssignment */
             foreach ($config['services'] as $service) {
                 $this->validate($service);
             }

@@ -54,6 +54,12 @@
       <code>DispatchableInterface</code>
     </UndefinedDocblockClass>
   </file>
+  <file src="src/AbstractFactoryInterface.php">
+    <PossiblyUnusedMethod>
+      <code>canCreateServiceWithName</code>
+      <code>createServiceWithName</code>
+    </PossiblyUnusedMethod>
+  </file>
   <file src="src/AbstractPluginManager.php">
     <ArgumentTypeCoercion>
       <code>$config</code>
@@ -77,9 +83,6 @@
     <RedundantConditionGivenDocblockType>
       <code>is_object($configInstanceOrParentLocator)</code>
     </RedundantConditionGivenDocblockType>
-    <UnusedPsalmSuppress>
-      <code>MixedAssignment</code>
-    </UnusedPsalmSuppress>
   </file>
   <file src="src/Config.php">
     <DeprecatedInterface>
@@ -94,10 +97,14 @@
     <MoreSpecificReturnType>
       <code>ServiceManagerConfigurationType</code>
     </MoreSpecificReturnType>
-    <UnusedPsalmSuppress>
-      <code>MixedReturnTypeCoercion</code>
-      <code>MixedReturnTypeCoercion</code>
-    </UnusedPsalmSuppress>
+    <UnusedProperty>
+      <code>$allowedKeys</code>
+    </UnusedProperty>
+  </file>
+  <file src="src/DelegatorFactoryInterface.php">
+    <PossiblyUnusedMethod>
+      <code>createDelegatorWithName</code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="src/Exception/CyclicAliasException.php">
     <InvalidArgument>
@@ -116,6 +123,16 @@
       <code>new $requestedName($options)</code>
       <code>new $requestedName()</code>
     </InvalidStringClass>
+  </file>
+  <file src="src/FactoryInterface.php">
+    <UnusedClass>
+      <code>FactoryInterface</code>
+    </UnusedClass>
+  </file>
+  <file src="src/InitializerInterface.php">
+    <UnusedClass>
+      <code>InitializerInterface</code>
+    </UnusedClass>
   </file>
   <file src="src/Proxy/LazyServiceFactory.php">
     <MissingClosureParamType>
@@ -218,6 +235,9 @@
       <code>$service</code>
       <code>$target</code>
     </UnusedForeachValue>
+    <UnusedReturnValue>
+      <code>DelegatorsConfiguration</code>
+    </UnusedReturnValue>
     <UnusedVariable>
       <code>$key</code>
     </UnusedVariable>
@@ -484,7 +504,6 @@
       <code><![CDATA[$object[$shared ? $method : 'build'][]]]></code>
       <code>$second</code>
       <code>$shared</code>
-      <code>$shared</code>
     </MixedAssignment>
     <MixedFunctionCall>
       <code>$callback()</code>
@@ -606,6 +625,9 @@
       <code><![CDATA[$instance->foo]]></code>
       <code><![CDATA[$instance->option]]></code>
     </MixedPropertyFetch>
+    <PossiblyUnusedMethod>
+      <code>sampleFactory</code>
+    </PossiblyUnusedMethod>
     <UnusedClosureParam>
       <code>$container</code>
       <code>$container</code>
@@ -614,6 +636,11 @@
       <code>$name</code>
       <code>$name</code>
     </UnusedClosureParam>
+  </file>
+  <file src="test/StaticAnalysis/ServiceManagerConfiguration.php">
+    <UnusedClass>
+      <code>ServiceManagerConfiguration</code>
+    </UnusedClass>
   </file>
   <file src="test/Tool/ConfigDumperCommandTest.php">
     <MixedArgument>
