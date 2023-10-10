@@ -324,10 +324,10 @@ class ServiceManager implements ServiceLocatorInterface
             $this->shared = $config['shared'] + $this->shared;
         }
 
-        if (! empty($config['aliases'])) {
+        if (isset($config['aliases']) && $config['aliases'] !== []) {
             $this->aliases = $config['aliases'] + $this->aliases;
             $this->mapAliasesToTargets();
-        } elseif (! $this->configured && ! empty($this->aliases)) {
+        } elseif (! $this->configured && $this->aliases !== []) {
             $this->mapAliasesToTargets();
         }
 

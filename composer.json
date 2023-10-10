@@ -52,7 +52,7 @@
         "phpunit/phpunit": "^10.4",
         "psalm/plugin-phpunit": "^0.18.4",
         "symfony/console": "^6.0",
-        "vimeo/psalm": "5.x-dev as 5.16"
+        "vimeo/psalm": "^5.22"
     },
     "provide": {
         "psr/container-implementation": "^1.0 || ^2.0"
