@@ -33,7 +33,7 @@
         "laminas/laminas-container-config-test": "^0.8",
         "mikey179/vfsstream": "^1.6.11",
         "phpbench/phpbench": "^1.2.9",
-        "phpunit/phpunit": "^10.0.17",
+        "phpunit/phpunit": "^10.4",
         "psalm/plugin-phpunit": "^0.18.4",
         "vimeo/psalm": "^5.8.0"
     },
