@@ -21,7 +21,7 @@
         "rss": "https://github.com/laminas/laminas-servicemanager/releases.atom"
     },
     "require": {
-        "php": "~8.1.0 || ~8.2.0",
+        "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
         "laminas/laminas-stdlib": "^3.17",
         "psr/container": "^1.0"
     },
