@@ -264,7 +264,7 @@ class ServiceManager implements ServiceLocatorInterface
     /**
      * {@inheritDoc}
      *
-     * @param string|class-string $name
+     * @param string|class-string $id
      * @return bool
      */
     public function has(string $id): bool
@@ -350,7 +350,7 @@ class ServiceManager implements ServiceLocatorInterface
         if (isset($config['abstract_factories'])) {
             $abstractFactories = $config['abstract_factories'];
             // $key not needed, but foreach is faster than foreach + array_values.
-            foreach ($abstractFactories as $key => $abstractFactory) {
+            foreach ($abstractFactories as $abstractFactory) {
                 $this->resolveAbstractFactoryInstance($abstractFactory);
             }
         }
