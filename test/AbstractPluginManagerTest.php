@@ -55,7 +55,7 @@ final class AbstractPluginManagerTest extends TestCase
             ->expects(self::once())
             ->method('__invoke')
             ->with($container, InvokableObject::class)
-            ->will(self::returnValue(new InvokableObject()));
+            ->willReturn(new InvokableObject());
 
         $object = $pluginManager->get(InvokableObject::class);
 
