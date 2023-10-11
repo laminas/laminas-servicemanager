@@ -13,6 +13,7 @@ use ReflectionParameter;
 
 use function array_filter;
 use function array_key_exists;
+use function array_keys;
 use function class_exists;
 use function date;
 use function gettype;
@@ -131,7 +132,7 @@ EOC;
             );
         }
 
-        foreach ($config[ConfigAbstractFactory::class] as $className => $dependency) {
+        foreach (array_keys($config[ConfigAbstractFactory::class]) as $className) {
             $config = $this->createFactoryMappings($config, $className);
         }
         return $config;

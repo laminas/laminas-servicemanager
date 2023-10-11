@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.10.0@a5effd2d2dddd1a7ea7a0f6a051ce63ff979e356">
+<files psalm-version="5.15.0@5c774aca4746caf3d239d9c8cadb9f882ca29352">
   <file src="src/AbstractFactory/ConfigAbstractFactory.php">
     <InvalidStringClass>
       <code>new $requestedName(...$arguments)</code>
@@ -24,6 +24,11 @@
       <code>new $requestedName(...$parameters)</code>
     </MixedMethodCall>
   </file>
+  <file src="src/AbstractPluginManager.php">
+    <PossiblyUnusedMethod>
+      <code>mapLazyService</code>
+    </PossiblyUnusedMethod>
+  </file>
   <file src="src/Exception/CyclicAliasException.php">
     <InvalidArgument>
       <code>self::deDuplicateDetectedCycles($detectedCycles)</code>
@@ -38,6 +43,16 @@
       <code>new $requestedName()</code>
     </InvalidStringClass>
   </file>
+  <file src="src/Module.php">
+    <UnusedClass>
+      <code>Module</code>
+    </UnusedClass>
+  </file>
+  <file src="src/PluginManagerInterface.php">
+    <PossiblyUnusedMethod>
+      <code>validate</code>
+    </PossiblyUnusedMethod>
+  </file>
   <file src="src/Proxy/LazyServiceFactory.php">
     <MissingClosureParamType>
       <code>$wrappedInstance</code>
@@ -50,6 +65,9 @@
     <InvalidArrayOffset>
       <code><![CDATA[$this->services[$service]]]></code>
     </InvalidArrayOffset>
+    <InvalidCast>
+      <code>$service</code>
+    </InvalidCast>
     <MissingClosureReturnType>
       <code>function () use ($name, $options) {</code>
     </MissingClosureReturnType>
@@ -76,7 +94,6 @@
       <code>$abstractFactories</code>
       <code>$abstractFactory</code>
       <code><![CDATA[$config['aliases']]]></code>
-      <code>$key</code>
       <code><![CDATA[$this->aliases]]></code>
       <code><![CDATA[$this->factories]]></code>
       <code><![CDATA[$this->shared]]></code>
@@ -88,6 +105,13 @@
       <code><![CDATA[$config['factories']]]></code>
       <code><![CDATA[$config['shared']]]></code>
     </MixedOperand>
+    <UnusedForeachValue>
+      <code>$service</code>
+      <code>$target</code>
+    </UnusedForeachValue>
+    <UnusedReturnValue>
+      <code>DelegatorsConfiguration</code>
+    </UnusedReturnValue>
   </file>
   <file src="src/Test/CommonPluginManagerTrait.php">
     <ArgumentTypeCoercion>
@@ -112,7 +136,6 @@
       <code>$config[ConfigAbstractFactory::class][$className]</code>
     </MixedArrayAssignment>
     <MixedAssignment>
-      <code>$dependency</code>
       <code>$key</code>
       <code>$value</code>
     </MixedAssignment>
@@ -130,6 +153,11 @@
     <MixedPropertyAssignment>
       <code>$instance</code>
     </MixedPropertyAssignment>
+  </file>
+  <file src="test/Command/ConfigDumperCommandTest.php">
+    <PossiblyUnusedMethod>
+      <code>ignoreUnresolvedArguments</code>
+    </PossiblyUnusedMethod>
   </file>
   <file src="test/CommonServiceLocatorBehaviorsTrait.php">
     <MissingClosureParamType>
@@ -159,6 +187,14 @@
     <MixedPropertyAssignment>
       <code>$instance</code>
     </MixedPropertyAssignment>
+    <PossiblyUndefinedArrayOffset>
+      <code><![CDATA[$object['get'][0]]]></code>
+    </PossiblyUndefinedArrayOffset>
+    <UnusedClosureParam>
+      <code>$container</code>
+      <code>$options</code>
+      <code>$requestedName</code>
+    </UnusedClosureParam>
   </file>
   <file src="test/LazyServiceIntegrationTest.php">
     <InvalidReturnStatement>
@@ -186,6 +222,9 @@
     <MixedFunctionCall>
       <code>$initializer($wrappedInstance, $proxy)</code>
     </MixedFunctionCall>
+    <UnusedVariable>
+      <code>$wrappedInstance</code>
+    </UnusedVariable>
   </file>
   <file src="test/ServiceManagerTest.php">
     <MixedAssignment>
@@ -205,6 +244,14 @@
     <MixedOperand>
       <code>$inc</code>
     </MixedOperand>
+    <PossiblyUnusedMethod>
+      <code>sampleFactory</code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="test/StaticAnalysis/ServiceManagerConfiguration.php">
+    <UnusedClass>
+      <code>ServiceManagerConfiguration</code>
+    </UnusedClass>
   </file>
   <file src="test/Tool/ConfigDumperTest.php">
     <MixedAssignment>
