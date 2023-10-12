@@ -254,6 +254,7 @@ final class LazyServiceIntegrationTest extends TestCase
             ],
             'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
+                stdClass::class        => InvokableFactory::class,
             ],
             'delegators'    => [
                 InvokableObject::class => [LazyServiceFactory::class],

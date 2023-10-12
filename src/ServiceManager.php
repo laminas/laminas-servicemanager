@@ -212,7 +212,7 @@ class ServiceManager implements ServiceLocatorInterface
         // considerations out.
         if (! $this->aliases) {
             /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
-            $service = $this->doCreate($id);
+            $service = $this->doCreate(resolvedName: $id, aliasName: $id);
 
             // Cache the service for later, if it is supposed to be shared.
             if ($sharedService) {
@@ -241,7 +241,7 @@ class ServiceManager implements ServiceLocatorInterface
         // At this point, we have to create the object.
         // We use the resolved name for that.
         /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
-        $service = $this->doCreate($resolvedName);
+        $service = $this->doCreate(resolvedName: $resolvedName, aliasName: $id);
 
         // Cache the object for later, if it is supposed to be shared.
         if ($sharedService) {
@@ -256,9 +256,9 @@ class ServiceManager implements ServiceLocatorInterface
     public function build(string $name, ?array $options = null): mixed
     {
         // We never cache when using "build".
-        $name = $this->aliases[$name] ?? $name;
+        $resolvedName = $this->aliases[$name] ?? $name;
         /** @psalm-suppress MixedReturnStatement Yes indeed, service managers can return mixed. */
-        return $this->doCreate($name, $options);
+        return $this->doCreate($resolvedName, $options, $name);
     }
 
     /**
@@ -583,13 +583,11 @@ class ServiceManager implements ServiceLocatorInterface
         ));
     }
 
-    private function createDelegatorFromName(string $name, ?array $options = null): mixed
+    private function createDelegatorFromName(string $name, callable $creationCallback, ?array $options = null): ?callable
     {
-        $creationCallback = function () use ($name, $options) {
-            // Code is inlined for performance reason, instead of abstracting the creation
-            $factory = $this->getFactory($name);
-            return $factory($this->creationContext, $name, $options);
-        };
+        if (! isset($this->delegators[$name])) {
+            return $creationCallback;
+        }
 
         $initialCreationContext = $this->creationContext;
 
@@ -604,7 +602,7 @@ class ServiceManager implements ServiceLocatorInterface
 
         $this->delegators[$name] = $resolvedDelegators;
 
-        return $creationCallback();
+        return $creationCallback;
     }
 
     /**
@@ -616,18 +614,10 @@ class ServiceManager implements ServiceLocatorInterface
      * @throws ServiceNotCreatedException If an exception is raised when creating a service.
      * @throws ContainerExceptionInterface If any other error occurs.
      */
-    private function doCreate(string $resolvedName, ?array $options = null): mixed
+    private function doCreate(string $resolvedName, ?array $options = null, string $aliasName = ''): mixed
     {
         try {
-            if (! isset($this->delegators[$resolvedName])) {
-                // Let's create the service by fetching the factory
-                $factory = $this->getFactory($resolvedName);
-                /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
-                $service = $factory($this->creationContext, $resolvedName, $options);
-            } else {
-                /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
-                $service = $this->createDelegatorFromName($resolvedName, $options);
-            }
+            $service = $this->createService($resolvedName, $options, $aliasName);
         } catch (ContainerExceptionInterface $exception) {
             throw $exception;
         } catch (Exception $exception) {
@@ -979,5 +969,23 @@ class ServiceManager implements ServiceLocatorInterface
         }
 
         return $delegatorFactory;
+    }
+
+    private function createService(string $resolvedName, ?array $options, string $aliasName): mixed
+    {
+        $factory = $this->getFactory($resolvedName);
+        $creationContext = $this->creationContext;
+        $creationCallback = static fn () => $factory($creationContext, $resolvedName, $options);
+
+        $delegator = $this->createDelegatorFromName($resolvedName, $creationCallback, $options);
+        if ($aliasName !== $resolvedName) {
+            $delegator = $this->createDelegatorFromName(
+                $aliasName,
+                $delegator,
+                    $options
+            );
+        }
+
+        return $delegator();
     }
 }
