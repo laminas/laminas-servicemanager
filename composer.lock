@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9ec9c9a8b4746d56a1f1cc10cc26afbb",
+    "content-hash": "37fdc72243aec96e9a5b1b1fa6b27305",
     "packages": [
         {
             "name": "laminas/laminas-stdlib",
@@ -1202,30 +1202,30 @@
         },
         {
             "name": "laminas/laminas-container-config-test",
-            "version": "0.8.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-container-config-test.git",
-                "reference": "06474faed18a2732b21355297fa8c56f1aff2e91"
+                "reference": "c4ac1ffd77102fcec4a0588b1f55ebec7714fb48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-container-config-test/zipball/06474faed18a2732b21355297fa8c56f1aff2e91",
-                "reference": "06474faed18a2732b21355297fa8c56f1aff2e91",
+                "url": "https://api.github.com/repos/laminas/laminas-container-config-test/zipball/c4ac1ffd77102fcec4a0588b1f55ebec7714fb48",
+                "reference": "c4ac1ffd77102fcec4a0588b1f55ebec7714fb48",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
-                "psr/container": "^1.0 || ^2.0"
+                "php": "~8.1.0 || ~8.2.0",
+                "psr/container": "^1.0 || ^2.0.2"
             },
             "conflict": {
                 "zendframework/zend-container-config-test": "*"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "^2.3",
-                "phpunit/phpunit": "^9.5.26",
-                "psalm/plugin-phpunit": "^0.18.0",
-                "vimeo/psalm": "^4.29.0"
+                "laminas/laminas-coding-standard": "^2.5",
+                "phpunit/phpunit": "^10.3.2",
+                "psalm/plugin-phpunit": "^0.18.4",
+                "vimeo/psalm": "^5.15.0"
             },
             "type": "library",
             "autoload": {
@@ -1265,7 +1265,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2022-11-16T00:42:21+00:00"
+            "time": "2023-08-27T23:51:09+00:00"
         },
         {
             "name": "mikey179/vfsstream",
