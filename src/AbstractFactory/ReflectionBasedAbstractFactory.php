@@ -106,7 +106,9 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
     /**
      * {@inheritDoc}
      *
-     * @return DispatchableInterface
+     * @param class-string<T>|string $requestedName
+     * @return ($requestedName is class-string<T> ? T : object)
+     * @template T of object
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
