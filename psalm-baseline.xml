@@ -19,40 +19,27 @@
   <file src="src/AbstractFactory/ReflectionBasedAbstractFactory.php">
     <ArgumentTypeCoercion>
       <code>$requestedName</code>
+      <code>$requestedName</code>
     </ArgumentTypeCoercion>
-    <LessSpecificReturnStatement>
+    <InvalidStringClass>
       <code>new $requestedName()</code>
       <code>new $requestedName()</code>
       <code>new $requestedName(...$parameters)</code>
-    </LessSpecificReturnStatement>
+    </InvalidStringClass>
     <MissingClosureReturnType>
       <code>function (ReflectionParameter $parameter) use ($container, $requestedName) {</code>
     </MissingClosureReturnType>
-    <MissingParamType>
-      <code>$requestedName</code>
-    </MissingParamType>
-    <MixedArgument>
-      <code>$requestedName</code>
-      <code>$requestedName</code>
-      <code>$requestedName</code>
-    </MixedArgument>
     <MixedMethodCall>
       <code>new $requestedName()</code>
       <code>new $requestedName()</code>
       <code>new $requestedName(...$parameters)</code>
     </MixedMethodCall>
-    <MoreSpecificReturnType>
-      <code>DispatchableInterface</code>
-    </MoreSpecificReturnType>
     <PossiblyNullArgument>
       <code>$type</code>
     </PossiblyNullArgument>
     <RedundantCondition>
       <code>is_string($type)</code>
     </RedundantCondition>
-    <UndefinedDocblockClass>
-      <code>DispatchableInterface</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="src/AbstractFactoryInterface.php">
     <PossiblyUnusedMethod>
@@ -350,16 +337,6 @@
     </InvalidArgument>
   </file>
   <file src="test/AbstractFactory/ReflectionBasedAbstractFactoryTest.php">
-    <DocblockTypeContradiction>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-      <code>assertInstanceOf</code>
-    </DocblockTypeContradiction>
     <MixedInferredReturnType>
       <code>array</code>
     </MixedInferredReturnType>
