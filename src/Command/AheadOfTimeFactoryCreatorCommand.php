@@ -133,6 +133,7 @@ final class AheadOfTimeFactoryCreatorCommand extends Command
                 $containerConfigurations[$factory->containerConfigurationKey] = ['factories' => []];
             }
 
+            // phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.NoAssignment
             /**
              * Psalm has to understand that the `factoryClassName` variable contains a class-string to a factory which
              * will be available once persisted to the filesystem and loaded via composer autoloading.
