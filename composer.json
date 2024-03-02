@@ -14,7 +14,6 @@
     "homepage": "https://laminas.dev",
     "support": {
         "issues": "https://github.com/laminas/laminas-servicemanager/issues",
-        "forum": "https://discourse.laminas.dev",
         "chat": "https://laminas.dev/chat",
         "forum": "https://discourse.laminas.dev"
     },
@@ -53,7 +52,7 @@
         "phpunit/phpunit": "^10.4",
         "psalm/plugin-phpunit": "^0.18.4",
         "symfony/console": "^6.0",
-        "vimeo/psalm": "^5.10"
+        "vimeo/psalm": "^5.22"
     },
     "provide": {
         "psr/container-implementation": "^1.0 || ^2.0"

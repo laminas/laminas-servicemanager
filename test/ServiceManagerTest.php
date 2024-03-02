@@ -108,7 +108,7 @@ final class ServiceManagerTest extends TestCase
         ]);
 
         $instance = $serviceManager->get(stdClass::class);
-
+        self::assertInstanceOf(stdClass::class, $instance);
         self::assertTrue(isset($instance->option), 'Delegator-injected option was not found');
         self::assertEquals(
             $config['option'],

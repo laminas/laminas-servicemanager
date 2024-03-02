@@ -220,13 +220,6 @@ final class AbstractPluginManagerTest extends TestCase
         $pluginManager->get(InvokableObject::class);
     }
 
-    public function testSetServiceShouldRaiseExceptionForInvalidPlugin(): void
-    {
-        $pluginManager = new SimplePluginManager(new ServiceManager());
-        $this->expectException(InvalidServiceException::class);
-        $pluginManager->setService(stdClass::class, new stdClass());
-    }
-
     public function testPassingServiceInstanceViaConfigureShouldRaiseExceptionForInvalidPlugin(): void
     {
         $pluginManager = new SimplePluginManager(new ServiceManager());

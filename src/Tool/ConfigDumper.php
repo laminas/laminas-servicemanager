@@ -176,7 +176,7 @@ EOC;
             $entries[] = sprintf(
                 '%s%s%s,',
                 $indent,
-                $key ? sprintf('%s => ', $key) : '',
+                $key !== null ? sprintf('%s => ', $key) : '',
                 $this->createConfigValue($value, $indentLevel)
             );
         }
@@ -190,6 +190,9 @@ EOC;
         );
     }
 
+    /**
+     * @return non-empty-string|null
+     */
     private function createConfigKey(string|int|null $key): string|null
     {
         if (is_string($key) && class_exists($key)) {

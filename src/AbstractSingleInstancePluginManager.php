@@ -29,14 +29,6 @@ abstract class AbstractSingleInstancePluginManager extends AbstractPluginManager
     /**
      * {@inheritDoc}
      */
-    public function get(string $id): object
-    {
-        return parent::get($id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function validate(mixed $instance): void
     {
         if ($instance instanceof $this->instanceOf) {

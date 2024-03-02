@@ -211,7 +211,6 @@ class ServiceManager implements ServiceLocatorInterface
         // We achieve better performance if we can let all alias
         // considerations out.
         if (! $this->aliases) {
-            /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
             $service = $this->doCreate($id);
 
             // Cache the service for later, if it is supposed to be shared.
@@ -240,7 +239,6 @@ class ServiceManager implements ServiceLocatorInterface
 
         // At this point, we have to create the object.
         // We use the resolved name for that.
-        /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
         $service = $this->doCreate($resolvedName);
 
         // Cache the object for later, if it is supposed to be shared.
@@ -326,10 +324,10 @@ class ServiceManager implements ServiceLocatorInterface
             $this->shared = $config['shared'] + $this->shared;
         }
 
-        if (! empty($config['aliases'])) {
+        if (isset($config['aliases']) && $config['aliases'] !== []) {
             $this->aliases = $config['aliases'] + $this->aliases;
             $this->mapAliasesToTargets();
-        } elseif (! $this->configured && ! empty($this->aliases)) {
+        } elseif (! $this->configured && $this->aliases !== []) {
             $this->mapAliasesToTargets();
         }
 
@@ -622,10 +620,8 @@ class ServiceManager implements ServiceLocatorInterface
             if (! isset($this->delegators[$resolvedName])) {
                 // Let's create the service by fetching the factory
                 $factory = $this->getFactory($resolvedName);
-                /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
                 $service = $factory($this->creationContext, $resolvedName, $options);
             } else {
-                /** @psalm-suppress MixedAssignment Yes indeed, service managers can return mixed. */
                 $service = $this->createDelegatorFromName($resolvedName, $options);
             }
         } catch (ContainerExceptionInterface $exception) {

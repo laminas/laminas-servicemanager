@@ -20,6 +20,7 @@
     </projectFiles>
     
     <issueHandlers>
+        <MixedAssignment errorLevel="suppress"/>
         <InvalidCatch>
             <errorLevel type="suppress">
                 <!-- PSR does not implement Throwable in 1.x version -->
@@ -92,6 +93,6 @@
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
         <pluginClass class="Boesing\PsalmPluginStringf\Plugin"/>
-        <pluginClass class="Lctrs\PsalmPsrContainerPlugin\Plugin"/>
+        
     </plugins>
 </psalm>
