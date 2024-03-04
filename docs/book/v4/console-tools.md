@@ -18,7 +18,7 @@ To run the console tools with `laminas-servicemanager` v4, the [`laminas/laminas
 
 - [Generate Dependencies for Config Factory](#generate-dependencies-for-config-factory)
 - [Generate Factory for Class](#generate-factory-for-class)
-- [Generate Ahead of Time Factories](#ahead-of-time-factories)
+- [Generate Ahead of Time Factories](#generate-ahead-of-time-factories)
 
 ## Generate Dependencies for Config Factory
 
