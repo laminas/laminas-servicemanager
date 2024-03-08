@@ -1,6 +1,6 @@
 # When To Use Factories vs Abstract Factories
 
-Starting with version 3, `Laminas\ServiceManager\Factory\AbstractFactoryInterface`
+`Laminas\ServiceManager\Factory\AbstractFactoryInterface`
 extends `Laminas\ServiceManager\Factory\FactoryInterface`, meaning they may be used
 as either an abstract factory, or mapped to a specific service name as its
 factory.
@@ -19,20 +19,20 @@ Why would you choose one approach over the other?
 
 ## Comparisons
 
-Approach         | Pros           | Cons
----------------- | -------------- | ----
-Abstract factory | One-time setup | Performance; discovery of code responsible for creating instance
-Factory          | Performance; explicit mapping to factory responsible | Additional (duplicate) setup
+| Approach         | Pros                                                 | Cons                                                             |
+|------------------|------------------------------------------------------|------------------------------------------------------------------|
+| Abstract factory | One-time setup                                       | Performance; discovery of code responsible for creating instance |
+| Factory          | Performance; explicit mapping to factory responsible | Additional (duplicate) setup                                     |
 
 Essentially, it comes down to *convenience* versus *explicitness* and/or
 *performance*.
 
 ## Convenience
 
-Writing a factory per service is time consuming, and, particularly in early
+Writing a factory per service is time-consuming, and, particularly in early
 stages of an application, can distract from the actual business of writing the
 classes and implementations; in addition, since requirements are often changing
-regularly, this boiler-plate code can be a nuisance.
+regularly, this boilerplate code can be a nuisance.
 
 In such situations, one or more abstract factories &mdash; such as the
 [ConfigAbstractFactory](../config-abstract-factory.md), the
@@ -49,14 +49,14 @@ The service manager is optimized to locate *factories*, as it can do an
 immediate hash table lookup; abstract factories involve:
 
 - Looping through each abstract factory
-  - invoking its method for service location
-  - if the service is located, using the factory
+    - invoking its method for service location
+    - if the service is located, using the factory
 
 This means, internally:
 
 - a hash table lookup (for the abstract factory)
 - invocation of 1:N methods for discovery
-  - which may contain additional lookups and/or retrievals in the container
+    - which may contain additional lookups and/or retrievals in the container
 - invocation of a factory method (assuming successful lookup)
 
 As such, having an explicit map can aid performance dramatically.
@@ -83,7 +83,7 @@ make an appropriate choice.
 
 ## Tooling
 
-Starting with 3.2.0, we began offering a variety of [console tools](../console-tools.md)
+We are offering a variety of [CLI commands](../cli-commands/introduction.md)
 to assist you in generating both dependency configuration and factories. Use
 these to help your code evolve. An expected workflow in your application
 development evolution is:

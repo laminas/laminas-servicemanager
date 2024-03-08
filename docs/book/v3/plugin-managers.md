@@ -78,7 +78,7 @@ $pluginManager = $serviceManager->get(ValidatorPluginManager::class);
 $validator = $pluginManager->get(StringLengthValidator::class);
 ```
 
-> When inside the context of the factory
+> Unlike the version 2 implementation, when inside the context of the factory
 > of a service created by a plugin manager, the passed container **will not
 > be** the plugin manager, but the parent service manager instead. If you need
 > access to other plugins of the same type, you will need to fetch the plugin

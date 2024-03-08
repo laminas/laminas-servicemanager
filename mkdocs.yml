@@ -1,24 +1,61 @@
 docs_dir: docs/book
 site_dir: docs/html
 nav:
-    - Home: index.md
-    - 'Quick Start': quick-start.md
-    - Reference:
-      - 'PSR-11 Support': psr-11.md
-      - 'Configuring the service manager': configuring-the-service-manager.md
-      - Delegators: delegators.md
-      - 'Lazy services': lazy-services.md
-      - 'Plugin managers': plugin-managers.md
-      - 'Configuration-based Abstract Factory': config-abstract-factory.md
-      - 'Reflection-based Abstract Factory':
-        - 'Usage': reflection-abstract-factory.md
-        - 'Ahead of Time Factories': ahead-of-time-factories.md
-      - 'Console Tools': console-tools.md
+  - Home: index.md
+  - v4:
+    - "Quick Start": v4/quick-start.md
+    - "PSR-11 Support": v4/psr-11.md
+    - "Configuring the service manager": v4/configuring-the-service-manager.md
+    - Delegators: v4/delegators.md
+    - "Lazy services": v4/lazy-services.md
+    - "Plugin managers": v4/plugin-managers.md
+    - "Autowiring & Configuration-based Factories":
+      - "Reflection-based Factory": v4/reflection-abstract-factory.md
+      - "Configuration-based Factory": v4/config-abstract-factory.md
+    - "CLI Commands":
+      - Introduction: v4/cli-commands/introduction.md
+      - "Generate Dependencies for Config Factory": v4/cli-commands/generate-dependencies-for-config-factory.md
+      - "Generate Factory for Class": v4/cli-commands/generate-factory-for-class.md
+      - "Generate Ahead of Time Factories": v4/cli-commands/generate-ahead-of-time-factories.md
     - Cookbook:
-      - 'Factories vs Abstract Factories': cookbook/factories-vs-abstract-factories.md
-    - 'Migration Guide': migration.md
+      - "Factories vs Abstract Factories": v4/cookbook/factories-vs-abstract-factories.md
+    - "Migration Guide":
+      - "Migration from Version 3 to 4": v4/migration/v3-to-v4.md
+  - v3:
+    - "Quick Start": v3/quick-start.md
+    - Reference:
+      - "PSR-11 Support": v3/psr-11.md
+      - "Configuring the service manager": v3/configuring-the-service-manager.md
+      - Delegators: v3/delegators.md
+      - "Lazy services": v3/lazy-services.md
+      - "Plugin managers": v3/plugin-managers.md
+      - "Configuration-based Abstract Factory": v3/config-abstract-factory.md
+      - "Reflection-based Abstract Factory": v3/reflection-abstract-factory.md
+      - "Console Tools": v3/console-tools.md
+    - Cookbook:
+      - "Factories vs Abstract Factories": v3/cookbook/factories-vs-abstract-factories.md
+    - "Migration Guide": v3/migration.md
 site_name: laminas-servicemanager
-site_description: 'laminas-servicemanager: factory-driven dependency injection container'
-repo_url: 'https://github.com/laminas/laminas-servicemanager'
+site_description: "laminas-servicemanager: factory-driven dependency injection container"
+repo_url: "https://github.com/laminas/laminas-servicemanager"
 extra:
     project: Components
+    current_version: v4
+    versions:
+      - v4
+      - v3
+plugins:
+  - search
+  - redirects:
+        redirect_maps:
+            quick-start.md: v4/quick-start.md
+            psr-11.md: v4/psr-11.md
+            configuring-the-service-manager.md: v4/configuring-the-service-manager.md
+            delegators.md: v4/delegators.md
+            lazy-services.md: v4/lazy-services.md
+            plugin-managers.md: v4/plugin-managers.md
+            config-abstract-factory.md: v4/config-abstract-factory.md
+            reflection-abstract-factory.md: v4/reflection-abstract-factory.md
+            cookbook/factories-vs-abstract-factories.md: v4/cookbook/factories-vs-abstract-factories.md
+            migration.md: v4/migration/v3-to-v4.md
+            console-tools.md: v3/console-tools.md
