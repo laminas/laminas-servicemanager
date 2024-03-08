@@ -129,8 +129,7 @@ $serviceManager = new ServiceManager([
 
 ### Mapping multiple service to the same factory
 
-Unlike version 2 implementations of the component, in the version 3
-implementation, the `$requestedName` is guaranteed to be passed as the second
+The `$requestedName` is guaranteed to be passed as the second
 parameter of a factory. This is useful when you need to create multiple
 services that are created exactly the same way, hence reducing the number of
 needed factories.
@@ -176,7 +175,7 @@ This pattern can often replace abstract factories, and is more performant:
   service using the same factory.
 
 Using factories is recommended in most cases where abstract factories were used
-in version 2.
+in older versions of this component.
 
 This feature *can* be abused, however: for instance, if you have dozens of
 services that share the same creation, but which do not share any common

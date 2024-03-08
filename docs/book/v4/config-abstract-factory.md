@@ -1,7 +1,5 @@
 # Config Abstract Factory
 
-- Since 3.2.0
-
 You can simplify the process of creating factories by registering
 `Laminas\ServiceManager\AbstractFactory\ConfigAbstractFactory` with your service
 manager instance. This allows you to define services using a configuration map,
@@ -39,7 +37,7 @@ return [
 ];
 ```
 
-Like all abstract factories starting in version 3, you may also use the config
+Like all abstract factories starting, you may also use the config
 abstract factory as a mapped factory, registering it as a factory for a specific
 class:
 
