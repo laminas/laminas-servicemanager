@@ -29,7 +29,7 @@ interface PluginManagerInterface extends ServiceLocatorInterface
     /**
      * @template TRequestedInstance extends InstanceType
      * @psalm-param class-string<TRequestedInstance>|string $id Service name of plugin to retrieve.
-     * @psalm-return ($id is class-string ? TRequestedInstance : InstanceType)
+     * @psalm-return ($id is class-string<TRequestedInstance> ? TRequestedInstance : InstanceType)
      * @throws Exception\ServiceNotFoundException If the manager does not have
      *     a service definition for the instance, and the service is not
      *     auto-invokable.
@@ -43,7 +43,7 @@ interface PluginManagerInterface extends ServiceLocatorInterface
      *
      * @template TRequestedInstance extends InstanceType
      * @psalm-param string|class-string<TRequestedInstance> $name
-     * @psalm-return ($name is class-string ? TRequestedInstance : InstanceType)
+     * @psalm-return ($name is class-string<TRequestedInstance> ? TRequestedInstance : InstanceType)
      * @throws Exception\ServiceNotFoundException If no factory/abstract
      *     factory could be found to create the instance.
      * @throws Exception\ServiceNotCreatedException If factory/delegator fails

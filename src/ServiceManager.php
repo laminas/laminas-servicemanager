@@ -202,6 +202,7 @@ class ServiceManager implements ServiceLocatorInterface
         // We start by checking if we have cached the requested service;
         // this is the fastest method.
         if (isset($this->services[$id])) {
+            /** @psalm-suppress MixedReturnStatement Yes indeed, service managers can return mixed. */
             return $this->services[$id];
         }
 
@@ -217,6 +218,8 @@ class ServiceManager implements ServiceLocatorInterface
             if ($sharedService) {
                 $this->services[$id] = $service;
             }
+
+            /** @psalm-suppress MixedReturnStatement Yes indeed, service managers can return mixed. */
             return $service;
         }
 
@@ -234,6 +237,8 @@ class ServiceManager implements ServiceLocatorInterface
         // If the alias is configured as a shared service, we are done.
         if ($sharedAlias) {
             $this->services[$id] = $this->services[$resolvedName];
+
+            /** @psalm-suppress MixedReturnStatement Yes indeed, service managers can return mixed. */
             return $this->services[$resolvedName];
         }
 
@@ -247,6 +252,7 @@ class ServiceManager implements ServiceLocatorInterface
             $this->services[$id]           = $service;
         }
 
+        /** @psalm-suppress MixedReturnStatement Yes indeed, service managers can return mixed. */
         return $service;
     }
 
