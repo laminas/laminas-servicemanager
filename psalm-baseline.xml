@@ -211,6 +211,11 @@
       <code><![CDATA[MixedPluginManager]]></code>
     </UnusedClass>
   </file>
+  <file src="test/StaticAnalysis/ServiceLocatorInterfaceConsumer.php">
+    <UnusedClass>
+      <code><![CDATA[ServiceLocatorInterfaceConsumer]]></code>
+    </UnusedClass>
+  </file>
   <file src="test/StaticAnalysis/ServiceManagerConfiguration.php">
     <UnusedClass>
       <code><![CDATA[ServiceManagerConfiguration]]></code>
