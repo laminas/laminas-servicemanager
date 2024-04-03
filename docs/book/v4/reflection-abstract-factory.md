@@ -1,7 +1,5 @@
 # Reflection Factory
 
-- Since 3.2.0.
-
 Writing a factory class for each and every service that has dependencies
 can be tedious, particularly in early development as you are still sorting
 out dependencies.
@@ -28,7 +26,7 @@ return [
 ];
 ```
 
-Mapping services to the factory is more explicit and even more performant than in v3.0 due to the [ahead of time factory generation](ahead-of-time-factories.md).
+Mapping services to the factory is more explicit and even more performant than in v3.0 due to the [ahead of time factory generation](cli-commands/generate-ahead-of-time-factories.md).
 
 The factory operates with the following constraints/features:
 
@@ -49,8 +47,8 @@ factory, as reflection introduces a performance overhead.
 
 There are two ways to provide dedicated factories for services consuming `ReflectionBasedAbstractFactory`:
 
-1. Usage of the [generate-factory-for-class console tool](console-tools.md#generate-factory-for-class) (this will also require to manually modify the configuration)
-2. Usage of the [generate-aot-factories console tool](console-tools.md#generate-ahead-of-time-factories) which needs an initial project + deployment setup
+1. Usage of the [generate-factory-for-class console tool](cli-commands/generate-factory-for-class.md) (this will also require to manually modify the configuration)
+2. Usage of the [generate-aot-factories console tool](cli-commands/generate-ahead-of-time-factories.md) which needs an initial project + deployment setup
 
 ## Alternatives
 

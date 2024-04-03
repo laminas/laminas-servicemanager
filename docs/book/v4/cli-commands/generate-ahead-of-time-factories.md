@@ -1,8 +1,6 @@
 # Ahead of Time Factories
 
-- Since 4.0.0
-
-In addition to the already existing [Reflection Factory](reflection-abstract-factory.md), one can create factories for those services using `ReflectionBasedAbstractFactory` before deploying the project to production. For the initial project setup regarding CLI tooling, please refer to [this documentation](console-tools.md#requirements).
+In addition to the already existing [Reflection Factory](../reflection-abstract-factory.md), one can create factories for those services using `ReflectionBasedAbstractFactory` before deploying the project to production. For the initial project setup regarding CLI tooling, please refer to [this documentation](introduction.md).
 
 ## Usage
 
