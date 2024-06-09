@@ -123,8 +123,8 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
         }
 
         $resolver = $container->has('config')
-            ? $this->resolveParameterWithConfigService($container, $requestedName)
-            : $this->resolveParameterWithoutConfigService($container, $requestedName);
+            ? $this->resolveParameterWithConfigService($container, $requestedName, $options)
+            : $this->resolveParameterWithoutConfigService($container, $requestedName, $options);
 
         $parameters = array_map($resolver, $reflectionParameters);
 
@@ -153,7 +153,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      * @param string $requestedName
      * @return callable
      */
-    private function resolveParameterWithoutConfigService(ContainerInterface $container, $requestedName)
+    private function resolveParameterWithoutConfigService(ContainerInterface $container, $requestedName, $options)
     {
         /**
          * @param ReflectionParameter $parameter
@@ -162,7 +162,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
          *   resolved to a service in the container.
          * @psalm-suppress MissingClosureReturnType
          */
-        return fn(ReflectionParameter $parameter) => $this->resolveParameter($parameter, $container, $requestedName);
+        return fn(ReflectionParameter $parameter) => $this->resolveParameter($parameter, $container, $requestedName, $options);
     }
 
     /**
@@ -174,7 +174,7 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      * @param string $requestedName
      * @return callable
      */
-    private function resolveParameterWithConfigService(ContainerInterface $container, $requestedName)
+    private function resolveParameterWithConfigService(ContainerInterface $container, $requestedName, $options)
     {
         /**
          * @param ReflectionParameter $parameter
@@ -182,14 +182,14 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
          * @throws ServiceNotFoundException If type-hinted parameter cannot be
          *   resolved to a service in the container.
          */
-        return function (ReflectionParameter $parameter) use ($container, $requestedName) {
+        return function (ReflectionParameter $parameter) use ($container, $requestedName, $options) {
             if ($parameter->getName() === 'config') {
                 $type = $parameter->getType();
                 if ($type instanceof ReflectionNamedType && $type->getName() === 'array') {
                     return $container->get('config');
                 }
             }
-            return $this->resolveParameter($parameter, $container, $requestedName);
+            return $this->resolveParameter($parameter, $container, $requestedName, $options);
         };
     }
 
@@ -201,12 +201,15 @@ class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
      * @throws ServiceNotFoundException If type-hinted parameter cannot be
      *   resolved to a service in the container.
      */
-    private function resolveParameter(ReflectionParameter $parameter, ContainerInterface $container, $requestedName)
+    private function resolveParameter(ReflectionParameter $parameter, ContainerInterface $container, $requestedName, $options)
     {
         $type = $parameter->getType();
         $type = $type instanceof ReflectionNamedType ? $type->getName() : null;
 
         if ($type === 'array') {
+            if ($parameter->getName() === 'options') {
+                return $options ?? [];
+            }
             return [];
         }
 
