@@ -116,7 +116,7 @@ version 2 in version 3. However, we recommend starting to update your
 configuration to remove `invokables` entries in favor of factories (and aliases,
 if needed).
 
-> #### Invokables and plugin managers
+> ### Invokables and plugin managers
 >
 > If you are creating a plugin manager and in-lining invokables into the class
 > definition, you will need to make some changes.
@@ -718,7 +718,7 @@ class FooFactory implements FactoryInterface
 }
 ```
 
-> #### Many factories already work with v3!
+> #### Many factories already work with v3
 >
 > Within the skeleton application, tutorial, and even in commonly shipped
 > modules such as those in Laminas API Tools, we have typically suggested building your
@@ -855,7 +855,7 @@ class FooInitializer implements InitializerInterface
 }
 ```
 
-> ### Update your callables!
+> ### Update your callables
 >
 > Version 2 allows you to provide initializers as PHP callables. However, this
 > means that the signature of those callables is incorrect for version 3!
@@ -952,13 +952,12 @@ In addition, review the following changes.
 #### Constructor
 
 - The constructor now accepts the following arguments, in the following order:
-  - The parent container instance; this is usually the application-level
-    `ServiceManager` instance.
-  - Optionally, an array of configuration for the plugin manager instance; this
-    should have the same format as for a `ServiceManager` instance.
+    - The parent container instance; this is usually the application-level `ServiceManager` instance.
+    - Optionally, an array of configuration for the plugin manager instance; this
+      should have the same format as for a `ServiceManager` instance.
 - `validatePlugin()` was renamed to `validate()` (now defined in
   `PluginManagerInterface`). The `AbstractPluginManager` provides
-  a basic implementation (detailed below).
+   a basic implementation (detailed below).
 - The signature of `get()` changes (more below).
 
 For backwards compatibility purposes, the constructor *also* allows the
@@ -1275,7 +1274,6 @@ This will check that:
 - `$shareByDefault` and `$sharedByDefault` match, if present.
 - That requesting an invalid plugin throws the right exception.
 - That all your aliases resolve.
-
 
 ### Post migration
 
