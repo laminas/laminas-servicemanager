@@ -21,21 +21,21 @@
         "rss": "https://github.com/laminas/laminas-servicemanager/releases.atom"
     },
     "require": {
-        "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
-        "laminas/laminas-stdlib": "^3.17",
+        "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
+        "laminas/laminas-stdlib": "^3.19",
         "psr/container": "^1.0"
     },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11.99.5",
-        "friendsofphp/proxy-manager-lts": "^1.0.14",
-        "laminas/laminas-code": "^4.10.0",
+        "friendsofphp/proxy-manager-lts": "^1.0.18",
+        "laminas/laminas-code": "^4.14.0",
         "laminas/laminas-coding-standard": "~2.5.0",
         "laminas/laminas-container-config-test": "^0.8",
-        "mikey179/vfsstream": "^1.6.11",
-        "phpbench/phpbench": "^1.2.9",
-        "phpunit/phpunit": "^10.4",
+        "mikey179/vfsstream": "^1.6.12",
+        "phpbench/phpbench": "^1.3.1",
+        "phpunit/phpunit": "^10.5.36",
         "psalm/plugin-phpunit": "^0.18.4",
-        "vimeo/psalm": "^5.8.0"
+        "vimeo/psalm": "^5.26.1"
     },
     "replace": {
         "container-interop/container-interop": "^1.2.0"
