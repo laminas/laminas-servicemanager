@@ -62,7 +62,7 @@ use function sprintf;
  *      array-key,
  *      class-string<AbstractFactoryInterface>|AbstractFactoryInterface
  * >
- * @psalm-type DelegatorCallable = callable(ContainerInterface,string,callable():mixed,array|null):mixed
+ * @psalm-type DelegatorCallable = callable(ContainerInterface,string,callable():mixed,array<mixed>|null):mixed
  * @psalm-type DelegatorsConfiguration = array<
  *      string,
  *      array<
@@ -73,7 +73,7 @@ use function sprintf;
  *          |DelegatorCallable
  *      >
  * >
- * @psalm-type FactoryCallable = callable(ContainerInterface,string,array|null):mixed
+ * @psalm-type FactoryCallable = callable(ContainerInterface,string,array<mixed>|null):mixed
  * @psalm-type FactoriesConfiguration = array<
  *      string,
  *      class-string<FactoryInterface>|class-string<object&FactoryCallable>|FactoryInterface|FactoryCallable
