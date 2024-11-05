@@ -1183,15 +1183,14 @@ means that all changes made to the <code>ServiceManager</code> for v3 also apply
 <h4 id="constructor_1">Constructor</h4>
 <ul>
 <li>The constructor now accepts the following arguments, in the following order:<ul>
-<li>The parent container instance; this is usually the application-level
-<code>ServiceManager</code> instance.</li>
+<li>The parent container instance; this is usually the application-level <code>ServiceManager</code> instance.</li>
 <li>Optionally, an array of configuration for the plugin manager instance; this
-should have the same format as for a <code>ServiceManager</code> instance.</li>
+  should have the same format as for a <code>ServiceManager</code> instance.</li>
 </ul>
 </li>
 <li><code>validatePlugin()</code> was renamed to <code>validate()</code> (now defined in
   <code>PluginManagerInterface</code>). The <code>AbstractPluginManager</code> provides
-  a basic implementation (detailed below).</li>
+   a basic implementation (detailed below).</li>
 <li>The signature of <code>get()</code> changes (more below).</li>
 </ul>
 <p>For backwards compatibility purposes, the constructor <em>also</em> allows the
