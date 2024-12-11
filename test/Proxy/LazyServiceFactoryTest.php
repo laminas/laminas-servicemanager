@@ -15,6 +15,7 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 #[CoversClass(LazyServiceFactory::class)]
 final class LazyServiceFactoryTest extends TestCase
@@ -93,5 +94,53 @@ final class LazyServiceFactoryTest extends TestCase
         $result = $this->factory->__invoke($this->container, 'fooService', $callback->callback(...));
 
         self::assertSame($expectedService, $result, 'service created not match the expected');
+    }
+
+    public function testHandlesExceptionInInitializer(): void
+    {
+        $callback = function (): void {
+            throw new RuntimeException('Test exception');
+        };
+
+        $proxy       = $this->createMock(LazyLoadingInterface::class);
+        $initializer = static fn(): bool => true;
+
+        $proxy->expects(self::once())
+            ->method('getProxyInitializer')
+            ->willReturn($initializer);
+
+        $proxy
+            ->expects(self::exactly(2))
+            ->method('setProxyInitializer')
+            ->willReturnMap(
+                [
+                    [null],
+                    [$initializer],
+                ]
+            );
+
+        $expectedService = $this->createMock(VirtualProxyInterface::class);
+
+        $this->proxyFactory
+            ->expects(self::once())
+            ->method('createProxy')
+            ->willReturnCallback(
+                /** @psalm-suppress UnusedVariable */
+                static function (string $className, callable $initializer) use ($expectedService, $proxy): MockObject {
+                    self::assertEquals('FooClass', $className);
+
+                    try {
+                        $wrappedInstance = null;
+                        $initializer($wrappedInstance, $proxy);
+                        self::fail('Expected exception was not thrown');
+                    } catch (RuntimeException) {
+                    }
+
+                    return $expectedService;
+                }
+            );
+
+        $result = $this->factory->__invoke($this->container, 'fooService', $callback);
+        self::assertSame($expectedService, $result);
     }
 }

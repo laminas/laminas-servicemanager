@@ -10,6 +10,7 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use Psr\Container\ContainerInterface;
+use Throwable;
 
 use function sprintf;
 
@@ -42,8 +43,14 @@ final class LazyServiceFactory implements DelegatorFactoryInterface
     ): VirtualProxyInterface {
         if (isset($this->servicesMap[$name])) {
             $initializer = static function (&$wrappedInstance, LazyLoadingInterface $proxy) use ($callback): bool {
+                $initializer = $proxy->getProxyInitializer();
                 $proxy->setProxyInitializer(null);
-                $wrappedInstance = $callback();
+                try {
+                    $wrappedInstance = $callback();
+                } catch (Throwable $e) {
+                    $proxy->setProxyInitializer($initializer);
+                    throw $e;
+                }
 
                 return true;
             };
