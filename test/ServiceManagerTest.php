@@ -6,6 +6,7 @@ namespace LaminasTest\ServiceManager;
 
 use DateTime;
 use Laminas\ServiceManager\ConfigInterface;
+use Laminas\ContainerConfigTest\TestAsset\DelegatorFactory;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -15,6 +16,7 @@ use LaminasTest\ServiceManager\TestAsset\InvokableObject;
 use LaminasTest\ServiceManager\TestAsset\SimpleServiceManager;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use ReflectionProperty;
 use stdClass;
 
 /**
@@ -394,6 +396,30 @@ final class ServiceManagerTest extends TestCase
         $serviceManager = new SimpleServiceManager($config);
 
         self::assertEquals(stdClass::class, $serviceManager->get(stdClass::class)::class);
+    }
+
+    public function testDuplicateDelegatorsAreRemoved(): void
+    {
+        $dependencies   = [
+            'delegators' => [
+                DateTime::class => [
+                    DelegatorFactory::class,
+                    DelegatorFactory::class,
+                ],
+            ],
+        ];
+        $serviceManager = new ServiceManager($dependencies);
+        $property       = new ReflectionProperty(ServiceManager::class, "delegators");
+        $property->setAccessible(true);
+        $delegators = $property->getValue($serviceManager);
+        self::assertSame(
+            [
+                DateTime::class => [
+                    DelegatorFactory::class,
+                ],
+            ],
+            $delegators
+        );
     }
 
     public function testResolvedAliasFromAbstractFactory(): void
