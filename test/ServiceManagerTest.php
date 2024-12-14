@@ -410,8 +410,7 @@ final class ServiceManagerTest extends TestCase
         ];
         $serviceManager = new ServiceManager($dependencies);
         $property       = new ReflectionProperty(ServiceManager::class, "delegators");
-        $property->setAccessible(true);
-        $delegators = $property->getValue($serviceManager);
+        $delegators     = $property->getValue($serviceManager);
         self::assertSame(
             [
                 DateTime::class => [
