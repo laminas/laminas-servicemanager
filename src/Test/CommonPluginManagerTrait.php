@@ -8,6 +8,7 @@ use Laminas\ServiceManager\AbstractPluginManager;
 use Laminas\ServiceManager\AbstractSingleInstancePluginManager;
 use Laminas\ServiceManager\Exception\InvalidServiceException;
 use Laminas\ServiceManager\ServiceManager;
+use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionProperty;
 use stdClass;
 
@@ -45,9 +46,7 @@ trait CommonPluginManagerTrait
         $manager->get('test');
     }
 
-    /**
-     * @dataProvider aliasProvider
-     */
+    #[DataProvider('aliasProvider')]
     public function testPluginAliasesResolve(string $alias, string $expected): void
     {
         $this->assertInstanceOf($expected, self::getPluginManager()->get($alias), "Alias '$alias' does not resolve'");
