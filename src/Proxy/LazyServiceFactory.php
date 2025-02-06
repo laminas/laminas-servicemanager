@@ -42,8 +42,8 @@ final class LazyServiceFactory implements DelegatorFactoryInterface
     ): VirtualProxyInterface {
         if (isset($this->servicesMap[$name])) {
             $initializer = static function (&$wrappedInstance, LazyLoadingInterface $proxy) use ($callback): bool {
-                $proxy->setProxyInitializer(null);
                 $wrappedInstance = $callback();
+                $proxy->setProxyInitializer(null);
 
                 return true;
             };

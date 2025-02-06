@@ -15,6 +15,7 @@ use ProxyManager\Factory\LazyLoadingValueHolderFactory;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use ProxyManager\Proxy\VirtualProxyInterface;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 
 #[CoversClass(LazyServiceFactory::class)]
 final class LazyServiceFactoryTest extends TestCase
@@ -93,5 +94,37 @@ final class LazyServiceFactoryTest extends TestCase
         $result = $this->factory->__invoke($this->container, 'fooService', $callback->callback(...));
 
         self::assertSame($expectedService, $result, 'service created not match the expected');
+    }
+
+    public function testDoesNotResetInitializerWhenCallbackThrowsException(): void
+    {
+        $exception = new RuntimeException('Test exception');
+        $callback  = function () use ($exception): void {
+            throw $exception;
+        };
+
+        $proxy = $this->createMock(LazyLoadingInterface::class);
+        $proxy
+            ->expects(self::never())
+            ->method('setProxyInitializer');
+
+        $expectedService = $this->createMock(VirtualProxyInterface::class);
+
+        $this->proxyFactory
+            ->expects(self::once())
+            ->method('createProxy')
+            ->willReturnCallback(
+                /** @psalm-suppress UnusedVariable */
+                static function (string $className, callable $initializer) use ($expectedService, $proxy): MockObject {
+                    $wrappedInstance = null;
+                    $initializer($wrappedInstance, $proxy);
+                    return $expectedService;
+                }
+            );
+
+        $this->expectExceptionObject($exception);
+        $result = $this->factory->__invoke($this->container, 'fooService', $callback);
+
+        self::assertSame($expectedService, $result);
     }
 }
