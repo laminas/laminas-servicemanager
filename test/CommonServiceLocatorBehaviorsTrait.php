@@ -584,7 +584,7 @@ trait CommonServiceLocatorBehaviorsTrait
     ): void {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($contains);
-        /** @psalm-suppress InvalidArgument */
+        /** @psalm-suppress MixedArgumentTypeCoercion */
         $this->createContainer([
             'abstract_factories' => [
                 $factory,
@@ -628,7 +628,7 @@ trait CommonServiceLocatorBehaviorsTrait
     ): void {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($contains);
-        /** @psalm-suppress InvalidArgument */
+        /** @psalm-suppress MixedArgumentTypeCoercion */
         $this->createContainer(['initializers' => [$initializer]]);
     }
 
@@ -660,7 +660,7 @@ trait CommonServiceLocatorBehaviorsTrait
         mixed $delegator,
         string $contains = 'non-callable delegator'
     ): void {
-        /** @psalm-suppress InvalidArgument */
+        /** @psalm-suppress MixedArgumentTypeCoercion */
         $serviceManager = $this->createContainer([
             'factories'  => [
                 stdClass::class => InvokableFactory::class,

@@ -107,7 +107,7 @@ final class ConfigTest extends TestCase
             ->with($expected)
             ->willReturn('CALLED');
 
-        /** @psalm-suppress InvalidArgument Keeping this invalid configuration to ensure BC compatibility. */
+        /** @psalm-suppress ArgumentTypeCoercion Keeping this invalid configuration to ensure BC compatibility. */
         $configuration = new Config($config);
         self::assertEquals('CALLED', $configuration->configureServiceManager($services));
 

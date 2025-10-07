@@ -718,8 +718,7 @@ class ServiceManager implements ServiceLocatorInterface
     {
         foreach ($config as $key => $delegators) {
             if (! array_key_exists($key, $this->delegators)) {
-                $this->delegators[$key] = $delegators;
-                continue;
+                $this->delegators[$key] = [];
             }
 
             foreach ($delegators as $delegator) {
