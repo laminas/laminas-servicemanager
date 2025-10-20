@@ -16,7 +16,6 @@ Below is a quick reference table of interface renames from ServiceManager v3 to 
 | `Laminas\ServiceManager\DelegatorFactoryInterface`  | `Laminas\ServiceManager\Factory\DelegatorFactoryInterface` |
 | `Laminas\ServiceManager\InitializerInterface`       | `Laminas\ServiceManager\Initializer\InitializerInterface`  |
 
-
 ## Update Factory structure
 
 ### Before
