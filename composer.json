@@ -41,16 +41,16 @@
     },
     "require-dev": {
         "composer/package-versions-deprecated": "^1.11.99.5",
-        "friendsofphp/proxy-manager-lts": "^1.0.18",
-        "laminas/laminas-cli": "^1.11",
+        "friendsofphp/proxy-manager-lts": "^1.0.19",
+        "laminas/laminas-cli": "^1.13",
         "laminas/laminas-coding-standard": "~3.1.0",
         "laminas/laminas-container-config-test": "^1.2.0",
         "mikey179/vfsstream": "^1.6.12",
-        "phpbench/phpbench": "^1.4.1",
-        "phpunit/phpunit": "^11.5.42",
+        "phpbench/phpbench": "^1.4.3",
+        "phpunit/phpunit": "^11.5.46",
         "psalm/plugin-phpunit": "^0.19.5",
-        "symfony/console": "^6.4.17 || ^7.3.4",
-        "vimeo/psalm": "^6.13.1"
+        "symfony/console": "^6.4.17 || ^7.4.3",
+        "vimeo/psalm": "^6.14.3"
     },
     "provide": {
         "psr/container-implementation": "^1.0 || ^2.0"
