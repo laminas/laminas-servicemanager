@@ -182,6 +182,11 @@ rector-fix: docker ## Apply Rector changes
 	@docker run $(DOCKER_PHP) tools/rector/vendor/bin/rector process -c tools/rector/rector.php
 .PHONY: rector-fix
 
+bench: docker ## Run benchmarks
+	@$(call MK_INFO,"Running PHPBench")
+	@docker run $(DOCKER_PHP) vendor/bin/phpbench run --report=aggregate
+.PHONY: bench
+
 qa: cs test sa composer-require-checker unused rector docs-lint check-links ## Run all QA checks
 
 clean: ## Delete caches and docs-build assets
