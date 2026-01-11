@@ -6,7 +6,7 @@ namespace LaminasTest\ServiceManager\TestAsset;
 
 use Laminas\ServiceManager\Factory\FactoryInterface;
 
-final class ClassDependingOnAnInterface
+final readonly class ClassDependingOnAnInterface
 {
     public function __construct(FactoryInterface $factory)
     {
