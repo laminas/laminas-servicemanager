@@ -1,0 +1,16 @@
+{
+    "symbol-whitelist" : [
+        "PHPUnit\\Framework\\Attributes\\DataProvider",
+        "ProxyManager\\Configuration",
+        "ProxyManager\\Factory\\LazyLoadingValueHolderFactory",
+        "ProxyManager\\FileLocator\\FileLocator",
+        "ProxyManager\\GeneratorStrategy\\EvaluatingGeneratorStrategy",
+        "ProxyManager\\GeneratorStrategy\\FileWriterGeneratorStrategy",
+        "ProxyManager\\Proxy\\VirtualProxyInterface",
+        "Symfony\\Component\\Console\\Command\\Command",
+        "Symfony\\Component\\Console\\Input\\InputArgument",
+        "Symfony\\Component\\Console\\Input\\InputInterface",
+        "Symfony\\Component\\Console\\Input\\InputOption",
+        "Symfony\\Component\\Console\\Output\\OutputInterface"
+    ]
+}

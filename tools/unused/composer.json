@@ -1,0 +1,10 @@
+{
+    "config": {
+        "platform": {
+            "php": "8.2.99"
+        }
+    },
+    "require-dev": {
+        "icanhazstring/composer-unused": "^0.9.5"
+    }
+}

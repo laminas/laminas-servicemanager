@@ -1,0 +1,10 @@
+{
+    "config": {
+        "platform": {
+            "php": "8.2.99"
+        }
+    },
+    "require-dev": {
+        "maglnet/composer-require-checker": "^4.18.0"
+    }
+}
