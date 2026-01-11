@@ -32,6 +32,7 @@ use function rmdir;
 use function spl_autoload_functions;
 use function spl_autoload_unregister;
 use function sys_get_temp_dir;
+use function uniqid;
 use function unlink;
 
 #[CoversClass(ServiceManager::class)]
@@ -44,7 +45,7 @@ final class LazyServiceIntegrationTest extends TestCase
     {
         parent::setUp();
 
-        $this->proxyDir = sys_get_temp_dir() . '/laminas-servicemanager-proxy';
+        $this->proxyDir = sys_get_temp_dir() . '/laminas-servicemanager-proxy-' . uniqid();
 
         if (! is_dir($this->proxyDir)) {
             mkdir($this->proxyDir);
