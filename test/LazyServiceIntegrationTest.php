@@ -56,11 +56,9 @@ final class LazyServiceIntegrationTest extends TestCase
     {
         parent::tearDown();
 
-        if (! is_dir($this->proxyDir)) {
-            return;
+        if (is_dir($this->proxyDir)) {
+            $this->removeDir($this->proxyDir);
         }
-
-        $this->removeDir($this->proxyDir);
 
         foreach ($this->getRegisteredProxyAutoloadFunctions() as $autoloader) {
             spl_autoload_unregister($autoloader);
