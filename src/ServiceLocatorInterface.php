@@ -39,4 +39,12 @@ interface ServiceLocatorInterface extends ContainerInterface
      * @throws NotFoundExceptionInterface No entry was found for **this** identifier.
      */
     public function get(string $id);
+
+    /**
+     * Determines whether this container is capable of building a new instance of the given service name
+     *
+     * This method is useful for differentiating between something that has been registered as a service,
+     * without a backing factory and something that can be constructed via a factory or an abstract factory.
+     */
+    public function canBuild(string $name): bool;
 }

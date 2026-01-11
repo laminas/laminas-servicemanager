@@ -420,6 +420,28 @@ trait CommonServiceLocatorBehaviorsTrait
         self::assertTrue($serviceManager->has(stdClass::class));
     }
 
+    public function testCanBuildReturnsTrueWhenFactoryIsConfigured(): void
+    {
+        $serviceManager = self::createContainer([
+            'factories' => [
+                stdClass::class => InvokableFactory::class,
+            ],
+        ]);
+
+        self::assertTrue($serviceManager->canBuild(stdClass::class));
+    }
+
+    public function testCanBuildReturnsFalseWhenOnlyAServiceIsConfigured(): void
+    {
+        $serviceManager = self::createContainer([
+            'services' => [
+                stdClass::class => new stdClass(),
+            ],
+        ]);
+
+        self::assertFalse($serviceManager->canBuild(stdClass::class));
+    }
+
     /** @return array<string, array{0: AbstractFactoryInterface, 1: bool}> */
     public static function abstractFactories(): array
     {
@@ -852,7 +874,7 @@ trait CommonServiceLocatorBehaviorsTrait
         ContainerInterface $smTemplate,
         string $name,
         array $test,
-        bool $shared
+        bool $shared,
     ): void {
         $sm     = clone $smTemplate;
         $object = [

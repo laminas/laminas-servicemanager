@@ -49,6 +49,11 @@ final class ServiceLocatorInterfaceConsumer
                 return isset($this->services[$id]);
             }
 
+            public function canBuild(string $name): bool
+            {
+                return isset($this->services[$name]);
+            }
+
             public function build(string $name, ?array $options = null): mixed
             {
                 /** @psalm-suppress MixedReturnStatement Yes indeed, can return mixed. */

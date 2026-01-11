@@ -191,7 +191,7 @@ abstract class AbstractPluginManager implements PluginManagerInterface
                 throw new Exception\ServiceNotFoundException(sprintf(
                     'A plugin by the name "%s" was not found in the plugin manager %s',
                     $id,
-                    static::class
+                    static::class,
                 ));
             }
 
@@ -209,6 +209,11 @@ abstract class AbstractPluginManager implements PluginManagerInterface
     public function has(string $id): bool
     {
         return $this->plugins->has($id);
+    }
+
+    public function canBuild(string $name): bool
+    {
+        return $this->plugins->canBuild($name);
     }
 
     /**

@@ -257,6 +257,23 @@ class ServiceManager implements ServiceLocatorInterface
         return $service;
     }
 
+    public function canBuild(string $name): bool
+    {
+        // Simplest and most frequent case first - is a factory registered for this service?
+        if (isset($this->factories[$name])) {
+            return true;
+        }
+
+        // Does a factory exist for the alias?
+        $resolvedName = $this->aliases[$name] ?? $name;
+        if ($resolvedName !== $name && isset($this->factories[$resolvedName])) {
+            return true;
+        }
+
+        // Check abstract factories last as the most expensive operation:
+        return $this->abstractFactoryCanCreate($name);
+    }
+
     /** {@inheritDoc} */
     public function build(string $name, ?array $options = null): mixed
     {

@@ -114,7 +114,7 @@ final class ServiceManagerTest extends TestCase
         self::assertEquals(
             $config['option'],
             $instance->option,
-            'Delegator-injected option does not match configuration'
+            'Delegator-injected option does not match configuration',
         );
         self::assertEquals('bar', $instance->foo);
     }
@@ -185,7 +185,7 @@ final class ServiceManagerTest extends TestCase
         bool $sharedByDefault,
         bool $serviceShared,
         bool $serviceDefined,
-        bool $shouldBeSameInstance
+        bool $shouldBeSameInstance,
     ): void {
         $config = [
             'shared_by_default' => $sharedByDefault,
@@ -223,7 +223,7 @@ final class ServiceManagerTest extends TestCase
                 InvokableObject::class => InvokableFactory::class,
             ],
             $this->extractPrivateProperty($serviceManager, 'factories'),
-            'Invokable object factory not found'
+            'Invokable object factory not found',
         );
     }
 
@@ -242,7 +242,7 @@ final class ServiceManagerTest extends TestCase
                 'Invokable' => InvokableObject::class,
             ],
             $this->extractPrivateProperty($serviceManager, 'aliases'),
-            'Alias not found for non-symmetric invokable'
+            'Alias not found for non-symmetric invokable',
         );
 
         self::assertSame(
@@ -392,7 +392,7 @@ final class ServiceManagerTest extends TestCase
                     DelegatorFactory::class,
                 ],
             ],
-            $delegators
+            $delegators,
         );
     }
 
@@ -413,7 +413,7 @@ final class ServiceManagerTest extends TestCase
             ->expects(self::exactly(2))
             ->method('canCreate')
             ->willReturnCallback(
-                static fn (ContainerInterface $context, string $name): bool => $name === 'ServiceName'
+                static fn (ContainerInterface $context, string $name): bool => $name === 'ServiceName',
             );
 
         self::assertTrue($serviceManager->has('Alias'));
@@ -453,7 +453,7 @@ final class ServiceManagerTest extends TestCase
         $delegatorFactory = static function (
             ContainerInterface $container,
             string $name,
-            callable $callback
+            callable $callback,
         ): InvokableObject {
             /** @var InvokableObject $instance */
             $instance = $callback();
@@ -595,7 +595,7 @@ final class ServiceManagerTest extends TestCase
                             public function __invoke(
                                 ContainerInterface $container,
                                 $requestedName,
-                                ?array $options = null
+                                ?array $options = null,
                             ): object {
                                 return new stdClass();
                             }
@@ -658,5 +658,127 @@ final class ServiceManagerTest extends TestCase
     private function extractPrivateProperty(object $object, string $propertyName): mixed
     {
         return (new ReflectionProperty($object, $propertyName))->getValue($object);
+    }
+
+    public function testServicesRegisteredWithoutBackingFactoryCannotBeBuilt(): void
+    {
+        $service = (object) ['foo' => 'bar'];
+
+        $container = self::createContainer([
+            'services' => [
+                'name' => $service,
+            ],
+        ]);
+
+        self::assertTrue($container->has('name'));
+        self::assertSame($service, $container->get('name'));
+
+        self::assertFalse($container->canBuild('name'));
+    }
+
+    public function testServicesRegisteredWithAFactoryCanBeBuilt(): void
+    {
+        $factory = static fn (): object => (object) ['foo' => 'bar'];
+
+        $container = self::createContainer([
+            'factories' => [
+                'name' => $factory,
+            ],
+        ]);
+
+        self::assertTrue($container->has('name'));
+        self::assertNotSame($factory(), $container->get('name'));
+        self::assertEquals($factory(), $container->get('name'));
+        self::assertSame($container->get('name'), $container->get('name'));
+        self::assertTrue($container->canBuild('name'));
+        self::assertNotSame($container->build('name'), $container->get('name'));
+    }
+
+    public function testAliasedServicesRegisteredWithAFactoryCanBeBuilt(): void
+    {
+        $factory = static fn (): object => (object) ['foo' => 'bar'];
+
+        $container = self::createContainer([
+            'factories' => [
+                'name' => $factory,
+            ],
+            'aliases'   => [
+                'fred' => 'name',
+            ],
+        ]);
+
+        self::assertTrue($container->has('fred'));
+        self::assertNotSame($factory(), $container->get('fred'));
+        self::assertEquals($factory(), $container->get('fred'));
+        self::assertSame($container->get('fred'), $container->get('fred'));
+        self::assertTrue($container->canBuild('fred'));
+        self::assertNotSame($container->build('fred'), $container->get('fred'));
+    }
+
+    public function testServicesCanBeBuiltWhenAnAbstractFactoryIsCapableOfProducingOne(): void
+    {
+        $factory = new class implements AbstractFactoryInterface
+        {
+            public function canCreate(ContainerInterface $container, string $requestedName): bool
+            {
+                return $requestedName === 'name';
+            }
+
+            public function __invoke(
+                ContainerInterface $container,
+                string $requestedName,
+                ?array $options = null,
+            ): object {
+                return (object) ['foo' => 'bar'];
+            }
+        };
+
+        $container = self::createContainer([
+            'abstract_factories' => [
+                $factory,
+            ],
+        ]);
+
+        self::assertTrue($container->has('name'));
+        self::assertNotSame($factory($container, 'name'), $container->get('name'));
+        self::assertEquals($factory($container, 'name'), $container->get('name'));
+        self::assertSame($container->get('name'), $container->get('name'));
+        self::assertTrue($container->canBuild('name'));
+        self::assertNotSame($container->build('name'), $container->get('name'));
+    }
+
+    public function testAliasedServicesCanBeBuiltWhenAnAbstractFactoryIsCapableOfProducingOne(): void
+    {
+        $factory = new class implements AbstractFactoryInterface
+        {
+            public function canCreate(ContainerInterface $container, string $requestedName): bool
+            {
+                return $requestedName === 'name';
+            }
+
+            public function __invoke(
+                ContainerInterface $container,
+                string $requestedName,
+                ?array $options = null,
+            ): object {
+                return (object) ['foo' => 'bar'];
+            }
+        };
+
+        $container = self::createContainer([
+            'abstract_factories' => [
+                $factory,
+            ],
+            'aliases'            => [
+                'fred' => 'name',
+            ],
+        ]);
+
+        self::assertTrue($container->has('fred'));
+        self::assertNotSame($factory($container, 'fred'), $container->get('fred'));
+        self::assertEquals($factory($container, 'fred'), $container->get('fred'));
+        self::assertSame($container->get('fred'), $container->get('fred'));
+        self::assertTrue($container->canBuild('fred'));
+        self::assertNotSame($container->build('fred'), $container->get('fred'));
     }
 }
