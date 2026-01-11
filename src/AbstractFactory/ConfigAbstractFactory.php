@@ -12,8 +12,10 @@ use Psr\Container\ContainerInterface;
 use function array_key_exists;
 use function array_map;
 use function array_values;
+use function gettype;
 use function is_array;
 use function json_encode;
+use function strval;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -66,8 +68,8 @@ final class ConfigAbstractFactory implements AbstractFactoryInterface
 
         $serviceDependencies = $dependencies[$requestedName];
 
-        if ($serviceDependencies !== array_values(array_map('strval', $serviceDependencies))) {
-            $problem = json_encode(array_map('gettype', $serviceDependencies), JSON_THROW_ON_ERROR);
+        if ($serviceDependencies !== array_values(array_map(strval(...), $serviceDependencies))) {
+            $problem = json_encode(array_map(gettype(...), $serviceDependencies), JSON_THROW_ON_ERROR);
             throw new ServiceNotCreatedException(
                 'Service dependencies config must be an array of strings, ' . $problem . ' given'
             );

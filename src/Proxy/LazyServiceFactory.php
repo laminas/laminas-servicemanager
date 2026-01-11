@@ -19,15 +19,15 @@ use function sprintf;
  *
  * @link https://github.com/Ocramius/ProxyManager/blob/master/docs/lazy-loading-value-holder.md
  */
-final class LazyServiceFactory implements DelegatorFactoryInterface
+final readonly class LazyServiceFactory implements DelegatorFactoryInterface
 {
     /**
      * @param array<string, class-string> $servicesMap A map of service names to
      *     class names of their respective classes
      */
     public function __construct(
-        private readonly LazyLoadingValueHolderFactory $proxyFactory,
-        private readonly array $servicesMap
+        private LazyLoadingValueHolderFactory $proxyFactory,
+        private array $servicesMap
     ) {
     }
 
