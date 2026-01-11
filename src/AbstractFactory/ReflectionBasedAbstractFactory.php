@@ -66,6 +66,8 @@ use function sprintf;
  */
 final readonly class ReflectionBasedAbstractFactory implements AbstractFactoryInterface
 {
+    private ConstructorParameterResolverInterface $constructorParameterResolver;
+
     /**
      * Allows overriding the internal list of aliases. These should be of the
      * form `class name => well-known service name`; see the documentation for
@@ -77,8 +79,9 @@ final readonly class ReflectionBasedAbstractFactory implements AbstractFactoryIn
      */
     public function __construct(
         public array $aliases = [],
-        private ConstructorParameterResolverInterface $constructorParameterResolver = new ConstructorParameterResolver(),
+        ConstructorParameterResolverInterface|null $constructorParameterResolver = null,
     ) {
+        $this->constructorParameterResolver = $constructorParameterResolver ?? new ConstructorParameterResolver();
     }
 
     /**
