@@ -221,5 +221,5 @@ infection-ci:
 	cd tools/infection && composer install
 	tools/infection/vendor/bin/roave-infection-static-analysis-plugin \
 		--configuration=.infection.json5.dist \
-		--psalm-config=psalm.xml
+		--psalm-config=psalm.xml.dist
 .PHONY: unused-ci
