@@ -153,15 +153,6 @@
     </MoreSpecificReturnType>
   </file>
   <file src="test/LazyServiceIntegrationTest.php">
-    <InvalidReturnStatement>
-      <code><![CDATA[array_filter(spl_autoload_functions(), $filter)]]></code>
-    </InvalidReturnStatement>
-    <InvalidReturnType>
-      <code><![CDATA[AutoloaderInterface[]]]></code>
-    </InvalidReturnType>
-    <MissingClosureParamType>
-      <code><![CDATA[$autoload]]></code>
-    </MissingClosureParamType>
     <RedundantCondition>
       <code><![CDATA[assertIsArray]]></code>
       <code><![CDATA[assertIsArray]]></code>
