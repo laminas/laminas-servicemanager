@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaminasTest\ServiceManager;
 
 use DateTime;
+use Laminas\ContainerConfigTest\TestAsset\Delegator;
 use Laminas\ContainerConfigTest\TestAsset\DelegatorFactory;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
@@ -394,6 +395,30 @@ final class ServiceManagerTest extends TestCase
             ],
             $delegators
         );
+    }
+
+    public function testDelegatorsAreUsedOnRepeatedCreate(): void
+    {
+        $dependencies   = [
+            'delegators' => [
+                DateTime::class => [
+                    DelegatorFactory::class,
+                    DelegatorFactory::class,
+                ],
+            ],
+            'invokables' => [
+                DateTime::class => DateTime::class,
+            ],
+        ];
+        $serviceManager = new ServiceManager($dependencies);
+
+        $first  = $serviceManager->build(DateTime::class);
+        $second = $serviceManager->build(DateTime::class);
+
+        /** @psalm-suppress DocblockTypeContradiction*/
+        self::assertInstanceOf(Delegator::class, $first);
+        /** @psalm-suppress DocblockTypeContradiction*/
+        self::assertInstanceOf(Delegator::class, $second);
     }
 
     public function testResolvedAliasFromAbstractFactory(): void
