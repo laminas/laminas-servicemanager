@@ -48,7 +48,7 @@
         "mikey179/vfsstream": "^1.6.12",
         "phpbench/phpbench": "^1.4.1",
         "phpunit/phpunit": "^11.5.42",
-        "psalm/plugin-phpunit": "^0.19.5",
+        "psalm/plugin-phpunit": "^0.20.0",
         "symfony/console": "^6.4.17 || ^7.3.4",
         "vimeo/psalm": "^6.13.1"
     },
