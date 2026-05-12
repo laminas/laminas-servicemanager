@@ -49,7 +49,7 @@
         "phpbench/phpbench": "^1.4.1",
         "phpunit/phpunit": "^11.5.42",
         "psalm/plugin-phpunit": "^0.19.5",
-        "symfony/console": "^6.4.17 || ^7.3.4",
+        "symfony/console": "^8.0.0",
         "vimeo/psalm": "^6.13.1"
     },
     "provide": {
