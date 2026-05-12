@@ -601,9 +601,9 @@ class ServiceManager implements ServiceLocatorInterface
         $resolvedDelegators = [];
         foreach ($this->delegators[$name] as $index => $delegatorFactory) {
             /** @psalm-suppress ArgumentTypeCoercion https://github.com/vimeo/psalm/issues/9680 */
-            $delegatorFactory                = $this->resolveDelegatorFactory($delegatorFactory);
-            $this->delegators[$name][$index] = $delegatorFactory;
-            $creationCallback                =
+            $delegatorFactory           = $this->resolveDelegatorFactory($delegatorFactory);
+            $resolvedDelegators[$index] = $delegatorFactory;
+            $creationCallback           =
                 static fn(): mixed => $delegatorFactory($initialCreationContext, $name, $creationCallback, $options);
         }
 
