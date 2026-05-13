@@ -32,6 +32,7 @@ use function rmdir;
 use function spl_autoload_functions;
 use function spl_autoload_unregister;
 use function sys_get_temp_dir;
+use function uniqid;
 use function unlink;
 
 #[CoversClass(ServiceManager::class)]
@@ -44,10 +45,14 @@ final class LazyServiceIntegrationTest extends TestCase
     {
         parent::setUp();
 
-        $this->proxyDir = sys_get_temp_dir() . '/laminas-servicemanager-proxy';
+        $this->proxyDir = sys_get_temp_dir() . '/' . uniqid('laminas-servicemanager-proxy-');
 
         if (! is_dir($this->proxyDir)) {
             mkdir($this->proxyDir);
+        }
+
+        foreach ($this->getRegisteredProxyAutoloadFunctions() as $autoloader) {
+            spl_autoload_unregister($autoloader);
         }
     }
 
@@ -55,11 +60,9 @@ final class LazyServiceIntegrationTest extends TestCase
     {
         parent::tearDown();
 
-        if (! is_dir($this->proxyDir)) {
-            return;
+        if (is_dir($this->proxyDir)) {
+            $this->removeDir($this->proxyDir);
         }
-
-        $this->removeDir($this->proxyDir);
 
         foreach ($this->getRegisteredProxyAutoloadFunctions() as $autoloader) {
             spl_autoload_unregister($autoloader);
@@ -123,7 +126,7 @@ final class LazyServiceIntegrationTest extends TestCase
                 'class_map'          => [
                     InvokableObject::class => InvokableObject::class,
                 ],
-                'proxies_namespace'  => 'TestAssetProxy',
+                'proxies_namespace'  => 'TestAssetProxy1',
                 'proxies_target_dir' => $this->proxyDir,
                 'write_proxy_files'  => true,
             ],
@@ -191,7 +194,7 @@ final class LazyServiceIntegrationTest extends TestCase
                 'class_map'         => [
                     InvokableObject::class => InvokableObject::class,
                 ],
-                'proxies_namespace' => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy4',
             ],
             'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
@@ -241,7 +244,7 @@ final class LazyServiceIntegrationTest extends TestCase
                     InvokableObject::class => InvokableObject::class,
                     stdClass::class        => stdClass::class,
                 ],
-                'proxies_namespace' => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy2',
             ],
             'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
@@ -278,7 +281,7 @@ final class LazyServiceIntegrationTest extends TestCase
                 'class_map'         => [
                     stdClass::class => stdClass::class,
                 ],
-                'proxies_namespace' => 'TestAssetProxy',
+                'proxies_namespace' => 'TestAssetProxy3',
             ],
             'factories'     => [
                 InvokableObject::class => InvokableFactory::class,
@@ -302,8 +305,11 @@ final class LazyServiceIntegrationTest extends TestCase
      */
     private function getRegisteredProxyAutoloadFunctions(): array
     {
-        $filter = static fn($autoload): bool => $autoload instanceof AutoloaderInterface;
+        $filter = static fn(callable $autoload): bool => $autoload instanceof AutoloaderInterface;
 
-        return array_filter(spl_autoload_functions(), $filter);
+        $autoLoaders = array_filter(spl_autoload_functions(), $filter);
+        self::assertContainsOnlyInstancesOf(AutoloaderInterface::class, $autoLoaders);
+
+        return $autoLoaders;
     }
 }

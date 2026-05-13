@@ -29,7 +29,7 @@ use function var_export;
 /**
  * @internal
  */
-final class ConfigDumper implements ConfigDumperInterface
+final readonly class ConfigDumper implements ConfigDumperInterface
 {
     public const CONFIG_TEMPLATE                          = <<<EOC
 <?php
@@ -45,8 +45,8 @@ EOC;
     public const MEZZIO_CONTAINER_CONFIGURATION           = 'dependencies';
 
     public function __construct(
-        private readonly ?ContainerInterface $container = null,
-        private readonly string $serviceManagerConfigurationKey = self::LAMINAS_MVC_SERVICEMANAGER_CONFIGURATION,
+        private ?ContainerInterface $container = null,
+        private string $serviceManagerConfigurationKey = self::LAMINAS_MVC_SERVICEMANAGER_CONFIGURATION,
     ) {
     }
 

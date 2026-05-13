@@ -19,10 +19,10 @@ use function sprintf;
 use const ARRAY_FILTER_USE_BOTH;
 use const PHP_VERSION_ID;
 
-final class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInterface
+final readonly class AheadOfTimeFactoryCompiler implements AheadOfTimeFactoryCompilerInterface
 {
     public function __construct(
-        private readonly FactoryCreatorInterface $factoryCreator,
+        private FactoryCreatorInterface $factoryCreator,
     ) {
     }
 

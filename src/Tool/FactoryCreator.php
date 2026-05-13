@@ -30,7 +30,7 @@ use const PHP_EOL;
 /**
  * @internal
  */
-final class FactoryCreator implements FactoryCreatorInterface
+final readonly class FactoryCreator implements FactoryCreatorInterface
 {
     private const NAMESPACE_SEPARATOR = '\\';
 
@@ -59,8 +59,8 @@ final class FactoryCreator implements FactoryCreatorInterface
     ];
 
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly ConstructorParameterResolverInterface $constructorParameterResolver
+        private ContainerInterface $container,
+        private ConstructorParameterResolverInterface $constructorParameterResolver
     ) {
     }
 

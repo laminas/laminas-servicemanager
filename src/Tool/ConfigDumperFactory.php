@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laminas\ServiceManager\Tool;
 
-use Mezzio\Application;
 use Psr\Container\ContainerInterface;
 
 use function class_exists;
@@ -26,9 +25,9 @@ final class ConfigDumperFactory
     private function isCommandExecutedInMezzioApplication(ContainerInterface $container): bool
     {
         /**
-         * @psalm-suppress UndefinedClass MixedArgument We can't require mezzio due to the amount of additional
-         *                                              dependencies we would have to add here.
+         * We can't require mezzio due to the amount of additional
+         * dependencies we would have to add here.
          */
-        return class_exists(Application::class) && $container->has(Application::class);
+        return class_exists('Mezzio\\Application') && $container->has('Mezzio\\Application');
     }
 }

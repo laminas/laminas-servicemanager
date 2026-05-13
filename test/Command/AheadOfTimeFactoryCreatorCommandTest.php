@@ -14,6 +14,7 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,16 +28,10 @@ use function sprintf;
 #[CoversClass(AheadOfTimeFactoryCreatorCommand::class)]
 final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
 {
-    /** @var MockObject&InputInterface */
-    private InputInterface $input;
-
-    /** @var MockObject&OutputInterface */
-    private OutputInterface $output;
-
+    private MockObject&InputInterface $input;
+    private MockObject&OutputInterface $output;
     private vfsStreamDirectory $factoryTargetPath;
-
-    /** @var AheadOfTimeFactoryCompilerInterface&MockObject */
-    private AheadOfTimeFactoryCompilerInterface $factoryCompiler;
+    private MockObject&AheadOfTimeFactoryCompilerInterface $factoryCompiler;
 
     protected function setUp(): void
     {
@@ -120,9 +115,7 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
         self::assertCount(0, $this->factoryTargetPath->getChildren());
     }
 
-    /**
-     * @requires testWillVerifyLocalConfigFilenameIsWritable
-     */
+    #[Depends('testWillVerifyLocalConfigFilenameIsWritable')]
     public function testWillCreateExpectedGeneratedFactoriesConfig(): void
     {
         $directory = $this->factoryTargetPath->url();
@@ -248,8 +241,11 @@ final class AheadOfTimeFactoryCreatorCommandTest extends TestCase
     }
 
     /**
-     * @requires testWillVerifyLocalConfigFilenameIsWritable
+     * Test order matters here
+     *
+     * The dependent test must run prior so that `class_exists` will return false in that test.
      */
+    #[Depends('testWillCreateExpectedGeneratedFactoriesConfig')]
     public function testWillDetectAlreadyExistingFactories(): void
     {
         $directory = $this->factoryTargetPath->url();

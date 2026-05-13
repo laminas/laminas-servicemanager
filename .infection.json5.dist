@@ -1,0 +1,22 @@
+{
+    "$schema": "tools/infection/vendor/infection/infection/resources/schema.json",
+    "source": {
+        "directories": [
+            "./src"
+        ],
+        "excludes": [
+            "ConfigProvider.php"
+        ]
+    },
+    "mutators": {
+        "@default": true
+    },
+    "logs": {
+        "text": "php://stderr",
+        "github": true,
+        "stryker": {
+            "report": "/^\\d+\\.\\d+\\.x$/"
+        }
+    },
+    "minMsi": 95
+}

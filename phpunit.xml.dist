@@ -5,6 +5,8 @@
          cacheDirectory=".phpunit.cache"
          displayDetailsOnAllIssues="true"
          failOnAllIssues="true"
+         executionOrder="defects,random"
+         resolveDependencies="true"
 >
     <testsuites>
         <testsuite name="laminas-servicemanager Test Suite">

@@ -1,0 +1,10 @@
+{
+    "config": {
+        "platform": {
+            "php": "8.2.99"
+        }
+    },
+    "require-dev": {
+        "rector/rector": "^2.3.0"
+    }
+}
