@@ -13,5 +13,6 @@
 /phpunit.xml.dist export-ignore
 /psalm.xml.dist export-ignore
 /psalm-baseline.xml export-ignore
+/structarmed.php export-ignore
 /renovate.json export-ignore
 /test/ export-ignore
