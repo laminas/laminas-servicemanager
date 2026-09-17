@@ -116,7 +116,7 @@ final class FactoryCreatorTest extends TestCase
 
     private function createReturnMapCallbackWithDefault(array $values, mixed $default): callable
     {
-        return function () use ($values, $default): mixed {
+        return static function () use ($values, $default): mixed {
             $args           = func_get_args();
             $parameterCount = count($args);
 
