@@ -40,7 +40,7 @@
         }
     },
     "require-dev": {
-        "boundwize/structarmed": "^0.17.9",
+        "boundwize/structarmed": "^0.18.0",
         "composer/package-versions-deprecated": "^1.11.99.5",
         "friendsofphp/proxy-manager-lts": "^1.0.18",
         "laminas/laminas-cli": "^1.11",
