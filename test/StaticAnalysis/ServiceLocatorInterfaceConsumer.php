@@ -39,8 +39,8 @@ final class ServiceLocatorInterfaceConsumer
             'foo'                    => 'bar',
             DateTimeImmutable::class => new DateTimeImmutable(),
         ];
-        return new class ($services) implements ServiceLocatorInterface {
-            public function __construct(private readonly array $services)
+        return new readonly class ($services) implements ServiceLocatorInterface {
+            public function __construct(private array $services)
             {
             }
 

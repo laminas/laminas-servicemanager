@@ -4,9 +4,6 @@
     <InvalidStringClass>
       <code><![CDATA[new $requestedName(...$arguments)]]></code>
     </InvalidStringClass>
-    <MixedArgument>
-      <code><![CDATA[$serviceDependencies]]></code>
-    </MixedArgument>
     <MixedArrayAccess>
       <code><![CDATA[$config[self::class]]]></code>
     </MixedArrayAccess>

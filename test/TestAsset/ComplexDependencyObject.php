@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-final class ComplexDependencyObject
+final readonly class ComplexDependencyObject
 {
     public function __construct(
         SimpleDependencyObject $simpleDependencyObject,

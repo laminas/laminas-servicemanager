@@ -17,7 +17,7 @@ use stdClass;
  */
 class FetchNewServiceManagerBench
 {
-    private const NUM_SERVICES = 1000;
+    private const int NUM_SERVICES = 1000;
 
     private array $config = [];
 

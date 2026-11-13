@@ -10,7 +10,7 @@ use function assert;
 
 final class TargetObjectDelegator
 {
-    public const DELEGATED_VALUE = 'Delegated Value';
+    public const string DELEGATED_VALUE = 'Delegated Value';
 
     public function __invoke(ContainerInterface $container, string $serviceName, callable $callback): TargetObject
     {

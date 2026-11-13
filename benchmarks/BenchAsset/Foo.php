@@ -6,12 +6,8 @@ namespace LaminasBench\ServiceManager\BenchAsset;
 
 class Foo
 {
-    /** @var mixed */
-    protected $options;
-
     /** @param mixed $options */
-    public function __construct($options = null)
+    public function __construct(protected $options = null)
     {
-        $this->options = $options;
     }
 }

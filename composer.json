@@ -19,7 +19,7 @@
     },
     "config": {
         "platform": {
-            "php": "8.2.99"
+            "php": "8.3.99"
         },
         "sort-packages": true,
         "allow-plugins": {
@@ -28,7 +28,7 @@
         }
     },
     "require": {
-        "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+        "php": "~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0",
         "brick/varexporter": "^0.3.8 || ^0.4.0 || ^0.5.0 || ^0.6.0 || ^0.7.0",
         "laminas/laminas-stdlib": "^3.19",
         "psr/container": "^1.1 || ^2.0"
@@ -40,18 +40,19 @@
         }
     },
     "require-dev": {
-        "boundwize/structarmed": "^0.18.0",
+        "boundwize/structarmed": "^0.18.11",
         "composer/package-versions-deprecated": "^1.11.99.5",
-        "friendsofphp/proxy-manager-lts": "^1.0.18",
-        "laminas/laminas-cli": "^1.11",
+        "friendsofphp/proxy-manager-lts": "^1.0.19",
+        "laminas/internal-tooling": "^1.2",
+        "laminas/laminas-cli": "^1.16",
         "laminas/laminas-coding-standard": "~3.1.0",
         "laminas/laminas-container-config-test": "^1.2.0",
         "mikey179/vfsstream": "^1.6.12",
-        "phpbench/phpbench": "^1.4.1",
-        "phpunit/phpunit": "^11.5.42",
-        "psalm/plugin-phpunit": "^0.19.5",
-        "symfony/console": "^6.4.17 || ^7.3.4",
-        "vimeo/psalm": "^6.13.1"
+        "phpbench/phpbench": "^1.7.0",
+        "phpunit/phpunit": "^11.5.58",
+        "psalm/plugin-phpunit": "^0.19.7",
+        "symfony/console": "^6.4.17 || ^7.4.23",
+        "vimeo/psalm": "^6.20.11"
     },
     "provide": {
         "psr/container-implementation": "^1.0 || ^2.0"

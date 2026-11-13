@@ -27,7 +27,7 @@ use function class_exists;
  */
 final class ConfigProvider
 {
-    public const CONFIGURATION_KEY_FACTORY_TARGET_PATH = 'aot-factory-target-path';
+    public const string CONFIGURATION_KEY_FACTORY_TARGET_PATH = 'aot-factory-target-path';
 
     /**
      * @return array{dependencies: ServiceManagerConfiguration}&array<string,mixed>

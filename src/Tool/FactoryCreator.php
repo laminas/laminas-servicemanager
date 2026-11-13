@@ -30,12 +30,12 @@ use const PHP_EOL;
 /**
  * @internal
  */
-final class FactoryCreator implements FactoryCreatorInterface
+final readonly class FactoryCreator implements FactoryCreatorInterface
 {
-    private const NAMESPACE_SEPARATOR = '\\';
+    private const string NAMESPACE_SEPARATOR = '\\';
 
     // phpcs:disable Generic.Files.LineLength
-    private const FACTORY_TEMPLATE = <<<'EOT'
+    private const string FACTORY_TEMPLATE = <<<'EOT'
         <?php
 
         declare(strict_types=1);
@@ -53,14 +53,14 @@ final class FactoryCreator implements FactoryCreatorInterface
         EOT;
     // phpcs:enable Generic.Files.LineLength
 
-    private const IMPORT_ALWAYS = [
+    private const array IMPORT_ALWAYS = [
         FactoryInterface::class,
         ContainerInterface::class,
     ];
 
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly ConstructorParameterResolverInterface $constructorParameterResolver
+        private ContainerInterface $container,
+        private ConstructorParameterResolverInterface $constructorParameterResolver
     ) {
     }
 
