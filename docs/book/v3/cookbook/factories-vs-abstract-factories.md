@@ -19,10 +19,10 @@ Why would you choose one approach over the other?
 
 ## Comparisons
 
-Approach         | Pros           | Cons
----------------- | -------------- | ----
-Abstract factory | One-time setup | Performance; discovery of code responsible for creating instance
-Factory          | Performance; explicit mapping to factory responsible | Additional (duplicate) setup
+| Approach         | Pros                                                 | Cons                                                             |
+|------------------|------------------------------------------------------|------------------------------------------------------------------|
+| Abstract factory | One-time setup                                       | Performance; discovery of code responsible for creating instance |
+| Factory          | Performance; explicit mapping to factory responsible | Additional (duplicate) setup                                     |
 
 Essentially, it comes down to *convenience* versus *explicitness* and/or
 *performance*.
