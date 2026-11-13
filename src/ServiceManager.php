@@ -36,7 +36,7 @@ use function is_array;
 use function is_callable;
 use function is_string;
 use function spl_autoload_register;
-use function spl_object_hash;
+use function spl_object_id;
 use function sprintf;
 
 /**
@@ -926,7 +926,7 @@ class ServiceManager implements ServiceLocatorInterface
             $abstractFactory = $this->cachedAbstractFactories[$abstractFactory];
         }
 
-        $abstractFactoryObjHash                           = spl_object_hash($abstractFactory);
+        $abstractFactoryObjHash                           = spl_object_id($abstractFactory);
         $this->abstractFactories[$abstractFactoryObjHash] = $abstractFactory;
     }
 
