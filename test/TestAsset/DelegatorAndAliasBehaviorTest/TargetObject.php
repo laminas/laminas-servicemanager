@@ -6,7 +6,7 @@ namespace LaminasTest\ServiceManager\TestAsset\DelegatorAndAliasBehaviorTest;
 
 final class TargetObject
 {
-    public const INITIAL_VALUE = 'Default';
+    public const string INITIAL_VALUE = 'Default';
 
     public string $value;
 

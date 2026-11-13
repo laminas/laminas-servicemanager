@@ -17,7 +17,7 @@ use stdClass;
  */
 class HasNewServicesBench
 {
-    private ServiceManager $sm;
+    private readonly ServiceManager $sm;
 
     public function __construct()
     {

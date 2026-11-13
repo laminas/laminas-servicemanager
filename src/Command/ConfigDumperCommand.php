@@ -29,7 +29,7 @@ use function sprintf;
  */
 final class ConfigDumperCommand extends Command
 {
-    public const NAME = 'servicemanager:generate-deps-for-config-factory';
+    public const string NAME = 'servicemanager:generate-deps-for-config-factory';
 
     public function __construct(
         private readonly ConfigDumperInterface $configDumper,

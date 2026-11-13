@@ -35,7 +35,7 @@ use function str_replace;
  */
 final class AheadOfTimeFactoryCreatorCommand extends Command
 {
-    public const NAME = 'servicemanager:generate-aot-factories';
+    public const string NAME = 'servicemanager:generate-aot-factories';
 
     public function __construct(
         private readonly array $config,
@@ -132,9 +132,7 @@ final class AheadOfTimeFactoryCreatorCommand extends Command
                 str_replace('\\', '_', $factoryClassName)
             );
             file_put_contents($factoryFileName, $factory->generatedFactory);
-            if (! isset($containerConfigurations[$factory->containerConfigurationKey])) {
-                $containerConfigurations[$factory->containerConfigurationKey] = ['factories' => []];
-            }
+            $containerConfigurations[$factory->containerConfigurationKey] ??= ['factories' => []];
 
             // phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.NoAssignment
             /**

@@ -17,7 +17,7 @@ use PhpBench\Benchmark\Metadata\Annotations\Warmup;
  */
 class FetchNewServiceViaReflectionAbstractFactoryBench
 {
-    private ServiceManager $sm;
+    private readonly ServiceManager $sm;
 
     public function __construct()
     {

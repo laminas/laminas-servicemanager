@@ -17,9 +17,9 @@ use stdClass;
  */
 class SetNewServicesBench
 {
-    private const NUM_SERVICES = 100;
+    private const int NUM_SERVICES = 100;
 
-    private ServiceManager $sm;
+    private readonly ServiceManager $sm;
 
     public function __construct()
     {

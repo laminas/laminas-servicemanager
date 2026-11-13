@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-final class SimpleDependencyObject
+final readonly class SimpleDependencyObject
 {
     public function __construct(InvokableObject $invokableObject)
     {

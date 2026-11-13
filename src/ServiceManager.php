@@ -921,9 +921,7 @@ class ServiceManager implements ServiceLocatorInterface
     {
         if (is_string($abstractFactory)) {
             // Cached string factory name
-            if (! isset($this->cachedAbstractFactories[$abstractFactory])) {
-                $this->cachedAbstractFactories[$abstractFactory] = new $abstractFactory();
-            }
+            $this->cachedAbstractFactories[$abstractFactory] ??= new $abstractFactory();
 
             $abstractFactory = $this->cachedAbstractFactories[$abstractFactory];
         }

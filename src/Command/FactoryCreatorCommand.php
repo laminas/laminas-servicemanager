@@ -21,7 +21,7 @@ use function sprintf;
  */
 final class FactoryCreatorCommand extends Command
 {
-    public const NAME = 'servicemanager:generate-factory-for-class';
+    public const string NAME = 'servicemanager:generate-factory-for-class';
 
     public function __construct(
         private readonly FactoryCreatorInterface $factoryCreator,

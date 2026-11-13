@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaminasTest\ServiceManager\TestAsset;
 
-final class ClassWithConstructorWithOnlyOptionalArguments
+final readonly class ClassWithConstructorWithOnlyOptionalArguments
 {
     public function __construct(
         array $foo = [],
