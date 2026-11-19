@@ -580,30 +580,6 @@ EOH]]></code>
       <code><![CDATA[$names[$name]]]></code>
       <code><![CDATA[$object[$shared ? $method : 'build']]]></code>
     </MixedArrayOffset>
-    <MixedAssignment>
-      <code><![CDATA[$first]]></code>
-      <code><![CDATA[$idx1]]></code>
-      <code><![CDATA[$idx2]]></code>
-      <code><![CDATA[$instance]]></code>
-      <code><![CDATA[$method]]></code>
-      <code><![CDATA[$name]]></code>
-      <code><![CDATA[$names[$name]]]></code>
-      <code><![CDATA[$nonSharedObj1]]></code>
-      <code><![CDATA[$nonSharedObj2]]></code>
-      <code><![CDATA[$obj]]></code>
-      <code><![CDATA[$object1]]></code>
-      <code><![CDATA[$object1]]></code>
-      <code><![CDATA[$object1]]></code>
-      <code><![CDATA[$object1]]></code>
-      <code><![CDATA[$object2]]></code>
-      <code><![CDATA[$object2]]></code>
-      <code><![CDATA[$object2]]></code>
-      <code><![CDATA[$object2]]></code>
-      <code><![CDATA[$object[$shared ? $method : 'build'][]]]></code>
-      <code><![CDATA[$second]]></code>
-      <code><![CDATA[$shared]]></code>
-      <code><![CDATA[$shared]]></code>
-    </MixedAssignment>
     <MixedFunctionCall>
       <code><![CDATA[$callback()]]></code>
     </MixedFunctionCall>
