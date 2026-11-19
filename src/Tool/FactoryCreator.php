@@ -51,7 +51,7 @@ class FactoryCreator
 
         EOT;
 
-    private const IMPORT_ALWAYS = [
+    private const array IMPORT_ALWAYS = [
         FactoryInterface::class,
         ContainerInterface::class,
     ];

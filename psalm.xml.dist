@@ -49,6 +49,11 @@
                 <referencedClass name="Interop\Container\Exception\ContainerException"/>
             </errorLevel>
         </InvalidThrow>
+        <MixedAssignment>
+            <errorLevel type="suppress">
+                <file name="test/CommonServiceLocatorBehaviorsTrait.php"/>
+            </errorLevel>
+        </MixedAssignment>
     </issueHandlers>
 
     <plugins>

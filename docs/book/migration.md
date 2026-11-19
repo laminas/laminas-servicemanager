@@ -341,11 +341,11 @@ those defined in version 3.)
 
 ### Interfaces and relations to version 2
 
-| Version 2 Interface                                       | Version 3 Interface                                       |
-| :-------------------------------------------------------: | :-------------------------------------------------------: |
-| `Laminas\ServiceManager\AbstractFactoryInterface`            | `Laminas\ServiceManager\Factory\AbstractFactoryInterface`    |
-| `Laminas\ServiceManager\DelegatorFactoryInterface`           | `Laminas\ServiceManager\Factory\DelegatorFactoryInterface`   |
-| `Laminas\ServiceManager\FactoryInterface`                    | `Laminas\ServiceManager\Factory\FactoryInterface`            |
+|                Version 2 Interface                 |                    Version 3 Interface                     |
+|:--------------------------------------------------:|:----------------------------------------------------------:|
+| `Laminas\ServiceManager\AbstractFactoryInterface`  | `Laminas\ServiceManager\Factory\AbstractFactoryInterface`  |
+| `Laminas\ServiceManager\DelegatorFactoryInterface` | `Laminas\ServiceManager\Factory\DelegatorFactoryInterface` |
+|     `Laminas\ServiceManager\FactoryInterface`      |     `Laminas\ServiceManager\Factory\FactoryInterface`      |
 
 The version 2 interfaces now extend those in version 3, but are marked
 **deprecated**. You can continue to use them, but will be required to update
